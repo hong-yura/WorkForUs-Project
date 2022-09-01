@@ -863,7 +863,7 @@
 }
 @media screen and (max-width: 1199px) {
   .sidebar-wrapper {
-    position: absolute;
+    position: fiexd;
     left: -300px;
   }
   .sidebar-wrapper .sidebar-toggler.x {
@@ -1419,7 +1419,7 @@ a {
 }
 @media screen and (max-width: 1199px) {
   .sidebar2-wrapper {
-    position: absolute;
+    position: fixed;
     left: -300px;
   }
   .sidebar2-wrapper .sidebar2-toggler.x {
