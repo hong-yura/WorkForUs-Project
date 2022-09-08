@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.commuteMapper">
+
+<resultMap type="site.workforus.forus.commute.model.CommuteDTO" id="commuteMap">
+	<result property="commuteNo" 	column="commute_no" /> 
+	<result property="empId" 		column="emp_id" />
+	<result property="commuteDt" 	column="commute_dt" />
+	<result property="commuteTime"  column="commute_time" />
+	<result property="getoffTime" 	column="getoff_time" />
+	<result property="addedTime" 	column="added_time" />
+	<result property="workTime" 	column="work_time" />
+</resultMap>
+
+
+	<select id="selectData" resultMap="commuteMap" parameterType="String">
+		SELECT *
+		 FROM tb_commute c
+		 JOIN tb_employees e
+		   ON c.emp_id = e.emp_id
+		WHERE c.emp_id = #{empId}
+	</select>
+
+
+</mapper>
