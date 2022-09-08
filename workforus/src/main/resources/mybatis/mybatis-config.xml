@@ -8,6 +8,6 @@
 	
 	<typeAliases>
 		<!--  MyBatis에서 사용할 자료형의 별칭 선언 -->
-		
+		<typeAlias type="site.workforus.forus.dept.model.DeptDTO" alias="deptDto" />
 	</typeAliases>
 </configuration>

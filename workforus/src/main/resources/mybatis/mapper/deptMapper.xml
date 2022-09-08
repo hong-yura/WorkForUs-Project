@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="site.workforus.forus.mapper.deptMapper">
+<!-- namespace에 인터페이스 전체 경로 넣기 -->
+<!-- 해당 xml 파일과 인터페이스를 매핑해주는 것이다. -->
+	<resultMap type="deptDto" id="deptDtoMap">
+		<result property="deptNo" column="dept_no" />
+		<result property="deptName" column="dept_nm" />
+		<result property="deptMngId" column="dept_manager_id" />
+		<result property="deptAddDt" column="dept_add_dt" />
+		<result property="deptModDt" column="dept_mod_dt" />
+	</resultMap>
+	
+	<select id="selectAll" resultMap="deptDtoMap">
+		SELECT * FROM TB_DEPARTMENTS
+	</select>
+	
+</mapper>
