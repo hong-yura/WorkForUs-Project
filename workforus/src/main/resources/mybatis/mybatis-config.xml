@@ -10,22 +10,20 @@
 		<!-- Employee -->
 		
 		<!-- Department & Job -->
-		<typeAlias type="site.workforus.forus.dept.model.DeptDTO" alias="deptDto" />
-		<typeAlias type="site.workforus.forus.job.model.JobDTO" alias="jobDto" />
+		<package name="site.workforus.forus.dept.model"/>
+		<package name="site.workforus.forus.job.model"/>
 
 		<!-- Board -->
-		<typeAlias type="site.workforus.forus.board.model.BoardDTO" alias="boardDto" />
-		<typeAlias type="site.workforus.forus.board.model.BoardCategoryDTO" alias="boardCategoryDto" />
-		<typeAlias type="site.workforus.forus.board.model.BoardParticipDTO" alias="boardParticipDto" />
+		<package name="site.workforus.forus.board.model"/>
 		
 		<!-- Commute -->
-		<typeAlias type="site.workforus.forus.commute.model.CommuteDTO" alias="commuteDto" />
+		<package name="site.workforus.forus.commute.model"/>
 		
 		<!-- Calendar -->
-		<typeAlias type="site.workforus.forus.calendar.model.CalendarDTO" alias="calendarDto" />
+		<package name="site.workforus.forus.calendar.model"/>
 		
 		<!-- Address -->
-		<typeAlias type="site.workforus.forus.address.model.AddressDTO" alias="addressDto" />
+		<package name="site.workforus.forus.address.model"/>
 		
 	</typeAliases>
 </configuration>
