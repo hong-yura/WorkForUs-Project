@@ -7,7 +7,25 @@
 	</settings>
 	
 	<typeAliases>
-		<!--  MyBatis에서 사용할 자료형의 별칭 선언 -->
+		<!-- Employee -->
+		
+		<!-- Department & Job -->
 		<typeAlias type="site.workforus.forus.dept.model.DeptDTO" alias="deptDto" />
+		<typeAlias type="site.workforus.forus.job.model.JobDTO" alias="jobDto" />
+
+		<!-- Board -->
+		<typeAlias type="site.workforus.forus.board.model.BoardDTO" alias="boardDto" />
+		<typeAlias type="site.workforus.forus.board.model.BoardCategoryDTO" alias="boardCategoryDto" />
+		<typeAlias type="site.workforus.forus.board.model.BoardParticipDTO" alias="boardParticipDto" />
+		
+		<!-- Commute -->
+		<typeAlias type="site.workforus.forus.commute.model.CommuteDTO" alias="commuteDto" />
+		
+		<!-- Calendar -->
+		<typeAlias type="site.workforus.forus.calendar.model.CalendarDTO" alias="calendarDto" />
+		
+		<!-- Address -->
+		<typeAlias type="site.workforus.forus.address.model.AddressDTO" alias="addressDto" />
+		
 	</typeAliases>
 </configuration>
