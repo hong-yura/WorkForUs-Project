@@ -2,12 +2,19 @@ package site.workforus.forus.dept.model;
 
 import java.util.*;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
 public class DeptDTO {
-	private int deptNo;
-	private String deptName;
-	private String deptMngId;
-	private Date deptAddDt;
-	private Date deptModDt;
+	private int deptNo; 	  // 부서코드
+	private String deptName;  // 부서명
+	private String deptMngId; // 부서책임자(부장 사번)
+	private Date deptAddDt;	  // 부서 생성일
+	private Date deptModDt;	  // 부서 최종 수정일
 	
 	public DeptDTO() {}
 	
@@ -19,52 +26,5 @@ public class DeptDTO {
 		this.deptAddDt = deptAddDt;
 		this.deptModDt = deptModDt;
 	}
-
-	public int getDeptNo() {
-		return deptNo;
-	}
-
-	public void setDeptNo(int deptNo) {
-		this.deptNo = deptNo;
-	}
-
-	public String getDeptName() {
-		return deptName;
-	}
-
-	public void setDeptName(String deptName) {
-		this.deptName = deptName;
-	}
-
-	public String getDeptMngId() {
-		return deptMngId;
-	}
-
-	public void setDeptMngId(String deptMngId) {
-		this.deptMngId = deptMngId;
-	}
-
-	public Date getDeptAddDt() {
-		return deptAddDt;
-	}
-
-	public void setDeptAddDt(Date deptAddDt) {
-		this.deptAddDt = deptAddDt;
-	}
-
-	public Date getDeptModDt() {
-		return deptModDt;
-	}
-
-	public void setDeptModDt(Date deptModDt) {
-		this.deptModDt = deptModDt;
-	}
-
-	@Override
-	public String toString() {
-		return "DeptDTO [deptNo=" + deptNo + ", deptName=" + deptName + ", deptMngId=" + deptMngId + ", deptAddDt="
-				+ deptAddDt + ", deptModDt=" + deptModDt + "]";
-	}
-	
 	
 }

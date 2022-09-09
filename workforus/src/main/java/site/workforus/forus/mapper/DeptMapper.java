@@ -4,7 +4,7 @@ import java.util.List;
 
 import site.workforus.forus.dept.model.DeptDTO;
 
-public interface deptMapper {
+public interface DeptMapper {
 	// DAO 역할을 한다.
 	
 	public List<DeptDTO> selectAll();
