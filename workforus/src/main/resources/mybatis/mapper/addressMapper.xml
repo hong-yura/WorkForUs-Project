@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.AddressMapper">
+
+	<resultMap type="addressDto" id="addressDtoMap">
+		<result property="addrId" column="addr_id" />
+		<result property="addrIndvId" column="addr_indv_id" />
+		<result property="empId" column="emp_id" />
+	</resultMap>
+	
+	
+</mapper>
