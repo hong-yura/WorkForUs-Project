@@ -43,6 +43,14 @@
 		    <artifactId>spring-websocket</artifactId>
 		    <version>${org.springframework-version}</version>
 		</dependency>
+		<!-- spring-test -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>${org.springframework-version}</version>
+		    <scope>test</scope>
+		</dependency>
+	
 			
 		<!-- AspectJ -->
 		<!-- aspectjrt -->
@@ -240,8 +248,17 @@
 		    <artifactId>lettuce-core</artifactId>
 		    <version>6.2.0.RELEASE</version>
 		</dependency>
+		
+		<!-- Lombok -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.24</version>
+		    <scope>provided</scope>
+		</dependency>
+
 	</dependencies>
-	
+
     <build>
     	<finalName>ROOT</finalName>
         <plugins>
