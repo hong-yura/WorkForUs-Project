@@ -896,6 +896,14 @@
   left: 0;
   box-shadow: 0 2px 5px rgba(67, 94, 190, 0.5);
 }
+
+.navbar {
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding: 1.5rem 1.5rem 0 1.5rem;
+}
+
 .navbar-fixed {
   position: fixed;
   background-color: #fff;
