@@ -5,67 +5,64 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <nav>
 <div class="mb-3 d-block d-xl">
-    <div id="sidebar2" class="">
+    <div id="sidebar2">
       <div class="sidebar2-wrapper">
         <div class="sidebar2-header">
-          <a href="#" class="burger-btn d-block d-xl">
+        <c:url var="homeUrl" value="." />
+          <a href="${homeUrl}" class="burger-btn d-block d-xl">
             <i class="bi bi-justify fs-3"></i>
           </a>
         </div>
         <div class="sidebar2-menu">
           <ul class="menu">
             <li class="sidebar2-item">
-              <a href="index.html"
-                ><img
-                  src="static/images/logo/logo1.png"
-                  alt="Logo"
-                  srcset=""
-                  style="width: 2%; height: auto; margin-left: -0.2rem"
-              /></a>
+              <a href="${homeUrl}">
+              	<img src="static/images/logo/logo1.png" alt="Logo" style="width: 2%; height: auto; margin-left: -0.2rem"/>
+              </a>
             </li>
 
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="My Page">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-person-square"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="Mail">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-envelope"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
-              <a href="#" class="sidebar2-link">
+            <li class="sidebar2-item" title="Address">
+              <a href="${homeUrl}/address" class="sidebar2-link">
                 <i class="bi bi-journals"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
-              <a href="#" class="sidebar2-link">
+            <li class="sidebar2-item" title="Calendar">
+              <a href="${homeUrl}/calendar" class="sidebar2-link">
                 <i class="bi bi-calendar-check"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="Chat">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-chat-dots"></i>
               </a>
             </li>
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="Documents">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-file-text"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="Community">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-chat-left-text"></i>
               </a>
             </li>
 
-            <li class="sidebar2-item">
+            <li class="sidebar2-item" title="Survey">
               <a href="#" class="sidebar2-link">
                 <i class="bi bi-clipboard-data"></i>
               </a>
@@ -80,13 +77,9 @@
       <div class="sidebar-header">
         <div class="d-flex justify-content-between">
           <div class="logo">
-            <a href="index.html"
-              ><img
-                src="static/images/logo/logo-main.png"
-                alt="Logo"
-                srcset=""
-                style="max-width: 70%; height: auto"
-            /></a>
+            <a href="${homeUrl}">
+            	<img src="static/images/logo/logo-main.png" alt="Logo" style="max-width: 70%; height: auto" />
+            </a>
           </div>
           <div class="toggler">
             <a href="#" class="sidebar-hide"
@@ -100,7 +93,7 @@
           <li class="sidebar-title">Menu</li>
 
           <li class="sidebar-item active">
-            <a href="index.html" class="sidebar-link">
+            <a href="${homeUrl}" class="sidebar-link">
               <i class="bi bi-grid-fill"></i>
               <span>Home</span>
             </a>
@@ -136,16 +129,19 @@
           </li>
 
           <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
+            <a href="${homeUrl}" class="sidebar-link">
               <i class="bi bi-journals"></i>
               <span>Address</span>
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#l">SubMenu #1</a>
+                <a href="${homeUrl}/address">공용 주소록</a>
               </li>
               <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
+                <a href="${homeUrl}/address">부서 주소록</a>
+              </li>
+              <li class="submenu-item">
+                <a href="${homeUrl}/address/addressIndv">개인 주소록</a>
               </li>
             </ul>
           </li>
@@ -157,7 +153,7 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#">SubMenu #1</a>
+                <a href="${homeUrl}/calendar">calendar</a>
               </li>
               <li class="submenu-item">
                 <a href="#">SubMenu #2</a>
