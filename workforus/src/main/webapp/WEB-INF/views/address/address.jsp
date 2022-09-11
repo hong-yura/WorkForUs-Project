@@ -51,7 +51,7 @@
 									<input id="inputHidden" type="file" accept=".csv">
 									<button id="inputHiddenBtn" class="btn btn-outline-primary" onclick="fileImport();">가져오기</button>
 									<c:url var="addressAddUrl" value="/address/add" />
-									<button class="btn btn-outline-primary" type="button" onclick="location.href='${addressAddUrl}'">추가</button> <!-- 권한이 있는 사람만 -->
+									<button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addressAddModal">추가</button> <!-- 권한이 있는 사람만 -->
 									<button class="btn btn-outline-primary">삭제</button> <!-- 권한이 있는 사람만 -->
 								</div>
 								<div class="col-md-6">
@@ -102,6 +102,48 @@
 							</div>
 						</div>
 					</div>
+					
+				<!-- 주소록 추가 모달 -->	
+				<div class="modal fade" id="addressAddModal" tabindex="-1" aria-labelledby="addrModalLabel1" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="addrModalLabel1">주소록 추가</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<form action="#" method="post">
+									<div class="mb-3">
+										<label for="empName" class="col-form-label">이 름 :</label>
+										<input type="text" class="form-control" id="empName" placeholder="이 름">
+									</div>
+									<div class="mb-3">
+										<label for="deptName" class="col-form-label">부 서 :</label>
+										<input class="form-control" id="deptName" placeholder="부 서">
+									</div>
+									<div class="mb-3">
+										<label for="empPhone" class="col-form-label">휴대전화 :</label>
+										<input class="form-control" id="empPhone" placeholder="휴대전화">
+									</div>
+									<div class="mb-3">
+										<label for="empEmail" class="col-form-label">Email :</label>
+										<input class="form-control" id="empEmail" placeholder="Email">
+									</div>
+									<div class="mb-3">
+										<label for="empTel" class="col-form-label">내선전화 :</label>
+										<input class="form-control" id="empTel" placeholder="내선전화">
+									</div>
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
+								<button type="button" class="btn btn-primary">추 가</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+				
 				</section>
 
 				<%@ include file="../module/footer.jsp" %>
@@ -112,7 +154,7 @@
 		
 		<script src="static/vendors/simple-datatables/simple-datatables.js"></script>
 		<script type="text/javascript">
-			let table1 = document.querySelector('#table1');
+			let table1 = document.g('#table1');
 	        let dataTable = new simpleDatatables.DataTable(table1);
 	        
 	        function fileImport() {

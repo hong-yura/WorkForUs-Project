@@ -27,15 +27,15 @@ public class AddressController {
 	
 	// 공용 주소록 조회
 	@GetMapping(value = "")
-	public String getData(Model model) {
+	public String getData(Model model, AddressDTO addressDto) {
 		
 		String empId = "A2022100";
 		
-		List<AddressDTO> data = addrService.selectAll(empId);
+		List<AddressDTO> data = addrService.selectData(empId);
 		model.addAttribute("data", data);
 		logger.info("data: {}", data);
 		
-		return "address/address";
+		return "address/indvAddress";
 	}
 	
 	

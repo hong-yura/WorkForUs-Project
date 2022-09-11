@@ -13,7 +13,7 @@
 		</association> -->
 	</resultMap>
 	
-	<select id="selectAll" resultMap="addressDtoMap" parameterType="String">
+	<select id="selectData" resultMap="addressDtoMap" parameterType="String">
 		SELECT E.EMP_NM
 			 , E.DEPT_NO 
 			 , E.EMP_EMAIL

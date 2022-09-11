@@ -6,7 +6,7 @@ import site.workforus.forus.address.model.AddressDTO;
 
 public interface AddressMapper {
 
-	List<AddressDTO> selectAll(String empId);
+	List<AddressDTO> selectData(String empId);
 	
 	
 }
