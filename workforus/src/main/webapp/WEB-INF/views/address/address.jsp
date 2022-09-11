@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -35,6 +38,8 @@
 				
 				<section class="section">
 					<div class="card">
+					<c:url var="addressUrl" value="/address" />
+
 						<div class="card-header">
 							<h4 class="card-title">공용 주소록</h4>
 						</div>
@@ -45,7 +50,8 @@
 									<button class="btn btn-outline-primary">내보내기</button>
 									<input id="inputHidden" type="file" accept=".csv">
 									<button id="inputHiddenBtn" class="btn btn-outline-primary" onclick="fileImport();">가져오기</button>
-									<button class="btn btn-outline-primary">추가</button> <!-- 권한이 있는 사람만 -->
+									<c:url var="addressAddUrl" value="/address/add" />
+									<button class="btn btn-outline-primary" type="button" onclick="location.href='${addressAddUrl}'">추가</button> <!-- 권한이 있는 사람만 -->
 									<button class="btn btn-outline-primary">삭제</button> <!-- 권한이 있는 사람만 -->
 								</div>
 								<div class="col-md-6">
