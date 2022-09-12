@@ -9,6 +9,25 @@
 		<result property="empCheckPw" column="emp_check_pw"/>
 		<result property="empEmail" column="emp_email"/>
 		<result property="empAssistEmail" column="emp_assist_email"/>
+		<result property="empGender" column="emp_gender"/>
+		<result property="empPhone" column="emp_phone"/>
+		<result property="empTel" column="emp_tel"/>
+		<result property="empBirth" column="emp_birth"/>
+		<result property="empAddr" column="emp_addr"/>
+		<result property="empHireDt" column="emp_hire_dt"/>
+		<result property="empResignDt" column="emp_resign_dt"/>
+		<result property="empTenure" column="emp_tenure"/>
+		<result property="empResignFl" column="emp_resign_fl"/>
+		<result property="empPhotoUrl" column="emp_photo_url"/>
+		<result property="empPhotoNm" column="emp_photo_nm"/>
+		<result property="empStatus" column="emp_status"/>
+		<result property="empLoginFail" column="emp_login_fail"/>
+		<result property="empLoginLock" column="emp_lgoin_lock"/>
+		<result property="empFirstLogin" column="emp_first_login"/>
+		<result property="deptNo" column="dept_no"/>
+		<result property="jobId" column="job_id"/>
+		<result property="empSalary" column="emp_salary"/>
+		<result property="empStamp" column="emp_stamp"/>
 	</resultMap>
 	<insert id="insertEmployee" parameterType="empDto">
 		INSERT INTO 
@@ -35,6 +54,10 @@
 			 , emp_assist_email
 		  FROM TB_EMPLOYEES
 		 WHERE emp_id = #{empId}
+	</select>
+	
+	<select id="selectEmployeeAll" resultMap="empDtoMap">
+		SELECT * FROM TB_EMPLOYEES
 	</select>
 	
 </mapper>
