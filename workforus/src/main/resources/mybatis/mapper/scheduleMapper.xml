@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.ScheduleMapper">
+
+	<resultMap type="scheduleDto" id="scheduleDtoMap">
+		<result property="scheId" column="sche_id" />
+		<result property="empId" column="emp_id" />
+		<result property="calId" column="cal_id" />
+		<result property="scheRegDt" column="sche_reg_dt" />
+		<result property="scheName" column="sche_name" />
+		<result property="scheContent" column="sche_content" />
+		<result property="scheAlltime" column="sche_alltime" />
+		<result property="scheDateStart" column="sche_date_start" />
+		<result property="scheDateEnd" column="sche_date_end" />
+	</resultMap>
+	
+	<insert id="insertData" parameterType="scheduleDto">
+		INSERT INTO TB_SCHEDULES (
+		          sche_id
+		        , emp_id
+		        , cal_id
+		        , sche_reg_dt
+		        , sche_name
+		        , sche_content
+		        , sche_alltime
+		        , sche_time_start
+		        , sche_time_end
+		        , sche_date_start
+		        , sche_date_end
+		) VALUES (
+		          #{scheId}
+		        , #{empId}
+		        , #{calId}
+		        , #{scheRegDt}
+		        , #{scheName}
+		        , #{scheContent}
+		        , #{scheAlltime}
+		        , #{scheTimeStart}
+		        , #{scheTimeEnd}
+		        , #{scheDateStart}
+		        , #{scheDateEnd}
+		)
+	</insert>
+	
+	<select id="selectAll" resultMap="scheduleDtoMap" >
+		SELECT * FROM TB_SCHEDULES
+	</select>
+
+	<select id="selectAllByEmpId" parameterType="string" resultMap="scheduleDtoMap" >
+		SELECT * FROM TB_SCHEDULES WHERE EMP_ID = #{empId}
+	</select>
+	
+	<select id="selectAllByCalId" parameterType="_int" resultMap="scheduleDtoMap" >
+		SELECT * FROM TB_SCHEDULES WHERE CAL_ID = #{calId}
+	</select>
+	
+	<select id="selectByScheduleId" parameterType="_int" resultMap="scheduleDtoMap" >
+		SELECT * FROM TB_SCHEDULES WHERE SCHE_ID = #{scheId}
+	</select>
+	
+	<update id="updateData" parameterType="scheduleDto">
+		UPDATE TB_SCHEDULES
+			SET 
+		          sche_name = #{scheName}
+		        , sche_content = #{scheContent}
+		        , sche_alltime = #{scheAlltime}
+		        , sche_time_start = #{scheTimeStart}
+		        , sche_time_end = #{scheTimeEnd}
+		        , sche_date_start = #{scheDateStart}
+		        , sche_date_end = #{scheDateEnd}
+			WHERE SCHE_ID = #{scheId}
+	</update>
+
+	<delete id="deleteById">
+		DELETE FROM TB_SCHEDULES
+		 WHERE SCHE_ID = #{scheId}
+	</delete>
+	
+	<delete id="deleteAllByCalId">
+		DELETE FROM TB_SCHEDULES
+		 WHERE CAL_ID = #{calId}
+	</delete>
+	
+</mapper>

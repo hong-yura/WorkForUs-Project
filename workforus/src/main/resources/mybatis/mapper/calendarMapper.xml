@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.CalendarMapper">
+
+	<resultMap type="calendarDto" id="calendarDtoMap">
+		<result property="calId" 		column="cal_id" /> 
+		<result property="empId" 		column="emp_id" />
+		<result property="calName" 		column="cal_name" />
+		<result property="calAccess"  	column="cal_access" />
+	</resultMap>
+	
+	<insert id="insertData" parameterType="calendarDto">
+		INSERT INTO 
+		    TB_CALENDARS(
+		          CAL_ID
+				, EMP_ID
+				, CAL_NAME
+		        , CAL_ACCESS)
+		    VALUES(
+		          #{calId}
+				, #{empId}
+				, #{calName}
+		        , #{calAccess}
+		    )
+	</insert>
+	
+	<update id="updateData" parameterType="calendarDto">
+		UPDATE TB_CALENDARS
+			SET 
+				  CAL_NAME = #{calName}
+				, CAL_ACCESS = #{calAccess}
+			WHERE CAL_ID = #{calId}
+				AND EMP_ID = #{empId}
+	</update>
+
+	<select id="selectAll" resultMap="calendarDtoMap" >
+		SELECT * FROM TB_CALENDARS
+	</select>
+
+	<select id="selectByCalId" parameterType="_int" resultMap="calendarDtoMap" >
+		SELECT * FROM TB_CALENDARS WHERE CAL_ID = #{calId}
+	</select>
+	
+	<select id="selectByEmpId" parameterType="string" resultMap="calendarDtoMap" >
+		SELECT * FROM TB_CALENDARS WHERE EMP_ID = #{empId}
+	</select>
+	
+
+	<delete id="deleteById">
+		DELETE FROM TB_CALENDARS
+		 WHERE CAL_ID = #{calId}
+	</delete>
+</mapper>

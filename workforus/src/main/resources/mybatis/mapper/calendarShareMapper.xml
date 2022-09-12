@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.CalendarShareMapper">
+
+	<resultMap type="calendarShareDto" id="calendarShareDtoMap">
+		<id 	property="calShrId" 	column="cal_shr_id" /> 
+		<result property="empId" 		column="emp_id" />
+		<result property="calId"  		column="cal_id" />
+		<association property="calendarDTO" javaType="CalendarDTO">
+			<id		property="calId" 		column="cal_id" /> 
+			<result property="empId"		column="employee_id" />
+			<result property="calName" 		column="cal_name" />
+			<result property="calAccess"  	column="cal_access" />
+		</association>
+	</resultMap>
+	
+	<insert id="insertData" parameterType="calendarShareDto">
+		INSERT INTO 
+		    TB_CAL_SHARES(
+		          CAL_SHR_ID
+				, EMP_ID
+		        , CAL_ID)
+		    VALUES(
+		          #{calShrId}
+				, #{empId}
+		        , #{calId}
+		    )
+	</insert>
+
+	<select id="selectAll" resultMap="calendarShareDtoMap" >
+		SELECT * FROM TB_CAL_SHARES
+	</select>
+
+	<select id="selectByCalId" parameterType="_int" resultMap="calendarShareDtoMap" >
+		SELECT * FROM TB_CAL_SHARES WHERE CAL_ID = #{calShrId}
+	</select>
+	
+	<select id="selectByEmpId" parameterType="string" resultMap="calendarShareDtoMap" >
+		SELECT * FROM TB_CALENDARS WHERE EMP_ID = #{empId}
+	</select>
+	
+	<select id="selectJoinCalByEmpId" parameterType="string" resultMap="calendarShareDtoMap">
+		SELECT
+	       	  S.CAL_SHR_ID
+            , S.EMP_ID
+            , S.CAL_ID 
+            , C.CAL_ID
+            , C.EMP_ID AS employee_id
+            , C.CAL_NAME
+            , C.CAL_ACCESS 
+	    FROM
+	        TB_CAL_SHARES S
+	    LEFT JOIN
+	        TB_CALENDARS C
+	    ON
+	        S.CAL_ID = C.CAL_ID
+	    WHERE
+	        S.EMP_ID = #{empId}
+	</select>
+	
+	<delete id="deleteById">
+		DELETE FROM TB_CAL_SHARES
+		 WHERE CAL_SHR_ID = #{calShrId}
+	</delete>
+</mapper>
