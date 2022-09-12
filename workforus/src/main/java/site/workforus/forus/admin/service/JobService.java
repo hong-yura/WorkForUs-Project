@@ -1,4 +1,4 @@
-package site.workforus.forus.job.service;
+package site.workforus.forus.admin.service;
 
 import org.springframework.stereotype.Service;
 

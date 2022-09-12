@@ -1,4 +1,4 @@
-package site.workforus.forus.job.model;
+package site.workforus.forus.admin.model;
 
 import org.apache.ibatis.type.Alias;
 

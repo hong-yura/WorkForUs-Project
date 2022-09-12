@@ -2,7 +2,7 @@ package site.workforus.forus.mapper;
 
 import java.util.List;
 
-import site.workforus.forus.dept.model.DeptDTO;
+import site.workforus.forus.admin.model.DeptDTO;
 
 public interface DeptMapper {
 	// DAO 역할을 한다.
