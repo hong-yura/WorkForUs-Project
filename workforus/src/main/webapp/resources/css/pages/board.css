@@ -23,9 +23,6 @@
 	heigth : 120px;
 	margin : 5px;
 }
-.info{
-	padding : 5px;
-}
 .info-container .dropdown{
 	display : flex;
 }

@@ -8,7 +8,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>workforus - 게시판</title>
-    <link rel="stylesheet" href="static/css/pages/board2.css">
+    <link rel="stylesheet" href="static/css/pages/board.css">
     <%@ include file="../module/header.jsp" %>
 </head>
 <body>
@@ -26,11 +26,14 @@
 					<!-- 상단 -->
 					<div class="section-top radius">
 						<div class="info-container">
-							<ul class="info-ul ">
-								<li class="info">게시판 주소 : http://workforus/board?id=1</li>
-								<li class="info">운영자 : 바나나킥</li>
+							<ul class="info-ul" style="margin-bottom: 20px;">
+								<li>게시판 주소 : http://workforus/board?id=1
+								<button class="btn"><i class="bi bi-clipboard-check"></i></button>
+								</li>
+								<li>운영자 : 바나나킥</li>
 							</ul>
-							<div class="dropdown" style="position: relative; margin-bottom: 5px;" >
+							<hr style="margin: 0px; width: 99%">
+							<div class="dropdown" >
 								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false">
 								게시판 멤버</a>
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
@@ -89,7 +92,7 @@
 										<td>바나나킥</td>
 										<td>2022-09-11</td>
 										<td>1</td>
-										<td>1000</td>
+										<td>680</td>
 									</tr>
 									<tr>
 										<td><input type="checkbox"></td>
@@ -98,7 +101,7 @@
 										<td>바나나킥</td>
 										<td>2022-09-11</td>
 										<td>1</td>
-										<td>1000</td>
+										<td>100</td>
 									</tr>
 									<tr>
 										<td><input type="checkbox"></td>
@@ -107,7 +110,7 @@
 										<td>바나나킥</td>
 										<td>2022-09-11</td>
 										<td>1</td>
-										<td>1000</td>
+										<td>245</td>
 									</tr>
 								</tbody>
 							</table>
