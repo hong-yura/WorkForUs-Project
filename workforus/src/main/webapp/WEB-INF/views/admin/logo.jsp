@@ -19,14 +19,16 @@
 					<div class="page-title">
 						<div class="row">
 							<div class="col-12 col-md-6 order-md-1 order-last">
-								<h3>Admin</h3>
+								<h3>Admin - Logo Setting</h3>
 							</div>
 							<div class="col-12 col-md-6 order-md-2 order-first">
 								<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 									<ol class="breadcrumb">
 										<li class="breadcrumb-item">
-											<a href="${homeUrl}">Home</a></li> <!-- curl로 수정 -->
-										<li class="breadcrumb-item active" aria-current="page">Admin</li>
+											<a href="${homeUrl}">Home</a></li>
+										<li class="breadcrumb-item">
+											<a href="#">Admin</a></li>
+										<li class="breadcrumb-item active" aria-current="page">Logo Setting</li>
 									</ol> 
 								</nav>
 							</div>
@@ -36,13 +38,20 @@
 				
 				<section class="section">
 					<div class="card">
-					<c:url var="addressUrl" value="/address" />
 
 						<div class="card-header">
-							<h4 class="card-title">로고 설정</h4>
-						</div>
-						<div class="card-body">
-
+							<h4 class="card-title">메뉴 로고 설정</h4>
+							<div class="card-body">
+	
+							</div>
+							<h4 class="card-title">파비콘 설정</h4>
+							<div class="card-body">
+	
+							</div>
+							<h4 class="card-title">웹 타이틀 설정</h4>
+							<div class="card-body">
+	
+							</div>
 						</div>
 					</div>
 
