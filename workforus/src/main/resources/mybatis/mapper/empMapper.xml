@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.EmpMapper">
+	<resultMap type="empDto" id="empDtoMap">
+		<result property="empId" column="emp_id" />
+		<result property="empNm" column="emp_nm"/>
+		<result property="empPw" column="emp_pw"/>
+		<result property="empCheckPw" column="emp_check_pw"/>
+		<result property="empEmail" column="emp_email"/>
+		<result property="empAssistEmail" column="emp_assist_email"/>
+	</resultMap>
+	<insert id="insertEmployee" parameterType="empDto">
+		INSERT INTO 
+			TB_EMPLOYEES(emp_id
+					   , emp_nm
+					   , emp_pw
+					   , emp_check_pw
+					   , emp_email
+					   , emp_assist_email) 
+				  VALUES(#{empId}
+				       , #{empNm}
+				       , #{empPw}
+				       , #{empCheckPw}
+				       , #{empEmail}
+				       , #{empAssistEmail})
+	</insert>
+
+	<select id="selectEmployee" parameterType="empDto" resultMap="empDtoMap">
+		SELECT emp_id
+			 , emp_nm
+			 , emp_pw
+			 , emp_check_pw
+			 , emp_email
+			 , emp_assist_email
+		  FROM TB_EMPLOYEES
+		 WHERE emp_id = #{empId}
+	</select>
+	
+</mapper>
