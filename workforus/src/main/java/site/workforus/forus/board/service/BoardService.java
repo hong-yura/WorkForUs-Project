@@ -14,8 +14,8 @@ public class BoardService {
 	@Autowired
 	private SqlSession session;
 	
-	public List<BoardDTO> selectDatas(){
-		
-		return ;
-	}
+//	public List<BoardDTO> selectDatas(){
+//		 
+//		return ;
+//	}
 }

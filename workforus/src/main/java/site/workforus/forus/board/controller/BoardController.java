@@ -15,6 +15,6 @@ public class BoardController {
 	@GetMapping(value="")
 	public String getBoardData() {
 		return "/board/list";
-		
+		 
 	}
 }

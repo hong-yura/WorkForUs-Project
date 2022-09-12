@@ -9,7 +9,7 @@ import site.workforus.forus.dept.model.DeptDTO;
 @Getter
 @Setter
 @ToString
-@Alias("boardDto")
+@Alias("boardDto") 
 public class BoardDTO {
 	private int boardId;
 	private String boardNm;

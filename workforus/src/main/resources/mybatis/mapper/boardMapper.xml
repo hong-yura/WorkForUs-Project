@@ -32,6 +32,6 @@
 		 	ON B.CATEGORY_ID = BC.CATEGORY_ID
 		  JOIN TB_BOARD_PARTICIPATION_LIST PL 
 		    ON B.BOARD_ID = PL.BOARD_ID
-		 WHERE PL.EMP_ID = #{empId}
+		 WHERE PL.EMP_ID = #{empId} 
  	 </select>
 </mapper>

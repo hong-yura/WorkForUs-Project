@@ -9,9 +9,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Alias("boardCategoryDto")
+@Alias("boardCategoryDto")  
 public class BoardCategoryDTO {
 	private int categoryId;
 	private String categoryNm;
-	private String deptYn;
-}
+	private String deptYn; 
+} 

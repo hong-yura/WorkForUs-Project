@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8"> 
 	<title>workforus - 게시판</title>
     <%@ include file="../module/header.jsp" %>
     <link rel="stylesheet" href="static/css/pages/board.css">
