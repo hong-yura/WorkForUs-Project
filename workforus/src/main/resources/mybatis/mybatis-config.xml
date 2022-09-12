@@ -10,20 +10,20 @@
 		<!-- Employee -->
 		
 		<!-- Department & Job -->
-		<package name="site.workforus.forus.dept.model"/>
+		<!-- <package name="site.workforus.forus.dept.model"/>
 		<package name="site.workforus.forus.job.model"/>
-
+		 -->
 		<!-- Board -->
 		<package name="site.workforus.forus.board.model"/>
 		
-		<!-- Commute -->
+		<!-- Commute 
 		<package name="site.workforus.forus.commute.model"/>
-		
-		<!-- Calendar -->
+		-->
+		<!-- Calendar 
 		<package name="site.workforus.forus.calendar.model"/>
-		
-		<!-- Address -->
+		-->
+		<!-- Address 
 		<package name="site.workforus.forus.address.model"/>
-		
+		-->
 	</typeAliases>
 </configuration>
