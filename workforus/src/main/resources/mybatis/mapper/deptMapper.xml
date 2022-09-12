@@ -16,4 +16,20 @@
 		SELECT * FROM TB_DEPARTMENTS
 	</select>
 	
+	<insert id="insertDept" parameterType="deptDto">
+		INSERT INTO TB_DEPARTMENTS VALUES (DEPARTMENTS_SEQ.NEXTVAL, #{deptName}, #{deptMngId}, #{deptAddDt}, #{deptModDt})
+	</insert>
+	
+	<update id="updateDept" parameterType="deptDto">
+		UPDATE TB_DEPARTMENTS
+		   SET DEPT_NM = #{deptName}
+		     , DEPT_MANAGER_ID = #{deptMngId}
+		 WHERE DEPT_NO = #{deptNo}
+	</update>
+	
+	<delete id="deleteDept">
+		DELETE FROM TB_DEPARTMENTS
+		 WHERE DEPT_NO = #{deptNo}
+	</delete>
+	
 </mapper>
