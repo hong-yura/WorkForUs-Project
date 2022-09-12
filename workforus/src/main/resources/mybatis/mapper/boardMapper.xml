@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.BoardMapper">
+	<resultMap type="boardDto" id="boardDtoMap">
+ 	 	<constructor>
+ 	 		<idArg column="BOARD_ID" javaType="_int"/>
+ 	 	</constructor>
+ 	 	<id column="BOARD_ID" property="boardId"/>
+ 	 	<result column="BOARD_NM" property="boardNm"/>
+ 	 	<result column="INV_LINK" property="invLink"/>
+ 	 	<result column="DEPT_TYPE_YN" property="deptYn"/>
+ 	 	<association property="participObj" javaType="boardParticipDto">
+ 	 		<id column="PARTICIP_NO" property="participNo"/>
+ 	 		<result column="EMP_ID" property="empId"/>
+ 	 	</association>
+ 	 	<association property="categoryObj" javaType="boardCategoryDto">
+ 	 		<id column="CATEGORY_ID" property="categoryId"/>
+ 	 		<result column="CATEGORY_NM" property="categoryNm"/>
+ 	 	</association>
+ 	 </resultMap>
+ 	 
+ 	 <select id="selectBoardList" resultMap="boardDtoMap">
+ 	 	SELECT B.BOARD_ID
+			 , B.BOARD_NM
+			 , B.INV_LINK
+			 , B.DEPT_TYPE_YN
+			 , PL.EMP_ID
+			 , BC.CATEGORY_NM
+		  FROM TB_BOARDS B 
+		  JOIN TB_BOARD_CATEGORYS BC
+		 	ON B.CATEGORY_ID = BC.CATEGORY_ID
+		  JOIN TB_BOARD_PARTICIPATION_LIST PL 
+		    ON B.BOARD_ID = PL.BOARD_ID
+		 WHERE PL.EMP_ID = #{empId} 
+ 	 </select>
+</mapper>
