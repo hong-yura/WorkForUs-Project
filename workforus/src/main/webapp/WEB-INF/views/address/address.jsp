@@ -86,13 +86,15 @@
 											</tr>
 										</thead>
 										<tbody>
+											<c:forEach items="${data}" var="data">
 											<tr>
-												<th>박보검</th>
-												<th>연구개발부</th>
-												<th>010-1234-5678</th>
-												<th>bogum@workforus.site</th>
-												<th>070-0000-0000</th>
+												<th>${data.empNm}</th>
+												<th>${data.deptName}</th>
+												<th>${data.empPhone}</th>
+												<th>${data.empEmail}</th>
+												<th>${data.empTel}</th>
 											</tr>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>

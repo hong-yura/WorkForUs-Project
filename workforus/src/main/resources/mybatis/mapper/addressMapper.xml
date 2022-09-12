@@ -7,13 +7,16 @@
 		<result property="addrId" column="ADDR_ID" />
 		<result property="addrIndvId" column="ADDR_INDV_ID" />
 		<result property="empId" column="EMP_ID" />
-<!-- 		<association property="empObj" javaType="empDto">
+ 		<!-- <association property="empDTO" javaType="empDto">
 			<id property="empId" column="EMP_ID" />
 			<result property="empNm" column="EMP_NM" />
+			<result property="empPhone" column="EMP_PHONE" />
+			<result property="empEmail" column="EMP_EMAIL" />
+			<result property="empTel" column="EMP_TEL" />
 		</association> -->
 	</resultMap>
 	
-	<select id="selectData" resultMap="addressDtoMap" parameterType="String">
+	<select id="selectData" resultMap="addressDtoMap">
 		SELECT E.EMP_NM
 			 , E.DEPT_NO 
 			 , E.EMP_EMAIL
@@ -24,4 +27,5 @@
 		  	ON A.EMP_ID = E.EMP_ID
 		 WHERE A.EMP_ID = #{empId}
 	</select>
+	
 </mapper>

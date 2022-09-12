@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import site.workforus.forus.address.model.AddressDTO;
 import site.workforus.forus.address.service.AddressService;
+import site.workforus.forus.dept.model.DeptDTO;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
@@ -27,15 +28,15 @@ public class AddressController {
 	
 	// 공용 주소록 조회
 	@GetMapping(value = "")
-	public String getData(Model model, AddressDTO addressDto) {
+	public String getData(Model model, DeptDTO deptDto, EmpDTO empDto) {
+		logger.info("data: {}, {}, {}", empDto.getEmpNm(), deptDto.getDeptName(), empDto.getEmpEmail());
 		
-		String empId = "A2022100";
 		
-		List<AddressDTO> data = addrService.selectData(empId);
+		String empNm = "A2022100";
+				
+		List<AddressDTO> data = addrService.getData(empNm);
 		model.addAttribute("data", data);
-		logger.info("data: {}", data);
-		
-		return "address/indvAddress";
+		return "address/address";
 	}
 	
 	

@@ -14,11 +14,12 @@ public class AddressService {
 	
 	@Autowired SqlSession session;
 	
-	public List<AddressDTO> selectData(String empId) {
+	public List<AddressDTO> getData(String empNm) {
 		AddressMapper mapper = session.getMapper(AddressMapper.class);
 		
-		List<AddressDTO> data = mapper.selectData(empId);
+		List<AddressDTO> data = mapper.selectData(empNm);
 		return data;
 	}
+	
 	
 }
