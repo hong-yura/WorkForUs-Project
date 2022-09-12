@@ -67,6 +67,14 @@
                 <i class="bi bi-clipboard-data"></i>
               </a>
             </li>
+            
+            <li class="sidebar2-item" title="Admin">
+              <a href="${homeUrl}/admin" class="sidebar2-link">
+                <i class="bi bi-gear-fill"></i>
+              </a>
+            </li>
+            
+            
           </ul>
         </div>
       </div>
@@ -220,6 +228,25 @@
               </li>
             </ul>
           </li>
+          
+          <li class="sidebar-item has-sub">
+            <a href="${homeUrl}" class="sidebar-link">
+              <i class="bi bi-gear-fill"></i>
+              <span>Admin</span>
+            </a>
+            <ul class="submenu">
+              <li class="submenu-item">
+                <a href="${homeUrl}/admin">로고 설정</a>
+              </li>
+              <li class="submenu-item">
+                <a href="${homeUrl}/admin">구성원 관리</a>
+              </li>
+              <li class="submenu-item">
+                <a href="${homeUrl}/admin">권한 관리</a>
+              </li>
+            </ul>
+          </li>
+          
         </ul>
       </div>
       <button class="sidebar-toggler btn x">
