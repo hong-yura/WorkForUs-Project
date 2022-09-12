@@ -8,8 +8,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>workforus - 게시판</title>
-    <link rel="stylesheet" href="static/css/pages/board.css">
     <%@ include file="../module/header.jsp" %>
+    <link rel="stylesheet" href="static/css/pages/board.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
@@ -26,14 +26,14 @@
 					<!-- 상단 -->
 					<div class="section-top radius">
 						<div class="info-container">
-							<ul class="info-ul" style="margin-bottom: 20px;">
+							<ul class="info-ul black" style="margin-bottom: 20px;">
 								<li>게시판 주소 : http://workforus/board?id=1
 								<button class="btn"><i class="bi bi-clipboard-check"></i></button>
 								</li>
 								<li>운영자 : 바나나킥</li>
 							</ul>
 							<hr style="margin: 0px; width: 99%">
-							<div class="dropdown" >
+							<div class="dropdown black" >
 								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false">
 								게시판 멤버</a>
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
@@ -57,13 +57,23 @@
 					<!-- 메인 -->
 					<div class="section-main radius">
 						<div class="main-button">
-							<button type="submit" class="btn"><i class="bi bi-pencil"></i> 새글작성</button>
-							<button type="submit" class="btn"><i class="bi bi-trash"></i> 삭제</button>
-							<button type="submit" class="btn"><i class="bi bi-plus-circle"></i> 게시판생성</button>
+							<button type="submit" class="btn black" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
+							<button type="submit" class="btn black"><i class="bi bi-trash"></i> 삭제</button>
+							<button type="submit" class="btn black"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
+							<div class="search-container">
+								<!-- <select class="form-select">
+									<option>제목</option>
+									<option>작성자</option>
+									<option>작성일</option>
+								</select>
+								 -->
+								<i class="bi bi-search"> </i><input class="search-input" type="search" placeholder=" 입력">
+								<button class="btn-style black" type="button">검색</button>
+							</div>
 							<hr style="margin: 0px; margin-bottom: 3px;">
 						</div>
 						<div class="dataTable-container">
-							<table class="table table-striped dataTable-table">
+							<table class="table dataTable-table black">
 								 <colgroup>
 						            <col width=5%>
 						            <col width=10%>
@@ -85,7 +95,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
+									<tr class="table-active black">
 										<td><input type="checkbox"></td>
 										<td><i class="bi bi-megaphone-fill"></i></td>
 										<td>테스트 중입니다.</td>

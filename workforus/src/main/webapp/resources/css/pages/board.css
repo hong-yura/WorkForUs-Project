@@ -4,6 +4,9 @@
 	box-sizing : border-box;
 	margin :0; padding : 0;
 }
+.black{
+	color : black;
+}
 .row{
 	margin : 0px  0px 50px 0px;
 }
@@ -15,22 +18,32 @@
 .page-content .row .section-top{
 	width : 100%;
 	height : 120px;
-	background-color : #fff;
+	background: #fff;
 	margin-bottom: 23px;
 }
 #app #main .page-content .row .col-12 .info-container{
 	width : 100%;
 	heigth : 120px;
-	margin : 5px;
 }
 .info-container .dropdown{
 	display : flex;
 }
 .page-content .row .section-main{
 	width : 100%;
-	height: 32.2rem;
 	background-color : #fff;
 }
+.search-container{
+	display : inline-block;
+	float : right;
+	margin-right : 10px;
+}
+.search-input {
+	border-color : #e6f3ff;
+	border-width : 1px;
+	border-radius : 0.3rem;
+	
+}
+
 .padding-45 {
 	padding-top: 45px;
 }
@@ -44,13 +57,17 @@
 	width : 100%;
 	position : absolute;
 }
-.btn-blue {
-	width : 150px;
-	height : 50px;
-	border-style : none;
-	background-color : #003a70;
+.btn-style {
+	width : 40px;
+	height : 27px;
+	color : #394246;
+	border-style : solid;
+	border-width : 1px;
+	border-color : #d0d3cd;
+	background : #fff;
 	display : flex;
-	margin: 15px;
+	border-radius : 0.3rem;
+	display : inline;
 }
 .main-button {
 	padding-top : 10px;
