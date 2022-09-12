@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.workforus.forus.mapper.commuteMapper">
 
-<resultMap type="site.workforus.forus.commute.model.CommuteDTO" id="commuteMap">
+<resultMap type="commuteDto" id="commuteDtoMap">
 	<result property="commuteNo" 	column="commute_no" /> 
 	<result property="empId" 		column="emp_id" />
 	<result property="commuteDt" 	column="commute_dt" />
@@ -11,16 +11,76 @@
 	<result property="getoffTime" 	column="getoff_time" />
 	<result property="addedTime" 	column="added_time" />
 	<result property="workTime" 	column="work_time" />
+	<result property="weekAddtime" 	column="week_addtime" />
+	<result property="weekWorktime" 	column="week_worktime" />
 </resultMap>
 
-
-	<select id="selectData" resultMap="commuteMap" parameterType="String">
+	<!-- 사번으로 모든데이터 조회 -->
+	<select id="selectByEmpId" resultMap="commuteDtoMap" parameterType="String">
 		SELECT *
 		 FROM tb_commute c
 		 JOIN tb_employees e
 		   ON c.emp_id = e.emp_id
 		WHERE c.emp_id = #{empId}
+		  AND c.commute_dt = #{today}
+	</select>
+	
+	<!-- 근무번호로 모든데이터 조회(삭제예정) -->
+	<select id="selectByCmtNo" resultMap="commuteDtoMap">
+		SELECT *
+		 FROM tb_commute c
+		 JOIN tb_employees e
+		   ON c.emp_id = e.emp_id
+		WHERE c.commute_no = #{commuteNo}
 	</select>
 
+	<!-- 출근시간 insert -->
+	<insert id="insertIntime" parameterType="commuteDto">
+		INSERT INTO tb_commute(commute_no, emp_id, commute_dt, commute_time)
+		VALUES (TB_COMMUTE_SEQ.NEXTVAL, #{empId}, #{today}, #{nowTime})
+	</insert>
+	
+	<!-- 퇴근시간 udpate -->
+	<update id="updateOuttime" parameterType="commuteDto">
+		UPDATE tb_commute 
+		   SET getoff_time = #{nowTime}
+		 WHERE emp_id = #{empId}
+		   AND commute_dt = #{today}
+	</update>
+	
+	<!-- 근무시간 update -->
+	<update id="updateWorktime" parameterType="commuteDto">
+		UPDATE tb_commute 
+		   SET work_time = #{realTime}
+		 WHERE emp_id = #{empId}
+		   AND commute_dt = #{today}
+	</update>
+	
+	<!-- 추가시간 update -->
+	<update id="updateAddedtime" parameterType="commuteDto">
+		UPDATE tb_commute 
+		   SET added_time = #{addTime}
+		 WHERE emp_id = #{empId}
+		   AND commute_dt = #{today}
+	</update>
+	
+	
+	<!-- 퇴근시간 출력문 -->
+	<select id="selectGetoff" parameterType="commuteDto" resultType="String">
+		SELECT getoff_time FROM tb_commute WHERE emp_id = #{empId} AND commute_dt = #{today}
+	</select>
 
+	<update id="updateWeekAdd" parameterType="commuteDto">
+		UPDATE tb_commute 
+		   SET week_addtime = #{weekAdd}
+		 WHERE emp_id = #{empId}
+		   AND commute_dt = #{today}
+	</update>
+
+	<update id="updateWeekWork" parameterType="commuteDto">
+		UPDATE tb_commute 
+		   SET week_worktime = #{weekWork}
+		 WHERE emp_id = #{empId}
+		   AND commute_dt = #{today}
+	</update>
 </mapper>
