@@ -2,71 +2,22 @@ package site.workforus.forus.commute.model;
 
 import org.apache.ibatis.type.Alias;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Alias("commuteDto")
 public class CommuteDTO {
-	private int commuteNo;
-	private String empId;
-	private String commuteDt;
-	private String commuteTime;
-	private String getoffTime;
-	private String addedTime;
-	private String workTime;
-
-	public int getCommuteNo() {
-		return commuteNo;
-	}
-
-	public void setCommuteNo(int commuteNo) {
-		this.commuteNo = commuteNo;
-	}
-
-	public String getEmpId() {
-		return empId;
-	}
-
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
-
-	public String getCommuteDt() {
-		return commuteDt;
-	}
-
-	public void setCommuteDt(String commuteDt) {
-		this.commuteDt = commuteDt;
-	}
-
-	public String getCommuteTime() {
-		return commuteTime;
-	}
-
-	public void setCommuteTime(String commuteTime) {
-		this.commuteTime = commuteTime;
-	}
-
-	public String getGetoffTime() {
-		return getoffTime;
-	}
-
-	public void setGetoffTime(String getoffTime) {
-		this.getoffTime = getoffTime;
-	}
-
-	public String getAddedTime() {
-		return addedTime;
-	}
-
-	public void setAddedTime(String addedTime) {
-		this.addedTime = addedTime;
-	}
-
-	public String getWorkTime() {
-		return workTime;
-	}
-
-	public void setWorkTime(String workTime) {
-		this.workTime = workTime;
-	}
+	private int commuteNo;			// 근태번호
+	private String empId;			// 사원ID
+	private String commuteDt;		// 근무일자
+	private String commuteTime;		// 출근시간	
+	private String getoffTime;		// 퇴근시간
+	private String addedTime;		// 연장근무시간
+	private String workTime;		// 실제근로시간	
+	private String weekAddtime;		// 주간연장근무시간
+	private String weekWorktime;	// 주간근무시간
 
 	@Override
 	public String toString() {
