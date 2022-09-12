@@ -8,6 +8,7 @@
 	
 	<typeAliases>
 		<!-- Employee -->
+		<package name="site.workforus.forus.employee.model"/>
 		
 		<!-- Department & Job -->
 		<package name="site.workforus.forus.dept.model"/>
