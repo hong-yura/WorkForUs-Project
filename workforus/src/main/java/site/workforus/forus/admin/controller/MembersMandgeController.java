@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.admin.service.DeptService;
+import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
 public class MembersMandgeController {
@@ -23,7 +24,7 @@ public class MembersMandgeController {
 	private DeptService deptService;
 	
 	@RequestMapping(value = "/members", method = RequestMethod.GET)
-	public String getAll(Model model, DeptDTO deptDto) {
+	public String getAll(Model model, DeptDTO deptDto, EmpDTO empDto) {
 		
 		List<DeptDTO> deptDatas = deptService.getAll(); 
 		model.addAttribute("deptDatas", deptDatas);
