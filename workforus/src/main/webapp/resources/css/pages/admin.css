@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+.col-66p {
+    flex: 0 0 auto;
+    width: 66%;
+}

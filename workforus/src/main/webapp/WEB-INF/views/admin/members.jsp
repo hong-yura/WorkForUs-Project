@@ -7,8 +7,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>workforus - Admin</title>
+		<title>workforus - Address</title>
 		<%@ include file="../module/header.jsp" %>
+		<link rel="stylesheet" href="static/css/pages/admin.css" />
 	</head>
 	<body>
 		<%@ include file="../module/navigation.jsp" %>
@@ -19,7 +20,7 @@
 					<div class="page-title">
 						<div class="row">
 							<div class="col-12 col-md-6 order-md-1 order-last">
-								<h3>Admin - Manage Members</h3>
+								<h3>Admin - Members</h3>
 							</div>
 							<div class="col-12 col-md-6 order-md-2 order-first">
 								<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -28,7 +29,7 @@
 											<a href="${homeUrl}">Home</a></li>
 										<li class="breadcrumb-item">
 											<a href="#">Admin</a></li>
-										<li class="breadcrumb-item active" aria-current="page">Manage Members</li>
+										<li class="breadcrumb-item active" aria-current="page">Group Manage</li>
 									</ol> 
 								</nav>
 							</div>
@@ -37,17 +38,31 @@
 				</div>
 				
 				<section class="section">
-					<div class="card">
-					<c:url var="addressUrl" value="/address" />
-
-						<div class="card-header">
-							<h4 class="card-title">구성원 관리</h4>
+					<c:url var="membersUrl" value="/members" />
+					<div class="row">
+						<div class="col-xl-4">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+										<h4 class="card-title">조직도 설계</h4>
+									
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="card-body">
-		
+						
+						<div class="col-66p">
+							<div class="card">
+								<div class="card-content">
+									<div class="card-body">
+										<h4 class="card-title">부서 정보</h4>
+										
+									</div>
+								</div>
+							</div>
 						</div>
+						
 					</div>
-
 				
 				
 				</section>
@@ -57,6 +72,7 @@
 		</div>
 		<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 		<script src="static/js/bootstrap.bundle.min.js"></script>
+		
 		<script src="static/js/main.js"></script>
 	</body>
 </html>
