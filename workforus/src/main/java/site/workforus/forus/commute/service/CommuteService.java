@@ -242,19 +242,23 @@ public class CommuteService{
 		Calendar cal = Calendar.getInstance();
 		CommuteDTO tmp = null;
 
-		if(cal.get(Calendar.DAY_OF_WEEK) != 1) { //일요일일때는 전날 정보를 가져올 필요가 없음!
-			for(int i = 0; i < cal.get(Calendar.DAY_OF_WEEK) - 1; i++) {
-				cal.set(Calendar.DAY_OF_WEEK, i);
+		if(cal.get(Calendar.DAY_OF_WEEK) != 1) { //일요일일때는 전날 정보를 가져올 필요가 없음!			
+			int i = 0;
+			while(i < 7) {
+				cal.set(Calendar.DAY_OF_WEEK, i + 1);				
+				cal.getTime();										// api에 따르면 getTime을해야 dayofweek이 반영된다함
 				int year = cal.get(Calendar.YEAR);
 				int month = cal.get(Calendar.MONTH) + 1;
-				int date = cal.get(Calendar.DAY_OF_MONTH - i);
+				int date = cal.get(Calendar.DAY_OF_MONTH);
 				String beforeDate = String.format("%02d%02d%02d", year, month, date); 
 				
 				CommuteDTO data = mapper.selectByEmpId(empId, beforeDate);
 				if(data != null) {
-					tmp = data;
+					tmp = data;					
 				}
+				i++;
 			}
+			
 		}
 		return tmp;
 		

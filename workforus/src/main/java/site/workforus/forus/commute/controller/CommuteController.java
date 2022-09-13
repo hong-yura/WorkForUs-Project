@@ -61,7 +61,7 @@ public class CommuteController{
 		int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1; 
         int day = cal.get(Calendar.DATE);
-//        int dayOfmonth = cal.get(Calendar.DAY_OF_MONTH);
+//        int dayOfmonth = cal.get(Ca	lendar.DAY_OF_MONTH);
 //        int dayOfweek = cal.get(Calendar.DAY_OF_WEEK);
 
 		// 금일 출근기록이 있음
@@ -80,11 +80,15 @@ public class CommuteController{
 			}
 		}
 		
+		String remainTime = "00:00:00";
 		CommuteDTO temp = service.beforeSelect(empId);
 		if(temp != null) {
-			temp.setWeekAddtime(_calculate(temp.getWeekWorktime()));			
+			temp.setWeekAddtime(_calculate(temp.getWeekWorktime()));
+			remainTime = _remainTime(temp.getWeekWorktime());
 		}
+		
 		model.addAttribute("data", data);
+		model.addAttribute("remainTime", remainTime);
 		
 		return "commute/commute";
 	}
@@ -263,7 +267,7 @@ public class CommuteController{
 	// 주단위 근무시간 계산 (24시간 넘어가는거 나타내기위해)
 	private String _calculate(String weekWorktime) throws Exception { 
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 		Date time1 = defaultSdf.parse("1970-01-01 00:00:00"); // 기본시간 
 		Date time2 = defaultSdf.parse(weekWorktime);		// 이번주 근무시간
@@ -271,7 +275,6 @@ public class CommuteController{
 		long hour = (time3 / (60 * 60));
 		long minute = ((time3 % (60 * 60))) / 60;
 		long second = ((time3 % (60 * 60))) % 60;	
-		System.out.println(hour + "★★★★★");
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
 		
 		
@@ -280,9 +283,22 @@ public class CommuteController{
 		return time;
 	}
 	
-//	private String _remainTime() {
-//		
-//	}
+	private String _remainTime(String weekWorktime) throws Exception {
+		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
+		Date weekTime = defaultSdf.parse(weekWorktime);
+		String remainTime = "00:00:00";
+		if(defaultTime.getTime() - weekTime.getTime() > 0) {
+			long diffTime = (defaultTime.getTime() - weekTime.getTime())/1000;
+			long hour = (diffTime / (60 * 60));
+			long minute = ((diffTime % (60 * 60))) / 60;
+			long second = ((diffTime % (60 * 60))) % 60;	
+			
+			remainTime = String.format("%02d:%02d:%02d", hour, minute, second);
+		}
+		return remainTime;
+	}
 	
 	
 } 	
