@@ -10,9 +10,8 @@
 		<!-- Employee -->
 		<package name="site.workforus.forus.employee.model"/>
 		
-		<!-- Department & Job -->
-		<package name="site.workforus.forus.dept.model"/>
-		<package name="site.workforus.forus.job.model"/>
+		<!-- Admin -->
+		<package name="site.workforus.forus.admin.model"/>
 
 		<!-- Board -->
 		<package name="site.workforus.forus.board.model"/>
