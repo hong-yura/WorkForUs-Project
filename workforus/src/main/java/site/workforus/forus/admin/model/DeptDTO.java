@@ -1,4 +1,4 @@
-package site.workforus.forus.dept.model;
+package site.workforus.forus.admin.model;
 
 import java.util.Date;
 
