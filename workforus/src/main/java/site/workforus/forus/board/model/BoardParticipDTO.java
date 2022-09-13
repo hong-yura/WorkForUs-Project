@@ -11,6 +11,16 @@ import lombok.ToString;
 @ToString
 @Alias("boardParticipDto")
 public class BoardParticipDTO {
-	private int participNo;
-	private String empId;
+	private int participNo;		// 참여 명단 번호
+	private String empId;		// 참여 사원 id
+	
+	public BoardParticipDTO() {}
+	
+	public BoardParticipDTO(int participNo, String empId) {
+		super();
+		this.participNo = participNo;
+		this.empId = empId;
+	}
+	
+	
 }
