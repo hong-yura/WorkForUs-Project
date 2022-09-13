@@ -81,14 +81,18 @@ public class CommuteController{
 		}
 		
 		String remainTime = "00:00:00";
+		long progress = 0;
 		CommuteDTO temp = service.beforeSelect(empId);
 		if(temp != null) {
 			temp.setWeekAddtime(_calculate(temp.getWeekWorktime()));
 			remainTime = _remainTime(temp.getWeekWorktime());
+			progress = _progress(temp.getWeekWorktime());
+			
 		}
 		
 		model.addAttribute("data", data);
 		model.addAttribute("remainTime", remainTime);
+		model.addAttribute("progress", progress);
 		
 		return "commute/commute";
 	}
@@ -300,5 +304,21 @@ public class CommuteController{
 		return remainTime;
 	}
 	
-	
+	private long _progress(String weekWorktime) throws Exception {
+		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
+		Date weekTime = defaultSdf.parse(weekWorktime);
+		
+		double progress = 0;
+		if(weekTime.getTime()/defaultTime.getTime() < 1) {
+			double dftTime = defaultTime.getTime() * 1.0;
+			double wkTime = weekTime.getTime() * 1.0;
+			progress = (wkTime / dftTime);
+			progress = Double.parseDouble(String.format("%.2f", progress));
+		} else {
+			progress = 1;
+		}
+		System.out.println(progress + "!!");
+		return (long) (progress * 100);
+	}
 } 	
