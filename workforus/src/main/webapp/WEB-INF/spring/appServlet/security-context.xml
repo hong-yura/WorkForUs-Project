@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:s="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-5.7.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-5.7.xsd">
+			
+			<!-- intercept-url : 가로챈 url을 어떻게 처리할지 결정해주는 부분 -->
+			<s:http auto-config="true" use-expressions="true">
+				<s:csrf disabled="true"/>
+				<!-- 정적 리소스는 모두 허용 -->
+				<s:intercept-url pattern="/resources/**" access="permitAll"/>
+				
+				<!-- 로그인된 상태에서는 로그인이나 회원가입 화면에 접근 못하도록 함 / isAnonymous : 권한이 없는 익명의 사용자만 접근을 허용함 -->
+				<s:intercept-url pattern="/login" access="isAnonymous()"/>
+				<s:intercept-url pattern="/signup" access="isAnonymous()"/>
+				
+				<s:intercept-url pattern="/" access="isAuthenticated()"/>
+				
+				<!-- 관리자 페이비는 관리자만 접근 허용 / hasRole('role') : 해당 권한이 있으면 요청한 페이지를 없으면 로그인 페이지로 이동-->
+				<s:intercept-url pattern="/admin/**" access="hasRole('admin')" />
+				<s:form-login
+						username-parameter="empId"
+						password-parameter="empPw"
+						login-processing-url="/login"
+						login-page="/login"
+						authentication-failure-handler-ref="loginFailService"
+						authentication-success-handler-ref="loginSuccessService"
+						default-target-url="/"
+				/>
+				<s:logout
+					logout-url="/logout"
+					logout-success-url="/login"
+					invalidate-session="true"
+					delete-cookies="true"
+				/>
+			</s:http>
+			
+			<!-- 권한이 없어서 금지된 uri 접속할 때 보여줄 페이지(403 에러 페이지 대체) 
+			<s:access-denied-handler error-page="/" />-->
+			
+			<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+
+			<!-- DB 연동 설정 -->
+			<s:authentication-manager>
+				<s:authentication-provider ref="empLoginAuthenticationProvider">
+				</s:authentication-provider>
+			</s:authentication-manager>
+			<bean id="customAuthenticationProvider" class="site.workforus.forus.employee.service.EmpLoginAuthenticationProvider"/>
+			
+</beans>
