@@ -6,4 +6,6 @@ public interface EmpMapper {
 	public EmpDTO selectEmployee(EmpDTO empDto);
 
 	public int insertEmployee(EmpDTO empDto);
+	
+	public EmpDTO selectEmployeeAll(EmpDTO empDto);
 }
