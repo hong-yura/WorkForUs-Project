@@ -36,4 +36,22 @@ public class EmpDTO {
 	private String jobId;
 	private String empSalary;
 	private String empStamp;
+	
+	public EmpDTO() {}
+
+	public EmpDTO(String empId, String empNm, String empPw, String empCheckPw, String empEmail, String empAssistEmail,
+			String empPhone, String empTel, String deptNo, String jobId, String empSalary) {
+		super();
+		this.empId = empId;
+		this.empNm = empNm;
+		this.empPw = empPw;
+		this.empCheckPw = empCheckPw;
+		this.empEmail = empEmail;
+		this.empAssistEmail = empAssistEmail;
+		this.empPhone = empPhone;
+		this.empTel = empTel;
+		this.deptNo = deptNo;
+		this.jobId = jobId;
+		this.empSalary = empSalary;
+	}
 }
