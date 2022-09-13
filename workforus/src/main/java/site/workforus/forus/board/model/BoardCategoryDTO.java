@@ -13,5 +13,16 @@ import lombok.ToString;
 public class BoardCategoryDTO {
 	private int categoryId;
 	private String categoryNm;
-	private String deptYn; 
+	private String deptYn;
+	
+	public BoardCategoryDTO () {}
+	
+	public BoardCategoryDTO(int categoryId, String categoryNm, String deptYn) {
+		super();
+		this.categoryId = categoryId;
+		this.categoryNm = categoryNm;
+		this.deptYn = deptYn;
+	}  
+	
+	
 } 
