@@ -25,5 +25,19 @@ public class CommuteDTO {
 				+ commuteTime + ", getoffTime=" + getoffTime + ", addedTime=" + addedTime + ", workTime=" + workTime
 				+ "]";
 	}
+	
+	public CommuteDTO(int commuteNo, String empId, String commuteDt, String commuteTime, String getoffTime,
+			String addedTime, String workTime, String weekAddtime, String weekWorktime) {
+		super();
+		this.commuteNo = commuteNo;
+		this.empId = empId;
+		this.commuteDt = commuteDt;
+		this.commuteTime = commuteTime;
+		this.getoffTime = getoffTime;
+		this.addedTime = addedTime;
+		this.workTime = workTime;
+		this.weekAddtime = weekAddtime;
+		this.weekWorktime = weekWorktime;
+	}
 
 }
