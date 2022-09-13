@@ -10,7 +10,16 @@ import lombok.ToString;
 @Setter 
 @ToString
 @Alias("boardParticipDto")
-public class BoardParticipDTO {
+public class BoardParticipDTO { 
 	private int participNo;
 	private String empId;
+	
+	public BoardParticipDTO() {}
+
+	public BoardParticipDTO(int participNo, String empId) {
+		super();
+		this.participNo = participNo;
+		this.empId = empId;
+	}
+	
 }
