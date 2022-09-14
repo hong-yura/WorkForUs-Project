@@ -70,6 +70,7 @@
 		SELECT getoff_time FROM tb_commute WHERE emp_id = #{empId} AND commute_dt = #{today}
 	</select>
 
+	<!-- 주간 추가시간 업데이트 -->
 	<update id="updateWeekAdd" parameterType="commuteDto">
 		UPDATE tb_commute 
 		   SET week_addtime = #{weekAdd}
@@ -77,10 +78,26 @@
 		   AND commute_dt = #{today}
 	</update>
 
+	<!-- 주간 근무시간 업데이트 -->
 	<update id="updateWeekWork" parameterType="commuteDto">
 		UPDATE tb_commute 
 		   SET week_worktime = #{weekWork}
 		 WHERE emp_id = #{empId}
 		   AND commute_dt = #{today}
 	</update>
+	
+	<!-- 월 근무기록 출력문 -->
+	<select id="selectList" resultType="commuteDto" parameterType="commuteDto">
+		SELECT *
+		  FROM tb_commute
+		 WHERE emp_id = ${empId}
+		   AND SUBSTR(commute_dt, 0, 6) = ${yearmonth1}
+	</select>
+	
+	<select id="selectCntList" resultMap="commuteDtoMap" parameterType="commuteDto">
+		SELECT COUNT(*)
+		  FROM tb_commute
+		 WHERE emp_id = ${empId}
+		   AND SUBSTR(commute_dt, 0, 6) = ${yearmonth1}
+	</select>
 </mapper>

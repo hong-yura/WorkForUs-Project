@@ -267,4 +267,21 @@ public class CommuteService{
 
 	}
 	
+	
+	// 년월에 해당하는 근무리스트
+	public List<CommuteDTO> getList(String empId, String yearmonth1) {
+		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		
+		List<CommuteDTO> result = mapper.selectList(empId, yearmonth1);
+		return result;
+	}
+	
+	// 년월에 해당하는 근무리스트 갯수 
+	public int cntList(String empId, String yearmonth1) {
+		commuteMapper mapper = session.getMapper(commuteMapper.class);
+
+		int result = mapper.selectCntList(empId, yearmonth1);
+		return result;
+	}
+	
 }

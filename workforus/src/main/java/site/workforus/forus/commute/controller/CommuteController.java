@@ -286,6 +286,40 @@ public class CommuteController{
 		return json.toJSONString();
 	}
 	
+	// 근태기록 조회하기
+	@PostMapping(value="/record")
+	@ResponseBody
+	public String commuteRec(Model model, @RequestParam("year") int year, @RequestParam("month") int month) {
+		// test값 	
+		String empId = "A2022100";
+		month += 1;
+		String yearstr = Integer.toString(year);
+		String monthstr = null;
+		if(month < 10) {
+			monthstr = "0" + month;
+		} else {
+			monthstr = month + "";
+		}
+		
+		String yearmonth1 = yearstr + monthstr;
+		System.out.println(yearmonth1);
+		
+		List<CommuteDTO> listData = service.getList(empId, yearmonth1);
+		int cntList = service.cntList(empId, yearmonth1);
+		JSONObject json = new JSONObject();
+
+		
+		model.addAttribute("cntList", cntList);
+		model.addAttribute("listData", listData);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month);
+		
+		
+		return json.toJSONString();
+	}
+	
+	
+	
 	
 	// 주단위 근무시간 계산 (24시간 넘어가는거 나타내기위해)
 	private String _calculate(String weekWorktime) throws Exception { 
@@ -307,6 +341,7 @@ public class CommuteController{
 		return time;
 	}
 	
+	// 이번주 잔여시간 구하기
 	private String _remainTime(String weekWorktime) throws Exception {
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		

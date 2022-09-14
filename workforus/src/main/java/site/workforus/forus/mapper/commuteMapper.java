@@ -1,6 +1,7 @@
 package site.workforus.forus.mapper;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -36,4 +37,8 @@ public interface commuteMapper {
 	public int updateWeekWork(@Param("empId")String empId, @Param("today")String today
 			, @Param("weekWork")Date weekWork);
 	
+	// 근무기록 조회
+	public List<CommuteDTO> selectList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
+	
+	public int selectCntList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
 }
