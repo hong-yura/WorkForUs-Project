@@ -12,8 +12,14 @@
 		<result property="deptModDt" column="dept_mod_dt" />
 	</resultMap>
 	
-	<select id="selectAll" resultMap="deptDtoMap">
+	<select id="selectDeptAll" resultMap="deptDtoMap">
 		SELECT * FROM TB_DEPARTMENTS
+	</select>
+	
+	<select id="selectDeptName" parameterType="deptDto">
+		SELECT *
+		  FROM TB_DEPARTMENTS
+		 WHERE DEPT_NM = #{deptName}
 	</select>
 	
 	<insert id="insertDept" parameterType="deptDto">
