@@ -86,15 +86,22 @@
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach items="${data}" var="data">
+											<%-- <c:forEach items="${data}" var="data"> --%>
 											<tr>
-												<th>${data.empNm}</th>
-												<th>${data.deptName}</th>
-												<th>${data.empPhone}</th>
-												<th>${data.empEmail}</th>
-												<th>${data.empTel}</th>
+												<th>박보검</th>
+												<th>연구개발부</th>
+												<th>010-0000-0000</th>
+												<th>bogum@workforus.site</th>
+												<th>070-0000-0000</th>
 											</tr>
-											</c:forEach>
+											<tr>
+												<th>강동원</th>
+												<th>기획전략부</th>
+												<th>010-0000-0000</th>
+												<th>dongdong@workforus.site</th>
+												<th>070-0000-0000</th>
+											</tr>
+											<%-- </c:forEach> --%>
 										</tbody>
 									</table>
 								</div>
@@ -156,12 +163,12 @@
 		
 		<script src="static/vendors/simple-datatables/simple-datatables.js"></script>
 		<script type="text/javascript">
-			let table1 = document.g('#table1');
+			let table1 = document.querySelector('#table1');
 	        let dataTable = new simpleDatatables.DataTable(table1);
 	        
 	        $(document).ready(function() {
 	            $('#table1').DataTable( {
-	                order: [[ 3, 'desc' ], [ 0, 'asc' ]]
+	                order: [[ 0, 'desc' ], [ 1, 'desc' ]]
 	            } );
 	        } );
 	        
