@@ -19,9 +19,9 @@ public class BoardPostDTO {
 	
 	private int boardId;		// 게시판 id
 	
-	private String postTitle;		// 게시글 제목
+	private String postTitle;	// 게시글 제목
 	
-	private String postPw;			// 게시글 패스워드
+	private String postPw;		// 게시글 패스워드
 	
 	private String content;		// 게시글 내용
 	
@@ -33,7 +33,7 @@ public class BoardPostDTO {
 	
 	private int viewCnt;		// 조회수
 	
-	private String noticeYn;	// 공지 여부
+	private String noticeYn;	// 공지 여부 
 	
 	private String temporaryYn; // 임시 저장
 	

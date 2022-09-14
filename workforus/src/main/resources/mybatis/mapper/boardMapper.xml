@@ -2,36 +2,68 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.workforus.forus.mapper.BoardMapper">
+
 	<resultMap type="boardDto" id="boardDtoMap">
- 	 	<constructor>
- 	 		<idArg column="BOARD_ID" javaType="_int"/>
- 	 	</constructor>
- 	 	<id column="BOARD_ID" property="boardId"/>
- 	 	<result column="BOARD_NM" property="boardNm"/>
- 	 	<result column="INV_LINK" property="invLink"/>
- 	 	<result column="DEPT_TYPE_YN" property="deptYn"/>
- 	 	<association property="participObj" javaType="boardParticipDto">
- 	 		<id column="PARTICIP_NO" property="participNo"/>
- 	 		<result column="EMP_ID" property="empId"/>
- 	 	</association>
- 	 	<association property="categoryObj" javaType="boardCategoryDto">
- 	 		<id column="CATEGORY_ID" property="categoryId"/>
- 	 		<result column="CATEGORY_NM" property="categoryNm"/>
- 	 	</association>
- 	 </resultMap>
+		<result property="boardId" column="board_id"/>
+		<result property="categoryId" column="category_id"/>
+		<result property="boardNm" column="board_nm"/>
+		<result property="deletedYn" column="deleted_yn"/>
+		<result property="publicYn" column="public_yn"/>
+		<result property="anonymityYn" column="anonymity_yn"/>
+		<result property="invLink" column="inv_link"/>
+		<result property="deptNo" column="dept_no"/>
+		<result property="deptYn" column="dept_type_yn"/>
+		<result property="boardManager" column="board_manager"/>
+	</resultMap>
+	
+	<resultMap type="boardParticipDto" id="participDtoMap">
+		<result property="participNo" column="particip_no"/>
+		<result property="empId" column="emp_id"/>
+		<result property="boardId" column="board_id"/>
+		<association property="empObj" javaType="empDto"> 	<!-- association : 1:1 관계의 테이블을 조인할 때 사용한다. -->
+ 			<id column="EMP_ID" property="empId"/>			<!-- empId가 기본키 -->
+			<result column="EMP_NM" property="empNm"/>	<!-- empName -> 근데 왜 다른 것들은 안 매핑 안 해주는지 의문 -->
+ 		</association>
+	</resultMap>
  	 
- 	 <select id="selectBoardList" resultMap="boardDtoMap">
+ 	 <select id="selectAll" resultMap="boardDtoMap">
  	 	SELECT B.BOARD_ID
+			 , B.CATEGORY_ID
 			 , B.BOARD_NM
+			 , B.DELETED_YN
+			 , B.PUBLIC_YN
+			 , B.ANONYMITY_YN
 			 , B.INV_LINK
-			 , B.DEPT_TYPE_YN
-			 , PL.EMP_ID
-			 , BC.CATEGORY_NM
+			 , B.DEPT_NO
+			 , B.DEPT_TYPE_YN as deptYn
+			 , B.BOARD_MANAGER
 		  FROM TB_BOARDS B 
-		  JOIN TB_BOARD_CATEGORYS BC
-		 	ON B.CATEGORY_ID = BC.CATEGORY_ID
 		  JOIN TB_BOARD_PARTICIPATION_LIST PL 
 		    ON B.BOARD_ID = PL.BOARD_ID
-		 WHERE PL.EMP_ID = #{empId} 
+		 WHERE PL.EMP_ID = #{empId}
+ 	 </select>
+ 	 <select id="selectBoardData" resultMap="boardDtoMap">
+ 	 	SELECT BOARD_ID
+			 , CATEGORY_ID
+			 , BOARD_NM
+			 , DELETED_YN
+			 , PUBLIC_YN
+			 , ANONYMITY_YN
+			 , INV_LINK
+			 , DEPT_NO
+			 , DEPT_TYPE_YN as deptYn
+			 , BOARD_MANAGER
+		  FROM TB_BOARDS B 
+		 WHERE BOARD_ID = #{id}
+ 	 </select>
+ 	 <select id="selectParticipList" resultMap="participDtoMap">
+ 	 	SELECT P.PARTICIP_NO
+ 	 		 , P.EMP_ID
+ 	 		 , P.BOARD_ID
+ 	 		 , E.EMP_NM
+ 	 	  FROM TB_BOARD_PARTICIPATION_LIST P
+ 	 	  JOIN TB_EMPLOYEES E
+ 	 	    ON P.EMP_ID = E.EMP_ID
+ 	 	 WHERE BOARD_ID = #{boardId} 
  	 </select>
 </mapper>

@@ -19,12 +19,13 @@ public class BoardDTO {
 	private String anonymityYn;		// 익명 여부
 	private String invLink;			// 게시판 url
 	private int deptNo;				// 부서 번호 -> 어떤 부서의 게시판인지
-	private int deptYn;		// 게시판 타입
+	private int deptYn;				// 게시판 타입
+	private String boardManager;	// 운영자
 
 	public BoardDTO() {}
 
 	public BoardDTO(int boardId, int categoryId, String boardNm, String deletedYn, String publicYn, String anonymityYn, String invLink,
-			int deptNo, int deptYn) {
+			int deptNo, int deptYn, String boardManager) { 
 		super();
 		this.boardId = boardId;
 		this.categoryId = categoryId;
@@ -35,5 +36,6 @@ public class BoardDTO {
 		this.invLink = invLink;
 		this.deptNo = deptNo;
 		this.deptYn = deptYn;
+		this.boardManager = boardManager;
 	}
 }

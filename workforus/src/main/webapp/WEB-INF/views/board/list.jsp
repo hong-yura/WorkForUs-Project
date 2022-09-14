@@ -27,10 +27,10 @@
 					<div class="section-top radius">
 						<div class="info-container">
 							<ul class="info-ul black" style="margin-bottom: 20px;">
-								<li>게시판 주소 : http://workforus/board?id=1
+								<li>게시판 주소 :  ${boardData.invLink}
 								<button class="btn"><i class="bi bi-clipboard-check"></i></button>
 								</li>
-								<li>운영자 : 바나나킥</li>
+								<li>운영자 : ${boardData.boardManager}</li>
 							</ul>
 							<hr style="margin: 0px; width: 99%">
 							<div class="dropdown black" >
@@ -40,16 +40,15 @@
 									<li>
 										<h6 class="dropdown-header">멤버</h6>
 									</li>
-									<li>
-										<a class="dropdown-item" href="#">
-											<i class="icon-mid bi bi-person me-2"></i>박보검
-										</a>
-									</li>
-									<li>
-										<a class="dropdown-item" href="#">
-											<i class="icon-mid bi bi-person me-2"></i>홍길동
-										</a>
-									</li>
+									<c:if test="${not empty participList}">
+										<c:forEach items="${participList}" var="participDto">
+											<li>
+												<a class="dropdown-item" href="#">
+													<i class="icon-mid bi bi-person me-2"></i>${participDto.empObj.empNm}
+												</a>
+											</li>
+										</c:forEach>
+									</c:if>
 								</ul>
 							</div>
 						</div>
@@ -95,33 +94,37 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="table-active black">
-										<td><input type="checkbox"></td>
-										<td><i class="bi bi-megaphone-fill"></i></td>
-										<td>테스트 중입니다.</td>
-										<td>바나나킥</td>
-										<td>2022-09-11</td>
-										<td>1</td>
-										<td>680</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>1</td>
-										<td>테스트 중입니다.</td>
-										<td>바나나킥</td>
-										<td>2022-09-11</td>
-										<td>1</td>
-										<td>100</td>
-									</tr>
-									<tr>
-										<td><input type="checkbox"></td>
-										<td>2</td>
-										<td>테스트 중입니다.</td>
-										<td>바나나킥</td>
-										<td>2022-09-11</td>
-										<td>1</td>
-										<td>245</td>
-									</tr>
+									<c:if test="${not empty postList}">
+										<c:forEach items="${postList}" var="postData">
+											<c:url var="detailUrl" value="/board/detail">
+												<c:param name="boardId" value="${postData.boardId}"></c:param>
+											</c:url>
+											<c:choose>
+												<c:when test="${postData.noticeYn eq 'Y'}">
+													<tr class="table-active black" style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+														<td><input type="checkbox"></td>
+														<td><i class="bi bi-megaphone-fill"></i></td>
+														<td>${postData.postTitle}</td>
+														<td>${postData.writer}</td>
+														<td>${postData.addDate}</td>
+														<td>${postData.viewCnt}</td>
+														<td>${postData.likeCnt}</td>
+													</tr>
+												</c:when>
+												<c:otherwise>
+													<tr class="table-active"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+														<td><input type="checkbox"></td>
+														<td><i class="bi bi-megaphone-fill"></i></td>
+														<td>${postData.postTitle}</td>
+														<td>${postData.writer}</td>
+														<td>${postData.addDate}</td>
+														<td>${postData.viewCnt}</td>
+														<td>${postData.likeCnt}</td>
+													</tr>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+									</c:if>
 								</tbody>
 							</table>
 						</div>
