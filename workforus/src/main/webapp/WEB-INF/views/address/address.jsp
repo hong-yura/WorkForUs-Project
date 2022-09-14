@@ -78,11 +78,11 @@
 										</colgroup>
 										<thead class="table-primary">
 											<tr>
-												<th>이 름</th>
-												<th>부 서</th>
-												<th>휴 대 전 화</th>
-												<th>이 메 일</th>
-												<th>내 선 번 호</th>
+												<th data-sortable>이 름</th>
+												<th data-sortable>부 서</th>
+												<th data-sortable>휴 대 전 화</th>
+												<th data-sortable>이 메 일</th>
+												<th data-sortable>내 선 번 호</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -158,6 +158,12 @@
 		<script type="text/javascript">
 			let table1 = document.g('#table1');
 	        let dataTable = new simpleDatatables.DataTable(table1);
+	        
+	        $(document).ready(function() {
+	            $('#table1').DataTable( {
+	                order: [[ 3, 'desc' ], [ 0, 'asc' ]]
+	            } );
+	        } );
 	        
 	        function fileImport() {
 				let inputHidden = document.getElementById("inputHidden");
