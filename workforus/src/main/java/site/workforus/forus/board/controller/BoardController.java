@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import site.workforus.forus.board.model.BoardDTO;
 import site.workforus.forus.board.model.BoardParticipDTO;
@@ -75,4 +76,24 @@ public class BoardController {
 		return "/board/list";
 		 
 	}
+	
+	@GetMapping(value="/detail")
+	public String getDetailData(Model model, HttpSession session
+									, @RequestParam int postId) { // 어떤 post id인지 알아야 한다.
+		
+		// 게시글 데이터를 가지고 와야 한다.
+		BoardPostDTO postData = postService.getPostData(postId);// postId -> 해당 게시글 데이터를 가져온다.
+		
+		
+		EmpDTO loginData = (EmpDTO)session.getAttribute("logindata");
+		
+		
+		
+		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
+		model.addAttribute("postData", postData);
+		model.addAttribute("loginData", loginData);
+		
+		return "/board/detail";
+	}
+	
 }

@@ -9,7 +9,8 @@
 	<meta charset="UTF-8"> 
 	<title>workforus - 게시판</title>
     <%@ include file="../module/header.jsp" %>
-    <link rel="stylesheet" href="static/css/pages/board.css">
+    <c:url value="/static/css" var="cssUrl"/>
+    <link rel="stylesheet" href="${cssUrl}/pages/board.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
@@ -57,7 +58,6 @@
 					<div class="section-main radius">
 						<div class="main-button">
 							<button type="submit" class="btn black" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
-							<button type="submit" class="btn black"><i class="bi bi-trash"></i> 삭제</button>
 							<button type="submit" class="btn black"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
 							<div class="search-container">
 								<!-- <select class="form-select">
@@ -74,9 +74,9 @@
 						<div class="dataTable-container">
 							<table class="table dataTable-table black">
 								 <colgroup>
-						            <col width=5%>
-						            <col width=10%>
-						            <col width=40%>
+								 	<col width="2%">
+						            <col width=8%>
+						            <col width=50%>
 						            <col width=10%>
 						            <col width=10%>
 						            <col width=10%>
@@ -84,7 +84,7 @@
 						        </colgroup>
 								<thead>
 									<tr>
-										<th><input type="checkbox"></th>
+										<th></th>
 										<th>번호</th>
 										<th>제목</th>
 										<th>작성자</th>
@@ -98,13 +98,12 @@
 									<c:if test="${not empty postList}">
 										<c:forEach items="${postList}" var="postData">
 											<c:url var="detailUrl" value="/board/detail">
-												<c:param name="boardId" value="${postData.boardId}"/> 
 												<c:param name="postId" value="${postData.postId}"/>
 											</c:url>
 											<c:if test="${postData.noticeYn eq 'Y'}">
-												<tr class="table-primary" style="cursor: pointer;" onclick="location.href='${detailUrl}'">
-													<td><input type="checkbox"></td>
-													<td><i class="bi bi-megaphone-fill"></i></td>
+												<tr class="table-primary" style="cursor: pointer;"  onclick="location.href='${detailUrl}'">
+													<td></td>
+													<td><i class="bi bi-megaphone-fill" ></i></td>
 													<td>${postData.postTitle}</td>
 													<td>${postData.writer}</td>
 													<td>${postData.addDate}</td>
@@ -115,12 +114,11 @@
 										</c:forEach>
 										<c:forEach items="${postList}" var="postData" varStatus="status">
 											<c:url var="detailUrl" value="/board/detail">
-												<c:param name="boardId" value="${postData.boardId}"/> 
 												<c:param name="postId" value="${postData.postId}"/>
 											</c:url>
 											<c:if test="${postData.noticeYn eq 'N'}">
 												<tr class="table-light"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
-													<td><input type="checkbox"></td>
+													<td></td>
 													<td>${status.count}</td>
 													<td>${postData.postTitle}</td>
 													<td>${postData.writer}</td>

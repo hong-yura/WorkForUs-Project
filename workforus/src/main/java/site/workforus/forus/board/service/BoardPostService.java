@@ -26,8 +26,9 @@ public class BoardPostService {
 
 	// 게시글 하나 가져오기 -> empService 사용할 수 있을 때 구현 예정 
 	public BoardPostDTO getPostData(int postId) {
-		
-		return null;
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		BoardPostDTO data = mapper.selectBoardDetail(postId);
+		return data;
 	}
 
 	// 게시글 개수 가져오기 -> 총 갯수 - 공지 갯수

@@ -38,6 +38,25 @@
 		  FROM TB_BOARD_POSTS
 		 WHERE BOARD_ID = #{id}  
 	</select>
+	<!-- 게시판 상세 데이터 -->
+ 	 <select id="selectBoardDetail" resultMap="boardPostDtoMap" >
+ 	 	SELECT POST_ID
+			 , EMP_ID
+			 , BOARD_ID 
+			 , POST_TITLE
+			 , POST_PW
+			 , POST_CONTENT
+			 , POST_ADD_DT
+			 , POST_MODIFY_DT
+			 , POST_REMOVE_DT
+			 , VIEW_CNT
+			 , NOTICE_YN
+			 , TEMPORARY_POST_YN
+			 , REPORT_YN
+			 , LIKE_CNT
+		 FROM TB_BOARD_POSTS
+		WHERE POST_ID = #{id}
+ 	 </select>
 	
 	<select id="selectSearchData" resultMap="boardPostDtoMap">
 		SELECT POST_ID
@@ -66,4 +85,6 @@
 		 WHERE BOARD_ID = 1
 		   AND NOTICE_YN = 'N'
  	 </select>
+ 	 
+ 	 
 </mapper>
