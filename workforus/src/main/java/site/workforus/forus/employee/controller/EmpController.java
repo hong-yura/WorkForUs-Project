@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import site.workforus.forus.employee.model.EmpDTO;
-import site.workforus.forus.employee.model.LoginVO;
 import site.workforus.forus.employee.service.EmpService;
 
 
@@ -41,7 +40,7 @@ public class EmpController {
 	
 	@PostMapping(value="/signup")
 	public String signup(Model model
-		  , @SessionAttribute("loginData") EmpDTO empDto
+		  , EmpDTO empDto
 		  , @RequestParam String empId, @RequestParam String empNm, @RequestParam String empPw
 		  , @RequestParam String empCheckPw, @RequestParam String empEmail, @RequestParam String empAssistEmail) {
 		empDto.setEmpId(empId);

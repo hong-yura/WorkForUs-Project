@@ -31,6 +31,7 @@ function ok_check() {
 		document.getElementById('okCheck').style.color = '#FF0000';
 		return false;
 	} else {
+		document.getElementById('okCheck').innerText = '';
 		return true;
 	}
 	
@@ -39,6 +40,7 @@ function ok_check() {
 		document.getElementById('okCheck').style.color = '#FF0000';
 		return false;
 	} else {
+		document.getElementById('okCheck').innerText = '';
 		return true;
 	}
 }
@@ -52,6 +54,7 @@ function check_pw() {
 		document.getElementById('checkPw').style.color = '#FF0000';
 		return false;
 	} else {
+		document.getElementById('okCheck').innerText = '';
 		return true;
 	}
 }
@@ -63,6 +66,7 @@ function check_email() {
 	var email = document.getElementById('email_id').value;
 	
 	if(re.test(email)) {
+		document.getElementById('okCheck').innerText = '';
 		return true;
 	} else {
 		checkEmail.innerText = '적합하지 못한 이메일 형식입니다.';
@@ -78,6 +82,7 @@ function check_assist_email() {
 	var emailAssist = document.getElementById('email_assist_id').value;
 	
 	if(re.test(emailAssist)) {
+		document.getElementById('okCheck').innerText = '';
 		return true;
 	} else {
 		checkAssistEmail.innerText = '적합하지 못한 이메일 형식입니다.';
@@ -86,7 +91,7 @@ function check_assist_email() {
 	}
 }
 
-function ok_signup_check(form) {
+function ok_signup_check() {
 	var empId = document.getElementById('id');
 	var empNm = document.getElementById('name');
 	var pw = document.getElementById('pw');
@@ -97,6 +102,7 @@ function ok_signup_check(form) {
 	var modal = new bootstrap.Modal(document.getElementById("signupCompleteModal"), {
 		keyboard: false
 	});
+	
 	if(empId.value === "") {
 		alert("아이디를 입력하세요.");
 		empId.focus();
