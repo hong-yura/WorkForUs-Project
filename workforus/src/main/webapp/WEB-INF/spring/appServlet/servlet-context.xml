@@ -63,6 +63,4 @@
 	<!-- @Transactional 어노테이션 처리 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
-	<beans:bean id="fooBar" class="site.workforus.forus.FooBar"></beans:bean>
-	
 </beans:beans>

@@ -37,6 +37,8 @@
 					delete-cookies="true"
 				/>
 			</s:http>
+			<bean id="loginFailService" class="site.workforus.forus.employee.service.LoginFailService"/>
+			<bean id="loginSuccessService" class="site.workforus.forus.employee.service.LoginSuccessService"/>
 			
 			<!-- 권한이 없어서 금지된 uri 접속할 때 보여줄 페이지(403 에러 페이지 대체) 
 			<s:access-denied-handler error-page="/" />-->
@@ -48,6 +50,6 @@
 				<s:authentication-provider ref="empLoginAuthenticationProvider">
 				</s:authentication-provider>
 			</s:authentication-manager>
-			<bean id="customAuthenticationProvider" class="site.workforus.forus.employee.service.EmpLoginAuthenticationProvider"/>
+			<bean id="empLoginAuthenticationProvider" class="site.workforus.forus.employee.service.EmpLoginAuthenticationProvider"/>
 			
 </beans>

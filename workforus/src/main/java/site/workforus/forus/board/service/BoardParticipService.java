@@ -7,29 +7,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.model.BoardDTO;
-import site.workforus.forus.employee.model.EmpDTO;
+import site.workforus.forus.board.model.BoardParticipDTO;
 import site.workforus.forus.mapper.BoardMapper;
 
 @Service
-public class BoardService {
-	 
+public class BoardParticipService {
 	@Autowired
 	private SqlSession session;
 
-	public List<BoardDTO> selectAll(EmpDTO empDto) {
+	public List<BoardParticipDTO> selectAll(BoardDTO boardDto) {
+		// 해당 게시판의 멤버를 가져와야 한다.
 		BoardMapper mapper = session.getMapper(BoardMapper.class);
+		List<BoardParticipDTO> data = mapper.selectParticipList(boardDto);
 		
-		List<BoardDTO> datas = mapper.selectAll(empDto);
-		return datas;
-		
-	}
-
-	public BoardDTO selectBoardData(int boardId) {
-		// 해당 게시판의 정보만 가지고 와야 한다.
-		BoardMapper mapper = session.getMapper(BoardMapper.class);
-		BoardDTO data = mapper.selectBoardData(boardId);
 		return data;
 	}
-	
-
-}
+} 
