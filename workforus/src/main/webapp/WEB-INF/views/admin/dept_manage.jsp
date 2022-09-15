@@ -11,8 +11,9 @@
 	<%@ include file="../module/header.jsp" %>
 	<link rel="stylesheet" href="static/css/pages/jui-ui.min.classic.css" />
 	<link rel="stylesheet" href="static/css/pages/admin.css" />
-	<script src="static/js/pages/admin/jui-ui.min.js"></script>
+	<script src="webjars/jquery/3.6.0/jquery.min.js"></script>
 	<script src="static/js/pages/admin/jui-core.min.js"></script>
+	<script src="static/js/pages/admin/jui-ui.min.js"></script>
 </head>
 <script type="text/javascript">
 	function formCheck(form) {
@@ -82,9 +83,9 @@
 														<i></i><a>workforus</a>
 														<ul>
 														
-														<c:forEach items="${deptDatas}" var="deptDatas">
+														<c:forEach items="${deptDatas}" var="deptData">
 															<li class="open">
-																<i></i><a onclick="deptDetail();" >${deptDatas.deptName}</a>
+																<i></i><a onclick="deptDetail(${deptData.deptNo});" >${deptData.deptName}</a>
 															</li>
 														</c:forEach>
 														</ul>
