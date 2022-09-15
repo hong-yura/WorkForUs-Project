@@ -14,7 +14,6 @@ public class LoginVO implements UserDetails{
 	private String empId;
 	private String empPw;
 	private List<GrantedAuthority> authorities;
-
 	
 	public LoginVO() {}
 	
