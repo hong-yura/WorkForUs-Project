@@ -2,10 +2,14 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 			 xmlns:beans="http://www.springframework.org/schema/beans"
+			 xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+			 xmlns:tx="http://www.springframework.org/schema/tx"
 			 xmlns:context="http://www.springframework.org/schema/context"
 			 xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 								 http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-								 http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+								 http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+								 http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+								 http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<context:component-scan base-package="site.workforus.forus" />
@@ -23,5 +27,42 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- 데이터베이스 설정 -->
+	<context:property-placeholder location="/WEB-INF/spring/database.properties" />
+	
+	<beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <beans:property name="driverClassName" value="oracle.jdbc.OracleDriver"/>
+	    <beans:property name="url" value="${db.url}" />
+	    <beans:property name="username" value="${db.username}" />
+	    <beans:property name="password" value="${db.password}" />
+	</beans:bean>
+	
+	<beans:bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean>
+	 
+	<!-- sqlSessionFactory -->
+	<beans:bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+		<beans:property name="configLocation" value="classpath:/mybatis/mybatis-config.xml"></beans:property>
+		<beans:property name="mapperLocations" value="classpath:/mybatis/mapper/*.xml"></beans:property>
+	</beans:bean>
+	
+	<mybatis-spring:scan base-package="site.workforus.forus.mapper" />
+	
+	<!-- sqlSessionTemplate -->
+	<beans:bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<beans:constructor-arg index="0" name="sqlSessionFactory" ref="sqlSessionFactory"></beans:constructor-arg>	
+	</beans:bean>
+	
+	<!-- Transaction 관리 객체 -->
+	<beans:bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<beans:property name="dataSource" ref="dataSource"></beans:property>
+	</beans:bean>
+	
+	<!-- @Transactional 어노테이션 처리 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<beans:bean id="fooBar" class="site.workforus.forus.FooBar"></beans:bean>
 	
 </beans:beans>
