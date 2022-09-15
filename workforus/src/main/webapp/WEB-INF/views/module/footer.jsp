@@ -3,11 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+
 <footer>
 	<div class="footer clearfix mb-0 text-muted">
 		<div style="display:block;">
 	     <div class="float-start" style="display:inline-block; margin:0px 20px 0px 0px;">
-	     	<a href="/"><img src="static/images/logo/logo1.png" alt="logo" width="45px" height="45px" style="display:inline"></a>
+	     	<a href="/"><img src="${staticUrl}/images/logo/logo1.png" alt="logo" width="45px" height="45px" style="display:inline"></a>
 	     </div>
 	     <div class="float-start" style="display:inline-block">
 	         <p>
