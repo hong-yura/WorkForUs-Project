@@ -9,15 +9,14 @@
 	<meta charset="UTF-8"> 
 	<title>workforus - 게시판</title>
     <%@ include file="../module/header.jsp" %>
-    <c:url value="/static/css" var="cssUrl"/>
-    <link rel="stylesheet" href="${cssUrl}/pages/board.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
 	
     <div id="app">
       <div id="main">
-      	<div class="page-heading">
+      	<div class="page-heading margin-left-10">
       		<h3>Board</h3> <!-- 게시판 이름 -->
       	</div>
 	      	<!-- board -->
