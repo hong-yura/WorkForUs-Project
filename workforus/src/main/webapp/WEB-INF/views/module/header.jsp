@@ -4,16 +4,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
+<c:url var="staticUrl" value="/static"/>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/css/bootstrap.css">
+<link rel="stylesheet" href="${staticUrl}/css/bootstrap.css">
 
-<link rel="stylesheet" href="static/vendors/iconly/bold.css">
-<link rel="stylesheet" href="static/css/app.css">
+<link rel="stylesheet" href="${staticUrl}/vendors/iconly/bold.css">
+<link rel="stylesheet" href="${staticUrl}/css/app.css">
 
-<link rel="stylesheet" href="static/vendors/perfect-scrollbar/perfect-scrollbar.css">
-<link rel="stylesheet" href="static/vendors/bootstrap-icons/bootstrap-icons.css">
-<link rel="icon" href="static/images/logo/favicon.ico">
+<link rel="stylesheet" href="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.css">
+<link rel="stylesheet" href="${staticUrl}/vendors/bootstrap-icons/bootstrap-icons.css">
+<link rel="icon" href="${staticUrl}/images/logo/favicon.ico">
     
 <header class='mb-3'>
 	<nav class="navbar navbar-expand navbar-light navbar-top">
@@ -91,7 +92,7 @@
 							</div>
 							<div class="user-img d-flex align-items-center">
 								<div class="avatar avatar-md">
-									<img src="static/images/faces/1.jpg">
+									<img src="${staticUrl}/images/faces/1.jpg">
 								</div>
 							</div>
 						</div>

@@ -17,7 +17,7 @@
           <ul class="menu">
             <li class="sidebar2-item">
               <a href="${homeUrl}">
-              	<img src="static/images/logo/logo1.png" alt="Logo" style="width: 2%; height: auto; margin-left: -0.2rem"/>
+              	<img src="${staticUrl}/images/logo/logo1.png" alt="Logo" style="width: 2%; height: auto; margin-left: -0.2rem"/>
               </a>
             </li>
 
@@ -86,7 +86,7 @@
         <div class="d-flex justify-content-between">
           <div class="logo">
             <a href="${homeUrl}">
-            	<img src="static/images/logo/logo-main.png" alt="Logo" style="max-width: 70%; height: auto" />
+            	<img src="${staticUrl}/images/logo/logo-main.png" alt="Logo" style="max-width: 70%; height: auto" />
             </a>
           </div>
           <div class="toggler">
