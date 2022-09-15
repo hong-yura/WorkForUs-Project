@@ -12,7 +12,7 @@ import site.workforus.forus.mapper.BoardMapper;
 
 @Service
 public class BoardService {
-	
+	 
 	@Autowired
 	private SqlSession session;
 

@@ -22,4 +22,4 @@ public class BoardParticipService {
 		
 		return data;
 	}
-}
+} 

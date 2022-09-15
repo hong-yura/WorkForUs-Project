@@ -66,4 +66,6 @@
  	 	    ON P.EMP_ID = E.EMP_ID
  	 	 WHERE BOARD_ID = #{boardId} 
  	 </select>
+ 	 
+ 	 
 </mapper>

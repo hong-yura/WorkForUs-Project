@@ -94,35 +94,41 @@
 									</tr>
 								</thead>
 								<tbody>
+									<!-- 첫 번째 c:foreach문으로 공지를 출력하고, 두 번째 c:foreach문으로 일반 게시글을 출력 -->
 									<c:if test="${not empty postList}">
 										<c:forEach items="${postList}" var="postData">
 											<c:url var="detailUrl" value="/board/detail">
-												<c:param name="boardId" value="${postData.boardId}"></c:param>
+												<c:param name="boardId" value="${postData.boardId}"/> 
+												<c:param name="postId" value="${postData.postId}"/>
 											</c:url>
-											<c:choose>
-												<c:when test="${postData.noticeYn eq 'Y'}">
-													<tr class="table-active black" style="cursor: pointer;" onclick="location.href='${detailUrl}'">
-														<td><input type="checkbox"></td>
-														<td><i class="bi bi-megaphone-fill"></i></td>
-														<td>${postData.postTitle}</td>
-														<td>${postData.writer}</td>
-														<td>${postData.addDate}</td>
-														<td>${postData.viewCnt}</td>
-														<td>${postData.likeCnt}</td>
-													</tr>
-												</c:when>
-												<c:otherwise>
-													<tr class="table-active"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
-														<td><input type="checkbox"></td>
-														<td><i class="bi bi-megaphone-fill"></i></td>
-														<td>${postData.postTitle}</td>
-														<td>${postData.writer}</td>
-														<td>${postData.addDate}</td>
-														<td>${postData.viewCnt}</td>
-														<td>${postData.likeCnt}</td>
-													</tr>
-												</c:otherwise>
-											</c:choose>
+											<c:if test="${postData.noticeYn eq 'Y'}">
+												<tr class="table-primary" style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+													<td><input type="checkbox"></td>
+													<td><i class="bi bi-megaphone-fill"></i></td>
+													<td>${postData.postTitle}</td>
+													<td>${postData.writer}</td>
+													<td>${postData.addDate}</td>
+													<td>${postData.viewCnt}</td>
+													<td>${postData.likeCnt}</td>
+												</tr>
+											</c:if>
+										</c:forEach>
+										<c:forEach items="${postList}" var="postData" varStatus="status">
+											<c:url var="detailUrl" value="/board/detail">
+												<c:param name="boardId" value="${postData.boardId}"/> 
+												<c:param name="postId" value="${postData.postId}"/>
+											</c:url>
+											<c:if test="${postData.noticeYn eq 'N'}">
+												<tr class="table-light"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+													<td><input type="checkbox"></td>
+													<td>${status.count}</td>
+													<td>${postData.postTitle}</td>
+													<td>${postData.writer}</td>
+													<td>${postData.addDate}</td>
+													<td>${postData.viewCnt}</td>
+													<td>${postData.likeCnt}</td>
+												</tr>
+											</c:if>
 										</c:forEach>
 									</c:if>
 								</tbody>

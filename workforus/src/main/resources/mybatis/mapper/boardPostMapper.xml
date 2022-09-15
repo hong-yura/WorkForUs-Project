@@ -58,4 +58,12 @@
 		 WHERE BOARD_ID = #{id} 
 		   AND POST_TITLE LIKE '%' || #{search} || '%'
 	</select>
+	
+	<!-- 일반 게시글 갯수 구하기 -->
+ 	 <select id="generalPostCount" resultType="_int">
+ 	 	SELECT COUNT(*)
+		  FROM TB_BOARD_POSTS
+		 WHERE BOARD_ID = 1
+		   AND NOTICE_YN = 'N'
+ 	 </select>
 </mapper>

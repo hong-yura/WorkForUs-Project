@@ -39,7 +39,7 @@ public class BoardController {
 		// 임의의 empDto
 		EmpDTO empDto = new EmpDTO(); 
 		empDto.setEmpId("A2022100"); empDto.setEmpNm("김나영");
-		int boardId = 1; // 임의로 넣어줌
+		int boardId = 1; // 임의로 넣어줌 -> 이건 나중에 URL로 넣어주기
 		
 //		아래 거는 나중에 추가해주기
 //		session.setAttribute("loginData", empDto);
@@ -57,13 +57,19 @@ public class BoardController {
 		// 게시글 가져오기 -> 사원이 어떤 게시판을 클릭했는지 확인 해야 한다. -> url을 통해서 어떤 
 		List<BoardPostDTO> postList = postService.selectAll(boardId); // 어떤 게시판의 게시글인지 확인을 해야 한다.
 		
-		// 참여명단을 가져와야 한다. -> 
+		// 참여명단을 가져와야 한다. 
 		List<BoardParticipDTO> participList = participService.selectAll(boardData);
+		
+		// 게시글 갯수 notice_yn = 'N'인 게시글만 가지고 온다. 
+		int postCnt = postService.getPostCnt(boardId);
+		
+		 
 		
 		model.addAttribute("boardList", boardNav);
 		model.addAttribute("postList", postList);
 		model.addAttribute("boardData", boardData);
 		model.addAttribute("participList", participList);
+		model.addAttribute("postCnt", postCnt);
 		
 		logger.info("getData(boardNav = {}, postList = {}, boardData = {}, participList = {})", boardNav, postList, boardData, participList);
 		return "/board/list";

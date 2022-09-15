@@ -32,7 +32,7 @@ public class BoardPostDTO {
 	private Date removeDate;	// 삭제일
 	
 	private int viewCnt;		// 조회수
-	
+	 
 	private String noticeYn;	// 공지 여부 
 	
 	private String temporaryYn; // 임시 저장

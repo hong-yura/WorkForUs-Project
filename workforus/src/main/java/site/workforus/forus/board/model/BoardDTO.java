@@ -23,7 +23,7 @@ public class BoardDTO {
 	private String boardManager;	// 운영자
 
 	public BoardDTO() {}
-
+ 
 	public BoardDTO(int boardId, int categoryId, String boardNm, String deletedYn, String publicYn, String anonymityYn, String invLink,
 			int deptNo, int deptYn, String boardManager) { 
 		super();

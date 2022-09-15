@@ -8,7 +8,7 @@ import lombok.ToString;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Getter
-@Setter 
+@Setter  
 @ToString
 @Alias("boardParticipDto")
 public class BoardParticipDTO {
