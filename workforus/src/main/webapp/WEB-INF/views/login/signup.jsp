@@ -1,18 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Mazer Admin Dashboard</title>
-    <link rel="stylesheet" href="static/css/main/app.css">
-    <link rel="stylesheet" href="static/css/main/app-dark.css">
+    <title>workforus - 회원가입</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/bootstrap.css">
+    <link rel="stylesheet" href="static/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="static/css/app.css">
     <link rel="stylesheet" href="static/css/pages/auth.css">
-    <link rel="shortcut icon" href="static/images/logo/favicon.svg" type="image/x-icon">
-    <link rel="shortcut icon" href="static/images/logo/favicon.png" type="image/png">
-    <%@ include file="../module/header.jsp" %>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+	<link rel="stylesheet" href="static/vendors/iconly/bold.css">
+	<link rel="stylesheet" href="static/vendors/perfect-scrollbar/perfect-scrollbar.css">
+	<c:url var="bs5" value="/webjars/bootstrap/5.2.0" />
+	<script type="text/javascript" src="${bs5}/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -23,8 +30,7 @@
 		            <div class="auth-logo">
 		                <a href=""><img src="static/images/logo/logo-main.png" alt="Logo"></a>
 		            </div>
-		            <h1 class="auth-title">Sign Up</h1>
-		            <p class="auth-subtitle mb-5">Input your data to register to our website.</p>
+		            <h1 class="auth-title">회원가입</h1>
 					
 					<c:url var="loginUrl" value="/login"/>
 					<c:url var="signupUrl" value="/signup"/>
@@ -70,14 +76,14 @@
 		                    </div>
 		                </div>
 		                
-		                <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="button" onclick="ok_signup_check(form);" data-toggle="modal" data-target="#certificationModal">회원가입</button>
+		                <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" type="button" onclick="ok_signup_check()">회원가입</button>
 		            
 		            <div class="text-center mt-5 text-lg fs-4">
 		                <p class='text-gray-600'>Already have an account? <a href="auth-login.html" class="font-bold">Log in</a>.</p>
 		            </div>
 		            
 			        <div class="modal fade" id="signupCompleteModal" tabindex="-1" aria-labelledby="errorModalLabel">
-						<div class="modal-dialog">
+						<div class="modal-dialog  modal-dialog-centered">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="errorModalLabel">회원가입 완료</h5>
@@ -102,7 +108,7 @@
     </div>
     <script src="static/js/bootstrap.js"></script>
     <script src="static/js/app.js"></script>
-    <script src="static/js/login.js"></script>
+    <script src="static/js/signup.js"></script>
 </body>
 
 </html>
