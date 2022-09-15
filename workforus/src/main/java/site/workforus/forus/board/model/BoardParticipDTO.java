@@ -25,4 +25,5 @@ public class BoardParticipDTO {
 		this.empId = empId;
 		this.boardId = boardId;
 	}
+
 }
