@@ -10,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import site.workforus.forus.board.model.BoardDTO;
 import site.workforus.forus.board.model.BoardParticipDTO;
 import site.workforus.forus.board.model.BoardPostDTO;
+import site.workforus.forus.board.model.PostCommentDTO;
 import site.workforus.forus.board.service.BoardParticipService;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
@@ -64,15 +67,12 @@ public class BoardController {
 		// 게시글 갯수 notice_yn = 'N'인 게시글만 가지고 온다. 
 		int postCnt = postService.getPostCnt(boardId);
 		
-		 
-		
 		model.addAttribute("boardList", boardNav);
 		model.addAttribute("postList", postList);
 		model.addAttribute("boardData", boardData);
 		model.addAttribute("participList", participList);
 		model.addAttribute("postCnt", postCnt);
 		
-		logger.info("getData(boardNav = {}, postList = {}, boardData = {}, participList = {})", boardNav, postList, boardData, participList);
 		return "/board/list";
 		 
 	}
@@ -80,18 +80,27 @@ public class BoardController {
 	@GetMapping(value="/detail")
 	public String getDetailData(Model model, HttpSession session
 									, @RequestParam int postId) { // 어떤 post id인지 알아야 한다.
+
+		// 얘는 나중에 session 으로 변경해주기
+		EmpDTO loginData = new EmpDTO(); 
+		loginData.setEmpId("A2022100"); loginData.setEmpNm("김나영");
 		
 		// 게시글 데이터를 가지고 와야 한다.
 		BoardPostDTO postData = postService.getPostData(postId);// postId -> 해당 게시글 데이터를 가져온다.
 		
 		
-		EmpDTO loginData = (EmpDTO)session.getAttribute("logindata");
-		
-		
-		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData);
-		model.addAttribute("loginData", loginData);
+		model.addAttribute("loginData", loginData); // 이건 나중에 session 있으면 필요 없음
+		
+		return "/board/detail";
+	}
+	
+	@PostMapping(value="/comment/add")
+	public String InsertComment(Model model, HttpSession session
+							  , @ModelAttribute PostCommentDTO commentDto) {
+		
+		
 		
 		return "/board/detail";
 	}

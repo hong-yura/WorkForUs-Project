@@ -7,6 +7,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import site.workforus.forus.employee.model.EmpDTO;
 
 @Getter
 @Setter
@@ -41,11 +42,13 @@ public class BoardPostDTO {
 	
 	private int likeCnt;		// 추천수
 
+	private EmpDTO empObj; 		// 작성자 정보 필요
+	
 	public BoardPostDTO() {}
 
 	public BoardPostDTO(int postId, String writer, int boardId, String postTitle, String postPw, String content,
-			Date addDate, Date modifyDate, Date removeDate, int viewCnt, String noticeYn,
-			String temporaryYn, String reportYn, int likeCnt) {
+			Date addDate, Date modifyDate, Date removeDate, int viewCnt, String noticeYn, String temporaryYn,
+			String reportYn, int likeCnt, EmpDTO empObj) {
 		super();
 		this.postId = postId;
 		this.writer = writer;
@@ -61,7 +64,6 @@ public class BoardPostDTO {
 		this.temporaryYn = temporaryYn;
 		this.reportYn = reportYn;
 		this.likeCnt = likeCnt;
+		this.empObj = empObj;
 	}
-	
-	
 }

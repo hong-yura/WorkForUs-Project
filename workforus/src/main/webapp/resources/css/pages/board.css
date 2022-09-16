@@ -48,6 +48,13 @@
 	border-radius : 0.3rem;
 	
 }
+.display-inline{
+	display :inline;
+}
+
+.display-block{
+	display :block;
+}
 
 .padding-45 {
 	padding-top: 45px;
@@ -76,6 +83,7 @@
 	display : flex;
 	border-radius : 0.3rem;
 	display : inline;
+	
 }
 .main-button {
 	padding-top : 10px;
@@ -84,32 +92,79 @@ footer {
 	position : relative;
 	bottom:0;
 }
-
+.height-auto{
+	height : auto;
+}
 /*detail*/
 .page-content .row .post-container{
 	width : 100%;
-	height : 200px;
+	height : auto;
 	background: #fff;
 	margin-bottom: 23px;
+	padding: 25px;
+}
+.post-writer{
+	margin-top : 30px;
+	margin-left : 15px;
+	font-weight : 600;
 }
 .post-main{
-	width : 100%;
+	width : 98%;
 	background-color : #fff;
+	margin : 10px;
 }
-
+.title-container .post-title{
+	display : inline;
+}
+.title-container .remo-button-controller{
+	display : inline;
+	float : right;
+}
 .post-top .emp-img{
 	margin : 15px;
+}
+
+.commentCnt-container{
+	text-align: left;
+	margin-bottom:20px;
 }
 .post-top .emp-img .emp-image{
 	width : 50px;
 	height: 50px;
 }
+.mb-1 .emp-img .emp-image{
+	width : 40px;
+	height: 40px;
+	margin-bottom : 33px;
+	margin-right : 10px;
+}
 .title-container{
 	margin : 10px;
 }
-
-
+.btn-toggle{
+	background-color : #fff;
+}
 .view-like-container{
-	display : inline;
 	margin : 10px;
 }
+
+.add-date{
+	display : inline;
+	float : right;
+	margin-top : auto;
+	margin-left: 10px;
+}
+.textarea-content {
+	resize : none;
+	border-color :#fff;
+	border-bottom-color: #c0c0c0;
+	width : 80%;
+	height: 30px;
+	overflow-y:hidden;
+	
+}
+
+
+input,textarea:focus {
+     outline: none;
+  }

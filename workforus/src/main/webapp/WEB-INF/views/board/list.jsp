@@ -33,8 +33,8 @@
 								<li>운영자 : ${boardData.boardManager}</li>
 							</ul>
 							<hr style="margin: 0px; width: 99%">
-							<div class="dropdown black" >
-								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+							<div class="dropdown" >
+								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
 								게시판 멤버</a>
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
 									<li>

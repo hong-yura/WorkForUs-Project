@@ -4,7 +4,7 @@
 <mapper namespace="site.workforus.forus.mapper.BoardPostMapper">
 
 	<resultMap type="boardPostDto" id="boardPostDtoMap">
-		<result property="postId" column="post_id"/>
+		<id property="postId" column="post_id"/>
 		<result property="writer" column="emp_id"/>
 		<result property="boardId" column="board_id"/>
 		<result property="postTitle" column="post_title"/>
@@ -18,64 +18,77 @@
 		<result property="temporaryYn" column="temporary_post_yn"/>
 		<result property="reportYn" column="report_yn"/>
 		<result property="likeCnt" column="like_cnt"/>
+		<association property="empObj" javaType="empDto">
+			<id property="empId" column="emp_id"/>
+			<result property="empNm" column="emp_nm"/>
+		</association>
 	</resultMap>
 	
 	<select id="selectPostAll" resultMap="boardPostDtoMap">
-		SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		  FROM TB_BOARD_POSTS
-		 WHERE BOARD_ID = #{id}  
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id}  
 	</select>
 	<!-- 게시판 상세 데이터 -->
  	 <select id="selectBoardDetail" resultMap="boardPostDtoMap" >
- 	 	SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		 FROM TB_BOARD_POSTS
-		WHERE POST_ID = #{id}
+ 	 	SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.POST_ID = #{id}
  	 </select>
 	
 	<select id="selectSearchData" resultMap="boardPostDtoMap">
-		SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		  FROM TB_BOARD_POSTS
-		 WHERE BOARD_ID = #{id} 
-		   AND POST_TITLE LIKE '%' || #{search} || '%'
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id} 
+		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
 	</select>
 	
 	<!-- 일반 게시글 갯수 구하기 -->
