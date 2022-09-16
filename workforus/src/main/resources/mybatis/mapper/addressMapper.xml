@@ -4,10 +4,28 @@
 <mapper namespace="site.workforus.forus.mapper.AddressMapper">
 
 	<resultMap type="addressDto" id="addressDtoMap">
-		<result property="addrId" column="addr_id" />
-		<result property="addrIndvId" column="addr_indv_id" />
-		<result property="empId" column="emp_id" />
+		<result property="addrId" column="ADDR_ID" />
+		<result property="addrIndvId" column="ADDR_INDV_ID" />
+		<result property="empId" column="EMP_ID" />
+ 		<!-- <association property="empDTO" javaType="empDto">
+			<id property="empId" column="EMP_ID" />
+			<result property="empNm" column="EMP_NM" />
+			<result property="empPhone" column="EMP_PHONE" />
+			<result property="empEmail" column="EMP_EMAIL" />
+			<result property="empTel" column="EMP_TEL" />
+		</association> -->
 	</resultMap>
 	
+	<select id="selectData" resultMap="addressDtoMap">
+		SELECT E.EMP_NM
+			 , E.DEPT_NO 
+			 , E.EMP_EMAIL
+			 , E.EMP_PHONE
+			 , E.EMP_TEL
+		  FROM TB_ADDRESS A
+		  JOIN TB_EMPLOYEES E
+		  	ON A.EMP_ID = E.EMP_ID
+		 WHERE A.EMP_ID = #{empId}
+	</select>
 	
 </mapper>
