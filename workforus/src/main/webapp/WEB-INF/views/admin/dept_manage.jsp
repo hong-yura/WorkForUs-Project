@@ -8,12 +8,11 @@
 <head>
 	<meta charset="UTF-8">
 	<title>workforus - Department Manage</title>
-	<%@ include file="../module/header.jsp" %>
-	<link rel="stylesheet" href="static/css/pages/jui-ui.min.classic.css" />
-	<link rel="stylesheet" href="static/css/pages/admin.css" />
-	<script src="webjars/jquery/3.6.0/jquery.min.js"></script>
-	<script src="static/js/pages/admin/jui-core.min.js"></script>
-	<script src="static/js/pages/admin/jui-ui.min.js"></script>
+	<%@ include file="../module/head.jsp" %>
+	<link rel="stylesheet" href="${staticUrl}/css/pages/jui-ui.min.classic.css" />
+	<link rel="stylesheet" href="${staticUrl}/css/pages/admin.css" />
+	<script src="${staticUrl}/js/pages/admin/jui-core.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/jui-ui.min.js"></script>
 </head>
 <script type="text/javascript">
 	function formCheck(form) {
@@ -59,7 +58,6 @@
 			</div>
 			
 			<section class="section">
-				<c:url var="membersUrl" value="/members" />
 				<div class="row">
 					<div class="col-xl-4">
 						<div class="card">
@@ -249,9 +247,9 @@
 			<%@ include file="../module/footer.jsp" %>
 		</div>
 	</div>
-	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script src="static/js/bootstrap.bundle.min.js"></script>
-	<script src="static/js/main.js"></script>
+	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+	<script src="${staticUrl}/js/main.js"></script>
 	
 	<script type="text/javascript">
 		// 에러 체크
@@ -263,7 +261,7 @@
 		// 부서 정보 상세
 		function deptDetail(no) {
 			$.ajax({
-				url: "${adminUrl}/dept_manage",
+				url: "${adminUrl}/dept_detail",
 				type: "get",
 				data: {
 					no: no

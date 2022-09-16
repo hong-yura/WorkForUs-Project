@@ -13,7 +13,7 @@ public class LogoController {
 	
 	// private static final Logger logger = LoggerFactory.getLogger(LogoController.class);
 	
-	@GetMapping(value = "")
+	@GetMapping(value = "/logo")
 	public String getPage() {
 		
 		return "admin/logo";

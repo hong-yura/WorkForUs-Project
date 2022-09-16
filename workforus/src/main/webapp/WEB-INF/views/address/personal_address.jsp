@@ -8,9 +8,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>workforus - Personal Address</title>
-		<%@ include file="../module/header.jsp" %>
-		<link rel="stylesheet" href="static/vendors/simple-datatables/style.css" />
-		<link rel="stylesheet" href="static/css/pages/address.css" />
+		<%@ include file="../module/head.jsp" %>
+		<link rel="stylesheet" href="${staticUrl}/vendors/simple-datatables/style.css" />
+		<link rel="stylesheet" href="${staticUrl}/css/pages/address.css" />
 	</head>
 	<body>
 		<%@ include file="../module/navigation.jsp" %>
@@ -167,10 +167,10 @@
 				<%@ include file="../module/footer.jsp" %>
 			</div>
 		</div>
-		<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-		<script src="static/js/bootstrap.bundle.min.js"></script>
+		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 		
-		<script src="static/vendors/simple-datatables/simple-datatables.js"></script>
+		<script src="${staticUrl}/vendors/simple-datatables/simple-datatables.js"></script>
 		<script type="text/javascript">
 			let table1 = document.g('#table1');
 	        let dataTable = new simpleDatatables.DataTable(table1);
@@ -180,6 +180,6 @@
 				inputHidden.click();
 			}
 		</script>
-		<script src="static/js/main.js"></script>
+		<script src="${staticUrl}/js/main.js"></script>
 	</body>
 </html>

@@ -21,6 +21,7 @@ import site.workforus.forus.admin.service.DeptService;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
+@RequestMapping(value = "/admin")
 public class DeptController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DeptController.class);
@@ -42,7 +43,7 @@ public class DeptController {
 	// 부서 상세 조회
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@GetMapping(value = "/admin/dept_manage", produces="application/json; charset=utf-8")
+	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
 	public String getDeptDetail(Model model
 			, @RequestParam int no) {
 		
