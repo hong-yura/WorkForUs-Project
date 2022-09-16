@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import site.workforus.forus.commute.controller.CommuteController;
 import site.workforus.forus.commute.model.CommuteDTO;
-import site.workforus.forus.mapper.commuteMapper;
+import site.workforus.forus.mapper.CommuteMapper;
 
 
 @Service
@@ -27,7 +27,7 @@ public class CommuteService{
 	
 	// 값 출력
 	public CommuteDTO selectData(String empId){
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		String today = today();
 		logger.info("today:{}", today);
 		CommuteDTO data = mapper.selectByEmpId(empId, today);
@@ -35,7 +35,7 @@ public class CommuteService{
 	}
 	
 	public CommuteDTO selectData(int commuteNo){
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		String today = today();
 		
 		CommuteDTO data = mapper.selectByCmtNo(commuteNo);
@@ -44,7 +44,7 @@ public class CommuteService{
 	
 	// 주간 근무시간 계산
 	public CommuteDTO selectdata(String empId, String weekday) {
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		CommuteDTO data = mapper.selectByEmpId(empId, weekday);
 		return data;
@@ -55,7 +55,7 @@ public class CommuteService{
 		String today = today();
 		Date nowTime = nowTime();
 		
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		int result = mapper.insertIntime(empId, today, nowTime);
 		return result == 1 ? true : false;
@@ -66,7 +66,7 @@ public class CommuteService{
 		String today = today();
 		Date nowTime = nowTime();
 		
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		// 퇴근시간 update
 		int result = mapper.updateOuttime(empId, today, nowTime);
@@ -228,7 +228,7 @@ public class CommuteService{
 	
 	// 주간시간 업데이트 
 	public void updateWeek(String empId, Date weekAddtime, Date weekWorktime) {
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		String today = today();
 
 		mapper.updateWeekAdd(empId, today, weekAddtime);
@@ -237,7 +237,7 @@ public class CommuteService{
 	
 	// 이번주 근무상태를 출력하기위해 전날 정보를 찾는 메서드
 	public CommuteDTO beforeSelect(String empId) {
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 
 		Calendar cal = Calendar.getInstance();
 		cal.getTime();
@@ -270,7 +270,7 @@ public class CommuteService{
 	
 	// 년월에 해당하는 근무리스트
 	public List<CommuteDTO> getList(String empId, String yearmonth1) {
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		List<CommuteDTO> result = mapper.selectList(empId, yearmonth1);
 		return result;
@@ -278,7 +278,7 @@ public class CommuteService{
 	
 	// 년월에 해당하는 근무리스트 갯수 
 	public int cntList(String empId, String yearmonth1) {
-		commuteMapper mapper = session.getMapper(commuteMapper.class);
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 
 		int result = mapper.selectCntList(empId, yearmonth1);
 		return result;
