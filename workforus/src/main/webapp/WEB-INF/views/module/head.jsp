@@ -5,18 +5,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:url var="staticUrl" value="/static" />
 <c:url var="jQueryUrl" value="/webjars/jquery/3.6.0" />
-<c:url var="bs5Url" value="/webjars/jquery/3.6.0" />
-
+<c:url var="bs5Url" value="/webjars/bootstrap/5.2.0" />
 
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap">
 <link rel="stylesheet" href="${staticUrl}/css/bootstrap.css">
-
 <link rel="stylesheet" href="${staticUrl}/vendors/iconly/bold.css">
 <link rel="stylesheet" href="${staticUrl}/css/app.css">
-
 <link rel="stylesheet" href="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.css">
 <link rel="stylesheet" href="${staticUrl}/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="icon" href="${staticUrl}/images/logo/favicon.ico">
-    
+
+<script src="${bs5Url}/js/bootstrap.min.js0"></script>
 <script src="${jQueryUrl}/jquery.min.js"></script>
