@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+.col-66p {
+    flex: 0 0 auto;
+    width: 66%;
+}
+
+.jui .col-3 {
+    width: 40%;
+    margin-top: 1rem;
+}
+
+.jui ul.tree {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+}
+
+.col-md-20p {
+    flex: 0 0 auto;
+    width: 20%;
+    text-align: center;
+    font-weight: bold;
+}
+
+.dept-label {
+	align-items: center;
+	padding-top: 1rem;
+}
+
+.col-md-60p {
+    flex: 0 0 auto;
+    width: 60%;
+}
+
+.dept-form-control {
+	margin: 0.5rem 0 0.5rem 0;
+}
+
+.dept-btn-mg {
+	margin: 0 0.5rem 0 0.5rem;
+}
