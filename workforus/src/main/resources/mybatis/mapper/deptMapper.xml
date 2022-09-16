@@ -16,8 +16,22 @@
 		SELECT * FROM TB_DEPARTMENTS
 	</select>
 	
+	<select id="selectDeptDetail" parameterType="_int" resultMap="deptDtoMap">
+		SELECT DEPT_NO
+			 , DEPT_NM
+			 , DEPT_MANAGER_ID
+			 , DEPT_ADD_DT
+			 , DEPT_MOD_DT
+		  FROM TB_DEPARTMENTS
+		 WHERE DEPT_NO = #{no}
+	</select>
+	
 	<select id="selectDeptName" parameterType="deptDto">
-		SELECT *
+		SELECT DEPT_NO
+			 , DEPT_NM
+			 , DEPT_MANAGER_ID
+			 , DEPT_ADD_DT
+			 , DEPT_MOD_DT
 		  FROM TB_DEPARTMENTS
 		 WHERE DEPT_NM = #{deptName}
 	</select>

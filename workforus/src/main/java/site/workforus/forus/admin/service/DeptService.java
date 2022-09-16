@@ -26,6 +26,12 @@ public class DeptService {
 		return datas;
 	}
 	
+	public DeptDTO getDeptDetail(int no) {
+		DeptMapper mapper = session.getMapper(DeptMapper.class);
+		DeptDTO result = mapper.selectDeptDetail(no);
+		return result;
+	}
+	
 	public DeptDTO addDept() {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		DeptDTO datas = mapper.insertDept();

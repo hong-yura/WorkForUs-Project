@@ -1,8 +1,10 @@
 package site.workforus.forus.admin.controller;
 
 
+import java.util.Date;
 import java.util.List;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import site.workforus.forus.admin.model.DeptDTO;
@@ -37,6 +39,29 @@ public class DeptController {
 		return "admin/dept_manage";
 	}
 	
+	// 부서 상세 조회
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@GetMapping(value = "/admin/dept_manage", produces="application/json; charset=utf-8")
+	public String getDeptDetail(Model model
+			, @RequestParam int no) {
+		
+		DeptDTO data = deptService.getDeptDetail(no);
+		
+		JSONObject json = new JSONObject();
+		
+		json.put("deptNo", data.getDeptNo());
+		json.put("deptName", data.getDeptName());
+		json.put("deptMngId", data.getDeptMngId());
+		json.put("deptAddDt", data.getDeptAddDt() + "");
+		json.put("deptModDt", data.getDeptModDt() + "");
+		
+		
+		return json.toJSONString();
+	}
+	
+	
+	
 	// 부서 추가 폼 요청
 	@GetMapping(value = "/dept_add")
 	public String addDept(Model model, EmpDTO emDto) {
@@ -52,6 +77,12 @@ public class DeptController {
 	public String addDept(Model model, EmpDTO emDto, DeptDTO deptDto) {
 		
 		return null;
+	}
+	
+	// 부서 수정 폼 요청
+	@GetMapping(value = "dept_modify")
+	public void foo() {
+		
 	}
 	
 }

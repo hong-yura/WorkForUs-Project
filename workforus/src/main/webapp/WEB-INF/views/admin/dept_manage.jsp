@@ -70,6 +70,7 @@
 											<h4>조직도 설계</h4>
 										</div>
 										<div class="col-md-3">
+											<c:url var="adminUrl" value="/admin" />
 											<button type="button" class="btn btn-outline-primary"
 												data-bs-toggle="modal" data-bs-target="#deptAddModal">추 가</button>
 										</div>
@@ -116,7 +117,7 @@
 										</div>
 									</div>
 									<hr>
-									<form action="" class="form">
+									<form action="get" class="form" id="deptForm">
 										<div class="form-body">
 											<div class="row">
 												<div class="col-md-20p dept-label">
@@ -125,8 +126,7 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptNo"
-																value="" disabled >
+															<input class="form-control dept-form-control" type="text" name="deptNo" value="${deptData.deptNo}" disabled >
 														</div>
 													</div>
 												</div>
@@ -136,8 +136,7 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptName"
-																value="" disabled >
+															<input class="form-control dept-form-control" type="text" name="deptName" disabled >
 														</div>
 													</div>
 												</div>
@@ -147,8 +146,7 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptMngId"
-																value="" disabled >
+															<input class="form-control dept-form-control" type="text" name="deptMngId" disabled >
 														</div>
 													</div>
 												</div>
@@ -158,8 +156,7 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptAddDt"
-																value="" disabled >
+															<input class="form-control dept-form-control" type="text" name="deptAddDt" disabled >
 														</div>
 													</div>
 												</div>
@@ -169,8 +166,7 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptModDt"
-																value="" disabled >
+															<input class="form-control dept-form-control" type="text" name="deptModDt" disabled >
 														</div>
 													</div>
 												</div>
@@ -198,7 +194,7 @@
 						</div>
 					</div>
 				</div>
-								
+				
 				<!-- 부서 수정 모달 -->
 				<div class="modal fade" id="deptModModal" tabindex="-1" aria-labelledby="deptModalLabel2" aria-hidden="true">
 					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -257,8 +253,6 @@
 	<script src="static/js/bootstrap.bundle.min.js"></script>
 	<script src="static/js/main.js"></script>
 	
-
-	
 	<script type="text/javascript">
 		// 에러 체크
 		var modal = new bootstrap.Modal(document.getElementById("errorModal"), {
@@ -267,8 +261,25 @@
 		modal.show();
 	
 		// 부서 정보 상세
-		function deptDetail() {
-			var cid = document.getElementById(deptDetailCard);
+		function deptDetail(no) {
+			$.ajax({
+				url: "${adminUrl}/dept_manage",
+				type: "get",
+				data: {
+					no: no
+				},
+				success: function(data) {
+					var form = document.getElementById("deptForm");
+					
+					form.deptNo.value = data.deptNo;
+					form.deptName.value = data.deptName;
+					form.deptMngId.value = data.deptMngId;
+					form.deptAddDt.value = data.deptAddDt;
+					form.deptModDt.value = data.deptModDt;
+					
+				}
+			})
+			
 		}
 		
 		// 부서 삭제 모달 내에 삭제 버튼 클릭 시 동작
