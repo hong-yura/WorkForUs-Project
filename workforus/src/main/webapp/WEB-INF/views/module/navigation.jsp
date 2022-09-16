@@ -255,10 +255,10 @@
                 <a href="${homeUrl}/address">공용 주소록</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/address">부서 주소록</a>
+                <a href="${homeUrl}/address/dept_address">부서 주소록</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/address/addressIndv">개인 주소록</a>
+                <a href="${homeUrl}/address/personal_address">개인 주소록</a>
               </li>
             </ul>
           </li>
