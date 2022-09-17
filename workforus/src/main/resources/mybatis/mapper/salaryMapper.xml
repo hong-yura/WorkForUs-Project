@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.workforus.forus.mapper.SalaryMapper">
-	<resultMap type="SalaryDto" id="salaryDtoMap">
+	<resultMap type="salaryDto" id="salaryDtoMap">
 		<result property="salaryId" 		column="salary_id" /> 
 		<result property="salaryLogDt" 	column="salary_log_dt" />
 		<result property="salaryLog" 		column="salary_log" />
@@ -10,4 +10,57 @@
 		<result property="incomeTax" 		column="income_tax" />
 		<result property="empId" 			column="emp_id" />
 	</resultMap>
+	
+	
+	<select id="selectCnt" parameterType="String" resultType="_int">
+		SELECT COUNT(*)
+		  FROM TB_COMMUTE
+		 WHERE SUBSTR(commute_dt, 0, 6) = #{yearMonth}
+		   AND emp_id = #{empId}
+	</select>
+	
+	<select id="selectEmpSalary" parameterType="salaryDto" resultType="_int">
+		SELECT emp_salary 
+		  FROM tb_employees
+		 WHERE emp_id = #{empId}
+	</select>
+	
+	<select id="selectAll" resultMap="salaryDtoMap" parameterType="String">
+		SELECT * 
+		  FROM tb_salary_logs
+		 WHERE emp_id = #{empId} 	
+		 ORDER BY 1
+	</select>
+	
+	<select id="selectByToday" parameterType="String" resultMap="salaryDtoMap">
+		SELECT *
+		  FROM tb_salary_logs
+		 WHERE emp_id = #{empId}
+		   AND salary_log_dt = #{yearMonth}
+		 ORDER BY 1
+	</select>
+	
+	<insert id="insertThisMonth">
+		INSERT INTO tb_salary_logs(salary_id, salary_log_dt, salary_log, salary_tax, income_tax, emp_id)
+		VALUES (tb_salary_logs_seq.NEXTVAL, #{yearMonth}, #{todaySalary}, #{calTax}, #{calIncome}, #{empId})
+	</insert>
+	
+	<update id="updateThisMonth" parameterType="salaryDto">
+		UPDATE tb_salary_logs
+		   SET salary_log = #{todaySalary}
+		   	 , salary_tax = #{calTax}
+		   	 , income_tax = #{calIncome}
+		WHERE emp_id = #{empId}
+		  AND salary_log_dt = #{yearMonth}
+	</update>
+
+	<update id="updatePrevMonth" parameterType="salaryDto">
+		UPDATE tb_salary_logs
+		   SET salary_log = #{prevMonthSalary}
+		   	 , salary_tax = #{calTax}
+		   	 , income_tax = #{calIncome}
+		WHERE emp_id = #{empId}
+		  AND salary_log_dt = #{yearMonth}
+	</update>
+	
 </mapper>

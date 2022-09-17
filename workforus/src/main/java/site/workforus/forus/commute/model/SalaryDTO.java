@@ -12,12 +12,13 @@ import lombok.Setter;
 @Alias("salaryDto")
 public class SalaryDTO {
 	private String salaryId;
-	private Date salaryLogDt;
+	private String salaryLogDt;
 	private int salaryLog;
 	private int salaryTax;
 	private int incomeTax;
 	private String empId;
-	public SalaryDTO(String salaryId, Date salaryLogDt, int salaryLog, int salaryTax, int incomeTax, String empId) {
+	
+	public SalaryDTO(String salaryId, String salaryLogDt, int salaryLog, int salaryTax, int incomeTax, String empId) {
 		super();
 		this.salaryId = salaryId;
 		this.salaryLogDt = salaryLogDt;
@@ -26,6 +27,7 @@ public class SalaryDTO {
 		this.incomeTax = incomeTax;
 		this.empId = empId;
 	}
+
 	
 
 	
