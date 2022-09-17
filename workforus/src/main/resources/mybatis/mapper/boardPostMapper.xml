@@ -127,4 +127,11 @@
 		 WHERE POST_ID = #{id}
 		   AND COMMENT_REMOVE_YN = 'N' 
  	 </select>
+ 	 
+ 	 <!-- 게시글 추가 -->
+ 	 <insert id="insertComment" parameterType="postCommentDto">
+ 	 	INSERT INTO TB_POST_COMMENTS
+ 	 	VALUES (post_comment_seq.NEXTVAR, )
+ 	 
+ 	 </insert>
 </mapper>
