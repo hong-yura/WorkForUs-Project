@@ -18,7 +18,7 @@
 				, CAL_NAME
 		        , CAL_ACCESS)
 		    VALUES(
-		          #{calId}
+		          CALENDARS_SEQ.NEXTVAL
 				, #{empId}
 				, #{calName}
 		        , #{calAccess}

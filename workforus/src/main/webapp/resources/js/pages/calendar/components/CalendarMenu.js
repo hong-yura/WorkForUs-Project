@@ -1,14 +1,5 @@
 const CalendarMenu = (props) => {
-  const menuItems = [
-    { id: 0, name: "내 캘린더" },
-    { id: 1, name: "공유 캘린더" },
-  ];
-
-  const subMenuItems = [
-    { id: 0, type: 0, name: "나의 일정" },
-    { id: 1, type: 1, name: "전사일정" },
-    { id: 2, type: 1, name: "부서일정" },
-  ];
+  const [onModal, setOnModal] = React.useState(false);
 
   return (
     <div id="calendar-menu" className="col-md-2 col-4">
@@ -19,21 +10,26 @@ const CalendarMenu = (props) => {
         <span>캘린더</span>
       </div>
       <div>
-        <button id="calendar-add-button" className="btn">
+        <button
+          id="calendar-add-button"
+          className="btn"
+          onClick={props.setOnModal}
+        >
           일정추가
         </button>
       </div>
       <div>
         <ul className="menu">
-          {menuItems.map((menu) => (
-            <CalendarSubMenu
-              key={menu.id}
-              menuName={menu.name}
-              subMenu={subMenuItems.filter(
-                (subMenu) => subMenu.type === menu.id
-              )}
-            />
-          ))}
+          <CalendarSubMenu
+            menuName="내 캘린더"
+            subMenu={props.myCal}
+            addCalendar={props.addCalendar}
+            checkCalendarVisibilitiy={props.checkCalendarVisibilitiy}
+          />
+          <CalendarSubShareMenu
+            menuName="공유 캘린더"
+            subMenu={props.shareCal}
+          />
         </ul>
       </div>
     </div>
