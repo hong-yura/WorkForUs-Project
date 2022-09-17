@@ -8,7 +8,7 @@
 		<result property="empId" 		column="emp_id" />
 		<result property="calId"  		column="cal_id" />
 		<association property="calendarDTO" javaType="CalendarDTO">
-			<id		property="calId" 		column="cal_id" /> 
+			<id		property="calId" 		column="calendar_id" /> 
 			<result property="empId"		column="employee_id" />
 			<result property="calName" 		column="cal_name" />
 			<result property="calAccess"  	column="cal_access" />
@@ -22,7 +22,7 @@
 				, EMP_ID
 		        , CAL_ID)
 		    VALUES(
-		          #{calShrId}
+		          CALENDAR_SHARES_SEQ.NEXTVAL
 				, #{empId}
 		        , #{calId}
 		    )
@@ -32,12 +32,33 @@
 		SELECT * FROM TB_CAL_SHARES
 	</select>
 
-	<select id="selectByCalId" parameterType="_int" resultMap="calendarShareDtoMap" >
+	<select id="selectById" parameterType="_int" resultMap="calendarShareDtoMap" >
 		SELECT * FROM TB_CAL_SHARES WHERE CAL_ID = #{calShrId}
 	</select>
 	
-	<select id="selectByEmpId" parameterType="string" resultMap="calendarShareDtoMap" >
-		SELECT * FROM TB_CALENDARS WHERE EMP_ID = #{empId}
+	<select id="selectByCalId" parameterType="int" resultMap="calendarShareDtoMap" >
+		SELECT * FROM TB_CALENDARS WHERE CAL_ID = #{calId}
+	</select>
+	
+	<select id="selectByEmpIdAndCalId" resultMap="calendarShareDtoMap">
+		SELECT
+	       	  S.CAL_SHR_ID
+            , S.EMP_ID
+            , S.CAL_ID 
+            , C.CAL_ID as calendar_id
+            , C.EMP_ID AS employee_id
+            , C.CAL_NAME
+            , C.CAL_ACCESS 
+	    FROM
+	        TB_CAL_SHARES S
+	    LEFT JOIN
+	        TB_CALENDARS C
+	    ON
+	        S.CAL_ID = C.CAL_ID
+	    WHERE
+	        S.EMP_ID = #{empId}
+	    AND
+	    	S.CAL_ID = #{calId}
 	</select>
 	
 	<select id="selectJoinCalByEmpId" parameterType="string" resultMap="calendarShareDtoMap">
@@ -45,7 +66,7 @@
 	       	  S.CAL_SHR_ID
             , S.EMP_ID
             , S.CAL_ID 
-            , C.CAL_ID
+            , C.CAL_ID as calendar_id
             , C.EMP_ID AS employee_id
             , C.CAL_NAME
             , C.CAL_ACCESS 

@@ -30,9 +30,9 @@ public class ScheduleDTO {
 
 	private String scheAlltime; // 일정 종일 여부 'Y','N'
 
-	private Date scheTimeStart; // 일정 시작 시간
+	private String scheTimeStart; // 일정 시작 시간
 
-	private Date scheTimeEnd; // 일정 종료 시간
+	private String scheTimeEnd; // 일정 종료 시간
 
 	private Date scheDateStart; // 일정 시작 시간
 
