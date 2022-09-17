@@ -56,8 +56,10 @@
 					<!-- 메인 -->
 					<div class="section-main radius">
 						<div class="main-button">
-							<button type="submit" class="btn black" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
-							<button type="submit" class="btn black"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
+							<c:url value="/board/post/add" var="postAddUrl"/>
+							<c:url value="/board/add" var="boardAddUrl"/>
+							<button type="submit" class="btn black" onclick="location.href='${postAddUrl}?boardId=${boardData.boardId}'" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
+							<button type="submit" class="btn black"  onclick="location.href='${boardAddUrl}'"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
 							<div class="search-container">
 								<!-- <select class="form-select">
 									<option>제목</option>

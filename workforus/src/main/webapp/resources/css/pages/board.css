@@ -4,7 +4,7 @@
 	box-sizing : border-box;
 	margin :0; padding : 0;
 }
-#app #main .margin-left-10{
+.margin-left-10{
 	margin-left :10px;
 }
 .black{
@@ -137,6 +137,17 @@ footer {
 	height: 40px;
 	margin-bottom : 33px;
 	margin-right : 10px;
+	border-radius: 50%;
+}
+.card {
+	margin : 0px;
+}
+.card .emp-img .emp-image{
+	width : 40px;
+	height: 40px;
+	margin-bottom : 33px;
+	margin-right : 10px;
+	border-radius: 50%;
 }
 .title-container{
 	margin : 10px;
@@ -163,9 +174,7 @@ footer {
 	overflow-y:hidden;
 	
 }
-.comment-container{
-	border: solid 1px #fff;
-	border-bottom-color: #c0c0c0;
+.comment-container , .second-comment-container{
 	border-radius : 0px;
 	margin : 0px;
 }
@@ -173,8 +182,17 @@ footer {
 .mb-3 .card-header {
 	font-weight: 600;
 	font-size: 17px;
-	padding : 0.9rem;
+	padding : 0.5rem;
 }
 input,textarea:focus {
-     outline: none;
-  }
+    outline: none;
+}
+  
+/* 대댓 */
+.second-comment-container .second-comment-controller{
+	margin-left : 45px;
+	margin-bottom : 0px;
+	width : 95%;
+	
+}
+
