@@ -117,7 +117,7 @@
 										</div>
 									</div>
 									<c:forEach items="${commentList}" var="secComment">
-										<c:if test="${secComment.groupNo == comment.groupNo && secComment.depth == 1}">
+										<c:if test="${secComment.groupNo eq comment.groupNo && secComment.depth == 1}">
 											<div class="mb-1 second-comment-container">
 												<div class="card second-comment-controller">
 													<div class="card-header black">

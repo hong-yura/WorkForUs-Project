@@ -21,7 +21,6 @@ public class BoardPostService {
 		
 		List<BoardPostDTO> datas = mapper.selectPostAll(boardId);
 		return datas;
-		
 	}
 
 	// 게시글 하나 가져오기 -> empService 사용할 수 있을 때 구현 예정 
@@ -38,4 +37,12 @@ public class BoardPostService {
 		
 		return postCnt;
 	}
+	
+	// 게시글 추가
+	public boolean addPostData(BoardPostDTO postDto) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.insertBoardPost(postDto);
+		return result == 1 ? true : false;
+	}
+	
 }
