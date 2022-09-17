@@ -22,6 +22,7 @@ import site.workforus.forus.board.model.PostCommentDTO;
 import site.workforus.forus.board.service.BoardParticipService;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
+import site.workforus.forus.board.service.PostCommentService;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
@@ -34,6 +35,8 @@ public class BoardController {
 	private BoardPostService postService;
 	@Autowired
 	private BoardParticipService participService;
+	@Autowired
+	private PostCommentService commentService;
 
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
@@ -88,11 +91,17 @@ public class BoardController {
 		// 게시글 데이터를 가지고 와야 한다.
 		BoardPostDTO postData = postService.getPostData(postId);// postId -> 해당 게시글 데이터를 가져온다.
 		
+		// commentDto 가져오기 -> 어떤 post의 댓글인지
+		List<PostCommentDTO> commentList = commentService.selectComment(postId);
+		
+		// 댓글 갯수
+		int commentCnt = commentService.selectCommentCount(postId);
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData);
 		model.addAttribute("loginData", loginData); // 이건 나중에 session 있으면 필요 없음
-		
+		model.addAttribute("commentList", commentList);
+		model.addAttribute("commentCnt", commentCnt);
 		return "/board/detail";
 	}
 	
@@ -100,8 +109,14 @@ public class BoardController {
 	public String InsertComment(Model model, HttpSession session
 							  , @ModelAttribute PostCommentDTO commentDto) {
 		
+		logger.info("InsertComment(PostCommentDTO={})", commentDto);
+		
+		// 댓글을 전달 받는다. 
 		
 		
+		
+		
+		// depth, group
 		return "/board/detail";
 	}
 	

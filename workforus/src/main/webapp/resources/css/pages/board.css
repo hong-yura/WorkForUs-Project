@@ -158,13 +158,23 @@ footer {
 	resize : none;
 	border-color :#fff;
 	border-bottom-color: #c0c0c0;
-	width : 80%;
+	width : 89%;
 	height: 30px;
 	overflow-y:hidden;
 	
 }
+.comment-container{
+	border: solid 1px #fff;
+	border-bottom-color: #c0c0c0;
+	border-radius : 0px;
+	margin : 0px;
+}
 
-
+.mb-3 .card-header {
+	font-weight: 600;
+	font-size: 17px;
+	padding : 0.9rem;
+}
 input,textarea:focus {
      outline: none;
   }

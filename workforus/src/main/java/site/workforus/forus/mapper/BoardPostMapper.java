@@ -3,6 +3,7 @@ package site.workforus.forus.mapper;
 import java.util.List;
 
 import site.workforus.forus.board.model.BoardPostDTO;
+import site.workforus.forus.board.model.PostCommentDTO;
 
 public interface BoardPostMapper { 
 
@@ -15,6 +16,12 @@ public interface BoardPostMapper {
 	// 게시글 상세
 	public BoardPostDTO selectBoardDetail(int postId);
 	
+	// 댓글 가져오기
+	public List<PostCommentDTO> selectPostComment(int postId);
+	
+	// 댓글 갯수
+	public int selectCommentCount(int postId);
+	
 	// 게시글 추가  
 	public int insertBoardPost(BoardPostDTO boardPostDto);
 	
@@ -26,6 +33,6 @@ public interface BoardPostMapper {
 
 	// 게시글 갯수 가져오기
 	public int generalPostCount(int boardId);
-
+	
 
 }

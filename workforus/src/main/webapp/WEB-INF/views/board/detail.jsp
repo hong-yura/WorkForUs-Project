@@ -53,24 +53,22 @@
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
 							<button type="button" class="btn black" onclick=""><i class="bi bi-hand-thumbs-up"></i> ${postData.likeCnt}</button>
-							<hr>
+							<hr style="margin-top: 0px;">
 						</div>
 						<!-- 댓글 작성하기 -->
 						<div class="mb-1">
 							<c:url var="commentUrl" value="/board/comment" /> <!-- boardController에서 한꺼번에 처리하기 -->
 							<form action="${commentUrl}/add" method="post" style="margin: 10px;">
 								<div class="avatar avatar-md emp-img display-block"> <!-- 이미지 -->
-									<div class="commentCnt-container">
-										<p class="comment-count">댓글 10개${commentCnt}</p>
+									<div class="commentCnt-container black">
+										<p class="comment-count">댓글 ${commentCnt}개</p>
 										<div class="display-inline">
 											<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
 											<input type="hidden" name="postId" value="${postData.postId}">
 											<div class="input-group display-inline">
 												<textarea class="textarea-content" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
-												<button class="btn" type="button" disabled >작성</button>
+												<button class="btn" type="submit">작성</button>
 											</div>
-										</div>
-										<div class="textarea-container display-inline">
 										</div>
 									</div>
 								</div>
@@ -80,16 +78,19 @@
 						<div class="mb-3">
 							<c:forEach items="${commentList}" var="comment">
 								<div class="mb-1"><!-- 댓글 삭제 하기 위해서는 여기까지 찾은 다음에 삭제해야 한다.  --> <!-- 댓글이 여러개 나와야 하니까 여기서부터 반복되어야 함 -->
-									<div class="card">
-										<div class="card-header">
-											<div class="d-flex justify-content-between">
+									<div class="card comment-container">
+										<div class="card-header black">
+											<div class="justify-content-between">
+												<div class="avatar emp-img">
+													<img class="emp-image display-inline" src="${staticUrl}/images/faces/2.jpg">
+												</div>
 												<span><small>${comment.empNm}</small></span>
 												<span><small>${comment.addDate}</small></span>
 											</div>
 										</div>
 										<div class="card-body">
 											<input type="hidden" name=commentId value="${comment.commentId}"> <!-- comment id를 숨겨두기 -> 어떤 댓글인지 알아야 해서  -->
-											<p class="card-text">${comment.content}</p>
+											<p class="card-text black">${comment.content}</p>
 											<c:if test="${sessionScope.loginData.empId eq comment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 												<div class="text-end">
 													<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>

@@ -23,6 +23,18 @@
 			<result property="empNm" column="emp_nm"/>
 		</association>
 	</resultMap>
+	<resultMap type="postCommentDto" id="postCommentDtoMap">
+		<result property="commentId" column="comment_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="content" column="comment_content"/>
+		<result property="empId" column="emp_id"/>
+		<result property="empNm" column="emp_nm"/>
+		<result property="groupNo" column="group_no"/>
+		<result property="depth" column="comment_depth"/>
+		<result property="sort" column="comment_sort"/>
+		<result property="anonymity_yn" column="anonymity_yn"/>
+		<result property="addDate" column="comment_add_dt"/>
+	</resultMap>
 	
 	<select id="selectPostAll" resultMap="boardPostDtoMap">
 		SELECT P.POST_ID
@@ -99,5 +111,20 @@
 		   AND NOTICE_YN = 'N'
  	 </select>
  	 
+ 	 <!-- 게시글 댓글 가져오기  -->
+ 	 <select id="selectPostComment" resultMap="postCommentDtoMap">
+ 	 	SELECT * 
+		  FROM TB_POST_COMMENTS 
+		 WHERE POST_ID = #{id}
+		   AND COMMENT_REMOVE_YN = 'N'
+		 ORDER BY GROUP_NO, COMMENT_SORT
+ 	 </select>
  	 
+ 	 <!-- 댓글 개수 -->
+ 	 <select id="selectCommentCount" resultType="_int">
+ 	 	SELECT COUNT(*)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{id}
+		   AND COMMENT_REMOVE_YN = 'N' 
+ 	 </select>
 </mapper>
