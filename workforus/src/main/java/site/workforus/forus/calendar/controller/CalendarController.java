@@ -82,19 +82,26 @@ public class CalendarController {
 
 	@ResponseBody
 	@GetMapping(value = "/share")
-	public ResponseEntity<Object> getCalendarShare(@RequestParam(value = "calId", required = false) Integer calId) {
-
-		ResponseEntity<Object> datas = calId == null ? calendarShareService.selectAll()
-				: calendarShareService.selectByCalId(calId);
+	public ResponseEntity<Object> getCalendarShare(@RequestParam(value = "calId", required = false) Integer calId,
+			@RequestParam(value = "empId", required = false) String empId) {
+		ResponseEntity<Object> datas;
+		if (calId != null && empId != null)
+			datas = calendarShareService.selectByEmpIdAndCalId(empId, calId);
+		else if (calId != null)
+			datas = calendarShareService.selectByCalId(calId);
+		else if (empId != null)
+			datas = calendarShareService.selectJoinCalByEmpId(empId);
+		else
+			datas = calendarShareService.selectAll();
 
 		return datas;
 	}
 
 	@ResponseBody
-	@GetMapping(value = "/share/{empId}")
-	public ResponseEntity<Object> getSharingCalendarsByEmpId(@PathVariable("empId") String empId) {
+	@GetMapping(value = "/share/{calShrId}")
+	public ResponseEntity<Object> getSharingCalendarsByEmpId(@PathVariable("calShrId") int calShrId) {
 
-		ResponseEntity<Object> datas = calendarShareService.selectJoinCalByEmpId(empId);
+		ResponseEntity<Object> datas = calendarShareService.selectById(calShrId);
 
 		return datas;
 	}
