@@ -74,19 +74,38 @@ public class CommuteController{
 				data.setWorkTime(data.getWorkTime().substring(11));
 				data.setAddedTime(data.getAddedTime().replace("1970-01-01", year + "-" + month + "-" + day));
 				data.setAddedTime(data.getAddedTime().substring(11));
-				data.setWeekAddtime(data.getWeekAddtime().substring(11));
-				data.setWeekWorktime(_calculate(data.getWeekWorktime()));
-				//data.setWeekWorktime(data.getWeekWorktime().substring(11));
+				// data.setWeekAddtime(data.getWeekAddtime().substring(11));
+				// String weektime = _calculate(data.getWeekWorktime());
+				// data.setWeekWorktime(data.getWeekWorktime().substring(11));
+				// model.addAttribute("weektime", weektime);
 			}
 		}
 		
 		String remainTime = "00:00:00";
 		long progress = 0;
-		CommuteDTO temp = service.beforeSelect(empId);
-		if(temp != null) {
-			temp.setWeekAddtime(_calculate(temp.getWeekWorktime()));
-			remainTime = _remainTime(temp.getWeekWorktime());
-			progress = _progress(temp.getWeekWorktime());
+		if(data == null || (data.getCommuteTime() != null && data.getGetoffTime() == null)) {
+			if(service.beforeSelect(empId) != null) {
+				CommuteDTO temp = service.beforeSelect(empId); // 이번주에 마지막 출근기록 DTO
+				if(temp.getGetoffTime()!= null) {
+					String tempTime = (_calculate(temp.getWeekWorktime()));
+					remainTime = _remainTime(temp.getWeekWorktime());
+					progress = _progress(temp.getWeekWorktime());	
+					temp.setWeekAddtime(temp.getWeekAddtime().substring(11));
+					
+					model.addAttribute("weekWorktime", tempTime);
+					model.addAttribute("weekAddtime", temp.getWeekAddtime());
+				}
+			
+			}
+		} else {
+			 String tempTime = (_calculate(data.getWeekWorktime()));
+			 remainTime = _remainTime(data.getWeekWorktime());
+			progress = _progress(data.getWeekWorktime());	
+			data.setWeekAddtime(data.getWeekAddtime().substring(11));
+			data.setWeekWorktime(data.getWeekWorktime().substring(11));
+			
+			model.addAttribute("weekWorktime", tempTime);
+			model.addAttribute("weekAddtime", data.getWeekAddtime());
 			
 		}
 		
@@ -282,6 +301,7 @@ public class CommuteController{
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
 		
 		
+		logger.info("time2는 {}", time2);	
 		logger.info("time은 {}", time);	
 		
 		return time;
@@ -289,6 +309,7 @@ public class CommuteController{
 	
 	private String _remainTime(String weekWorktime) throws Exception {
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		
 		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
 		Date weekTime = defaultSdf.parse(weekWorktime);
@@ -304,15 +325,18 @@ public class CommuteController{
 		return remainTime;
 	}
 	
+	// 40시, 50시간 퍼센테이지
 	private long _progress(String weekWorktime) throws Exception {
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
 		Date weekTime = defaultSdf.parse(weekWorktime);
-		
+		System.out.println(weekTime);
 		double progress = 0;
 		if(weekTime.getTime()/defaultTime.getTime() < 1) {
-			double dftTime = defaultTime.getTime() * 1.0;
-			double wkTime = weekTime.getTime() * 1.0;
+			double dftTime = defaultTime.getTime() * 1.0 + 32400000;	// 음수가 나와서 한국시간 더해줌 
+			double wkTime = weekTime.getTime() * 1.0 + 32400000; 		// 음수가 나와서 한국시간 더해줌 
+			System.out.println(dftTime);
+			System.out.println(wkTime + "@@@");
 			progress = (wkTime / dftTime);
 			progress = Double.parseDouble(String.format("%.2f", progress));
 		} else {
