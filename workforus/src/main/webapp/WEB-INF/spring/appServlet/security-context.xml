@@ -20,7 +20,7 @@
 				<s:intercept-url pattern="/" access="isAuthenticated()"/>
 				
 				<!-- 관리자 페이비는 관리자만 접근 허용 / hasRole('role') : 해당 권한이 있으면 요청한 페이지를 없으면 로그인 페이지로 이동-->
-				<s:intercept-url pattern="/admin/**" access="hasRole('admin')" />
+				<!-- <s:intercept-url pattern="/admin/**" access="hasRole('admin')" /> -->
 				<s:form-login
 						username-parameter="empId"
 						password-parameter="empPw"

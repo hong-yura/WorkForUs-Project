@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>workforus - Home</title>
-    <%@ include file="./module/header.jsp" %>
+    <%@ include file="./module/head.jsp" %>
 </head>
 <body>
     <%@ include file="./module/navigation.jsp" %>
@@ -186,7 +186,7 @@
                                                         <td class="col-3">
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar avatar-md">
-                                                                    <img src="assets/images/faces/5.jpg">
+                                                                    <img src="${staticUrl}/images/faces/5.jpg">
                                                                 </div>
                                                                 <p class="font-bold ms-3 mb-0">Si Cantik</p>
                                                             </div>
@@ -199,7 +199,7 @@
                                                         <td class="col-3">
                                                             <div class="d-flex align-items-center">
                                                                 <div class="avatar avatar-md">
-                                                                    <img src="assets/images/faces/2.jpg">
+                                                                    <img src="${staticUrl}/images/faces/2.jpg">
                                                                 </div>
                                                                 <p class="font-bold ms-3 mb-0">Si Ganteng</p>
                                                             </div>
@@ -223,7 +223,7 @@
                             <div class="card-body py-4 px-5">
                                 <div class="d-flex align-items-center">
                                     <div class="avatar avatar-xl">
-                                        <img src="assets/images/faces/1.jpg" alt="Face 1">
+                                        <img src="${staticUrl}/images/faces/1.jpg" alt="Face 1">
                                     </div>
                                     <div class="ms-3 name">
                                         <h5 class="font-bold">John Duck</h5>
@@ -239,7 +239,7 @@
                             <div class="card-content pb-4">
                                 <div class="recent-message d-flex px-4 py-3">
                                     <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/4.jpg">
+                                        <img src="${staticUrl}/images/faces/4.jpg">
                                     </div>
                                     <div class="name ms-4">
                                         <h5 class="mb-1">Hank Schrader</h5>
@@ -248,7 +248,7 @@
                                 </div>
                                 <div class="recent-message d-flex px-4 py-3">
                                     <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/5.jpg">
+                                        <img src="${staticUrl}/images/faces/5.jpg">
                                     </div>
                                     <div class="name ms-4">
                                         <h5 class="mb-1">Dean Winchester</h5>
@@ -257,7 +257,7 @@
                                 </div>
                                 <div class="recent-message d-flex px-4 py-3">
                                     <div class="avatar avatar-lg">
-                                        <img src="assets/images/faces/1.jpg">
+                                        <img src="${staticUrl}/images/faces/1.jpg">
                                     </div>
                                     <div class="name ms-4">
                                         <h5 class="mb-1">John Dodol</h5>
@@ -284,13 +284,13 @@
             <%@ include file="./module/footer.jsp" %>
         </div>
     </div>
-    <script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
+    <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 
-    <script src="static/vendors/apexcharts/apexcharts.js"></script>
-    <script src="static/js/pages/dashboard.js"></script>
+    <script src="${staticUrl}/vendors/apexcharts/apexcharts.js"></script>
+    <script src="${staticUrl}/js/pages/dashboard.js"></script>
 
-    <script src="static/js/main.js"></script>
+    <script src="${staticUrl}/js/main.js"></script>
 </body>
 
 </html>

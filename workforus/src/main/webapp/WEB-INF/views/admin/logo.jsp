@@ -8,7 +8,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>workforus - Admin</title>
-		<%@ include file="../module/header.jsp" %>
+		<%@ include file="../module/head.jsp" %>
 	</head>
 	<body>
 		<%@ include file="../module/navigation.jsp" %>
@@ -63,8 +63,8 @@
 				<%@ include file="../module/footer.jsp" %>
 			</div>
 		</div>
-		<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-		<script src="static/js/bootstrap.bundle.min.js"></script>
-		<script src="static/js/main.js"></script>
+		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+		<script src="${staticUrl}/js/main.js"></script>
 	</body>
 </html>
