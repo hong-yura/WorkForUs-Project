@@ -17,6 +17,7 @@ public class SalaryDTO {
 	private int salaryTax;
 	private int incomeTax;
 	private String empId;
+	
 	public SalaryDTO(String salaryId, String salaryLogDt, int salaryLog, int salaryTax, int incomeTax, String empId) {
 		super();
 		this.salaryId = salaryId;
@@ -26,6 +27,7 @@ public class SalaryDTO {
 		this.incomeTax = incomeTax;
 		this.empId = empId;
 	}
+
 	
 
 	

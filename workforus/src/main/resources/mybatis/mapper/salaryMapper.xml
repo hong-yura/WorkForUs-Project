@@ -15,7 +15,7 @@
 	<select id="selectCnt" parameterType="String" resultType="_int">
 		SELECT COUNT(*)
 		  FROM TB_COMMUTE
-		 WHERE SUBSTR(commute_dt, 0, 6) = ${yearMonth}
+		 WHERE SUBSTR(commute_dt, 0, 6) = #{yearMonth}
 		   AND emp_id = #{empId}
 	</select>
 	
@@ -37,17 +37,26 @@
 		  FROM tb_salary_logs
 		 WHERE emp_id = #{empId}
 		   AND salary_log_dt = #{yearMonth}
-		 ORDER BY 2
+		 ORDER BY 1
 	</select>
 	
 	<insert id="insertThisMonth">
 		INSERT INTO tb_salary_logs(salary_id, salary_log_dt, salary_log, salary_tax, income_tax, emp_id)
-		VALUES (tb_salary_logs_seq.NEXTVAL, #{yearMonth}, #{calSalaryNum}, #{commonTaxNum}, #{incomeTaxNum}, #{empId})
+		VALUES (tb_salary_logs_seq.NEXTVAL, #{yearMonth}, #{todaySalary}, #{calTax}, #{calIncome}, #{empId})
 	</insert>
 	
 	<update id="updateThisMonth" parameterType="salaryDto">
 		UPDATE tb_salary_logs
 		   SET salary_log = #{todaySalary}
+		   	 , salary_tax = #{calTax}
+		   	 , income_tax = #{calIncome}
+		WHERE emp_id = #{empId}
+		  AND salary_log_dt = #{yearMonth}
+	</update>
+
+	<update id="updatePrevMonth" parameterType="salaryDto">
+		UPDATE tb_salary_logs
+		   SET salary_log = #{prevMonthSalary}
 		   	 , salary_tax = #{calTax}
 		   	 , income_tax = #{calIncome}
 		WHERE emp_id = #{empId}
