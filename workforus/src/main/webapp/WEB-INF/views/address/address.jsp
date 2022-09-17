@@ -8,9 +8,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>workforus - Address</title>
-		<%@ include file="../module/header.jsp" %>
-		<link rel="stylesheet" href="static/vendors/simple-datatables/style.css" />
-		<link rel="stylesheet" href="static/css/pages/address.css" />
+		<%@ include file="../module/head.jsp" %>
+		<link rel="stylesheet" href="${staticUrl}/vendors/simple-datatables/style.css" />
+		<link rel="stylesheet" href="${staticUrl}/css/pages/address.css" />
 	</head>
 	<body>
 		<%@ include file="../module/navigation.jsp" %>
@@ -177,6 +177,6 @@
 				inputHidden.click();
 			}
 		</script>
-		<script src="static/js/main.js"></script>
+		<script src="${staticUrl}/js/main.js"></script>
 	</body>
 </html>

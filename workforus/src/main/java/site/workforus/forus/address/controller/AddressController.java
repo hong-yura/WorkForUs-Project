@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import site.workforus.forus.address.model.AddressDTO;
 import site.workforus.forus.address.service.AddressService;
-import site.workforus.forus.dept.model.DeptDTO;
+import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
