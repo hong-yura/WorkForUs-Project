@@ -193,6 +193,23 @@ input,textarea:focus {
 	margin-left : 45px;
 	margin-bottom : 0px;
 	width : 95%;
+}
+
+/* 게시글 추가 페이지 */
+.write-container{
+	width : 100%;
+	height : auto;
+	background: #fff;
+	margin-bottom: 23px;
+	padding: 25px;
+}
+.post-title{
+	margin-bottom: 10px;
+}
+.float-right{
+	float : right;
 	
 }
+
+/* 게시판 수정 페이지*/
 

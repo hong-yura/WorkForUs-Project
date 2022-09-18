@@ -37,7 +37,7 @@
 										<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color : #fff; border-style : none;">
 									    </button>
 									    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="border: solid 1px #c0c0c0; width: 40px;">
-									    	<c:url value="/board/modify" var="modUrl"/>
+									    	<c:url value="/board/post/modify" var="modUrl"/>
 									      <li><a class="dropdown-item" href="${modUrl}?postId=${postData.postId}"><i class="bi bi-pencil-square"></i> 글수정</a></li>
 									      <hr style="margin: 0px;">
 									      <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> 글삭제</a></li>

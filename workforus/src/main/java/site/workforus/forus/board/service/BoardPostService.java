@@ -45,4 +45,17 @@ public class BoardPostService {
 		return result == 1 ? true : false;
 	}
 	
+	// 게시글 삭제
+	public boolean deletePostData(int postId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.deleteBoardPost(postId);
+		return result == 1 ? true : false;
+	}
+	
+	// 게시글 수정
+	public boolean updatePostData(BoardPostDTO postDto) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.updateBoardPost(postDto);
+		return result == 1 ? true : false;
+	}
 }

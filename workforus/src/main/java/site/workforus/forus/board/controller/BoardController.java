@@ -79,7 +79,7 @@ public class BoardController {
 		return "/board/list";
 		 
 	}
-	
+	// 게시글 상세 
 	@GetMapping(value="/detail")
 	public String getDetailData(Model model, HttpSession session
 									, @RequestParam int postId) { // 어떤 post id인지 알아야 한다.
@@ -105,6 +105,7 @@ public class BoardController {
 		return "/board/detail";
 	}
 	
+	// 댓글추가
 	@PostMapping(value="/comment/add")
 	public String InsertComment(Model model, HttpSession session
 							  , @ModelAttribute PostCommentDTO commentDto) {
@@ -112,12 +113,45 @@ public class BoardController {
 		logger.info("InsertComment(PostCommentDTO={})", commentDto);
 		
 		// 댓글을 전달 받는다. 
-		
-		
-		
-		
 		// depth, group
 		return "/board/detail";
 	}
 	
+	// 게시글 추가 화면
+	@GetMapping(value="/post/add")
+	public String getAddPost(Model model, HttpSession session
+							, int boardId) { // 게시판 id만 있으면 됨
+		model.addAttribute("boardId", boardId);
+		
+		return "/board/add";
+	}
+
+	// 게시글 추가 요청
+	@PostMapping(value="/post/add")
+	public String addPost(Model model, HttpSession session
+						, int boardId) {
+		// 게시판 정보가 필요
+		logger.info("addPost=(boardId={})", boardId);
+		
+		
+		return "/board/list";
+	}
+	
+	//게시글 수정 화면
+	@GetMapping (value="/post/modify")
+	public String getModifyPost(Model model, HttpSession session
+							, int postId) {
+		session.setAttribute("postId", postId); // 파일 저장할 때 필요함
+		return "/board/modify";
+	}
+	
+	//게시글 수정
+	@PostMapping (value="/post/modify")
+	public String modifyPost(Model model, HttpSession session
+							, int postId
+							, @ModelAttribute BoardPostDTO postDto) { // 저장될 데이터
+		
+		return "/board/modify";
+	}
+		
 }
