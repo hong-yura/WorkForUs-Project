@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.admin.model.DeptDTO;
+import site.workforus.forus.admin.model.DeptVO;
 import site.workforus.forus.mapper.DeptMapper;
 
 @Service
@@ -32,10 +33,29 @@ public class DeptService {
 		return result;
 	}
 	
-	public DeptDTO addDept() {
+	public DeptDTO addDept(DeptDTO data) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		DeptDTO datas = mapper.insertDept();
-		return datas;
+		
+		DeptDTO deptDto = new DeptDTO();
+		deptDto.setDeptName(data.getDeptName());
+		deptDto.setDeptMngId(data.getDeptMngId());
+		
+		boolean result = mapper.insertDept(deptDto);
+		
+		// if deptMngId가 null이면 참조할 객체가 없으므로 실패
+		if(result) {
+			
+		}
+		// if 부서명 중복인지 확인
+		
+		return data;
 	}
+	
+	public boolean removeDept(DeptDTO data) {
+		DeptMapper mapper = session.getMapper(DeptMapper.class);
+		int result = mapper.deleteDept(data.getDeptNo());
+		return result == 1 ? true : false;
+	}	
+	
 	
 }

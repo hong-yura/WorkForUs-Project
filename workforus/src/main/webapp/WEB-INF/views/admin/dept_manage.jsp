@@ -21,15 +21,18 @@
 		});
 		var title = modal._element.querySelector(".modal-title");
 		var body = modal._element.querySelector(".modal-body");
-		if(form.title.value === undefined || form.title.value.trim() === "") {
-			title.innerText = "부서명을 입력하세요.;
-			body.innerText = "부서 책임자 사원번호를 입력하세요.";
+		if(form.deptName.value === undefined || form.deptName.value.trim() === "") {
+			title.innerText = "필수 입력;
+			body.innerText = "부서명을 입력하세요.";
 			modal.show();
 			return;
 		}
 		
 		form.submit();
-	}	
+	}
+	
+
+	
 </script>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
@@ -68,12 +71,13 @@
 											<h4>조직도 설계</h4>
 										</div>
 										<div class="col-md-3">
+											<!-- adminUrl -->
 											<c:url var="adminUrl" value="/admin" />
 											<button type="button" class="btn btn-outline-primary"
 												data-bs-toggle="modal" data-bs-target="#deptAddModal">추 가</button>
 										</div>
 									</div>
-									<!-- tree -->
+									<!-- tree Start -->
 									<div class="jui">
 										<div class="row row-tree">
 											<div class="col col-3">
@@ -81,7 +85,6 @@
 													<li class="open root">
 														<i></i><a>workforus</a>
 														<ul>
-														
 														<c:forEach items="${deptDatas}" var="deptData">
 															<li class="open">
 																<i></i><a onclick="deptDetail(${deptData.deptNo});" >${deptData.deptName}</a>
@@ -221,7 +224,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete();">삭제</button>
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete(${data.no});">삭제</button>
 							</div>
 						</div>
 					</div>
@@ -238,11 +241,14 @@
 								<p>삭제되었습니다.</p>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${deptUrl}'">확인</button>
+								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept_manage'">확인</button>
 							</div>
 						</div>
 					</div>
 				</div>
+				
+				
+				
 			</section>
 			<%@ include file="../module/footer.jsp" %>
 		</div>
@@ -258,11 +264,11 @@
 		})
 		modal.show();
 	
-		// 부서 정보 상세
+		// 부서 정보 상세 조회
 		function deptDetail(no) {
 			$.ajax({
-				url: "${adminUrl}/dept_detail",
 				type: "get",
+				url: "${adminUrl}/dept_detail",
 				data: {
 					no: no
 				},
@@ -280,9 +286,54 @@
 			
 		}
 		
-		// 부서 삭제 모달 내에 삭제 버튼 클릭 시 동작
-		function deptDelete() {
-			
+		// 부서 추가
+		function deptAdd() {
+			$.ajax({
+				type: "post",
+				url: "${adminUrl}/dept_add",
+				data: {
+					
+				},
+				success: function(data) {
+					console.log(data);
+					
+					var form = document.getElementById("addDeptForm");
+					
+					form.deptName.value = data.deptName;
+					form.deptMngId.value = data.deptMngId;
+				},
+				error: function() {
+					alert("부서 추가 실패");
+				}
+					
+			})
+		}
+
+		
+		// 부서 삭제
+		function deptDelete(deptNo) {
+			$.ajax({
+				type: "post",
+				url: "${adminUrl}/dept_delete",
+				data: {
+					no: deptNo
+				},
+				dataType: "json",
+				success: function(data) {
+					console.log(data);
+					
+					var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+						keyboard: false
+					});
+					
+					var title = myModal._element.querySelector(".modal-title");
+					var body = myModal._element.querySelector(".modal-body");
+					title.innerText = data.title;
+					body.innerHTML = "<p>" + data.message + "</p>"
+					
+					myModal.show();
+				}
+			})
 		}
 		
 	</script>

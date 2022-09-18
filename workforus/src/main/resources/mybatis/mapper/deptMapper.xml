@@ -26,18 +26,9 @@
 		 WHERE DEPT_NO = #{no}
 	</select>
 	
-	<select id="selectDeptName" parameterType="deptDto">
-		SELECT DEPT_NO
-			 , DEPT_NM
-			 , DEPT_MANAGER_ID
-			 , DEPT_ADD_DT
-			 , DEPT_MOD_DT
-		  FROM TB_DEPARTMENTS
-		 WHERE DEPT_NM = #{deptName}
-	</select>
-	
 	<insert id="insertDept" parameterType="deptDto">
-		INSERT INTO TB_DEPARTMENTS VALUES (DEPARTMENTS_SEQ.NEXTVAL, #{deptName}, #{deptMngId}, #{deptAddDt}, #{deptModDt})
+		INSERT INTO TB_DEPARTMENTS (DEPT_NO, DEPT_NM, DEPT_MANAGER_ID, DEPT_ADD_DT, DEPT_MOD_DT)
+			 VALUES (DEPARTMENTS_SEQ.NEXTVAL, #{deptName}, #{deptMngId}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<update id="updateDept" parameterType="deptDto">
@@ -49,7 +40,7 @@
 	
 	<delete id="deleteDept">
 		DELETE FROM TB_DEPARTMENTS
-		 WHERE DEPT_NO = #{deptNo}
+		 WHERE DEPT_NO = #{no}
 	</delete>
 	
 </mapper>
