@@ -3,8 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:url var="deptAddUrl" value="admin/dept_add" />
-<form id="addDeptForm" action="${deptAddUrl}" method="post">
+<c:url var="deptAddUrl" value="/admin/dept_manage" />
+<form action="${deptAddUrl}" method="post">
 	<div class="mb-3">
 		<label for="deptNo" class="col-form-label">부서 코드는 자동으로 생성됩니다.</label>
 		<input type="text" class="form-control" id="id_deptNo" readonly>
@@ -26,7 +26,7 @@
 		<input class="form-control" id="id_deptModDt" name="deptModDt" readonly>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-success" onclick="deptAdd();" id="addDeptBtn">완 료</button>
+		<button type="submit" class="btn btn-success" id="addDeptBtn">완 료</button> <!-- onclick="deptAdd();" -->
 		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취 소</button>
 	</div>
 </form>

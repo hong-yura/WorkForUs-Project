@@ -38,7 +38,7 @@
 		 WHERE DEPT_NO = #{deptNo}
 	</update>
 	
-	<delete id="deleteDept" parameterType="_int">
+	<delete id="deleteDept">
 		DELETE FROM TB_DEPARTMENTS
 		 WHERE DEPT_NO = #{no}
 	</delete>

@@ -51,14 +51,11 @@ public class DeptService {
 		return data;
 	}
 	
-	
-	
 	public boolean removeDept(DeptDTO data) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		int result = mapper.deleteDept(data.getDeptNo());
 		return result == 1 ? true : false;
-	}
-	
+	}	
 	
 	
 }

@@ -72,23 +72,23 @@ public class DeptController {
 	}
 	
 	// 부서 추가 저장 요청
-	@SuppressWarnings("unchecked")
-	@ResponseBody
-	@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
-	public String addDept(@RequestBody DeptDTO deptDto) {
-		// 로그인 세션 추가하기
-		
-		logger.info("addDept(deptDto={})", deptDto);
-		
-		DeptDTO data = deptService.addDept(deptDto);
-		
-		JSONObject json = new JSONObject();
-		
-		json.put("deptName", data.getDeptName());
-		json.put("deptMngId", data.getDeptMngId());
-		
-		return json.toJSONString();
-	}
+		@SuppressWarnings("unchecked")
+		@ResponseBody
+		@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
+		public String addDept(@RequestBody DeptDTO deptDto) {
+			// 로그인 세션 추가하기
+			
+			logger.info("addDept(deptDto={})", deptDto);
+			
+			DeptDTO data = deptService.addDept(deptDto);
+			
+			JSONObject json = new JSONObject();
+			
+			json.put("deptName", data.getDeptName());
+			json.put("deptMngId", data.getDeptMngId());
+			
+			return json.toJSONString();
+		}
 	
 	// 부서 수정 폼 요청
 	@GetMapping(value = "dept_modify")

@@ -15,7 +15,7 @@
 	<script src="${staticUrl}/js/pages/admin/jui-ui.min.js"></script>
 </head>
 <script type="text/javascript">
-/* 	function formCheck(form) {
+	function formCheck(form) {
 		var modal = new bootstrap.Modal(document.getElementById("errorModal"), {
 			keyboard: false
 		});
@@ -29,7 +29,7 @@
 		}
 		
 		form.submit();
-	} */
+	}
 	
 
 	
@@ -71,12 +71,13 @@
 											<h4>조직도 설계</h4>
 										</div>
 										<div class="col-md-3">
+											<!-- adminUrl -->
 											<c:url var="adminUrl" value="/admin" />
 											<button type="button" class="btn btn-outline-primary"
 												data-bs-toggle="modal" data-bs-target="#deptAddModal">추 가</button>
 										</div>
 									</div>
-									<!-- tree -->
+									<!-- tree Start -->
 									<div class="jui">
 										<div class="row row-tree">
 											<div class="col col-3">
@@ -84,7 +85,6 @@
 													<li class="open root">
 														<i></i><a>workforus</a>
 														<ul>
-														
 														<c:forEach items="${deptDatas}" var="deptData">
 															<li class="open">
 																<i></i><a onclick="deptDetail(${deptData.deptNo});" >${deptData.deptName}</a>
@@ -286,7 +286,6 @@
 			
 		}
 		
-		
 		// 부서 추가
 		function deptAdd() {
 			$.ajax({
@@ -309,7 +308,7 @@
 					
 			})
 		}
-		
+
 		
 		// 부서 삭제
 		function deptDelete(deptNo) {
