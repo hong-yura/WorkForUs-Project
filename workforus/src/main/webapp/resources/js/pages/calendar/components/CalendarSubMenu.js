@@ -17,23 +17,22 @@ const CalendarSubMenu = (props) => {
           props.subMenu.map((item) => (
             <li className="submenu-item" key={item.calId}>
               <input
-                class="form-check-input"
+                className="form-check-input"
                 type="checkbox"
                 id="flexCheckDefault"
                 name={item.calId}
                 onClick={(event)=>{props.checkCalendarVisibilitiy(event)}}
                 defaultChecked
               />
-              <label class="form-check-label" for="flexCheckDefault">
+              <label className="form-check-label">
                 {item.calName}
               </label>
             </li>
           ))}
         <li className="submenu-item">
-          <i class="bi bi-plus-square"></i>
+          <i className="bi bi-plus-square"></i>
           <label
-            class="form-check-label"
-            for="flexCheckDefault"
+            className="form-check-label"
             onClick={() => setOnModal(true)}
           >
             추가하기

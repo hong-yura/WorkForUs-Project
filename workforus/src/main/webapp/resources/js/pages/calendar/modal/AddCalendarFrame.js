@@ -35,7 +35,7 @@ const AddCalendarFrame = (props) => {
       <div
         className="modal fade text-left show"
         id="inlineForm"
-        tabindex="-1"
+        tabIndex="-1"
         aria-modal="true"
         role="dialog"
         style={{ display: "block" }}
@@ -63,42 +63,42 @@ const AddCalendarFrame = (props) => {
                     onChange={onInputChange}
                   />
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="calAccess"
                     value="0"
                     id="calAccess1"
                     onChange={onInputChange}
                   />
-                  <label class="form-check-label" for="calAccess1">
+                  <label className="form-check-label" htmlFor="calAccess1">
                     비공개
                   </label>
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="calAccess"
                     value="1"
                     id="calAccess2"
                     onChange={onInputChange}
                   />
-                  <label class="form-check-label" for="calAccess2">
+                  <label className="form-check-label" htmlFor="calAccess2">
                     수락 후 공개
                   </label>
                 </div>
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="radio"
                     name="calAccess"
                     value="2"
                     id="calAccess3"
                     onChange={onInputChange}
                   />
-                  <label class="form-check-label" for="calAccess3">
+                  <label className="form-check-label" htmlFor="calAccess3">
                     전체 공개
                   </label>
                 </div>
