@@ -4,17 +4,25 @@ pageEncoding="UTF-8"%>
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Insert title here</title>
+    <title>workforus - calendar</title>
     <link rel="stylesheet" href="static/css/pages/calendar.css" />
-    <link
-      rel="stylesheet"
-      href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css"
-    />
-    <%@ include file="../module/head.jsp" %> <%@ include
-    file="../module/navigation.jsp" %>
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css"/>    
+    <%@ include file="../module/head.jsp" %>
+    <c:url var="axiosUrl" value="/webjars/axios/0.27.2" />
+    <c:url var="babelUrl" value="/webjars/babel-standalone/6.26.0" />
+    <c:url var="reactUrl" value="/webjars/react/18.2.0" />
+    <c:url var="reactDomUrl" value="/webjars/react-dom/18.2.0" />
+	<script src="${axiosUrl}/dist/axios.min.js"></script>
+	<script src="${babelUrl}/babel.min.js"></script>
+	<script src="${reactUrl}/umd/react.development.js"></script>
+	<script src="${reactDomUrl}/umd/react-dom.development.js"></script>
+	<!-- for deployment -->
+	<%-- <script src="${reactUrl}/umd/react.production.minjs"></script> --%>
+	<%-- <script src="${reactDomUrl}/umd/react-dom.production.min.js"></script> --%>
   </head>
 
   <body>
+    <%@ include file="../module/navigation.jsp" %>
     <div id="app">
       <div id="main">
         <div id="calendar-root"></div>
@@ -24,22 +32,8 @@ pageEncoding="UTF-8"%>
 
     <script src="static/js/main.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/@mui/x-date-pickers@5.0.1/node/index.min.js"></script>
-
-    <!-- add axios.js library -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-    <!-- add react.js library -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
     <!-- Add toast ui react calendar -->
     <script src="https://cdn.jsdelivr.net/npm/@toast-ui/react-calendar@2.1.3/dist/toastui-react-calendar.min.js"></script>
-    <!-- Add bebel js library -->
-    <script src=" https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <!-- Add toast ui datepicker, timepicker js library and css -->
-    <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.js"></script>
-    <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.js"></script>
     <!-- js files -->
     <script type="text/babel" src="static/js/pages/calendar/utils/setTime.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/utils/setEndDate.js"></script>
