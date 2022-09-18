@@ -11,10 +11,10 @@ public interface DeptMapper {
 	
 	public DeptDTO selectDeptDetail(int no);
 	
-	public DeptDTO insertDept();
+	public boolean insertDept(DeptDTO data);
 	
 	public List<DeptDTO> updateDept(DeptDTO deptDto);
 	
-	public boolean deleteDept(int deptNo);
+	public int deleteDept(int no);
 	
 }
