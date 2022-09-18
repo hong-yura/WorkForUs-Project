@@ -67,7 +67,7 @@ const AddScheduleFrame = (props) => {
       <div
         className="modal fade text-left show"
         id="inlineForm"
-        tabindex="-1"
+        tabIndex="-1"
         aria-modal="true"
         role="dialog"
         style={{ display: "block" }}
@@ -88,7 +88,7 @@ const AddScheduleFrame = (props) => {
               <div className="modal-body">
                 <label>캘린더 선택</label>
                 <select
-                  class="form-select"
+                  className="form-select"
                   aria-label="Default select example"
                   onChange={onInputChange}
                   onBlur={onInputBlur}
@@ -96,7 +96,7 @@ const AddScheduleFrame = (props) => {
                   <option>캘린더를 선택해주세요</option>
                   {props.myCal.map((cal) => {
                     return (
-                      <option id={cal.calId} value={cal.calId}>
+                      <option key={cal.calId} id={cal.calId} value={cal.calId}>
                         {cal.calName}
                       </option>
                     );
@@ -145,21 +145,20 @@ const AddScheduleFrame = (props) => {
                   />
                 </div>
 
-                <div class="form-check">
+                <div className="form-check">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     name="scheAlltime"
                     type="checkbox"
-                    id="flexCheckDefault"
                     onChange={onCheckBoxChange}
                     onBlur={onCheckBoxBlur}
                   />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <label className="form-check-label">
                     종일 여부
                   </label>
                 </div>
                 {inputs.scheAlltime === "N" && (
-                  <>
+                  <React.Fragment>
                     <label>일정 시작 시간: </label>
                     <div className="form-group">
                       <input
@@ -181,7 +180,7 @@ const AddScheduleFrame = (props) => {
                         onBlur={onInputBlur}
                       />
                     </div>
-                  </>
+                  </React.Fragment>
                 )}
               </div>
               <div className="modal-footer">
