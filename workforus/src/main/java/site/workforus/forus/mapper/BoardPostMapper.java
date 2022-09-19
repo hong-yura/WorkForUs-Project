@@ -28,6 +28,9 @@ public interface BoardPostMapper {
 	
 	// postId 가져오기 -> 다음 시퀀스
 	public int selectPostId();
+	
+	// 게시글 파일 업로드
+	public int insertPostUploadFile(PostUploadFileDTO fileData);
 		
 	// 게시글 수정
 	public int updateBoardPost(BoardPostDTO boardPostDto);
@@ -38,8 +41,6 @@ public interface BoardPostMapper {
 	// 게시글 갯수 가져오기
 	public int generalPostCount(int boardId);
 
-	// 게시글 파일 업로드
-	public int insertPostUploadFile(PostUploadFileDTO fileData);
 
 	
 

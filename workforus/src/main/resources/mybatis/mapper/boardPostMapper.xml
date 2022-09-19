@@ -142,27 +142,27 @@
  	 <!-- 게시글 댓글 추가 -->
  	 <insert id="insertComment" parameterType="postCommentDto">
  	 	INSERT INTO TB_POST_COMMENTS
- 	 	VALUES (post_comment_seq.NEXTVAR, )
+ 	 	VALUES (post_comment_seq.NEXTVAL, )
  	 </insert>
  	 
  	 <!-- 다음 시퀀스(postId) 가져오기 -->
  	 <select id="selectPostId" resultType="_int">
- 	 	SELECT board_post_seq.NEXTVAR FROM DUAL
+ 	 	SELECT board_post_seq.NEXTVAL FROM DUAL
  	 </select>
  	 
  	 
  	 <!-- 게시글 추가 -->
- 	 <insert id="insertPost" parameterType="boardPostDto">
+ 	 <insert id="insertBoardPost" parameterType="boardPostDto">
  	 	INSERT INTO TB_BOARD_POSTS
  	 	VALUES (#{postId}, #{writer}, #{boardId}, #{postTitle}, #{postPw}
- 	 			, #{content}, #{addDate}, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
+ 	 			, #{content}, SYSDATE, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
  	 			, #{noticeYn}, #{temporaryYn}, #{reportYn}, #{likeCnt})
  	 </insert>
  	 
  	 <!-- 게시글 파일 업로드 -->
- 	 <insert id="insertPostFile" parameterType="fileUploadDto">
+ 	 <insert id="insertPostUploadFile" parameterType="fileUploadDto">
  	 	INSERT INTO TB_POST_FILES 
- 	 	VALUES (post_file_seq.NEXTVAR,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
+ 	 	VALUES (post_file_seq.NEXTVAL,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
  	 </insert>
  	 
  	 
