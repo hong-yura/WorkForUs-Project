@@ -162,7 +162,8 @@ public class CommuteService{
 		Date time2 = sdf.parse(getoffTime);		// 퇴근시간
 
 		//기본시간
-		Date defaultTime = defaultSdf.parse("1970-01-01 09:00:00");
+		Date defaultTime = defaultSdf.parse("1970-01-01 09:00:00");	// 9시
+		Date lastTime = defaultSdf.parse("1970-01-01 23:00:00");	// 만약 23시 이후에 출근한다면 점심시간을 빼지않도록 해야한다.
 		Date lunchTime = sdf.parse("13:00:00");
 		
 		
@@ -179,13 +180,18 @@ public class CommuteService{
 		} 
 		// 9시 이후 출근
 		else {
-			// a. 1시 이후 퇴근
-			if(time2.after(lunchTime) || time2.equals(lunchTime)) {
-				return _afterlunch(time2, inTime);		
-			}
-			// b. 1시 이전 퇴근
-			else {
-				return _beforelunch(time2, inTime);		
+			// 23시 이후에 출근
+			if(incommute.after(lastTime) || incommute.equals(lastTime)) {
+				return _beforelunch(time2, inTime);
+			} else {
+				// a. 1시 이후 퇴근
+				if(time2.after(lunchTime) || time2.equals(lunchTime)) {
+					return _afterlunch(time2, inTime);		
+				}
+				// b. 1시 이전 퇴근
+				else {
+					return _beforelunch(time2, inTime);		
+				}
 			}
 		}
 	}
@@ -283,5 +289,107 @@ public class CommuteService{
 		int result = mapper.selectCntList(empId, yearmonth1);
 		return result;
 	}
+	
+	// 출근시간은 있고 퇴근시간이 없다면 23:59:59으로 설정해주기
+	public boolean updateGetoff(String empId) throws Exception {
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
+		int number = 0;
+		Calendar cal = Calendar.getInstance();
+		cal.getTime();
+		int cntDay = cal.get(Calendar.DAY_OF_WEEK);
+		
+		if(cal.get(Calendar.DAY_OF_WEEK) != 1) { //일요일일때는 전날 정보를 가져올 필요가 없음!			
+			int i = 0;
+			while(i < cntDay - 1) {
+				cal.set(Calendar.DAY_OF_WEEK, i + 1);				
+				cal.getTime();										
+				int year = cal.get(Calendar.YEAR);
+				int month = cal.get(Calendar.MONTH) + 1;
+				int date = cal.get(Calendar.DAY_OF_MONTH);
+				String beforeDate = String.format("%02d%02d%02d", year, month, date); 
+				System.out.println(beforeDate);
+				CommuteDTO data = mapper.selectByEmpId(empId, beforeDate);
+				if(data != null) {
+					if(data.getCommuteTime() != null && data.getGetoffTime() == null) {		// 출근시간만 있고 퇴근시간 없을때
+						mapper.updateGetoffTime(empId, beforeDate);							// 퇴근시간 업데이트
+						number++;																// 이에따른 추가근무시간이랑 주간근무시간 업데이트해야함  
+						Date workTime = workTime(data.getCommuteTime(), "1970-01-01 23:59:59");
+						Date addedTime = _updateAddedtime(workTime);
+						mapper.updateWorktime(empId, beforeDate, workTime);
+						mapper.updateAddedtime(empId, beforeDate, addedTime);
+						
+						// 주간 추가시간이랑 주간 근무시간은 어떻게 할것인가........
+					}					
+				}
+				i++;
+			}
+		}
+		return number >= 1 ? true : false;
+	}
+
+	
+	// 주단위 근무시간 계산 (24시간 넘어가는거 나타내기위해)
+	public String calculate(String weekWorktime) throws Exception { 
+		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+
+		Date time1 = defaultSdf.parse("1970-01-01 00:00:00"); // 기본시간 
+		Date time2 = defaultSdf.parse(weekWorktime);		// 이번주 근무시간
+		long time3 = (time2.getTime() - time1.getTime())/1000;   
+		long hour = (time3 / (60 * 60));
+		long minute = ((time3 % (60 * 60))) / 60;
+		long second = ((time3 % (60 * 60))) % 60;	
+		String time = String.format("%02d:%02d:%02d", hour, minute, second);
+		
+		
+		logger.info("time2는 {}", time2);	
+		logger.info("time은 {}", time);	
+		
+		return time;
+	}
+	
+	// 40시, 50시간 퍼센테이지
+	public long progress(String weekWorktime) throws Exception {
+		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
+		Date weekTime = defaultSdf.parse(weekWorktime);
+		System.out.println(weekTime);
+		double progress = 0;
+		if(weekTime.getTime()/defaultTime.getTime() < 1) {
+			double dftTime = defaultTime.getTime() * 1.0 + 32400000;	// 음수가 나와서 한국시간 더해줌 
+			double wkTime = weekTime.getTime() * 1.0 + 32400000; 		// 음수가 나와서 한국시간 더해줌 
+			System.out.println(dftTime);
+			System.out.println(wkTime + "@@@");
+			progress = (wkTime / dftTime);
+			progress = Double.parseDouble(String.format("%.2f", progress));
+		} else {
+			progress = 1;
+		}
+		System.out.println(progress + "!!");
+		return (long) (progress * 100);
+	}
+	
+	// 이번주 잔여시간 구하기
+	public String remainTime(String weekWorktime) throws Exception {
+		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		
+		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
+		Date weekTime = defaultSdf.parse(weekWorktime);
+		String remainTime = "00:00:00";
+		if(defaultTime.getTime() - weekTime.getTime() > 0) {
+			long diffTime = (defaultTime.getTime() - weekTime.getTime())/1000;
+			long hour = (diffTime / (60 * 60));
+			long minute = ((diffTime % (60 * 60))) / 60;
+			long second = ((diffTime % (60 * 60))) % 60;	
+			
+			remainTime = String.format("%02d:%02d:%02d", hour, minute, second);
+		}
+		return remainTime;
+	}
+	
+	
+	
+	
 	
 }

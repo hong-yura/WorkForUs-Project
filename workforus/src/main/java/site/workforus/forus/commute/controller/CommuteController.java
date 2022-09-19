@@ -63,7 +63,9 @@ public class CommuteController{
         int day = cal.get(Calendar.DATE);
 //        int dayOfmonth = cal.get(Ca	lendar.DAY_OF_MONTH);
 //        int dayOfweek = cal.get(Calendar.DAY_OF_WEEK);
-
+        
+        service.updateGetoff(empId);
+        
 		// 금일 출근기록이 있음
 		if(data != null) {
 			// db에 저장된 date타입에서 시간만 잘라냄
@@ -87,9 +89,9 @@ public class CommuteController{
 			if(service.beforeSelect(empId) != null) {
 				CommuteDTO temp = service.beforeSelect(empId); // 이번주에 마지막 출근기록 DTO
 				if(temp.getGetoffTime()!= null) {
-					String tempTime = (_calculate(temp.getWeekWorktime()));
-					remainTime = _remainTime(temp.getWeekWorktime());
-					progress = _progress(temp.getWeekWorktime());	
+					String tempTime = (service.calculate(temp.getWeekWorktime()));
+					remainTime = service.remainTime(temp.getWeekWorktime());
+					progress = service.progress(temp.getWeekWorktime());	
 					temp.setWeekAddtime(temp.getWeekAddtime().substring(11));
 					
 					model.addAttribute("weekWorktime", tempTime);
@@ -98,9 +100,9 @@ public class CommuteController{
 			
 			}
 		} else {
-			 String tempTime = (_calculate(data.getWeekWorktime()));
-			 remainTime = _remainTime(data.getWeekWorktime());
-			progress = _progress(data.getWeekWorktime());	
+			 String tempTime = (service.calculate(data.getWeekWorktime()));
+			 remainTime = service.remainTime(data.getWeekWorktime());
+			progress = service.progress(data.getWeekWorktime());	
 			data.setWeekAddtime(data.getWeekAddtime().substring(11));
 			data.setWeekWorktime(data.getWeekWorktime().substring(11));
 			
@@ -163,8 +165,9 @@ public class CommuteController{
 		Calendar cal = Calendar.getInstance();
 
 		
+				
 		if(data != null) {	// 출근기록이 있음
-			 if(nowTime.after(defaultTime)) { // 9시 이전 퇴근 불가능
+			if(nowTime.after(defaultTime)) { // 9시 이전 퇴근 불가능
 				service.updateOuttime(empId); // 퇴근시간 업데이트
 				
 				// 주단위 시간 업데이트 
@@ -172,11 +175,11 @@ public class CommuteController{
 				SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
 				int today = 0;
 				if(Calendar.DAY_OF_WEEK != 1) {
-					today = cal.get(Calendar.DAY_OF_WEEK);	
+					today = cal.get(Calendar.DAY_OF_WEEK);	// 일요일이 아니면 해당하는 숫자로 변경
 				}
 				int addSum = 0;
 				int workSum = 0;
-				// 일 ~ 토
+				// 월 ~ 토
 				if(today != 0) {
 					
 					for(int i = 0; i < today; i++) {
@@ -214,9 +217,9 @@ public class CommuteController{
 								String tmp2 = String.format("%02d:%02d:%02d", hour2, minute2, second2);
 								weekWorktime = timeformat.parse(tmp2);
 								
-		 						model.addAttribute("tmp2", tmp2);
+								model.addAttribute("tmp2", tmp2);
 								service.updateWeek(empId, weekAddtime, weekWorktime);
-
+								
 								logger.info(calData.getCommuteDt());
 								logger.info("★weekAddtime: {}",weekAddtime);
 								logger.info("★weekWorktime: {}",weekWorktime);
@@ -224,7 +227,7 @@ public class CommuteController{
 								
 							}
 						}	
-
+						
 					}
 				} else {
 					for(int i = 0; i <= today; i++) {
@@ -267,16 +270,15 @@ public class CommuteController{
 								logger.info("★weekAddtime: {}",weekAddtime);
 								logger.info("★weekWorktime: {}",weekWorktime);
 								
-		 						model.addAttribute("tmp2", tmp2);
+								model.addAttribute("tmp2", tmp2);
 								model.addAttribute("weekAddtime", weekAddtime);
 								model.addAttribute("weekWorktime", weekWorktime);
 							}
 						}
-
+						
 						
 					}
 				}
-				
 				
 			}			
 		}
@@ -321,63 +323,9 @@ public class CommuteController{
 	
 	
 	
-	// 주단위 근무시간 계산 (24시간 넘어가는거 나타내기위해)
-	private String _calculate(String weekWorktime) throws Exception { 
-		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
-		Date time1 = defaultSdf.parse("1970-01-01 00:00:00"); // 기본시간 
-		Date time2 = defaultSdf.parse(weekWorktime);		// 이번주 근무시간
-		long time3 = (time2.getTime() - time1.getTime())/1000;   
-		long hour = (time3 / (60 * 60));
-		long minute = ((time3 % (60 * 60))) / 60;
-		long second = ((time3 % (60 * 60))) % 60;	
-		String time = String.format("%02d:%02d:%02d", hour, minute, second);
-		
-		
-		logger.info("time2는 {}", time2);	
-		logger.info("time은 {}", time);	
-		
-		return time;
-	}
 	
-	// 이번주 잔여시간 구하기
-	private String _remainTime(String weekWorktime) throws Exception {
-		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		
-		
-		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
-		Date weekTime = defaultSdf.parse(weekWorktime);
-		String remainTime = "00:00:00";
-		if(defaultTime.getTime() - weekTime.getTime() > 0) {
-			long diffTime = (defaultTime.getTime() - weekTime.getTime())/1000;
-			long hour = (diffTime / (60 * 60));
-			long minute = ((diffTime % (60 * 60))) / 60;
-			long second = ((diffTime % (60 * 60))) % 60;	
-			
-			remainTime = String.format("%02d:%02d:%02d", hour, minute, second);
-		}
-		return remainTime;
-	}
+
 	
-	// 40시, 50시간 퍼센테이지
-	private long _progress(String weekWorktime) throws Exception {
-		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
-		Date weekTime = defaultSdf.parse(weekWorktime);
-		System.out.println(weekTime);
-		double progress = 0;
-		if(weekTime.getTime()/defaultTime.getTime() < 1) {
-			double dftTime = defaultTime.getTime() * 1.0 + 32400000;	// 음수가 나와서 한국시간 더해줌 
-			double wkTime = weekTime.getTime() * 1.0 + 32400000; 		// 음수가 나와서 한국시간 더해줌 
-			System.out.println(dftTime);
-			System.out.println(wkTime + "@@@");
-			progress = (wkTime / dftTime);
-			progress = Double.parseDouble(String.format("%.2f", progress));
-		} else {
-			progress = 1;
-		}
-		System.out.println(progress + "!!");
-		return (long) (progress * 100);
-	}
+	
 } 	
