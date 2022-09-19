@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@Alias("postUploadDto")  
+@Alias("fileUploadDto")  
 public class PostUploadFileDTO {
 	private int fileId;				// 파일 id
 	private int postId;				// 게시글 id 
@@ -17,12 +17,12 @@ public class PostUploadFileDTO {
 	private String uploadLocation;	// 파일 경로(real path)
 	private String uploadUrl;		// 파일 url
 	private String fileType;		// 파일 확장자
-	private String summ_yn;			// summernote인지 아닌지 
+	private String summYn;			// summernote인지 아닌지 
 	
 	public PostUploadFileDTO () {}
 
 	public PostUploadFileDTO(int fileId, int postId, String fileNm, String uploadLocation, String uploadUrl,
-			String fileType, String summ_yn) {
+			String fileType, String summYn) {
 		super();
 		this.fileId = fileId;
 		this.postId = postId;
@@ -30,7 +30,7 @@ public class PostUploadFileDTO {
 		this.uploadLocation = uploadLocation;
 		this.uploadUrl = uploadUrl;
 		this.fileType = fileType;
-		this.summ_yn = summ_yn;
+		this.summYn = summYn;
 	}
 	
 }

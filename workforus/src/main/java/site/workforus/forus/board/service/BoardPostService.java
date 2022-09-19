@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.model.BoardPostDTO;
+import site.workforus.forus.board.model.PostUploadFileDTO;
 import site.workforus.forus.mapper.BoardMapper;
 import site.workforus.forus.mapper.BoardPostMapper;
 
@@ -39,10 +40,14 @@ public class BoardPostService {
 	}
 	
 	// 게시글 추가
-	public boolean addPostData(BoardPostDTO postDto) {
+	public int addPostData(BoardPostDTO postDto) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		int result = mapper.insertBoardPost(postDto);
-		return result == 1 ? true : false;
+		// 다음 시퀀스 불러오기(postId)
+		int postId = mapper.insertPostId(); // 다음 게시글 id가 몇 번인지 알아야 한다.
+		
+		postDto.setPostId(postId); 			// 위에서 구한 postId값을 넣어준다.
+		mapper.insertBoardPost(postDto);	// 게시글 저장
+		return postId;
 	}
 	
 	// 게시글 삭제
@@ -57,5 +62,11 @@ public class BoardPostService {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		int result = mapper.updateBoardPost(postDto);
 		return result == 1 ? true : false;
+	}
+
+	// 게시글 파일 업로드
+	public void addUploadFileData(PostUploadFileDTO fileData) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		mapper.insertPostUploadFile(fileData);
 	}
 }

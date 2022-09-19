@@ -2,15 +2,13 @@ package site.workforus.forus.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,50 +134,52 @@ public class BoardController {
 	}
 
 	// 게시글 추가 요청
-	@RequestMapping(value="/post/add", produces="application/json; charset=utf-8")
+	@PostMapping(value="/post/add", produces="application/json; charset=utf-8")
 	public String addPost(Model model, HttpSession session, HttpServletRequest request
 						, int boardId
-						, @RequestParam("file") MultipartFile[] files) {
+						, @ModelAttribute BoardPostDTO postDto // 저장할 데이터
+						, @RequestParam("file") MultipartFile[] files) throws IllegalStateException, IOException {
 		// 게시판 정보가 필요
 		logger.info("addPost=(boardId={})", boardId);
-		JSONObject json = new JSONObject();
 		
-		// 내부경로로 저장
-		String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
-		String fileRoot = realPath+"static/images/board"; // 어디에 저장할 건지
+		// 게시글을 저장해야 한다. 
+		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
-		for(MultipartFile file : files) {
+		if (files != null) {
+			// 내부경로로 저장
+			String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
+			String fileRoot = realPath+"static/images/board/"; // 어디에 저장할 건지
 			
-			String originalFileName = file.getOriginalFilename();	//오리지날 파일명
-			String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-			String savedFileName = originalFileName + "-" + UUID.randomUUID() + extension;	//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
+			PostUploadFileDTO fileData = new PostUploadFileDTO(); // fileData 리스트를 전달해줘야 한다.
 			
-			File targetFile = new File(fileRoot + savedFileName);	
-			try {
-				InputStream fileStream = file.getInputStream();
-				FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-				json.put("url", request.getContextPath() + "/static/images/board" + savedFileName); // contextroot + resources + 저장할 내부 폴더명
-				json.put("responseCode", "success");
-			} catch (IOException e) {
-				FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
-				json.put("responseCode", "error");
-				e.printStackTrace();
+			for(MultipartFile file : files) {
+				
+				String originalFileName = file.getOriginalFilename();	//오리지날 파일명
+				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+				String savedFileName = originalFileName + "-" + UUID.randomUUID() + extension;	//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
+				File targetFile = new File(fileRoot + savedFileName);	 // 저장할 위치와 
+				
+				file.transferTo(targetFile); // 파일 생성
+				
+				// uploadFileDTO에 저장을 해줘야 한다.
+				fileData.setFileNm(savedFileName);
+				fileData.setFileType(extension);
+				fileData.setPostId(boardId);
+				fileData.setSummYn("N");
+				fileData.setUploadLocation(realPath);
+				fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);
+				
+				// DTO를 db에 넘긴다.
+				postService.addUploadFileData(fileData);
+				
 			}
-			// uploadFileDTO에 저장을 해줘야 한다.
-			PostUploadFileDTO fileData = new PostUploadFileDTO();
-			fileData.setFileNm(savedFileName);
-			fileData.setFileType(extension);
-			fileData.setPostId((Integer)session.getAttribute("postId"));
-			fileData.setSumm_yn("Y");
-			fileData.setUploadLocation(realPath);
-			fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);
-			
-			// DTO를 db에 넘긴다.
-//			boolean result = postService.addPostData();
-			
+			model.addAttribute("files", fileData);
 		}
-		return json.toJSONString().toString(); // ajax로 저장된 url을 전달
-		return "/board/list";
+		if(postId > 0) { // 저장 성공시
+			return "redirect:/board/detail?postId=" + postId; // 해당 게시글로 이동해야 한다. 
+		}else {			 // 저장 실패시
+			return "/board/post/add";
+		}
 	}
 	
 	//게시글 수정 화면
