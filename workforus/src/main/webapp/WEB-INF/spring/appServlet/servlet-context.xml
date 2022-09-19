@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
-			 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-			 xmlns:beans="http://www.springframework.org/schema/beans"
-			 xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-			 xmlns:tx="http://www.springframework.org/schema/tx"
-			 xmlns:context="http://www.springframework.org/schema/context"
-			 xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
-								 http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
-								 http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
-								 http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
-								 http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx https://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<context:component-scan base-package="site.workforus.forus" />
@@ -62,5 +64,14 @@
 	
 	<!-- @Transactional 어노테이션 처리 -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- websocket -->
+	<beans:bean id="chattingHandler" class="site.workforus.forus.socket.Chatting"></beans:bean>
+	<websocket:handlers>
+		<websocket:mapping handler="chattingHandler" path="/chatting/cs"/>
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
+		</websocket:handshake-interceptors>
+	</websocket:handlers>
 	
 </beans:beans>
