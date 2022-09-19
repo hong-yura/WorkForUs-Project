@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.model.BoardPostDTO;
+import site.workforus.forus.board.model.PostUploadFileDTO;
 import site.workforus.forus.mapper.BoardMapper;
 import site.workforus.forus.mapper.BoardPostMapper;
 
@@ -21,7 +22,6 @@ public class BoardPostService {
 		
 		List<BoardPostDTO> datas = mapper.selectPostAll(boardId);
 		return datas;
-		
 	}
 
 	// 게시글 하나 가져오기 -> empService 사용할 수 있을 때 구현 예정 
@@ -37,5 +37,36 @@ public class BoardPostService {
 		int postCnt = mapper.generalPostCount(boardId);
 		
 		return postCnt;
+	}
+	
+	// 게시글 추가
+	public int addPostData(BoardPostDTO postDto) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		// 다음 시퀀스 불러오기(postId)
+		int postId = mapper.insertPostId(); // 다음 게시글 id가 몇 번인지 알아야 한다.
+		
+		postDto.setPostId(postId); 			// 위에서 구한 postId값을 넣어준다.
+		mapper.insertBoardPost(postDto);	// 게시글 저장
+		return postId;
+	}
+	
+	// 게시글 삭제
+	public boolean deletePostData(int postId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.deleteBoardPost(postId);
+		return result == 1 ? true : false;
+	}
+	
+	// 게시글 수정
+	public boolean updatePostData(BoardPostDTO postDto) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.updateBoardPost(postDto);
+		return result == 1 ? true : false;
+	}
+
+	// 게시글 파일 업로드
+	public void addUploadFileData(PostUploadFileDTO fileData) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		mapper.insertPostUploadFile(fileData);
 	}
 }

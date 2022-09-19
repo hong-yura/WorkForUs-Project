@@ -9,15 +9,14 @@
 	<meta charset="UTF-8"> 
 	<title>workforus - 게시판</title>
     <%@ include file="../module/header.jsp" %>
-    <c:url value="/static/css" var="cssUrl"/>
-    <link rel="stylesheet" href="${cssUrl}/pages/board.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
 	
     <div id="app">
       <div id="main">
-      	<div class="page-heading">
+      	<div class="page-heading margin-left-10">
       		<h3>Board</h3> <!-- 게시판 이름 -->
       	</div>
 	      	<!-- board -->
@@ -34,8 +33,8 @@
 								<li>운영자 : ${boardData.boardManager}</li>
 							</ul>
 							<hr style="margin: 0px; width: 99%">
-							<div class="dropdown black" >
-								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+							<div class="dropdown" >
+								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
 								게시판 멤버</a>
 								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
 									<li>
@@ -57,8 +56,10 @@
 					<!-- 메인 -->
 					<div class="section-main radius">
 						<div class="main-button">
-							<button type="submit" class="btn black" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
-							<button type="submit" class="btn black"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
+							<c:url value="/board/post/add" var="postAddUrl"/>
+							<c:url value="/board/add" var="boardAddUrl"/>
+							<button type="submit" class="btn black" onclick="location.href='${postAddUrl}?boardId=${boardData.boardId}'" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
+							<button type="submit" class="btn black"  onclick="location.href='${boardAddUrl}'"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
 							<div class="search-container">
 								<!-- <select class="form-select">
 									<option>제목</option>
