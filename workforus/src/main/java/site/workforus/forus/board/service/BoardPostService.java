@@ -43,7 +43,7 @@ public class BoardPostService {
 	public int addPostData(BoardPostDTO postDto) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		// 다음 시퀀스 불러오기(postId)
-		int postId = mapper.insertPostId(); // 다음 게시글 id가 몇 번인지 알아야 한다.
+		int postId = mapper.selectPostId(); // 다음 게시글 id가 몇 번인지 알아야 한다.
 		
 		postDto.setPostId(postId); 			// 위에서 구한 postId값을 넣어준다.
 		mapper.insertBoardPost(postDto);	// 게시글 저장

@@ -8,7 +8,7 @@
 <head>
 	<meta charset="UTF-8"> 
 	<title>workforus - 게시판</title>
-    <%@ include file="../module/header.jsp" %>
+    <%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>

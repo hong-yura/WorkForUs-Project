@@ -11,7 +11,7 @@
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
-	<%@ include file="../module/header.jsp" %> <!-- 순서는 무조건 위에  -->
+	<%@ include file="../module/head.jsp" %> <!-- 순서는 무조건 위에  -->
  	<!-- 서머노트를 위해 추가해야할 부분 -->	
   	<script src="${staticUrl}/vendors/summernote/summernote-lite.js"></script>
   	<script src="${staticUrl}/vendors/summernote/lang/summernote-ko-KR.js"></script>
@@ -24,7 +24,7 @@
     <div id="app">
       <div id="main">
       	<c:url value="/board/post/add" var="postAddUrl"/>
-		<form action="${postAddUrl}" method="post" enctype="multipart/form-data" >
+		<form action="${postAddUrl}?boardId=${boardId}" method="post" enctype="multipart/form-data" >
 	      	<div class="page-heading margin-left-10">
 	      		<h3>Board</h3> <!-- 게시판 이름 -->
 	      	</div>
@@ -41,8 +41,7 @@
 	      				<input type="text" name="boardId" value="${boardId}" hidden>
 	    				<input type="text" name="postTitle" class="form-control post-title" >
 	      				<div class="file-controller">
-	      					<input type="file" name="postFile" id="files" class="file-input form-control" multiple>
-	      					
+	      					<input type="file" name="postFiles" id="files" class="file-input form-control" multiple>
 	      				</div>
 	      			</div>
 	      		</div>
@@ -50,7 +49,7 @@
 	      		<!-- 내용 입력란 - summernote 사용 -->
 	      		<div class="row">
 	      			<div class="col-12">
-		      			<textarea id="summernote" name="editordata"></textarea>
+		      			<textarea id="summernote" name="editordata">${param.content}</textarea>
 						<button class="btn float-right margin-10" type="submit">저장</button>
 	      			</div>
 	      		</div>

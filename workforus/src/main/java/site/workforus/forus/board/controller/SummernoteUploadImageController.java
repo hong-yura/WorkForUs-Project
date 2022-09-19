@@ -9,13 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.google.gson.JsonObject;
 
 import site.workforus.forus.board.model.PostUploadFileDTO;
 import site.workforus.forus.board.service.BoardPostService;
@@ -25,12 +26,12 @@ public class SummernoteUploadImageController {
 	@Autowired
 	private BoardPostService postService;
 	
-	@RequestMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
+	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String uploadSummernoteImageFile(HttpServletRequest request , HttpSession session
 										, @RequestParam("file") MultipartFile multipartFile)  {
 		
-		JSONObject json = new JSONObject();
+		JsonObject json = new JsonObject();
 		
 		// 내부경로로 저장
 		String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
@@ -44,11 +45,11 @@ public class SummernoteUploadImageController {
 		try {
 			InputStream fileStream = multipartFile.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-			json.put("url", request.getContextPath() + "/static/images/board" + savedFileName); // contextroot + resources + 저장할 내부 폴더명
-			json.put("responseCode", "success");
+			json.addProperty("url", request.getContextPath() + "/static/images/board" + savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			json.addProperty("responseCode", "success");
 		} catch (IOException e) {
 			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
-			json.put("responseCode", "error");
+			json.addProperty("responseCode", "error");
 			e.printStackTrace();
 		}
 		// uploadFileDTO에 저장을 해줘야 한다.
@@ -56,14 +57,12 @@ public class SummernoteUploadImageController {
 		fileData.setFileNm(savedFileName);
 		fileData.setFileType(extension);
 		fileData.setPostId((Integer)session.getAttribute("postId"));
-		fileData.setSumm_yn("Y");
+		fileData.setSummYn("Y");
 		fileData.setUploadLocation(realPath);
 		fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);
 		
-		// DTO를 db에 넘긴다.
-//			boolean result = postService.addPostData();
 		
-		return json.toJSONString().toString(); // ajax로 저장된 url을 전달
+		return json.toString(); // ajax로 저장된 url을 전달
 	
 	}
 }

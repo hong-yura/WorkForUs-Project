@@ -11,7 +11,7 @@
   	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   
-	<%@ include file="../module/header.jsp" %> <!-- 순서는 무조건 위에  -->
+	<%@ include file="../module/head.jsp" %> <!-- 순서는 무조건 위에  -->
  	<!-- 서머노트를 위해 추가해야할 부분 -->	
   	<script src="${staticUrl}/vendors/summernote/summernote-lite.js"></script>
   	<script src="${staticUrl}/vendors/summernote/lang/summernote-ko-KR.js"></script>

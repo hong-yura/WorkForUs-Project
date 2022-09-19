@@ -9,7 +9,7 @@
 	<meta charset="UTF-8">
 	<title>workforus - 게시판 : ${postData.postTitle}</title>
 	<!-- 헤더 수정 후 넣기 -->
-	<%@ include file="../module/header.jsp" %>
+	<%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>

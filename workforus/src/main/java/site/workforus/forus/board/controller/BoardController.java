@@ -134,11 +134,10 @@ public class BoardController {
 	}
 
 	// 게시글 추가 요청
-	@PostMapping(value="/post/add", produces="application/json; charset=utf-8")
-	public String addPost(Model model, HttpSession session, HttpServletRequest request
-						, int boardId
+	@PostMapping(value="/post/add")
+	public String addPost(Model model, HttpSession session, HttpServletRequest request, int boardId // 어디 게시판에 추가할지 알아야함
 						, @ModelAttribute BoardPostDTO postDto // 저장할 데이터
-						, @RequestParam("file") MultipartFile[] files) throws IllegalStateException, IOException {
+						, @RequestParam("postFiles") MultipartFile[] files) throws IllegalStateException, IOException {
 		// 게시판 정보가 필요
 		logger.info("addPost=(boardId={})", boardId);
 		
@@ -148,28 +147,28 @@ public class BoardController {
 		if (files != null) {
 			// 내부경로로 저장
 			String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
-			String fileRoot = realPath+"static/images/board/"; // 어디에 저장할 건지
+			String fileRoot = realPath+"static/images/board/"; 			// 어디에 저장할 건지
 			
-			PostUploadFileDTO fileData = new PostUploadFileDTO(); // fileData 리스트를 전달해줘야 한다.
+			PostUploadFileDTO fileData = new PostUploadFileDTO(); 		// fileData 리스트를 전달해줘야 한다.
 			
 			for(MultipartFile file : files) {
 				
 				String originalFileName = file.getOriginalFilename();	//오리지날 파일명
 				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-				String savedFileName = originalFileName + "-" + UUID.randomUUID() + extension;	//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
+				String savedFileName = originalFileName + "-" + UUID.randomUUID() + extension;		//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
 				File targetFile = new File(fileRoot + savedFileName);	 // 저장할 위치와 
 				
 				file.transferTo(targetFile); // 파일 생성
 				
 				// uploadFileDTO에 저장을 해줘야 한다.
-				fileData.setFileNm(savedFileName);
-				fileData.setFileType(extension);
-				fileData.setPostId(boardId);
-				fileData.setSummYn("N");
-				fileData.setUploadLocation(realPath);
-				fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);
+				fileData.setFileNm(savedFileName); 	// 실제 파일 이름
+				fileData.setFileType(extension);	// 파일 확장자
+				fileData.setPostId(postId);			// 게시글 id
+				fileData.setSummYn("N");			// summernote 아님
+				fileData.setUploadLocation(realPath);	// 실제 경로(loacation)
+				fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);	// url
 				
-				// DTO를 db에 넘긴다.
+				// DB에 저장
 				postService.addUploadFileData(fileData);
 				
 			}
@@ -187,6 +186,7 @@ public class BoardController {
 	public String getModifyPost(Model model, HttpSession session
 							, int postId) {
 		session.setAttribute("postId", postId); // 파일 저장할 때 필요함
+		
 		return "/board/modify";
 	}
 	
