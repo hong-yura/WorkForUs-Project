@@ -9,8 +9,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>연봉 조회</title>
-	<%@ include file="../module/header.jsp" %>
-	<link rel="stylesheet" href="static/css/pages/tooltip.css">
+	<%@ include file="../module/head.jsp" %>
+	<link rel="stylesheet" href="${staticUrl}/css/pages/tooltip.css">
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 	<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
@@ -146,10 +146,6 @@
     <script src="static/js/bootstrap.bundle.min.js"></script>
 	
     <script src="static/js/main.js"></script>
-	<script type="text/javascript">
-
-
-	</script>
 </body>
 <script type="text/javascript">
 	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
