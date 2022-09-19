@@ -68,8 +68,19 @@
 		minHeight: null,
 		maxHeight : null,
 		fcous : false,
-		lang: "ko-KR"
-	});
+		lang: "ko-KR",
+		disableResizeEditor: true, // 크기 조절 기능 삭제
+		callbacks: {
+		    onImageUpload : function(files, editor, welEditable){
+	
+		        // 파일 업로드(다중업로드를 위해 반복문 사용)
+		        for (var i = files.length - 1; i >= 0; i--) {
+			         uploadSummernoteImageFile(files[i],
+			         this);
+		         }
+	         }
+         } 
+	}); 
 	
 	// 이미지 파일 처리
 	function uploadSummernoteImageFile(file, el) {
