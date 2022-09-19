@@ -20,23 +20,27 @@
 	<%@ include file="../module/head.jsp" %>
 	<script type="text/javascript">
 	// 페이지 로드할 때 값 2022.09 표시
-	$(function(){
-		var cunrrentDate = new Date();
+	function loadPrevNext(element){
+		var defaultText = document.getElementById("CalendaryearMonth");
+		var year1 = defaultText.innerText.substring(0,4);
+		var month1 = defaultText.innerText.substring(5) - 1;
+		
+		var currentDate = new Date(year1, month1);
+		
+		if(element == 0) {
+			 currentDate.setMonth(currentDate.getMonth() - 1);
+			// console.log(currentDate.setMonth(date.getMonth() + 1));
+		} else {
+			currentDate.setMonth(currentDate.getMonth() + 1);
+		}
 		
 		var year = currentDate.getFullYear();
-		var month = currentDate.getMonth + 1;
-		
-		$.ajax({
-			type:"GET",
-			url:"${pageContext.request.contextPath}/work/record",
-			dataType:"json",
-			data:{
-				year: year,
-				month: month
-			}
-		});
-	})
-	
+		var month = currentDate.getMonth() + 1;
+		console.log(month);
+		var testText = document.getElementById("CalendaryearMonth");
+		testText.innerHTML = year + "." + month;
+	}
+
 	// 출근시간 입력
 	function commuteIn() {
 		var currentDate = new Date();
@@ -253,26 +257,30 @@
 	            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
 	            					Calendar cal = Calendar.getInstance();
-	            					int month1 = cal.MONTH;
 	            					cal.getTime();
-	            					
-	            					
+	            					int month1 = cal.get(Calendar.MONTH) + 1;
 	            				%>
-	            				<!-- 
-	            				페이징 
-	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="changeMonth('p')">
-		            				<i class="bi bi-caret-left"></i>
+	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
+		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
 	            				</li>
 	            				<li id="result">
-		            				<h4> 
-		            					2022.09
+		            				<h4 id="CalendaryearMonth"> 
+		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
 	  	            				</h4>
 	            				</li>
-	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="changeMonth('n')">
-		            				<i class="bi bi-caret-right"></i>
+	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
+		            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
 		            				
 	            				</li>
-	            				-->
+	            				
+	            				
+	            				<!-- 페이징 -->
+	            				
+	            				
+	            				
+	            				
+	            				
+	            				
 	            				
                             </ul>
 		            	</div>   
