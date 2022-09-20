@@ -14,8 +14,8 @@
 	<script src="${staticUrl}/js/pages/admin/jui-core.min.js"></script>
 	<script src="${staticUrl}/js/pages/admin/jui-ui.min.js"></script>
 </head>
-<script type="text/javascript">
-	function formCheck(form) {
+<!-- <script type="text/javascript">
+ 	function formCheck(form) {
 		var modal = new bootstrap.Modal(document.getElementById("errorModal"), {
 			keyboard: false
 		});
@@ -31,9 +31,8 @@
 		form.submit();
 	}
 	
+</script> -->
 
-	
-</script>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
 	<div id="app">
@@ -61,6 +60,7 @@
 			</div>
 			
 			<section class="section">
+				<c:url var="adminUrl" value="/admin" />
 				<div class="row">
 					<div class="col-xl-4">
 						<div class="card">
@@ -71,8 +71,6 @@
 											<h4>조직도 설계</h4>
 										</div>
 										<div class="col-md-3">
-											<!-- adminUrl -->
-											<c:url var="adminUrl" value="/admin" />
 											<button type="button" class="btn btn-outline-primary"
 												data-bs-toggle="modal" data-bs-target="#deptAddModal">추 가</button>
 										</div>
@@ -88,6 +86,12 @@
 														<c:forEach items="${deptDatas}" var="deptData">
 															<li class="open">
 																<i></i><a onclick="deptDetail(${deptData.deptNo});" >${deptData.deptName}</a>
+																<ul>
+																	<li class="last leaf">
+																		<i></i><a>${deptData.deptMngId}</a>
+																		<ul></ul>
+																	</li>
+																</ul>
 															</li>
 														</c:forEach>
 														</ul>
@@ -118,6 +122,7 @@
 										</div>
 									</div>
 									<hr>
+									
 									<form action="get" class="form" id="deptForm">
 										<div class="form-body">
 											<div class="row">
@@ -127,7 +132,8 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptNo" value="${deptData.deptNo}" disabled >
+															<input class="form-control dept-form-control" type="text"
+																name="deptNo" value="${data.deptNo}" disabled >
 														</div>
 													</div>
 												</div>
@@ -137,7 +143,8 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptName" disabled >
+															<input class="form-control dept-form-control" type="text"
+																name="deptName" value="${data.deptName}" readonly >
 														</div>
 													</div>
 												</div>
@@ -147,7 +154,8 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptMngId" disabled >
+															<input class="form-control dept-form-control" type="text"
+																name="deptMngId" value="${data.deptMngId}" readonly >
 														</div>
 													</div>
 												</div>
@@ -157,7 +165,8 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptAddDt" disabled >
+															<input class="form-control dept-form-control" type="text"
+																name="deptAddDt" value="${data.deptAddDt}" disabled >
 														</div>
 													</div>
 												</div>
@@ -167,13 +176,15 @@
 												<div class="col-md-8">
 													<div class="form-group">
 														<div class="position-relative">
-															<input class="form-control dept-form-control" type="text" name="deptModDt" disabled >
+															<input class="form-control dept-form-control" type="text"
+																name="deptModDt" value="${data.deptModDt}" disabled >
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</form>
+									
 								</div>
 							</div>
 						</div>
@@ -224,7 +235,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete(${data.no});">삭제</button>
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete(${data.deptNo});">삭제</button>
 							</div>
 						</div>
 					</div>
@@ -246,8 +257,6 @@
 						</div>
 					</div>
 				</div>
-				
-				
 				
 			</section>
 			<%@ include file="../module/footer.jsp" %>
@@ -273,27 +282,30 @@
 					no: no
 				},
 				success: function(data) {
-					var form = document.getElementById("deptForm");
+					var form = document.getElementById("deptForm");		
 					
 					form.deptNo.value = data.deptNo;
 					form.deptName.value = data.deptName;
 					form.deptMngId.value = data.deptMngId;
 					form.deptAddDt.value = data.deptAddDt;
 					form.deptModDt.value = data.deptModDt;
-					
 				}
 			})
-			
 		}
 		
 		// 부서 추가
 		function deptAdd() {
+			
+			var data = {};
+			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
 				data: {
 					
 				},
+				dataType: "json",
+				contentType:"application/json;charset=UTF-8",
 				success: function(data) {
 					console.log(data);
 					
@@ -305,11 +317,9 @@
 				error: function() {
 					alert("부서 추가 실패");
 				}
-					
 			})
 		}
 
-		
 		// 부서 삭제
 		function deptDelete(deptNo) {
 			$.ajax({
@@ -326,17 +336,22 @@
 						keyboard: false
 					});
 					
+					console.log(myModal._element.querySelector(".modal-title"));
+					
 					var title = myModal._element.querySelector(".modal-title");
 					var body = myModal._element.querySelector(".modal-body");
 					title.innerText = data.title;
 					body.innerHTML = "<p>" + data.message + "</p>"
 					
 					myModal.show();
+				},
+				error: function() {
+					alert("부서 삭제 실패");
 				}
 			})
 		}
 		
 	</script>
-
+	
 </body>
 </html>
