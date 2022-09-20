@@ -33,28 +33,22 @@ public class DeptService {
 		return result;
 	}
 	
-	public DeptDTO addDept(DeptDTO data) {
+	public int addDept(DeptDTO deptDto) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		
-		DeptDTO deptDto = new DeptDTO();
-		deptDto.setDeptName(data.getDeptName());
-		deptDto.setDeptMngId(data.getDeptMngId());
-		
-		boolean result = mapper.insertDept(deptDto);
+		int result = mapper.insertDept(deptDto);
 		
 		// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-		if(result) {
-			
-		}
+		
 		// if 부서명 중복인지 확인
 		
-		return data;
+		return result;
 	}
 	
-	public boolean removeDept(DeptDTO data) {
+	public boolean removeDept(int no) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		int result = mapper.deleteDept(data.getDeptNo());
-		return result == 1 ? true : false;
+		int result = mapper.deleteDept(no);
+		return result == 1? true : false;
 	}	
 	
 	

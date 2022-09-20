@@ -26,7 +26,7 @@
 		<input class="form-control" id="id_deptModDt" name="deptModDt" readonly>
 	</div>
 	<div class="modal-footer">
-		<button type="submit" class="btn btn-success" id="addDeptBtn">완 료</button> <!-- onclick="deptAdd();" -->
+		<button type="button" class="btn btn-success" id="addDeptBtn" onclick="deptAdd();">완 료</button>
 		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취 소</button>
 	</div>
 </form>
