@@ -17,8 +17,101 @@
 		    display: none;
 		}
 	</style>
-	<%@ include file="../module/header.jsp" %>
+	<%@ include file="../module/head.jsp" %>
+	<script type="text/javascript">
+	function loadPrevNext(element){
+		var defaultText = document.getElementById("CalendaryearMonth");
+		var year1 = defaultText.innerText.substring(0,4);
+		var month1 = defaultText.innerText.substring(5) - 1;
+		
+		var currentDate = new Date(year1, month1);
+		
+		if(element == 0) {
+			 currentDate.setMonth(currentDate.getMonth() - 1);
+			// console.log(currentDate.setMonth(date.getMonth() + 1));
+			// prevMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
+		} else {
+			currentDate.setMonth(currentDate.getMonth() + 1);
+			// nextMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
+		}
+		
+		var year = currentDate.getFullYear();
+		var month = currentDate.getMonth() + 1;
+		var testText = document.getElementById("CalendaryearMonth");
+		testText.innerHTML = year + "." + month;
+		
+		$.ajax({
+			type:"GET",
+			url:"${pageContext.request.contextPath}/work/record",
+			dataType:"json",
+			data:{
+				year: year,
+				month: month
+			}
+		})
+		
+	}
+
+
 	
+	
+	
+	
+	// 출근시간 입력
+	function commuteIn() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/in",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}    
+	
+	// 퇴근시간 입력 
+	function commuteOut() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/out",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}
+	
+	function getMonth() {
+		var year1 = document.getElementById("CalendaryearMonth").innerText.substring(0,4);
+		console.log("year1" + year1);
+		var month1 = document.getElementById("CalendaryearMonth").innerText.substring(5);
+		console.log(month1);
+		$.ajax({
+			type: "GET",
+			url: "${pageContext.request.contextPath}/work/record",
+			data: {
+				year1 : year1,
+				month1 : month1
+			},
+			dataType: "json"
+		});
+	}
+
+	</script>
 </head>
 <body class="theme-light" style="overflow-y: auto;">
     <%@ include file="../module/navigation.jsp" %>
@@ -32,20 +125,23 @@
 		<div class="page-heading">
 		    <div class="page-title">
 		        <div class="row">
-		            <div class="col-12 col-md-3 order-md-3 order-last">
+					<div class="col-12 col-md-6 order-md-1 order-last">
 		                <h3>근태관리</h3>
-		                <p class="text-subtitle text-muted"></p>
 		            </div>
-		            <!-- 
 		            <div class="col-12 col-md-6 order-md-2 order-first">
 		                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 		                    <ol class="breadcrumb">
-		                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-		                        <li class="breadcrumb-item active" aria-current="page">Badge</li>
+		                        <li class="breadcrumb-item">
+									<a href="${homeUrl}">Home</a>
+	                        	</li>
+		                        <li class="breadcrumb-item">
+									<a href="#">My page</a>
+	                        	</li>
+		                        <li class="breadcrumb-item active" aria-current="page">근태관리</li>
 		                    </ol>
 		                </nav>
 		            </div>
-		             -->
+		             
 		        </div>
 		    </div>
 		    <section class="section">
@@ -193,26 +289,30 @@
 	            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
 	            					Calendar cal = Calendar.getInstance();
-	            					int month1 = cal.MONTH;
 	            					cal.getTime();
-	            					
-	            					
+	            					int month1 = cal.get(Calendar.MONTH) + 1;
 	            				%>
-	            				<!-- 
-	            				페이징 
-	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="changeMonth('p')">
-		            				<i class="bi bi-caret-left"></i>
+	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
+		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
 	            				</li>
 	            				<li id="result">
-		            				<h4> 
-		            					2022.09
+		            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
+		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
 	  	            				</h4>
 	            				</li>
-	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="changeMonth('n')">
-		            				<i class="bi bi-caret-right"></i>
+	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
+		            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
 		            				
 	            				</li>
-	            				-->
+	            				
+	            				
+	            				<!-- 페이징 -->
+	            				
+	            				
+	            				
+	            				
+	            				
+	            				
 	            				
                             </ul>
 		            	</div>   
@@ -233,19 +333,19 @@
                                 	<c:forEach items="${listData}" var="commuteData" varStatus="status">
 										<tr class="table-light">
 											<td>
-												${commuteData.commuteDt}
+												${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
 											</td>
 											<td>
-												${commuteData.commuteTime}
+												${commuteData.commuteTime.substring(11)}
 											</td>
 											<td>
-												${commuteData.getoffTime}
+												${commuteData.getoffTime.substring(11)}
 											</td>
 											<td>
-												${commuteData.workTime}
+												${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 
 											</td>
 											<td>
-												${commuteData.addedTime}
+												${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
 											</td>
 										</tr>
 									</c:forEach>	
@@ -269,33 +369,11 @@
 	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
 
-    <script src="static/vendors/apexcharts/apexcharts.js"></script>
-    <script src="static/js/pages/dashboard.js"></script>
 
     <script src="static/js/main.js"></script>
     
     <script type="text/javascript">
-		// 페이지 로드할 때 값 2022.09 표시
-    	$(function(){
-			var cunrrentDate = new Date();
-			
-			var year = currentDate.getFullYear();
-			var month = currentDate.getMonth + 1;
-			
-			$.ajax({
-				type:"POST",
-				url:"${pageContext.request.contextPath}/work/record",
-				dataType:"json",
-				data:{
-					year: year,
-					month: month
-				}
-			});
-		})
-		
-		
-		var year = ${year}
-		var month = ${month}
+
 
 		function changeMonth(type) {
 			  const resultElement = document.getElementById('result');
@@ -313,97 +391,8 @@
 			  resultElement.innerText = chyear + "." + chmonth;
 			  
 		}
-    	// 출근시간 입력
-    	function commuteIn() {
-    		var currentDate = new Date();
-    		var currentTime = currentDate.getHours() + ":"
-           					+ currentDate.getMinutes() + ":"
-           				    + currentDate.getSeconds();
-			console.log(currentTime);           					
-    		$.ajax({
-    			type: "POST",
-    			url: "${pageContext.request.contextPath}/work/in",
-    			data: {
-    				intime: currentTime
-    			},
-    			async:false,		// ajax를 동기식으로 변경함..
-    			dataType: "json",
-    		});
-    		location.reload();
-    	}    
-    	
-    	// 퇴근시간 입력 
-    	function commuteOut() {
-    		var currentDate = new Date();
-    		var currentTime = currentDate.getHours() + ":"
-           					+ currentDate.getMinutes() + ":"
-           				    + currentDate.getSeconds();
-			console.log(currentTime);           					
-    		$.ajax({
-    			type: "POST",
-    			url: "${pageContext.request.contextPath}/work/out",
-    			data: {
-    				intime: currentTime
-    			},
-    			async:false,		// ajax를 동기식으로 변경함..
-    			dataType: "json",
-    		});
-    		location.reload();
-    	}
-    	
-    	<%--
-    	function getMondayDate(d) {
-    	    var paramDate = new Date(d); // new Date('2021-06-08'): 화요일
-    	 
-    	    var day = paramDate.getDay();
-    	    var diff = paramDate.getDate() - day + (day == 0 ? -6 : 1);
-    	    return new Date(paramDate.setDate(diff)).toISOString().substring(0, 10);
-    	    
-    	    // return : 2021-05-06 (월요일)
-    	}
-    	--%>
-    	<%--
-    	
-    	$(function() {
-    	    $( "#datepicker" ).datepicker({  
-    	    	changeMonth: true,
-    	        changeYear: true,
-    	        showButtonPanel: true,
-    	        showMonthAfterYear: true,
-    	        dateFormat: 'yy-mm',
-    	        
-    	        onClose: function(dateText, inst) { 
-    	            var year1 = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-    	            var month1 = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-    	            $(this).datepicker('setDate', new Date(year, month, 1));
-    	           //var date= new Date($("#datepicker").datepicker({dateFormat:"yyyy/mm"}).val());
-    	            // var date = getFormatDate($( "#datepicker" ).datepicker( "getDate" ));
-    	            
-    	            $.ajax({
-    	            	type: "POST",
-    	            	url: "${pageContext.request.contextPath}/work/record",
-    	    			dataType: "json",
-    	            	data: {
-    	            		year: year1,
-    	            		month: month1
-    	            	},
-    	            });
-    	            
-    	        },
-    	        beforeShow : function(input, inst) {
-    	            if ((datestr = $(this).val()).length > 0) {
-    	                actDate = datestr.split('-');
-    	                year = actDate[0];
-    	                month = actDate[1]-1;
-    	                $(this).datepicker('option', 'defaultDate', new Date(year, month));
-    	                $(this).datepicker('setDate', new Date(year, month));
-    	            }
-    	        }
-    	    }
-    	    
-    	    );  
-    	});
-    	--%>
+
+
     	function getFormatDate(date){
     	    var year = date.getFullYear();              //yyyy
     	    var month = (1 + date.getMonth());          //M
