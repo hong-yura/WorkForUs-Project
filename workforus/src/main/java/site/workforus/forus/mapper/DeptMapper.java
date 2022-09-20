@@ -11,7 +11,7 @@ public interface DeptMapper {
 	
 	public DeptDTO selectDeptDetail(int no);
 	
-	public boolean insertDept(DeptDTO deptDto);
+	public int insertDept(DeptDTO deptDto);
 	
 	public List<DeptDTO> updateDept(DeptDTO deptDto);
 	
