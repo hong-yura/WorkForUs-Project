@@ -171,22 +171,34 @@ public class CommuteController{
 	// 근태기록 조회하기
 	@GetMapping(value="/record")
 	@ResponseBody
-	public String commuteRec(Model model, @RequestParam("year") int year, @RequestParam("month") int month) {
+	public String commuteRec(Model model, @RequestParam int year, @RequestParam int month) {
 		// test값 	
 		String empId = "A2022100";
-
+		
 		
 		List<CommuteDTO> listData = service.selectList(empId, year, month);
-		
-		// model.addAttribute("listData", listData);
+		System.out.println("반갑습니다~");
+		model.addAttribute("listData", listData);
+		System.out.println(listData);
 		
 		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 	
+	/*
+	// 관리자 페이지
+	@RequestMapping(value="/admin", method=RequestMethod.GET)
+	public String commuteAdmin(Model model) {
+		
+		String empId = "A2022100";
+		
+		List<CommuteDTO> datas = service.selectAdmin(empId);
+		
+		
+		return "commute/commuteAdmin";
+	}
 	
-	
-	
+	*/
 
 	
 

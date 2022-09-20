@@ -29,17 +29,34 @@
 		if(element == 0) {
 			 currentDate.setMonth(currentDate.getMonth() - 1);
 			// console.log(currentDate.setMonth(date.getMonth() + 1));
+			// prevMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
 		} else {
 			currentDate.setMonth(currentDate.getMonth() + 1);
+			// nextMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
 		}
 		
 		var year = currentDate.getFullYear();
 		var month = currentDate.getMonth() + 1;
-		console.log(month);
 		var testText = document.getElementById("CalendaryearMonth");
 		testText.innerHTML = year + "." + month;
+		
+		$.ajax({
+			type:"GET",
+			url:"${pageContext.request.contextPath}/work/record",
+			dataType:"json",
+			data:{
+				year: year,
+				month: month
+			}
+		})
+		
 	}
 
+
+	
+	
+	
+	
 	// 출근시간 입력
 	function commuteIn() {
 		var currentDate = new Date();
@@ -78,6 +95,22 @@
 		location.reload();
 	}
 	
+	function getMonth() {
+		var year1 = document.getElementById("CalendaryearMonth").innerText.substring(0,4);
+		console.log("year1" + year1);
+		var month1 = document.getElementById("CalendaryearMonth").innerText.substring(5);
+		console.log(month1);
+		$.ajax({
+			type: "GET",
+			url: "${pageContext.request.contextPath}/work/record",
+			data: {
+				year1 : year1,
+				month1 : month1
+			},
+			dataType: "json"
+		});
+	}
+
 	</script>
 </head>
 <body class="theme-light" style="overflow-y: auto;">
@@ -263,7 +296,7 @@
 		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
 	            				</li>
 	            				<li id="result">
-		            				<h4 id="CalendaryearMonth"> 
+		            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
 		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
 	  	            				</h4>
 	            				</li>
@@ -341,10 +374,6 @@
     
     <script type="text/javascript">
 
-		
-		
-		var year = ${year}
-		var month = ${month}
 
 		function changeMonth(type) {
 			  const resultElement = document.getElementById('result');
