@@ -317,8 +317,9 @@ public class CommuteService{
 						Date addedTime = _updateAddedtime(workTime);
 						mapper.updateWorktime(empId, beforeDate, workTime);
 						mapper.updateAddedtime(empId, beforeDate, addedTime);
-						
 						// 주간 추가시간이랑 주간 근무시간은 어떻게 할것인가........
+						CommuteDTO temp = mapper.selectByEmpId(empId, beforeDate);
+						updateWeek(empId, temp);
 					}					
 				}
 				i++;
@@ -389,7 +390,122 @@ public class CommuteService{
 	}
 	
 	
-	
+	// 주간근무시간, 주간추가시간 
+	public void updateWeek(String empId, CommuteDTO data) throws Exception {
+		Calendar cal = Calendar.getInstance();
+		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
+
+		// 주단위 시간 업데이트 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat timeformat = new SimpleDateFormat("HH:mm:ss");
+		int today = 0;
+		if(Calendar.DAY_OF_WEEK != 1) {
+			today = cal.get(Calendar.DAY_OF_WEEK);	// 일요일이 아니면 해당하는 숫자로 변경
+		}
+		int addSum = 0;
+		int workSum = 0;
+		// 월 ~ 토
+		if(today != 0) {
+			
+			for(int i = 0; i < today; i++) {
+				cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY + i);
+				String weekday = sdf.format(cal.getTime()); // 일요일~토요일해당 날짜
+				
+				CommuteDTO calData = selectdata(empId, weekday);
+				if(calData != null) {	// 출근기록이 있음
+					if(calData.getGetoffTime() != null) {		// 그날에 퇴근시간이 있다면.. 
+						
+						calData.setWorkTime(calData.getWorkTime().substring(11));
+						calData.setAddedTime(calData.getAddedTime().substring(11));
+						
+						Date addtime = timeformat.parse(calData.getAddedTime());
+						Date worktime = timeformat.parse(calData.getWorkTime());
+						
+						Date weekAddtime = timeformat.parse("00:00:00");
+						Date weekWorktime = timeformat.parse("00:00:00");
+						
+						int addsecond = addtime.getHours() * 3600 + addtime.getMinutes() * 60 + addtime.getSeconds();
+						addSum += addsecond;
+						long hour1 = addSum / (60 * 60);		
+						long minute1 = ((addSum % (60 * 60))) / 60;
+						long second1 = ((addSum % (60 * 60))) % 60;	
+						
+						String tmp1 = String.format("%02d:%02d:%02d", hour1, minute1, second1);
+						weekAddtime = timeformat.parse(tmp1);
+						
+						int worksecond = worktime.getHours() * 3600 + worktime.getMinutes() * 60 + worktime.getSeconds();
+						workSum += worksecond;
+						long hour2 = workSum / (60 * 60);		
+						long minute2 = ((workSum % (60 * 60))) / 60;
+						long second2 = ((workSum % (60 * 60))) % 60;	
+						
+						String tmp2 = String.format("%02d:%02d:%02d", hour2, minute2, second2);
+						weekWorktime = timeformat.parse(tmp2);
+						mapper.updateWeekAdd(empId, data.getCommuteDt(), weekAddtime);
+						mapper.updateWeekWork(empId, data.getCommuteDt(), weekWorktime);
+						
+						logger.info(calData.getCommuteDt());
+						logger.info("★weekAddtime: {}",weekAddtime);
+						logger.info("★weekWorktime: {}",weekWorktime);
+						
+						
+					}
+				}	
+				
+			}
+		} else {
+			for(int i = 0; i <= today; i++) {
+				cal.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY + i);
+				String weekday = sdf.format(cal.getTime()); // 일요일~토요일해당 날짜
+				
+				CommuteDTO calData = selectdata(empId, weekday);
+				if(calData != null) {
+					
+					if(calData.getGetoffTime() != null) {		// 그날에 퇴근시간이 있다면.. 
+						
+						calData.setWorkTime(calData.getWorkTime().substring(11));
+						calData.setAddedTime(calData.getAddedTime().substring(11));
+						
+						Date addtime = timeformat.parse(calData.getAddedTime());
+						Date worktime = timeformat.parse(calData.getWorkTime());
+						
+						Date weekAddtime = timeformat.parse("00:00:00");
+						Date weekWorktime = timeformat.parse("00:00:00");
+						
+						int addsecond = addtime.getHours() * 3600 + addtime.getMinutes() * 60 + addtime.getSeconds();
+						addSum += addsecond;
+						long hour1 = addSum / (60 * 60);		
+						long minute1 = ((addSum % (60 * 60))) / 60;
+						long second1 = ((addSum % (60 * 60))) % 60;	
+						
+						String tmp1 = String.format("%02d:%02d:%02d", hour1, minute1, second1);
+						weekAddtime = timeformat.parse(tmp1);
+						
+						int worksecond = worktime.getHours() * 3600 + worktime.getMinutes() * 60 + worktime.getSeconds();
+						workSum += worksecond;
+						long hour2 = workSum / (60 * 60);		
+						long minute2 = ((workSum % (60 * 60))) / 60;
+						long second2 = ((workSum % (60 * 60))) % 60;	
+						
+						String tmp2 = String.format("%02d:%02d:%02d", hour2, minute2, second2);
+						weekWorktime = timeformat.parse(tmp2);
+						mapper.updateWeekAdd(empId, data.getCommuteDt(), weekAddtime);
+						mapper.updateWeekWork(empId, data.getCommuteDt(), weekWorktime);
+
+						logger.info(calData.getCommuteDt());
+						logger.info("★weekAddtime: {}",weekAddtime);
+						logger.info("★weekWorktime: {}",weekWorktime);
+						
+//						model.addAttribute("weekAddtime", weekAddtime);
+//						model.addAttribute("weekWorktime", weekWorktime);
+					}
+				}
+				
+				
+			}
+		}
+		
+	}
 	
 	
 }
