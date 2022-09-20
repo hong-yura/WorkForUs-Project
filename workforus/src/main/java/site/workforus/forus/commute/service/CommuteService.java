@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -504,6 +505,28 @@ public class CommuteService{
 				
 			}
 		}
+		
+	}
+	
+	
+	public List<CommuteDTO> selectList(String empId, int year, int month){
+		
+		month += 1;
+		String yearstr = Integer.toString(year);
+		String monthstr = null;
+		if(month < 10) {
+			monthstr = "0" + month;
+		} else {
+			monthstr = month + "";
+		}
+		
+		String yearmonth1 = yearstr + monthstr;
+		System.out.println(yearmonth1);
+		
+		List<CommuteDTO> listData = getList(empId, yearmonth1);
+
+		System.out.println("여기를 지나가나요?");
+		return listData;
 		
 	}
 	

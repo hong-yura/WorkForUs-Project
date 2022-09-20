@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,16 +57,16 @@ public class CommuteController{
 		
 		// 오늘날짜랑, 사원id -> 오늘날짜에 출근기록이 있음
 		CommuteDTO data = service.selectData(empId);
-		
-		Calendar cal = Calendar.getInstance();
-		int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH) + 1; 
-        int day = cal.get(Calendar.DATE);
-//        int dayOfmonth = cal.get(Ca	lendar.DAY_OF_MONTH);
-//        int dayOfweek = cal.get(Calendar.DAY_OF_WEEK);
-        
+		        
         service.updateGetoff(empId);
         
+        // 이번달 출근기록 리스트
+		Calendar cal = Calendar.getInstance();
+		int year1 = cal.get(Calendar.YEAR);
+		int month1 = cal.get(Calendar.MONTH);
+        List<CommuteDTO> listData = service.selectList(empId, year1, month1);
+		model.addAttribute("listData", listData);
+		
 		// 금일 출근기록이 있음
 		if(data != null) {
 			// db에 저장된 date타입에서 시간만 잘라냄
@@ -74,12 +75,7 @@ public class CommuteController{
 			if(data.getGetoffTime() != null) {
 				data.setGetoffTime(data.getGetoffTime().substring(11));
 				data.setWorkTime(data.getWorkTime().substring(11));
-				data.setAddedTime(data.getAddedTime().replace("1970-01-01", year + "-" + month + "-" + day));
 				data.setAddedTime(data.getAddedTime().substring(11));
-				// data.setWeekAddtime(data.getWeekAddtime().substring(11));
-				// String weektime = _calculate(data.getWeekWorktime());
-				// data.setWeekWorktime(data.getWeekWorktime().substring(11));
-				// model.addAttribute("weektime", weektime);
 			}
 		}
 		
@@ -118,12 +114,6 @@ public class CommuteController{
 		return "commute/commute";
 	}
 	
-	// 연봉조회
-	@RequestMapping(value="/salary", method=RequestMethod.GET)
-	public String getSalary(Model model) {
-		return "commute/salary";
-	}
-	
 	
 	
 	// 출근 기록
@@ -142,10 +132,9 @@ public class CommuteController{
 		CommuteDTO data = service.selectData(empId);
 		
 		if(data == null) {
-			logger.info("데이가.. 없음.. 그러면 집어넣어야지");
 			service.insertIntime(empId);			
 		} else {
-			logger.info("데이터 있으니까 그냥 넘어가");
+			logger.info("데이터 있으니까 그냥 넘어가야함");
 		}
 		
 		return json.toJSONString();
@@ -180,34 +169,18 @@ public class CommuteController{
 	}
 	
 	// 근태기록 조회하기
-	@PostMapping(value="/record")
+	@GetMapping(value="/record")
 	@ResponseBody
 	public String commuteRec(Model model, @RequestParam("year") int year, @RequestParam("month") int month) {
 		// test값 	
 		String empId = "A2022100";
-		month += 1;
-		String yearstr = Integer.toString(year);
-		String monthstr = null;
-		if(month < 10) {
-			monthstr = "0" + month;
-		} else {
-			monthstr = month + "";
-		}
-		
-		String yearmonth1 = yearstr + monthstr;
-		System.out.println(yearmonth1);
-		
-		List<CommuteDTO> listData = service.getList(empId, yearmonth1);
-		int cntList = service.cntList(empId, yearmonth1);
-		JSONObject json = new JSONObject();
 
 		
-		model.addAttribute("cntList", cntList);
-		model.addAttribute("listData", listData);
-		model.addAttribute("year", year);
-		model.addAttribute("month", month);
+		List<CommuteDTO> listData = service.selectList(empId, year, month);
 		
+		// model.addAttribute("listData", listData);
 		
+		JSONObject json = new JSONObject();
 		return json.toJSONString();
 	}
 	

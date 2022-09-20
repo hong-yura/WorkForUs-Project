@@ -17,8 +17,65 @@
 		    display: none;
 		}
 	</style>
-	<%@ include file="../module/header.jsp" %>
+	<%@ include file="../module/head.jsp" %>
+	<script type="text/javascript">
+	// 페이지 로드할 때 값 2022.09 표시
+	$(function(){
+		var cunrrentDate = new Date();
+		
+		var year = currentDate.getFullYear();
+		var month = currentDate.getMonth + 1;
+		
+		$.ajax({
+			type:"GET",
+			url:"${pageContext.request.contextPath}/work/record",
+			dataType:"json",
+			data:{
+				year: year,
+				month: month
+			}
+		});
+	})
 	
+	// 출근시간 입력
+	function commuteIn() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/in",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}    
+	
+	// 퇴근시간 입력 
+	function commuteOut() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/out",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}
+	
+	</script>
 </head>
 <body class="theme-light" style="overflow-y: auto;">
     <%@ include file="../module/navigation.jsp" %>
@@ -32,20 +89,23 @@
 		<div class="page-heading">
 		    <div class="page-title">
 		        <div class="row">
-		            <div class="col-12 col-md-3 order-md-3 order-last">
+					<div class="col-12 col-md-6 order-md-1 order-last">
 		                <h3>근태관리</h3>
-		                <p class="text-subtitle text-muted"></p>
 		            </div>
-		            <!-- 
 		            <div class="col-12 col-md-6 order-md-2 order-first">
 		                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 		                    <ol class="breadcrumb">
-		                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-		                        <li class="breadcrumb-item active" aria-current="page">Badge</li>
+		                        <li class="breadcrumb-item">
+									<a href="${homeUrl}">Home</a>
+	                        	</li>
+		                        <li class="breadcrumb-item">
+									<a href="#">My page</a>
+	                        	</li>
+		                        <li class="breadcrumb-item active" aria-current="page">근태관리</li>
 		                    </ol>
 		                </nav>
 		            </div>
-		             -->
+		             
 		        </div>
 		    </div>
 		    <section class="section">
@@ -233,19 +293,19 @@
                                 	<c:forEach items="${listData}" var="commuteData" varStatus="status">
 										<tr class="table-light">
 											<td>
-												${commuteData.commuteDt}
+												${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
 											</td>
 											<td>
-												${commuteData.commuteTime}
+												${commuteData.commuteTime.substring(11)}
 											</td>
 											<td>
-												${commuteData.getoffTime}
+												${commuteData.getoffTime.substring(11)}
 											</td>
 											<td>
-												${commuteData.workTime}
+												${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 
 											</td>
 											<td>
-												${commuteData.addedTime}
+												${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
 											</td>
 										</tr>
 									</c:forEach>	
@@ -269,29 +329,11 @@
 	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
 
-    <script src="static/vendors/apexcharts/apexcharts.js"></script>
-    <script src="static/js/pages/dashboard.js"></script>
 
     <script src="static/js/main.js"></script>
     
     <script type="text/javascript">
-		// 페이지 로드할 때 값 2022.09 표시
-    	$(function(){
-			var cunrrentDate = new Date();
-			
-			var year = currentDate.getFullYear();
-			var month = currentDate.getMonth + 1;
-			
-			$.ajax({
-				type:"POST",
-				url:"${pageContext.request.contextPath}/work/record",
-				dataType:"json",
-				data:{
-					year: year,
-					month: month
-				}
-			});
-		})
+
 		
 		
 		var year = ${year}
@@ -313,44 +355,7 @@
 			  resultElement.innerText = chyear + "." + chmonth;
 			  
 		}
-    	// 출근시간 입력
-    	function commuteIn() {
-    		var currentDate = new Date();
-    		var currentTime = currentDate.getHours() + ":"
-           					+ currentDate.getMinutes() + ":"
-           				    + currentDate.getSeconds();
-			console.log(currentTime);           					
-    		$.ajax({
-    			type: "POST",
-    			url: "${pageContext.request.contextPath}/work/in",
-    			data: {
-    				intime: currentTime
-    			},
-    			async:false,		// ajax를 동기식으로 변경함..
-    			dataType: "json",
-    		});
-    		location.reload();
-    	}    
-    	
-    	// 퇴근시간 입력 
-    	function commuteOut() {
-    		var currentDate = new Date();
-    		var currentTime = currentDate.getHours() + ":"
-           					+ currentDate.getMinutes() + ":"
-           				    + currentDate.getSeconds();
-			console.log(currentTime);           					
-    		$.ajax({
-    			type: "POST",
-    			url: "${pageContext.request.contextPath}/work/out",
-    			data: {
-    				intime: currentTime
-    			},
-    			async:false,		// ajax를 동기식으로 변경함..
-    			dataType: "json",
-    		});
-    		location.reload();
-    	}
-    	
+
     	<%--
     	function getMondayDate(d) {
     	    var paramDate = new Date(d); // new Date('2021-06-08'): 화요일
