@@ -19,7 +19,6 @@
 	</style>
 	<%@ include file="../module/head.jsp" %>
 	<script type="text/javascript">
-	// 페이지 로드할 때 값 2022.09 표시
 	function loadPrevNext(element){
 		var defaultText = document.getElementById("CalendaryearMonth");
 		var year1 = defaultText.innerText.substring(0,4);
@@ -364,59 +363,7 @@
 			  
 		}
 
-    	<%--
-    	function getMondayDate(d) {
-    	    var paramDate = new Date(d); // new Date('2021-06-08'): 화요일
-    	 
-    	    var day = paramDate.getDay();
-    	    var diff = paramDate.getDate() - day + (day == 0 ? -6 : 1);
-    	    return new Date(paramDate.setDate(diff)).toISOString().substring(0, 10);
-    	    
-    	    // return : 2021-05-06 (월요일)
-    	}
-    	--%>
-    	<%--
-    	
-    	$(function() {
-    	    $( "#datepicker" ).datepicker({  
-    	    	changeMonth: true,
-    	        changeYear: true,
-    	        showButtonPanel: true,
-    	        showMonthAfterYear: true,
-    	        dateFormat: 'yy-mm',
-    	        
-    	        onClose: function(dateText, inst) { 
-    	            var year1 = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-    	            var month1 = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-    	            $(this).datepicker('setDate', new Date(year, month, 1));
-    	           //var date= new Date($("#datepicker").datepicker({dateFormat:"yyyy/mm"}).val());
-    	            // var date = getFormatDate($( "#datepicker" ).datepicker( "getDate" ));
-    	            
-    	            $.ajax({
-    	            	type: "POST",
-    	            	url: "${pageContext.request.contextPath}/work/record",
-    	    			dataType: "json",
-    	            	data: {
-    	            		year: year1,
-    	            		month: month1
-    	            	},
-    	            });
-    	            
-    	        },
-    	        beforeShow : function(input, inst) {
-    	            if ((datestr = $(this).val()).length > 0) {
-    	                actDate = datestr.split('-');
-    	                year = actDate[0];
-    	                month = actDate[1]-1;
-    	                $(this).datepicker('option', 'defaultDate', new Date(year, month));
-    	                $(this).datepicker('setDate', new Date(year, month));
-    	            }
-    	        }
-    	    }
-    	    
-    	    );  
-    	});
-    	--%>
+
     	function getFormatDate(date){
     	    var year = date.getFullYear();              //yyyy
     	    var month = (1 + date.getMonth());          //M
