@@ -2,29 +2,31 @@ const eventReverter = (event) => {
   let schedule;
   if (event.isAllday === true) {
     schedule = {
-      id: event.scheId,
-      calId: String(event.calId),
-      title: event.title,
-      body: event.body,
-      scheAllday: "Y",
-      scheDateStart: event.start.d.d,
-      scheDateEnd: event.end.d.d,
+      scheId: event.id,
+      calId: String(event.calendarId),
+      scheName: event.title,
+      scheContent: event.body,
+      scheAlltime: "Y",
+      scheDateStart: dayjs(event.start.d.d).format('YYYY-MM-DD'),
+      scheDateEnd: dayjs(event.end.d.d).format('YYYY-MM-DD'),
       scheTimeStart: null,
       scheTimeEnd: null,
     };
   } else {
     schedule = {
-      id: event.scheId,
-      calendarId: String(event.calId),
-      title: event.scheName,
-      body: event.scheContent,
-      scheAllday: "N",
-      scheDateStart: new Date(event.start.d.d).setHours(0, 0, 0),
-      scheDateEnd: new Date(event.end.d.d).setHours(0, 0, 0),
+      scheId: event.id,
+      calId: String(event.calendarId),
+      scheName: event.title,
+      scheContent: event.body,
+      scheAlltime: "N",
+      scheDateStart: dayjs(event.start.d.d).format('YYYY-MM-DD'),
+      scheDateEnd: dayjs(event.end.d.d).format('YYYY-MM-DD'),
       scheTimeStart:
-        event.start.d.d.getHours() + "-" + event.start.d.d.getMinutes(),
-      scheTimeEnd: event.end.d.d.getHours() + "-" + event.end.d.d.getMinutes(),
+        event.start.d.d.getHours() + ":" + event.start.d.d.getMinutes(),
+      scheTimeEnd: event.end.d.d.getHours() + ":" + event.end.d.d.getMinutes(),
     };
   }
+  console.log(schedule);
+  console.log(event.start.d.d.getHours() + ":" + event.start.d.d.getMinutes());
   return schedule;
 };
