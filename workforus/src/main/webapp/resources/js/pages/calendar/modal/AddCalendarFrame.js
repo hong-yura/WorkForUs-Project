@@ -25,9 +25,10 @@ const AddCalendarFrame = (props) => {
           alert("캘린더 생성에 성공하였습니다.");
         }
         props.setOnModal(false);
-      })
-      .catch();
-    props.addCalendar(inputs);
+        return res.data.data;
+      }).then((cal) =>{
+    	props.addCalendar(cal);
+      }).catch();
   };
 
   return (
@@ -49,7 +50,7 @@ const AddCalendarFrame = (props) => {
                 className="close"
                 onClick={() => props.setOnModal(false)}
               >
-                <i data-feather="x"></i>
+                <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
             <form action="#">
