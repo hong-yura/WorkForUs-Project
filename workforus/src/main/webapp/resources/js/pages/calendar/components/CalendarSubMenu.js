@@ -6,6 +6,11 @@ const CalendarSubMenu = (props) => {
   const toggleSubMenu = () => {
     setIsOpen((isOpen) => !isOpen);
   };
+  
+  const onClickCalendarName = (item) => {
+	props.setCalendarInfo(item);
+	props.setCalendarInfoModal(true);
+  }
 
   return (
     <li className="sidebar-item has-sub">
@@ -24,7 +29,7 @@ const CalendarSubMenu = (props) => {
                 onClick={(event)=>{props.checkCalendarVisibilitiy(event)}}
                 defaultChecked
               />
-              <label className="form-check-label">
+              <label className="form-check-label" tagname={item.calId} value={item.calId} onClick={()=>onClickCalendarName(item)}>
                 {item.calName}
               </label>
             </li>

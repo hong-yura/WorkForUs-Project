@@ -45,7 +45,9 @@ pageEncoding="UTF-8"%>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddCalendarModal.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddScheduleFrame.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddScheduleModal.js"></script>
-    <script type="text/babel" src="static/js/pages/calendar/modal/ScheduleInfo.js"></script>
+    <script type="text/babel" src="static/js/pages/calendar/modal/CalendarInfoFrame.js"></script>
+    <script type="text/babel" src="static/js/pages/calendar/modal/CalendarInfoModal.js"></script>
+    <script type="text/babel" src="static/js/pages/calendar/modal/ScheduleInfoFrame.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/ScheduleInfoModal.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/components/CalendarHeader.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/components/CalendarMain.js"></script>
