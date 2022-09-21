@@ -177,6 +177,7 @@ footer {
 .comment-container , .second-comment-container{
 	border-radius : 0px;
 	margin : 0px;
+	
 }
 
 .mb-3 .card-header {
@@ -218,8 +219,7 @@ input,textarea:focus {
 }
 .border-solid{
 	border-right : solid 1px;
-	
-	
 }
+
 
 

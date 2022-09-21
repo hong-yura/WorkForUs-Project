@@ -2,16 +2,17 @@ package site.workforus.forus.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import site.workforus.forus.board.model.BoardDTO;
@@ -48,12 +50,15 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
 	@GetMapping(value="")
-	public String getData(Model model, HttpSession session //@RequestParam(required=false) int boardId 
+	public String getData(Model model, HttpSession session,Authentication auth //@RequestParam(required=false) int boardId 
 			) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
 		// 임의의 empDto
 		EmpDTO empDto = new EmpDTO(); 
-		empDto.setEmpId("A2022100"); empDto.setEmpNm("김나영");
+//		LoginVO loginVo = (LoginVO) auth.getPrincipal();
+		empDto.setEmpId("A2022105"); empDto.setEmpNm("원빈");
 		int boardId = 2; // 임의로 넣어줌 -> 이건 나중에 URL로 넣어주기
+		
+//		session.setAttribute("empId", loginVo.getUsername());
 		
 //		아래 거는 나중에 추가해주기
 //		session.setAttribute("loginData", empDto);
@@ -88,39 +93,88 @@ public class BoardController {
 	// 게시글 상세 
 	@GetMapping(value="/detail")
 	public String getDetailData(Model model, HttpSession session
-									, @RequestParam int postId) { // 어떤 post id인지 알아야 한다.
+									, @RequestParam String postId) { // 어떤 post id인지 알아야 한다.
 
+		logger.info("postId={}", postId);
 		// 얘는 나중에 session 으로 변경해주기
 		EmpDTO loginData = new EmpDTO(); 
-		loginData.setEmpId("A2022100"); loginData.setEmpNm("김나영");
-		
+		loginData.setEmpId("A2022105"); loginData.setEmpNm("원빈");
+		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함 
 		// 게시글 데이터를 가지고 와야 한다.
-		BoardPostDTO postData = postService.getPostData(postId);// postId -> 해당 게시글 데이터를 가져온다.
-		
+		BoardPostDTO postData = postService.getPostData(pId);// postId -> 해당 게시글 데이터를 가져온다.
+		logger.info("getDetailData(postId={})", postId);
+		logger.info("getDetailData(postData={})", postData);
 		// commentDto 가져오기 -> 어떤 post의 댓글인지
-		List<PostCommentDTO> commentList = commentService.selectComment(postId);
+		List<PostCommentDTO> commentList = commentService.selectComment(pId);
 		
 		// 댓글 갯수
-		int commentCnt = commentService.selectCommentCount(postId);
+		int commentCnt = commentService.selectCommentCount(pId);
+		
+		// 파일 가져오기
+		List<PostUploadFileDTO> files = postService.getFiles(pId);
+		logger.info("getDetailData=(files={})", files);
+		
+		// 게시글 댓글 마지막 groupNo을 가지고 온다.
+		int groupNo = postService.selectGroupNo(pId);
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData);
 		model.addAttribute("loginData", loginData); // 이건 나중에 session 있으면 필요 없음
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentCnt", commentCnt);
+		model.addAttribute("groupNo", groupNo);
+		model.addAttribute("files", files);
 		return "/board/detail";
 	}
 	
-	// 댓글추가
-	@PostMapping(value="/comment/add")
+	// 댓글추가 -> ajax로 변경
+	@PostMapping(value="/comment/add" , produces="applicaton/json; charset=utf-8")
+	@ResponseBody
 	public String InsertComment(Model model, HttpSession session
-							  , @ModelAttribute PostCommentDTO commentDto) {
+							  , @RequestParam(value="depth", required=false) String depth
+							  , @RequestParam(value="groupNo", required=false) String groupNo
+							  , @RequestParam(value="content", required=false) String content
+							  , @RequestParam(value="postId", required=false) String postId) {
 		
-		logger.info("InsertComment(PostCommentDTO={})", commentDto);
+		logger.info("InsertComment(depth={}, groupNo={}, content={}, postId={})", depth, groupNo, content, postId);
+		JSONObject json = new JSONObject();
+		int dep = 0;
+		if(depth != null) { // 만약 null이 아니라면
+			dep = Integer.parseInt(depth);
+		}
+		int gno = 0;
+		if(groupNo != null) {
+			gno = Integer.parseInt(groupNo);
+		}
+		int pId = Integer.parseInt(postId);
 		
+		PostCommentDTO commentDto = new PostCommentDTO();
+		// sort 구하기
+		int maxSort = postService.selectMaxSort(pId, gno); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
 		// 댓글을 전달 받는다. 
-		// depth, group
-		return "/board/detail";
+		// 작성한 사람의 id 를 넣어준다.
+		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
+		commentDto.setEmpNm("원빈");
+		commentDto.setGroupNo(gno);
+		commentDto.setContent(content);
+		commentDto.setDepth(dep);
+		logger.info("InsertComment(postId={})", pId);
+		commentDto.setPostId(pId);
+		commentDto.setSort(maxSort + 1); 
+		
+		// 댓글 저장
+		boolean result = commentService.addComment(commentDto);
+		try {
+			// 만약 댓글 저장에 성공했다면
+			json.put("code","success");
+			json.put("message","댓글이 저장되었습니다.");
+			json.put("commentDto", commentDto);
+		} catch (Exception e){
+			// 만약 댓글 저장에 실패했다면
+			json.put("code", "error");
+			json.put("message", "댓글 저장에 실패하였습니다.");
+		}
+		return json.toJSONString();
 	}
 	
 	// 게시글 추가 화면
@@ -129,7 +183,7 @@ public class BoardController {
 							, int boardId) { // 게시판 id만 있으면 됨
 		model.addAttribute("boardId", boardId);
 		// summernote 이미지 저장하기 위해서는 postId를 session에 저장해줘야 함
-		int postId = postService.selectCurrentPostId(boardId);
+		int postId = postService.selectCurrentPostId(boardId); // postId 최대값
 		session.setAttribute("postId", postId);
 		
 		return "/board/add";
@@ -159,7 +213,7 @@ public class BoardController {
 		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
 		// 파일이 없을 수도 있으니까
-		if (files.length == 0) {
+		if (files.length != 0) {
 			// 내부경로로 저장
 			String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
 			logger.info("addPost(realPath={})", realPath);
@@ -189,11 +243,12 @@ public class BoardController {
 				postService.addUploadFileData(fileData);
 			}
 		}
+		
 		// 댓글 가져오기
 		List<PostCommentDTO> commentList = commentService.selectComment(postId);
 		int commentCnt = commentService.selectCommentCount(postId);
+		
 		logger.info("postData={}", postDto);
-		model.addAttribute("files", files);
 		model.addAttribute("postData", postDto);
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentCnt", commentCnt);

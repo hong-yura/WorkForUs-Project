@@ -32,6 +32,15 @@ public class PostCommentService {
 		int commentCnt = mapper.selectCommentCount(postId);
 		return commentCnt;
 	}
+
+	public boolean addComment(PostCommentDTO commentDto) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.insertComment(commentDto);
+		logger.info("addComment(commentDto={})", commentDto);
+		logger.info("addComment(result={})", result);
+		return result==1? true : false;
+		
+	}
 	
 	
 }

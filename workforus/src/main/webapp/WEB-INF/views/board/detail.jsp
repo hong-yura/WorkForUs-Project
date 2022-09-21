@@ -51,14 +51,17 @@
 							<p class="black">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
-						<div class="input-group file-list input-group-sm mb-3">
-							<c:if test="${not empty files}">
-								<c:forEach items="${files}" var="file"> <!-- 저장해둔 파일들을 가지고 온다. -> for문 돌려주기 -->
-									<div class="input-group">
-										<a class="link-secondary text-decoration-none" href="${file.url}" download="${file.fileName}">${file.fileName}</a> <!-- 이거 설정 어떻게 해야 하는지 좀더 알아보기 -->
-									</div>
-								</c:forEach>
-							</c:if>
+						<div class="dropdown">
+						 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+						    	파일 보기
+						  	</button>
+						  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+						  		<c:if test="${not empty files}">
+									<c:forEach items="${files}" var="file"> 
+									    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
+						  			</c:forEach>
+						  		</c:if>
+						  	</ul>
 						</div>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
@@ -69,15 +72,15 @@
 						<div class="mb-1">
 							<c:url var="commentUrl" value="/board/comment" /> <!-- boardController에서 한꺼번에 처리하기 -->
 							<form action="${commentUrl}/add" method="post" style="margin: 10px;">
-								<div class="avatar avatar-md emp-img display-block"> <!-- 이미지 -->
+								<div class="avatar avatar-md emp-img display-block" style="margin: 10px;"> <!-- 이미지 -->
 									<div class="commentCnt-container black">
 										<p class="comment-count">댓글 ${commentCnt}개</p>
 										<div class="display-inline">
 											<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
 											<input type="hidden" name="postId" value="${postData.postId}">
 											<div class="input-group display-inline">
-												<textarea class="textarea-content" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
-												<button class="btn" type="submit">작성</button>
+												<textarea class="textarea-content" name="content" rows="3" placeholder="댓글 작성" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';"></textarea>
+										 		<button class="btn" type="submit" onclick="addComment(this, ${comment.groupNo + 1},${comment.depth } ,${ postData.postId});" >작성</button>
 											</div>
 										</div>
 									</div>
@@ -101,7 +104,7 @@
 											</div>
 											<div class="card-body">
 												<input type="hidden" name=commentId value="${comment.commentId}"> <!-- comment id를 숨겨두기 -> 어떤 댓글인지 알아야 해서  -->
-												<p class="card-text black">${comment.content}</p>
+												<p class="card-text black comment-p">${comment.content}</p>
 												<c:if test="${sessionScope.loginData.empId eq comment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 													<div class="text-end">
 														<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
@@ -119,10 +122,10 @@
 									<div class="card">
 										<div class="display-inline emp-img margin-left-10">
 											<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
-											<input type="hidden" name="postId" value="${postData.postId}">
+											<input type="hidden" name="postId" id="postId" value="${postData.postId}">
 											<div class="input-group display-inline">
-												<textarea class="textarea-content" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
-												<button class="btn" type="submit">작성</button>
+												<textarea class="textarea-content radius" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
+												<button class="btn" type="submit" onclick="addSecComment(this, ${comment.groupNo}, ${comment.depth}, ${postData.postId});">작성</button>
 											</div>
 										</div>
 									</div>
@@ -142,7 +145,7 @@
 													<div class="card-body">
 														<input type="hidden" name=commentId value="${secComment.commentId}"> <!-- comment id를 숨겨두기 -> 어떤 댓글인지 알아야 해서  -->
 														<p class="card-text black">${secComment.content}</p>
-														<c:if test="${sessionScope.loginData.empId eq secComment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
+														<c:if test="${loginData.empId eq secComment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 															<div class="text-end">
 																<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
 																<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete(this);">삭제</button>
@@ -161,42 +164,9 @@
 				</div>
 			</section>
 		</div>
-		
 		<!-- 글 삭제 모달 -->
-		<div class="modal fade" tabindex="-1" id="deleteModal">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">글 삭제</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>해당 게시글을 삭제하시겠습니까?</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="boardDelete(${data.id});">삭제</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" tabindex="-1" id="resultModal">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">결과 확인</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>삭제되었습니다.</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${boardUrl}'">확인</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		
+		 <jsp:include page="/WEB-INF/views/board_md/delete_modal.jsp"/>
+
 		<!-- footer -->
         <%@ include file="../module/footer.jsp" %>
       </div>

@@ -1,21 +1,25 @@
 package site.workforus.forus.board.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostUploadFileDTO;
-import site.workforus.forus.mapper.BoardMapper;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
 public class BoardPostService {
 	@Autowired
 	private SqlSession session;
-
+	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
+	
 	// 게시글 리스트 가져오기 -> paging 해야 한다. 
 	public List<BoardPostDTO> selectAll(int boardId) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
@@ -28,6 +32,7 @@ public class BoardPostService {
 	public BoardPostDTO getPostData(int postId) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		BoardPostDTO data = mapper.selectBoardDetail(postId);
+		logger.info("BoardPostService(getPostData={})", data);
 		return data;
 	}
 
@@ -78,5 +83,37 @@ public class BoardPostService {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		int currentId = mapper.selectCurrentPostId(boardId);
 		return currentId;
+	}
+
+	// 게시글 파일 가져오기
+	public List<PostUploadFileDTO> getFiles(int postId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		List<PostUploadFileDTO> files = mapper.selectFiles(postId);
+		logger.info("BoardPostService - getFiles(files={})", files);
+		return files;
+	}
+
+	public int selectGroupNo(int postId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		Integer groupNo = mapper.selectGroupNo(postId);
+		if(groupNo==null) {
+			return 0;
+		}else {
+			return groupNo;
+		}
+	}
+
+	public int selectMaxSort(int postId, int groupNo) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		HashMap<String, Integer> data = new HashMap<String, Integer>();
+		data.put("groupNo", groupNo);
+		data.put("postId", postId);
+		Integer maxSort = mapper.selectMaxSort(data);
+		if(maxSort == null) {
+			return 0;
+		}else {
+			return maxSort;
+		}
+		
 	}
 }

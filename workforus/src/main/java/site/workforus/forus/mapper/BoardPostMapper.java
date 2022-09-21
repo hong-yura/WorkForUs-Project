@@ -1,7 +1,12 @@
 package site.workforus.forus.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostCommentDTO;
 import site.workforus.forus.board.model.PostUploadFileDTO;
@@ -44,6 +49,18 @@ public interface BoardPostMapper {
 	// 게시글 현재 Id 찾기
 	public int selectCurrentPostId(int boardId);
 
+	// 게시글 업로드 파일 가져오기
+	public List<PostUploadFileDTO> selectFiles(int postId);
+
+	// 게시글 마지막 groupNo 가져오기
+	public Integer selectGroupNo(int postId);
+
+	// 게시글 댓글 추가
+	public int insertComment(PostCommentDTO commentDto);
+
+	// sort 최댓값 구하기
+	public Integer selectMaxSort(HashMap<String, Integer> data);
+	
 
 	
 
