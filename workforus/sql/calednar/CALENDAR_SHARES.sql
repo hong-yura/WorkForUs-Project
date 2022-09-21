@@ -1,0 +1,75 @@
+DROP TABLE tb_cal_shares;
+DROP SEQUENCE CALENDAR_SHARES_SEQ;
+
+-- 캘린더 공유 테이블 생성 쿼리
+CREATE TABLE tb_cal_shares (
+          cal_shr_id    NUMBER        -- PK
+        , emp_id        VARCHAR2(30)  -- FK, NN
+        , cal_id        NUMBER        -- FK, NN
+);
+
+COMMENT ON TABLE    tb_cal_shares              	IS '캘린더 공유';
+
+COMMENT ON COLUMN   tb_cal_shares.cal_shr_id   	IS '캘린더 공유 ID';
+ALTER TABLE TB_CAL_SHARES ADD CONSTRAINT PK_TB_CAL_SHARES_CAL_SHR_ID PRIMARY KEY (cal_shr_id);
+
+COMMENT ON COLUMN   tb_cal_shares.emp_id   		IS '캘린더 공유 상대 ID';
+ALTER TABLE TB_CAL_SHARES  MODIFY emp_id  CONSTRAINT NN_TB_CAL_SHARES_EMP_ID NOT NULL;
+ALTER TABLE TB_CAL_SHARES ADD CONSTRAINT FK_TB_CAL_SHARES_EMP_ID FOREIGN KEY (emp_id) REFERENCES TB_EMPLOYEES(emp_id) ON DELETE CASCADE;
+
+COMMENT ON COLUMN   tb_cal_shares.cal_id   		IS  '캘린더 ID';
+ALTER TABLE TB_CAL_SHARES ADD CONSTRAINT FK_TB_CAL_SHARES_CAL_ID FOREIGN KEY (CAL_ID) REFERENCES TB_CALENDARS(CAL_ID) ON DELETE CASCADE;
+ALTER TABLE TB_CAL_SHARES  MODIFY cal_id  CONSTRAINT NN_TB_CAL_SHARES_CAL_ID NOT NULL;
+
+-- 캘린더 공유 시퀀스
+CREATE SEQUENCE CALENDAR_SHARES_SEQ START WITH 10 INCREMENT BY 1;
+
+-- 전체 조회 쿼리
+SELECT * FROM TB_CAL_SHARES;
+
+-- 특정 데이터 조회 쿼리
+SELECT * FROM TB_CAL_SHARES WHERE CAL_ID = #{calShrId};
+
+SELECT * FROM TB_CALENDARS WHERE CAL_ID = #{calId};
+
+-- 특정 데이터 조회 쿼리(캘린더 테이블과 조인)
+SELECT
+   	  S.CAL_SHR_ID
+    , S.EMP_ID
+    , S.CAL_ID 
+    , C.CAL_ID as calendar_id
+    , C.EMP_ID AS employee_id
+    , C.CAL_NAME
+    , C.CAL_ACCESS 
+FROM		TB_CAL_SHARES S
+LEFT JOIN	TB_CALENDARS C
+ON			S.CAL_ID = C.CAL_ID
+WHERE		S.EMP_ID = #{empId}
+AND			S.CAL_ID = #{calId};
+	    	
+SELECT
+	  S.CAL_SHR_ID
+	, S.EMP_ID
+	, S.CAL_ID 
+	, C.CAL_ID as calendar_id
+	, C.EMP_ID AS employee_id
+	, C.CAL_NAME
+	, C.CAL_ACCESS 
+FROM		TB_CAL_SHARES S
+LEFT JOIN	TB_CALENDARS C
+ON			S.CAL_ID = C.CAL_ID
+WHERE		S.EMP_ID = #{empId};
+-- 데이터 삽입 쿼리
+INSERT INTO 
+	TB_CAL_SHARES(
+		  CAL_SHR_ID
+		, EMP_ID
+		, CAL_ID)
+	VALUES(
+		  CALENDAR_SHARES_SEQ.NEXTVAL
+		, #{empId}
+		, #{calId}
+	);
+	
+-- 특정 데이터 삭제 쿼리
+DELETE FROM TB_CAL_SHARES WHERE CAL_SHR_ID = #{calShrId};
