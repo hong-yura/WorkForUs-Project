@@ -115,67 +115,70 @@ public class BoardController {
 		logger.info("getDetailData=(files={})", files);
 		
 		// 게시글 댓글 마지막 groupNo을 가지고 온다.
-		int groupNo = postService.selectGroupNo(pId);
+		int groupNo = postService.selectGroupNo(pId); 
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData);
 		model.addAttribute("loginData", loginData); // 이건 나중에 session 있으면 필요 없음
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentCnt", commentCnt);
-		model.addAttribute("groupNo", groupNo);
+		model.addAttribute("groupNo", groupNo + 1); // + 1을 한 이유 : 댓글 추가기능에서 groupNo 서버에 전달할 때 null값이 전달되는 걸 방지 
 		model.addAttribute("files", files);
 		return "/board/detail";
 	}
 	
-	// 댓글추가 -> ajax로 변경
-	@PostMapping(value="/comment/add" , produces="applicaton/json; charset=utf-8")
-	@ResponseBody
+	// 댓글 추가
+	@PostMapping(value="/comment/add")
 	public String InsertComment(Model model, HttpSession session
-							  , @RequestParam(value="depth", required=false) String depth
-							  , @RequestParam(value="groupNo", required=false) String groupNo
-							  , @RequestParam(value="content", required=false) String content
-							  , @RequestParam(value="postId", required=false) String postId) {
+							  , @ModelAttribute PostCommentDTO commentDto
+							  ) {
 		
-		logger.info("InsertComment(depth={}, groupNo={}, content={}, postId={})", depth, groupNo, content, postId);
-		JSONObject json = new JSONObject();
-		int dep = 0;
-		if(depth != null) { // 만약 null이 아니라면
-			dep = Integer.parseInt(depth);
+		logger.info("InsertComment(commentDto={})",commentDto);
+		if(commentDto.getDepth() == 1) {
+			commentDto.setDepth(0);
+		}else {
+			commentDto.setDepth(1);
 		}
-		int gno = 0;
-		if(groupNo != null) {
-			gno = Integer.parseInt(groupNo);
-		}
-		int pId = Integer.parseInt(postId);
 		
-		PostCommentDTO commentDto = new PostCommentDTO();
 		// sort 구하기
-		int maxSort = postService.selectMaxSort(pId, gno); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
-		// 댓글을 전달 받는다. 
-		// 작성한 사람의 id 를 넣어준다.
+		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
+		commentDto.setSort(maxSort + 1); 
 		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
 		commentDto.setEmpNm("원빈");
-		commentDto.setGroupNo(gno);
-		commentDto.setContent(content);
-		commentDto.setDepth(dep);
-		logger.info("InsertComment(postId={})", pId);
-		commentDto.setPostId(pId);
-		commentDto.setSort(maxSort + 1); 
 		
 		// 댓글 저장
 		boolean result = commentService.addComment(commentDto);
-		try {
-			// 만약 댓글 저장에 성공했다면
-			json.put("code","success");
-			json.put("message","댓글이 저장되었습니다.");
-			json.put("commentDto", commentDto);
-		} catch (Exception e){
-			// 만약 댓글 저장에 실패했다면
-			json.put("code", "error");
-			json.put("message", "댓글 저장에 실패하였습니다.");
+		if (result) {
+			return "redirect: /board/detail?postId=" + commentDto.getPostId(); 
+		}else {
+			model.addAttribute("message", "댓글 저장에 실패하였습니다.");
+			return  "/board/detail?postId" + commentDto.getPostId();
 		}
-		return json.toJSONString();
 	}
+	
+	// 댓글 추가
+		@PostMapping(value="/comment/add2")
+		public String InsertComment2(Model model, HttpSession session
+								  , @ModelAttribute PostCommentDTO commentDto) {
+			
+			logger.info("InsertComment(commentDto={})",commentDto);
+			
+			// sort 구하기
+			int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
+			commentDto.setSort(maxSort + 1); 
+			commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
+			commentDto.setEmpNm("원빈");
+			
+			// 댓글 저장
+			boolean result = commentService.addComment(commentDto);
+			if (result) {
+				return "redirect: /board/detail?postId=" + commentDto.getPostId(); 
+			}else {
+				model.addAttribute("message", "댓글 저장에 실패하였습니다.");
+				return  "/board/detail?postId" + commentDto.getPostId();
+			}
+		}
+	
 	
 	// 게시글 추가 화면
 	@GetMapping(value="/post/add")

@@ -80,7 +80,8 @@
 											<input type="hidden" name="postId" value="${postData.postId}">
 											<div class="input-group display-inline">
 												<textarea class="textarea-content" name="content" rows="3" placeholder="댓글 작성" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';"></textarea>
-										 		<button class="btn" type="submit" onclick="addComment(this, ${comment.groupNo + 1},${comment.depth } ,${ postData.postId});" >작성</button>
+										 		<input type="text" name="groupNo" value="${groupNo}" hidden>
+										 		<button class="btn" type="submit" name="depth" value="1">작성</button>
 											</div>
 										</div>
 									</div>
@@ -119,16 +120,19 @@
 										</div>
 									</div>
 									<!-- 대댓 -->
-									<div class="card">
-										<div class="display-inline emp-img margin-left-10">
-											<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
-											<input type="hidden" name="postId" id="postId" value="${postData.postId}">
-											<div class="input-group display-inline">
-												<textarea class="textarea-content radius" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
-												<button class="btn" type="submit" onclick="addSecComment(this, ${comment.groupNo}, ${comment.depth}, ${postData.postId});">작성</button>
+									<form action="${commentUrl}/add2" method="post">
+										<div class="card">
+											<div class="display-inline emp-img margin-left-10">
+												<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
+												<input type="hidden" name="postId" id="postId" value="${postData.postId}">
+												<div class="input-group display-inline">
+													<textarea class="textarea-content radius" onkeyup="this.style.height='26px'; this.style.height = this.scrollHeight + 'px';" name="content" rows="3" placeholder="댓글 작성" ></textarea>
+													<input type="text" name="groupNo" value="${comment.groupNo}" hidden>
+													<button class="btn" type="submit" name="depth" value="2" >작성</button>
+												</div>
 											</div>
 										</div>
-									</div>
+									</form>
 									<c:forEach items="${commentList}" var="secComment">
 										<c:if test="${secComment.groupNo eq comment.groupNo && secComment.depth == 1}">
 											<div class="mb-1 second-comment-container">
