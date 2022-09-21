@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,23 +71,21 @@ public class DeptController {
 		@SuppressWarnings("unchecked")
 		@ResponseBody
 		@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
-		public String addDept(@RequestParam DeptDTO deptDto) {
+		public String addDept(@RequestBody DeptDTO deptDto) {
 			// 로그인 세션 추가하기
 			
 			logger.info("addDept(deptDto={})", deptDto);
 			
+			String message=null;
+			
 			int result = deptService.addDept(deptDto);
 			
 			if(result == 1) {
-				
+				message = "success";
+			} else {
+				message = "fail";
 			}
-			
-			JSONObject json = new JSONObject();
-			
-			json.put("deptName", deptDto.getDeptName());
-			json.put("deptMngId", deptDto.getDeptMngId());
-			
-			return json.toJSONString();
+			return message;
 		}
 	
 	// 부서 수정 폼 요청
@@ -143,7 +142,5 @@ public class DeptController {
 		}
 		
 	}
-	
-	
 	
 }
