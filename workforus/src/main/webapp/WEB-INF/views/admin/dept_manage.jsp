@@ -133,7 +133,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptNo" value="${data.deptNo}" disabled >
+																name="deptNo" disabled >
 														</div>
 													</div>
 												</div>
@@ -144,7 +144,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptName" value="${data.deptName}" readonly >
+																name="deptName" readonly >
 														</div>
 													</div>
 												</div>
@@ -155,7 +155,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptMngId" value="${data.deptMngId}" readonly >
+																name="deptMngId" readonly >
 														</div>
 													</div>
 												</div>
@@ -166,7 +166,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptAddDt" value="${data.deptAddDt}" disabled >
+																name="deptAddDt" disabled >
 														</div>
 													</div>
 												</div>
@@ -177,7 +177,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptModDt" value="${data.deptModDt}" disabled >
+																name="deptModDt" disabled >
 														</div>
 													</div>
 												</div>
@@ -294,10 +294,7 @@
 		}
 		
 		// 부서 추가
-		function deptAdd() {
-			
-			var data = {};
-			
+		function deptAdd() {			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
