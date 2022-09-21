@@ -282,7 +282,7 @@
 					no: no
 				},
 				success: function(data) {
-					var form = document.getElementById("deptForm");		
+					var form = document.getElementById("deptForm");
 					
 					form.deptNo.value = data.deptNo;
 					form.deptName.value = data.deptName;
@@ -318,6 +318,25 @@
 				}
 			})
 		}
+		
+		// 부서 수정
+		function deptModify() {
+			$.ajax({
+				type: "post",
+				url: "${adminUrl}/dept_modify",
+				data: {
+					
+				},
+				dataType: "json",
+				success: function() {
+					
+				},
+				error: function() {
+					alert("부서 수정 실패");
+				}
+			})
+		}
+		
 
 		// 부서 삭제
 		function deptDelete() {

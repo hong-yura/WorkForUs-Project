@@ -96,6 +96,18 @@ public class DeptController {
 		return "admin/dept_modify";
 	}
 	
+	// 부서 수정 저장 요청
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@PostMapping(value = "/dept_modify", produces="application/json; charset=utf-8")	
+	public String modifyDept(@RequestParam int no) {
+		// 로그인 세션 추가하기
+		
+		JSONObject json = new JSONObject();
+		
+		return json.toJSONString();
+	}
+	
 	
 	// 부서 삭제
 	@SuppressWarnings("unchecked")

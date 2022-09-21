@@ -35,7 +35,7 @@
 		UPDATE TB_DEPARTMENTS
 		   SET DEPT_NM = #{deptName}
 		     , DEPT_MANAGER_ID = #{deptMngId}
-		 WHERE DEPT_NO = #{deptNo}
+		 WHERE DEPT_NO = #{no}
 	</update>
 	
 	<delete id="deleteDept">
