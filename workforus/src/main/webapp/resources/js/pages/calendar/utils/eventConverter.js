@@ -22,6 +22,8 @@ function eventConverter(sche){
     isAllday: allday,
     start: startTime,
     end: endTime,
+    backgroundColor: '#003a70',
+    color: '#FFF',
   };
 
   return newEvent;

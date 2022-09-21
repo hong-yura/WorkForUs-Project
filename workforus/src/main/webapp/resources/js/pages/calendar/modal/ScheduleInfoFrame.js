@@ -1,21 +1,17 @@
-const ScheduleInfo = (props) => {
+const ScheduleInfoFrame = (props) => {
   const [inputs, setInputs] = React.useState(props.eventInfo);
 
   React.useEffect(()=>{
-  console.log(inputs);
   if(props.eventInfo !== null)
   	setInputs(eventReverter(props.eventInfo));
   },[props.eventInfo]);
   
   const onInputChange = (event) => {
-    console.log(event.target.name);
-    console.log(event.target.value);
     setInputs({ ...inputs, [event.target.name]: event.target.value });
   };
 
   const onInputBlur = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
-    console.log(inputs);
   };
 
   const onCheckBoxChange = (event) => {
@@ -38,8 +34,34 @@ const ScheduleInfo = (props) => {
     }
   };
   
+  const onClickUpdate = () => {
+  	axios.put("http://localhost/schedule", inputs).
+  	then((res)=>{
+  		if(res.data.result === "FAIL") {
+  			alert("일정 수정에 실패하였습니다.");
+  		} else {
+  			alert("일정 수정에 성공하였습니다.");
+  		}
+  	}).catch((e)=>console.error(e));
+  	props.onUpdateEvent(eventConverter(inputs));
+  	props.setOnInfoModal(false)
+  }
+  
+  const onClickDelete = () => {
+  	axios.delete(`http://localhost/schedule/${inputs.scheId}`).
+  	then((res)=>{
+  		if(res.data.result === "FAIL") {
+  			alert("일정 삭제에 실패하였습니다.");
+  		} else {
+  			alert("일정 삭제에 성공하였습니다.");
+  		}
+  	}).catch((e)=>console.error(e));
+    props.onDeleteEvent(eventConverter(inputs));
+  	props.setOnInfoModal(false)
+  }
+  
   return (
-    <ModalPortal onClick={() => props.setOnModal(false)}>
+    <ModalPortal onClick={() => props.setOnInfoModal(false)}>
       <div
         className="modal fade text-left show"
         id="inlineForm"
@@ -55,21 +77,19 @@ const ScheduleInfo = (props) => {
               <button
                 type="button"
                 className="close"
-                onClick={() => props.setOnModal(false)}
+                onClick={() => props.setOnInfoModal(false)}
               >
-                <i data-feather="x"></i>
+                <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
             <form action="#">
               <div className="modal-body">
-                <label>캘린더 선택</label>
+                <label>캘린더</label>
                 <select
                   value={inputs.calId}
                   className="form-select"
                   aria-label="Default select example"
                   name="calId"
-                  onChange={onInputChange}
-                  onBlur={onInputBlur}
                 >
                   {props.myCal.map((cal) => {
                     return <option key={cal.calId} value={cal.calId}>{cal.calName}</option>;
@@ -104,7 +124,7 @@ const ScheduleInfo = (props) => {
                     type="date"
                     name="scheDateStart"
                     className="form-control"
-                    value={inputs.scheDateStart}
+                    defaultValue={dayjs(inputs.scheDateStart).format('YYYY-MM-DD')}
                     onChange={onDateChange}
                     onBlur={onDateChange}
                   />
@@ -125,17 +145,17 @@ const ScheduleInfo = (props) => {
                 <div className="form-check">
                   <input
                     className="form-check-input"
-                    name="scheAlltime"
+                    name="scheAllday"
                     type="checkbox"
                     onChange={onCheckBoxChange}
                     onBlur={onCheckBoxBlur}
-                    defaultChecked={inputs.scheAlltime === "Y" ? true : false}
+                    checked={inputs.scheAllday === "Y" ? true : false}
                   />
                   <label className="form-check-label">
                     종일 여부
                   </label>
                 </div>
-                {inputs.scheAlltime === "N" && (
+                {inputs.scheAllday === "N" && (
                   <React.Fragment>
                     <label>일정 시작 시간: </label>
                     <div className="form-group">
@@ -169,15 +189,12 @@ const ScheduleInfo = (props) => {
                   className="btn btn-light-secondary"
                   onClick={() => props.setOnInfoModal(false)}
                 >
-                  <i className="bx bx-x d-block d-sm-none"></i>
                   <span className="d-none d-sm-block">닫기</span>
                 </button>
-                <button type="button" className="btn btn-alert ml-1">
-                  <i className="bx bx-check d-block d-sm-none"></i>
+                <button type="button" className="btn btn-alert ml-1" onClick={onClickDelete}>
                   <span className="d-none d-sm-block">삭제하기</span>
                 </button>
-                <button type="button" className="btn btn-primary ml-1">
-                  <i className="bx bx-check d-block d-sm-none"></i>
+                <button type="button" className="btn btn-primary ml-1" onClick={onClickUpdate}>
                   <span className="d-none d-sm-block">수정하기</span>
                 </button>
               </div>

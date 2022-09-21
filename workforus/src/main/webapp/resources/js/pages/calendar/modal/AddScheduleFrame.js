@@ -43,8 +43,6 @@ const AddScheduleFrame = (props) => {
   };
 
   const onSubmit = () => {
-    props.setOnModal(false);
-    console.log(inputs);
     axios
       .post("http://localhost/schedule", inputs)
       .then((res) => {
@@ -58,9 +56,8 @@ const AddScheduleFrame = (props) => {
       })
       .catch((e) => console.log(e));
     props.addSchedule(inputs);
+    props.setOnModal(false);
   };
-
-  console.log(props.addSchedule);
 
   return (
     <ModalPortal onClick={() => props.setOnModal(false)}>
@@ -81,7 +78,7 @@ const AddScheduleFrame = (props) => {
                 className="close"
                 onClick={() => props.setOnModal(false)}
               >
-                <i data-feather="x"></i>
+                <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
             <form action="#">
@@ -90,6 +87,8 @@ const AddScheduleFrame = (props) => {
                 <select
                   className="form-select"
                   aria-label="Default select example"
+                  name="calId"
+                  value={inputs.calId}
                   onChange={onInputChange}
                   onBlur={onInputBlur}
                 >
