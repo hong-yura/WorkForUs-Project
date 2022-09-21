@@ -235,7 +235,7 @@
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete(${data.deptNo});">삭제</button>
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="deptDelete();">삭제</button>
 							</div>
 						</div>
 					</div>
@@ -305,7 +305,6 @@
 					
 				},
 				dataType: "json",
-				contentType:"application/json;charset=UTF-8",
 				success: function(data) {
 					console.log(data);
 					
@@ -321,17 +320,15 @@
 		}
 
 		// 부서 삭제
-		function deptDelete(deptNo) {
+		function deptDelete() {
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_delete",
 				data: {
-					no: deptNo
+					no: deptForm.deptNo.value
 				},
 				dataType: "json",
 				success: function(data) {
-					console.log(data);
-					
 					var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});

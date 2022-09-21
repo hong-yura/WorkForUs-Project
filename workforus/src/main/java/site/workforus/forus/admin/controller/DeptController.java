@@ -100,7 +100,7 @@ public class DeptController {
 	// 부서 삭제
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@RequestMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
+	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
 	public String removeDept(@RequestParam int no) {
 		logger.info("deleteDept(no={})", no);
 		
