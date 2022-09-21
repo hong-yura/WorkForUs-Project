@@ -4,8 +4,12 @@ const App = () => {
   const [onModal, setOnModal] = React.useState(false);
 
   const [onInfoModal, setOnInfoModal] = React.useState(false);
+  
+  const [calendarInfoModal, setCalendarInfoModal] = React.useState(false);
 
   const [eventInfo, setEventInfo] = React.useState();
+  
+  const [calendarInfo, setCalendarInfo] = React.useState();
 
   const [myCal, setMyCal] = React.useState([]);
 
@@ -84,7 +88,7 @@ const App = () => {
 
     calendarRef.current.getInstance().setCalendars([]);
     calendarRef.current.getInstance().setCalendars(calendarList);
-  }, [myCal, shareCal]);
+  }, [myCal, shareCal, addCalendar]);
 
   const addSchedule = (sche) => {
     const newEvent = eventConverter(sche);
@@ -92,7 +96,12 @@ const App = () => {
   };
 
   const addCalendar = (cal) => {
-    setMyCal([...myCal, cal]);
+  	axios
+      .get(`http://localhost/calendar/list?empId=${empId}`)
+      .then((res) => {
+        setMyCal(res.data.data);
+      })
+      .catch();
   };
 
   const onClickNavi = (event) => {
@@ -136,6 +145,20 @@ const App = () => {
       .getInstance()
       .setCalendarVisibility(String(event.target.name), event.target.checked);
   };
+  
+  const onUpdateEvent = (event) => {
+  	calendarRef.current.getInstance().updateEvent(event.id, event.calendarId,{
+  		title: event.title,
+  		body: event.body,
+  		start: event.start,
+  		end: event.end,
+  		isAllday: event.isAllday
+  	});
+  }
+  
+  const onDeleteEvent = (event) => {
+  	calendarRef.current.getInstance().deleteEvent(event.id, event.calendarId);
+  }
 
   return (
     <div id="calendar-wrapper" className="row match-height container">
@@ -145,6 +168,8 @@ const App = () => {
         addCalendar={(cal) => addCalendar(cal)}
         checkCalendarVisibilitiy={checkCalendarVisibilitiy}
         setOnModal={(bool) => setOnModal(bool)}
+        setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
+        setCalendarInfo={(cal) => setCalendarInfo(cal)}
       />
       <CalendarMain
         forwardRef={calendarRef}
@@ -165,8 +190,17 @@ const App = () => {
         <ScheduleInfoModal
           eventInfo={eventInfo}
           setOnInfoModal={(bool) => setOnInfoModal(bool)}
+          onUpdateEvent={(event) => onUpdateEvent(event)}
+          onDeleteEvent={(event) => onDeleteEvent(event)}
           myCal={myCal}
         />
+      )}
+      {calendarInfoModal && (
+      	<CalendarInfoModal
+      		calendarInfo={calendarInfo}
+      		setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
+        	addCalendar={(cal) => addCalendar(cal)}
+      	/>
       )}
     </div>
   );
