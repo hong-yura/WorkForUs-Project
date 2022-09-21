@@ -48,12 +48,12 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
 	@GetMapping(value="")
-	public String getData(Model model, HttpSession session //, @RequestParam int boardId
-							 ) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
+	public String getData(Model model, HttpSession session //@RequestParam(required=false) int boardId 
+			) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
 		// 임의의 empDto
 		EmpDTO empDto = new EmpDTO(); 
 		empDto.setEmpId("A2022100"); empDto.setEmpNm("김나영");
-		int boardId = 1; // 임의로 넣어줌 -> 이건 나중에 URL로 넣어주기
+		int boardId = 2; // 임의로 넣어줌 -> 이건 나중에 URL로 넣어주기
 		
 //		아래 거는 나중에 추가해주기
 //		session.setAttribute("loginData", empDto);
@@ -82,7 +82,6 @@ public class BoardController {
 		model.addAttribute("boardData", boardData);
 		model.addAttribute("participList", participList);
 		model.addAttribute("postCnt", postCnt);
-		
 		return "/board/list";
 		 
 	}
@@ -129,6 +128,9 @@ public class BoardController {
 	public String getAddPost(Model model, HttpSession session
 							, int boardId) { // 게시판 id만 있으면 됨
 		model.addAttribute("boardId", boardId);
+		// summernote 이미지 저장하기 위해서는 postId를 session에 저장해줘야 함
+		int postId = postService.selectCurrentPostId(boardId);
+		session.setAttribute("postId", postId);
 		
 		return "/board/add";
 	}
@@ -139,15 +141,30 @@ public class BoardController {
 						, @ModelAttribute BoardPostDTO postDto // 저장할 데이터
 						, @RequestParam("postFiles") MultipartFile[] files) throws IllegalStateException, IOException {
 		// 게시판 정보가 필요
-		logger.info("addPost=(boardId={})", boardId);
+		logger.info("addPost=(boardId={}, files={})", boardId, files);
 		
-		// 게시글을 저장해야 한다. 
+		// 만약 content도 file도 올리지 않았다면 
+		
+		// 만약 임시저장이 null이면 N을 해준다.
+		if(postDto.getTemporaryYn()==null) {
+			postDto.setTemporaryYn("N");
+		}
+		// 만약 공지가 null이면 N을 해준다.
+		if(postDto.getNoticeYn()==null) {
+			postDto.setNoticeYn("N");
+		}
+	
+		// 게시글을 먼저 저장해야 한다. 
+		postDto.setWriter("A2022100"); // -> 나중에는 session에 저장된 loginData.empId 넘기기
 		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
-		if (files != null) {
+		// 파일이 없을 수도 있으니까
+		if (files.length == 0) {
 			// 내부경로로 저장
 			String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
-			String fileRoot = realPath+"static/images/board/"; 			// 어디에 저장할 건지
+			logger.info("addPost(realPath={})", realPath);
+			String fileRoot = realPath+"/images/board/"; 				// 저장할 위치
+			logger.info("addPost(fileRoot={})", fileRoot);
 			
 			PostUploadFileDTO fileData = new PostUploadFileDTO(); 		// fileData 리스트를 전달해줘야 한다.
 			
@@ -155,25 +172,32 @@ public class BoardController {
 				
 				String originalFileName = file.getOriginalFilename();	//오리지날 파일명
 				String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
-				String savedFileName = originalFileName + "-" + UUID.randomUUID() + extension;		//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
+				String savedFileName = UUID.randomUUID() + extension;		//저장될 파일 명 -> randomUUID -> 파일명 랜덤으로
 				File targetFile = new File(fileRoot + savedFileName);	 // 저장할 위치와 
 				
 				file.transferTo(targetFile); // 파일 생성
 				
 				// uploadFileDTO에 저장을 해줘야 한다.
-				fileData.setFileNm(savedFileName); 	// 실제 파일 이름
-				fileData.setFileType(extension);	// 파일 확장자
-				fileData.setPostId(postId);			// 게시글 id
-				fileData.setSummYn("N");			// summernote 아님
+				fileData.setFileNm(savedFileName); 		// 실제 파일 이름
+				fileData.setFileType(extension);		// 파일 확장자
+				fileData.setPostId(postId);				// 게시글 id
+				fileData.setSummYn("N");				// summernote 아님
 				fileData.setUploadLocation(realPath);	// 실제 경로(loacation)
-				fileData.setUploadUrl(request.getContextPath() + "/static/images/board" + savedFileName);	// url
+				fileData.setUploadUrl(request.getContextPath() + "/static/images/board/" + savedFileName);	// url
 				
-				// DB에 저장
+				// DB에 파일 저장
 				postService.addUploadFileData(fileData);
-				
 			}
-			model.addAttribute("files", fileData);
 		}
+		// 댓글 가져오기
+		List<PostCommentDTO> commentList = commentService.selectComment(postId);
+		int commentCnt = commentService.selectCommentCount(postId);
+		logger.info("postData={}", postDto);
+		model.addAttribute("files", files);
+		model.addAttribute("postData", postDto);
+		model.addAttribute("commentList", commentList);
+		model.addAttribute("commentCnt", commentCnt);
+		
 		if(postId > 0) { // 저장 성공시
 			return "redirect:/board/detail?postId=" + postId; // 해당 게시글로 이동해야 한다. 
 		}else {			 // 저장 실패시

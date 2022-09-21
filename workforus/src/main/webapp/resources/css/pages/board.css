@@ -212,4 +212,14 @@ input,textarea:focus {
 }
 
 /* 게시판 수정 페이지*/
+.submit-btn{
+	display: block;
+	margin-left :80%;
+}
+.border-solid{
+	border-right : solid 1px;
+	
+	
+}
+
 

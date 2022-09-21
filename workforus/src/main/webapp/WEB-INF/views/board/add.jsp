@@ -35,6 +35,8 @@
 	      				<div class="section-left"> <!-- 목록 -->
 	      					<p>제목</p>
 	      					<p>첨부파일</p>
+	      					<br>
+	      					<p>공지여부</p>
 	      				</div>
 	      			</div>
 	      			<div class="col-10">
@@ -43,16 +45,21 @@
 	      				<div class="file-controller">
 	      					<input type="file" name="postFiles" id="files" class="file-input form-control" multiple>
 	      				</div>
+	      				<br>
+	      				<input type="checkbox" name="noticeYn" value="Y">공지 등록
 	      			</div>
 	      		</div>
 	      		<hr>
 	      		<!-- 내용 입력란 - summernote 사용 -->
 	      		<div class="row">
 	      			<div class="col-12">
-		      			<textarea id="summernote" name="editordata">${param.content}</textarea>
-						<button class="btn float-right margin-10" type="submit">저장</button>
+		      			<textarea id="summernote" name="content">${param.content}</textarea>
 	      			</div>
 	      		</div>
+	      		<div class="btn-group" role="group" style="display: block; float: right;">
+					  <button type="submit" class="btn btn-group-sm" name="temporaryYn" value="N" id="saveBtn">저장</button>
+					  <button type="submit" class="btn btn-group-sm" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
+				</div>
 		     </div>
 		</form>
       	<!-- footer -->
@@ -66,7 +73,7 @@
 		height : 300,
 		minHeight: null,
 		maxHeight : null,
-		fcous : false,
+		fcous : true,
 		lang: "ko-KR",
 		disableResizeEditor: true, // 크기 조절 기능 삭제
 		callbacks: {
@@ -81,14 +88,17 @@
          } 
 	}); 
 	
+	
+	
 	// 이미지 파일 처리
 	function uploadSummernoteImageFile(file, el) {
 		data = new FormData();
+		
 		data.append("file", file);
 		$.ajax({
 			data : data,
 			type : "POST",
-			url : "uploadSummernoteImageFile",
+			url : "/uploadSummernoteImageFile",
 			contentType : false,
 			enctype : 'multipart/form-data',
 			processData : false,

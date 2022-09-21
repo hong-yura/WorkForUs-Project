@@ -46,8 +46,12 @@ public class BoardPostService {
 		int postId = mapper.selectPostId(); // 다음 게시글 id가 몇 번인지 알아야 한다.
 		
 		postDto.setPostId(postId); 			// 위에서 구한 postId값을 넣어준다.
-		mapper.insertBoardPost(postDto);	// 게시글 저장
-		return postId;
+		int result = mapper.insertBoardPost(postDto);	// 게시글 저장
+		if(result > 0) {
+			return postId;
+		}else {
+			return 0; // 만약 실패하면 0을 리턴
+		}
 	}
 	
 	// 게시글 삭제
@@ -68,5 +72,11 @@ public class BoardPostService {
 	public void addUploadFileData(PostUploadFileDTO fileData) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		mapper.insertPostUploadFile(fileData);
+	}
+
+	public int selectCurrentPostId(int boardId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int currentId = mapper.selectCurrentPostId(boardId);
+		return currentId;
 	}
 }

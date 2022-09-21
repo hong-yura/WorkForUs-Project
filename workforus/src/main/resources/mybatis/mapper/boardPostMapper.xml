@@ -165,5 +165,9 @@
  	 	VALUES (post_file_seq.NEXTVAL,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
  	 </insert>
  	 
- 	 
+ 	 <!-- 게시글 현재 Id 찾기 -->
+ 	 <select id="selectCurrentPostId" resultType="_int">
+ 	 	SELECT MAX(POST_ID)
+		  FROM TB_BOARD_POSTS
+ 	 </select>
 </mapper>

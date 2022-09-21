@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -22,6 +23,7 @@ import site.workforus.forus.board.model.PostUploadFileDTO;
 import site.workforus.forus.board.service.BoardPostService;
 
 @Controller	
+@MultipartConfig
 public class SummernoteUploadImageController {
 	@Autowired
 	private BoardPostService postService;
@@ -29,13 +31,13 @@ public class SummernoteUploadImageController {
 	@PostMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
 	@ResponseBody
 	public String uploadSummernoteImageFile(HttpServletRequest request , HttpSession session
-										, @RequestParam("file") MultipartFile multipartFile)  {
+										, @RequestParam(value="file", required=false) MultipartFile multipartFile)  {
 		
 		JsonObject json = new JsonObject();
 		
 		// 내부경로로 저장
 		String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
-		String fileRoot = realPath+"static/images/board"; // 어디에 저장할 건지
+		String fileRoot = realPath+"static/images/board/"; // 어디에 저장할 건지
 	
 		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자

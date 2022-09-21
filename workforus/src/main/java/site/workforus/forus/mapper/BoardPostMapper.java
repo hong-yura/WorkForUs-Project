@@ -41,6 +41,9 @@ public interface BoardPostMapper {
 	// 게시글 갯수 가져오기
 	public int generalPostCount(int boardId);
 
+	// 게시글 현재 Id 찾기
+	public int selectCurrentPostId(int boardId);
+
 
 	
 
