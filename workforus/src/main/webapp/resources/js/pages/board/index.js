@@ -27,8 +27,8 @@ function boardDelete(pId){
 			
 			var title = myModal._element.querySelector(".modal-title");
 			var body = myModal._element.querySelector(".modal-body");
-			title.innerText = "오류";
-			body.innerHTML = "<p>" + "삭제 실패" + "</p>"
+			title.innerText = "성공";
+			body.innerHTML = "<p>" + "게시글이 삭제되었습니다." + "</p>"
 				
 			myModal.show();
 		}

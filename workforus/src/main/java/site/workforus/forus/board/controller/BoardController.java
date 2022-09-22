@@ -216,7 +216,7 @@ public class BoardController {
 		}
 	
 		// 게시글을 먼저 저장해야 한다. 
-		postDto.setWriter("A2022100"); // -> 나중에는 session에 저장된 loginData.empId 넘기기
+		postDto.setWriter("A2022105"); // -> 나중에는 session에 저장된 loginData.empId 넘기기
 		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
 		// 파일이 없을 수도 있으니까
