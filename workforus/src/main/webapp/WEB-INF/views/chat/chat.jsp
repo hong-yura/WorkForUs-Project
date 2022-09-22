@@ -9,12 +9,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mazer Admin Dashboard</title>
-	<link rel="stylesheet" href="static/css/widgets/chat.css">
     <link rel="stylesheet" href="static/css/pages/chat.css">
+	<link rel="stylesheet" href="static/css/widgets/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <%@ include file="../module/header.jsp" %>
 </head>
+<style>
+.search-icon {
+	width: 14%;
+	padding: 5px 0 0 0;
+	border-radius: 5px;
+	background-color: #5a8dee;
+	border: #5a8dee;
+}
+ul{
+	list-style: none;
+	padding: 10px 10px 10px 10px;
+	font-size: 17px;
+	color: black;
+	margin: 0px;
+}
+.chat-plus-icon {
+	position: absolute;
+	font-size: 50px;
+	top: 680px;
+	left: 10px;
+	color: #5a8dee;
+	cursor: pointer;
+}
+</style>
 <body>
     <%@ include file="../module/navigation.jsp" %>
     <c:url var="chatUrl" value="/chat" />
@@ -52,9 +76,7 @@
 			            		</c:forEach>
 		            		</c:if>
 	            		</table>
-	            		<div class="chat-plus-icon-container">
-	            			<i class="bi bi-plus-circle-fill chat-plus-icon" onclick="chatRoomAddModal()"></i>
-	            		</div>
+	            		<i class="bi bi-plus-circle-fill chat-plus-icon" onclick="chatRoomAddModal()"></i>
 	            	</div>
             	</div>
             	
@@ -138,7 +160,8 @@
 		                            </button>
 		                        </div>
 		                    </div>
-		                    <div class="card-body pt-4 bg-grey">
+		                    <div class="card-body pt-4 bg-grey" id="id_chat">
+		                    	<!--  
 		                        <div class="chat-content">
 		                            <div class="chat">
 		                                <div class="chat-body">
@@ -153,6 +176,7 @@
 		                                </div>
 		                            </div>
 		                        </div>
+		                        -->
 		                    </div>
 		                    <div class="card-footer">
 		                    	<form onsubmit="return sendMessage(this.context);">
@@ -251,7 +275,7 @@
 <script src="static/js/bootstrap.bundle.min.js"></script>
 <script src="static/js/main.js"></script>
 <script type="text/javascript">
-var ws = new WebSocket("ws://localhost/chatting/cs");
+var ws = new WebSocket("ws://localhost/chat/socket");
 ws.onopen = function() {
 	console.log("채팅 입장");
 };
