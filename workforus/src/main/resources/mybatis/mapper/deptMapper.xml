@@ -14,6 +14,7 @@
 	
 	<select id="selectDeptAll" resultMap="deptDtoMap">
 		SELECT * FROM TB_DEPARTMENTS
+		ORDER BY DEPT_NO
 	</select>
 	
 	<select id="selectDeptDetail" parameterType="_int" resultMap="deptDtoMap">
@@ -24,6 +25,7 @@
 			 , DEPT_MOD_DT
 		  FROM TB_DEPARTMENTS
 		 WHERE DEPT_NO = #{no}
+		 ORDER BY DEPT_NO
 	</select>
 	
 	<insert id="insertDept" parameterType="deptDto">
