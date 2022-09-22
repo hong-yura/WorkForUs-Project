@@ -80,8 +80,7 @@ public class MailController {
 		String empId = principal.getName();
 
 		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
-		System.out.println(receiveData);
-
+		
 		model.addAttribute("receiveData", receiveData);		
 		return "/mail/mailDetail";
 	}

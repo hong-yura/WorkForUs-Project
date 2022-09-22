@@ -136,7 +136,7 @@
             </li>
 
             <li class="sidebar2-item" title="Mail">
-              <a href="${homeUrl}/mail" class="sidebar2-link">
+              <a href="#" class="sidebar2-link">
                 <i class="bi bi-envelope"></i>
               </a>
             </li>
@@ -225,10 +225,7 @@
                 <a href="form-element-input.html">개인정보수정</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/work">근태관리</a>
-              </li>
-              <li class="submenu-item">
-                <a href="${homeUrl}/salary">월급조회</a>
+                <a href="form-element-input-group.html">근태관리</a>
               </li>
             </ul>
           </li>
@@ -240,10 +237,10 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="${homeUrl}/mail">받은메일함</a>
+                <a href="#">SubMenu #1</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/mail/mailSend">보낸메일함</a>
+                <a href="#">SubMenu #2</a>
               </li>
             </ul>
           </li>

@@ -28,10 +28,6 @@ public interface SendMailMapper {
 	// 사원 이메일
 	public String selectEmail(String empId);
 	
-	// email로 이름 가져오기
-	public String selectName(String empEmail);
-	
-	// 메일id 출력
 	public String selectMailId();
 	
 	// 받은목록 추가 
