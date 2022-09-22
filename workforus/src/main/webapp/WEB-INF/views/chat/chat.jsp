@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mazer Admin Dashboard</title>
-    <%@ include file="../module/header.jsp" %>
+    <%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/chat.css">
 	<link rel="stylesheet" href="${staticUrl}/css/widgets/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
@@ -274,86 +274,90 @@ ul{
 <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 <script src="${staticUrl}/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
-var ws = new WebSocket("ws://localhost/chat/socket");
-ws.onopen = function() {
-	console.log("채팅 입장");
-};
-ws.onmessage = function(data) {
-	console.log(data);
-	id_chat.innerText += data.data;
-	id_chat.scrollTo(0, id_chat.scrollHeight);
-};
-ws.onclose = function() {
-	console.log("채팅 퇴장");
-};
-function sendMessage(element) {
-	value = element.value;
-	element.value = "";
-	ws.send(value);
-	element.focus();
-	return false;
-};
-
-
-function chatRoomAddModal() {
-	var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
-		keyboard: false
-	});
+	var ws = new WebSocket("ws://localhost/stomp/chat");
+	var stomp = Stomp.over(ws);
 	
-	modal.show();
-}
-
-function filter() {
-	let search = document.getElementById("id_empName").value.toLowerCase();
-	let listInner = document.getElementsByClassName("empNm_list");
+	ws.onopen = function() {
+		console.log("채팅 입장");
+	};
+	ws.onmessage = function(data) {
+		console.log(data);
+		id_chat.innerText += data.data;
+		id_chat.scrollTo(0, id_chat.scrollHeight);
+	};
+	ws.onclose = function() {
+		console.log("채팅 퇴장");
+	};
+	function sendMessage(element) {
+		value = element.value;
+		element.value = "";
+		ws.send(value);
+		element.focus();
+		return false;
+	};
 	
-	for(let i = 0; i < listInner.length; i++) {
-		let empNm = listInner[i].getElementsByClassName("empNm_data");
-		if(empNm[0].innerHTML.toLowerCase().includes(search)) {
-			listInner[i].style.display = "flex";
-			empNm[0].addEventListener("click", function() {
-				addChatMember(empNm[0]);
-			})
-		} else {
-			listInner[i].style.display = "none";
-		}
+	
+	function chatRoomAddModal() {
+		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
+			keyboard: false
+		});
+		
+		modal.show();
 	}
 	
-}
-
-function addChatMember(data) {
-	var text = data.innerText;
-	text = text.replace(/\n/g, "");
-	text = text.replace(/\r/g, "");
-	text = text.replace(/\t/g, "");
-	var chatMember = document.getElementsByClassName("table")[2];
-	
-	for(i=0; i < document.getElementsByClassName("table")[2].childElementCount; i++) {
-		var chatMemberList = document.getElementsByClassName("table")[2].children[i];
-		if(chatMemberList.innerText.includes(text)) {
-			return false;
+	function filter() {
+		let search = document.getElementById("id_empName").value.toLowerCase();
+		let listInner = document.getElementsByClassName("empNm_list");
+		
+		for(let i = 0; i < listInner.length; i++) {
+			let empNm = listInner[i].getElementsByClassName("empNm_data");
+			if(empNm[0].innerHTML.toLowerCase().includes(search)) {
+				listInner[i].style.display = "flex";
+				empNm[0].addEventListener("click", function() {
+					addChatMember(empNm[0]);
+				})
+			} else {
+				listInner[i].style.display = "none";
+			}
 		}
+		
 	}
-	chatMember.innerHTML += "<tr><td>" + text + "<td><tr>";
-}
-function chatRoomInsert(loginEmpId) {
-	console.log(loginEmpId);
-	$.ajax ({
-		url: "${chatUrl}/room/add",
-		type: "post",
-		data: {
-			id: loginEmpId
-		},
-		dataType: "json",
-		success: function(data) {
-			var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
-				keyboard: false
-			});
-				
-			myModal.show();
+	
+	function addChatMember(data) {
+		var text = data.innerText;
+		text = text.replace(/\n/g, "");
+		text = text.replace(/\r/g, "");
+		text = text.replace(/\t/g, "");
+		var chatMember = document.getElementsByClassName("table")[2];
+		
+		for(i=0; i < document.getElementsByClassName("table")[2].childElementCount; i++) {
+			var chatMemberList = document.getElementsByClassName("table")[2].children[i];
+			if(chatMemberList.innerText.includes(text)) {
+				return false;
+			}
 		}
-	})
-}
+		chatMember.innerHTML += "<tr><td>" + text + "<td><tr>";
+	}
+	function chatRoomInsert(loginEmpId) {
+		console.log(loginEmpId);
+		$.ajax ({
+			url: "${chatUrl}/room/add",
+			type: "post",
+			data: {
+				id: loginEmpId
+			},
+			dataType: "json",
+			success: function(data) {
+				var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+					keyboard: false
+				});
+					
+				myModal.show();
+			}
+		})
+	}
 </script>
 </html>
