@@ -40,7 +40,7 @@
 	<resultMap type="fileUploadDto" id="insertPostUploadFile">
 		<result property="fileId" column="file_id"/>
 		<result property="postId" column="post_id"/>
-		<result property="fileNm" column="file_mn"/>
+		<result property="fileNm" column="file_nm"/>
 		<result property="uploadLocation" column="upload_location"/>
 		<result property="uploadUrl" column="upload_url"/>
 		<result property="fileType" column="file_type"/>
@@ -142,28 +142,78 @@
  	 <!-- 게시글 댓글 추가 -->
  	 <insert id="insertComment" parameterType="postCommentDto">
  	 	INSERT INTO TB_POST_COMMENTS
- 	 	VALUES (post_comment_seq.NEXTVAR, )
+ 	 	VALUES (post_comment_seq.NEXTVAL
+ 	 		  , #{postId}
+ 	 		  , #{content}
+ 	 		  , #{empId}
+ 	 		  , #{empNm}
+ 	 		  , #{groupNo}
+ 	 		  , #{depth}
+ 	 		  , #{sort}
+ 	 		  , #{anonymity_yn}
+ 	 		  , 'N'
+ 	 		  , SYSDATE)
  	 </insert>
+ 	 
+ 	 <!-- sort 최댓값 구하기 -->
+ 	 <select id="selectMaxSort" resultType="_integer" parameterType="hashmap">
+ 	 	SELECT MAX(COMMENT_SORT)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{postId}
+		   AND GROUP_NO = #{groupNo}
+ 	 </select>
  	 
  	 <!-- 다음 시퀀스(postId) 가져오기 -->
  	 <select id="selectPostId" resultType="_int">
- 	 	SELECT board_post_seq.NEXTVAR FROM DUAL
+ 	 	SELECT board_post_seq.NEXTVAL FROM DUAL
  	 </select>
  	 
  	 
  	 <!-- 게시글 추가 -->
- 	 <insert id="insertPost" parameterType="boardPostDto">
+ 	 <insert id="insertBoardPost" parameterType="boardPostDto">
  	 	INSERT INTO TB_BOARD_POSTS
  	 	VALUES (#{postId}, #{writer}, #{boardId}, #{postTitle}, #{postPw}
- 	 			, #{content}, #{addDate}, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
+ 	 			, #{content}, SYSDATE, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
  	 			, #{noticeYn}, #{temporaryYn}, #{reportYn}, #{likeCnt})
  	 </insert>
  	 
  	 <!-- 게시글 파일 업로드 -->
- 	 <insert id="insertPostFile" parameterType="fileUploadDto">
+ 	 <insert id="insertPostUploadFile" parameterType="fileUploadDto">
  	 	INSERT INTO TB_POST_FILES 
- 	 	VALUES (post_file_seq.NEXTVAR,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
+ 	 	VALUES (post_file_seq.NEXTVAL,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
  	 </insert>
  	 
+ 	 <!-- 게시글 현재 Id 찾기 -->
+ 	 <select id="selectCurrentPostId" resultType="_int">
+ 	 	SELECT MAX(POST_ID)
+		  FROM TB_BOARD_POSTS
+ 	 </select>
  	 
+ 	 <!-- 게시글 파일 가져오기 -->
+ 	 <select id="selectFiles" resultMap="insertPostUploadFile">
+ 	 	SELECT * FROM TB_POST_FILES WHERE POST_ID=#{id} 
+ 	 </select>
+ 	 
+ 	 <!-- 게시글 마지막 groupNo 가져오기 -->
+ 	 <select id="selectGroupNo" resultType="_integer" parameterType="_int">
+ 	 	SELECT MAX(GROUP_NO)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{id}
+	 </select>
+	 
+	 <!-- 파일 삭제 -->
+	 <delete id="deleteFile" parameterType="_int">
+	 	DELETE FROM TB_POST_FILES WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 댓글 삭제 -->
+	 <delete id="deleteComment" parameterType="_int">
+	 	DELETE FROM TB_POST_COMMENTS WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 게시글 삭제 -->
+	 <delete id="deleteBoardPost" parameterType="_int">
+	 	DELETE FROM TB_BOARD_POSTS WHERE POST_ID= #{id}
+	 </delete>
+	 
 </mapper>
