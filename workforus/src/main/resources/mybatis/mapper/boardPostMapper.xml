@@ -156,12 +156,13 @@
  	 </insert>
  	 
  	 <!-- sort 최댓값 구하기 -->
- 	 <select id="selectMaxSort" resultType="_integer" parameterType="map">
+ 	 <select id="selectMaxSort" resultType="_integer" parameterType="hashmap">
  	 	SELECT MAX(COMMENT_SORT)
 		  FROM TB_POST_COMMENTS
-		 WHERE POST_ID = #{item.postId}
-		   AND GROUP_NO = #{item.groupNo}
+		 WHERE POST_ID = #{postId}
+		   AND GROUP_NO = #{groupNo}
  	 </select>
+ 	 
  	 <!-- 다음 시퀀스(postId) 가져오기 -->
  	 <select id="selectPostId" resultType="_int">
  	 	SELECT board_post_seq.NEXTVAL FROM DUAL

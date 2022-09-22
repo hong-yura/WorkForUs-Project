@@ -104,10 +104,11 @@ public class BoardPostService {
 		data.put("postId", postId);
 		data.put("groupNo", groupNo);
 		Integer maxSort = mapper.selectMaxSort(data);
+		logger.info("selectMaxSort(postId={}, grouopNo={}, maxSort={})", postId, groupNo, maxSort);
 		if(maxSort == null) {
-			return 0;
+			return 0; 		// 만약 새로운 groupNo의 sort를 구하는 거면 0일 수밖에 없음 즉, 본댓글을 추가할 시
 		}else {
-			return maxSort;
+			return maxSort; // 대댓을 추가할 때는 sort의 최대값이 무조건 1이상이다. 
 		}
 		
 	}

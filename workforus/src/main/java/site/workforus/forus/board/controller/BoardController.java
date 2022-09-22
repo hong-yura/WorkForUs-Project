@@ -166,6 +166,7 @@ public class BoardController {
 		
 		// sort 구하기
 		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
+		logger.info("maxSort={}", maxSort);
 		commentDto.setSort(maxSort + 1); 
 		logger.info("InsertComment(sort={})",commentDto.getSort());
 		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
@@ -199,7 +200,7 @@ public class BoardController {
 	@PostMapping(value="/post/add")
 	public String addPost(Model model, HttpSession session, HttpServletRequest request, int boardId // 어디 게시판에 추가할지 알아야함
 						, @ModelAttribute BoardPostDTO postDto // 저장할 데이터
-						, @RequestParam("postFiles") MultipartFile[] files) throws IllegalStateException, IOException {
+						, @RequestParam(value="postFiles", required = false) MultipartFile[] files) throws IllegalStateException, IOException {
 		// 게시판 정보가 필요
 		logger.info("addPost=(boardId={}, files={})", boardId, files);
 		
@@ -219,8 +220,9 @@ public class BoardController {
 		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
 		// 파일이 없을 수도 있으니까
-		if (files.length != 0) {
+		if (files[0].getSize()!= 0) { // 만약 size가 0이라면 -> 파일 없는 거임
 			// 내부경로로 저장
+			logger.info("addPost(files={})", files.toString());
 			String realPath = request.getServletContext().getRealPath("/resources"); // static의 진짜 파일위치 찾기
 			logger.info("addPost(realPath={})", realPath);
 			String fileRoot = realPath+"/images/board/"; 				// 저장할 위치
@@ -285,7 +287,7 @@ public class BoardController {
 	}
 	
 	// 게시글 삭제
-	@PostMapping(value="/post/delete", produces = "application/json; charset=utf=8")
+	@PostMapping(value="/post/delete", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String deletePost(Model model, @RequestParam int postId) {
 		logger.info("deletePost(postId={})", postId);
