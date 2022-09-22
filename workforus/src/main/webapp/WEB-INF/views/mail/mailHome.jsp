@@ -129,7 +129,7 @@
 					                    			<i class="bi bi-envelope"></i><!-- <i class="bi bi-envelope-open"></i> 읽은거 -->
 					                    		</td>
 												<td>
-													${MailData.empObj.empEmail}
+													${MailData.mailSendEmail}
 												</td>
 												<td>
 													${MailData.mailObj.mailTitle}
