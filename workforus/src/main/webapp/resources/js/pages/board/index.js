@@ -1,20 +1,14 @@
 
 // 댓글 토글
-function showToggle(e){
+function showToggle(element){
  
- 	if(e.value === 'first'){
- 		// 본댓 + 대댓까지 다 지워야 한다.
- 		
- 	}else if(e.value === 'seconds'){
- 		// 대댓만 지우면 됨
-		var con = btn.parentElement.parentElement.parentElement.parentElement;
-	 	var sec = fir.nextElementSibling;
-	 	
- 	}
- 	if(sec.style.display='none'){
-    	sec.style.display='inline';
+ 	// 부모의 부모의 부모의 형제 형제
+	var con = element.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
+
+ 	if(con.style.display =="none"){
+    	con.style.display="inline";
 	}else{
-    	sec.style.display='none';
+    	con.style.display="none";
 	}
  	
 }

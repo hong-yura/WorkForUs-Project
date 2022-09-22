@@ -45,7 +45,7 @@
 							<c:if test="${loginData.empId eq comment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 								<div class="text-end">
 									<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
-									<button class="btn btn-sm btn-outline-dark" type="button" value="first" onclick="commentDelete1(this);">삭제</button>
+									<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete1(this);">삭제</button>
 									<input name="postId" value="${comment.postId}" hidden>
 								</div>
 							</c:if>
@@ -89,7 +89,7 @@
 									<c:if test="${loginData.empId eq secComment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 										<div class="text-end">
 											<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
-											<button class="btn btn-sm btn-outline-dark" value="seconds" type="button" onclick="commentDelete2(this);">삭제</button>
+											<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete2(this);">삭제</button>
 											<input name="postId" value="${comment.postId}" hidden>
 										</div>
 									</c:if>
