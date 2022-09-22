@@ -23,7 +23,11 @@ public interface BoardPostMapper {
 	public BoardPostDTO selectBoardDetail(int postId);
 	
 	// 댓글 가져오기
-	public List<PostCommentDTO> selectPostComment(int postId);
+	public List<PostCommentDTO> selectAllPostComment(int postId);
+
+	// 댓글 하나 가져오기
+	public PostCommentDTO selectPostComment(int commentId);
+
 	
 	// 댓글 갯수
 	public int selectCommentCount(int postId);
@@ -61,13 +65,19 @@ public interface BoardPostMapper {
 	// sort 최댓값 구하기
 	public Integer selectMaxSort(HashMap<String, Integer> data);
 
-	// 댓글 삭제
-	public int deleteComment(int postId);
 
 	// 파일 삭제
 	public int deleteFile(int postId);
 	
+	// 모든 댓글 삭제
+	public int deleteAllComment(int postId);
 
+	// 대댓 + 본댓 삭제
+	public int deleteComment(HashMap<String, Integer> data);
+
+	// 대댓 삭제
+	public int deleteSecComment(int commentId);
+	
 	
 
 }

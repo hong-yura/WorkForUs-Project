@@ -108,7 +108,7 @@ public class BoardController {
 		logger.info("getDetailData(postId={})", postId);
 		logger.info("getDetailData(postData={})", postData);
 		// commentDto 가져오기 -> 어떤 post의 댓글인지
-		List<PostCommentDTO> commentList = commentService.selectComment(pId);
+		List<PostCommentDTO> commentList = commentService.selectAllComment(pId);
 		
 		// 댓글 갯수
 		int commentCnt = commentService.selectCommentCount(pId);
@@ -253,7 +253,7 @@ public class BoardController {
 		}
 		
 		// 댓글 가져오기
-		List<PostCommentDTO> commentList = commentService.selectComment(postId);
+		List<PostCommentDTO> commentList = commentService.selectAllComment(postId);
 		int commentCnt = commentService.selectCommentCount(postId);
 		
 		logger.info("postData={}", postDto);
@@ -295,7 +295,7 @@ public class BoardController {
 		JSONObject json = new JSONObject();
 		// 게시글을 삭제 하기 전에 관련된 것들을 모두 삭제해줘야 한다. -> file, comment
 		boolean delFile = fileService.deleteFile(postId);
-		boolean delComment = commentService.deleteComment(postId);
+		boolean delComment = commentService.deleteAllComment(postId);
 		// 게시글 데이터 삭제 
 		boolean result = postService.deletePostData(postId);
 		
@@ -308,5 +308,34 @@ public class BoardController {
 		}
 		
 	}
+	
+	// 댓글 삭제
+	@PostMapping(value="/comment/delete", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String deleteComment(Model model
+							, @RequestParam int commentId
+							, @RequestParam int postId) {
 		
+		logger.info("deleteComment(commentId={}, postId={})", commentId, postId);
+		
+		JSONObject json = new JSONObject();
+		// 본댓을 삭제하려면 본댓의 정보를 가지고 와서 postId랑 groupId 를 가지고 소속된 모든 댓글을 지워준다. 
+		// postId 랑 groupId 를 줘야 한다. 그냥 commentId를 주면 안됨 관련 댓글도 다 지워야 하니까 
+		// 만약 본 댓글이면 다 지워야 함 대댓이면 ? 해당 댓글만 지우면 됨 
+		boolean result = commentService.deleteComment(commentId);
+		logger.info("deleteComment(result={})", result);
+		
+		int commentCnt = commentService.selectCommentCount(postId);
+		
+		if(result) { // 모두 삭제가 완료 되었다면
+			logger.info("result == true");
+			json.put("code", "seccess");
+			json.put("commentCnt", commentCnt);
+			return json.toJSONString();
+		}else {
+			json.put("code", "error");
+			return json.toJSONString();
+		}
+		
+	}
 }
