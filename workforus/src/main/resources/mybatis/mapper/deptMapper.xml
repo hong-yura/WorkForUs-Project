@@ -30,13 +30,13 @@
 	
 	<insert id="insertDept" parameterType="deptDto">
 		INSERT INTO TB_DEPARTMENTS (DEPT_NO, DEPT_NM, DEPT_MANAGER_ID, DEPT_ADD_DT, DEPT_MOD_DT)
-			 VALUES (DEPARTMENTS_SEQ.NEXTVAL, #{deptName}, #{deptMngId}, SYSDATE, SYSDATE)
+			 VALUES (DEPARTMENTS_SEQ.NEXTVAL, #{name}, #{mngId}, SYSDATE, SYSDATE)
 	</insert>
 	
 	<update id="updateDept" parameterType="deptDto">
 		UPDATE TB_DEPARTMENTS
-		   SET DEPT_NM = #{deptName}
-		     , DEPT_MANAGER_ID = #{deptMngId}
+		   SET DEPT_NM = #{name}
+		     , DEPT_MANAGER_ID = #{mngId}
 		 WHERE DEPT_NO = #{no}
 	</update>
 	

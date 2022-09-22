@@ -76,16 +76,9 @@ public class DeptController {
 			
 			logger.info("addDept(deptDto={})", deptDto);
 			
-			String message=null;
-			
-			int result = deptService.addDept(deptDto);
-			
-			if(result == 1) {
-				message = "success";
-			} else {
-				message = "fail";
-			}
-			return message;
+			JSONObject json = new JSONObject();
+
+			return json.toJSONString();
 		}
 	
 	// 부서 수정 폼 요청
@@ -102,6 +95,8 @@ public class DeptController {
 	public String modifyDept(@RequestParam int no) {
 		// 로그인 세션 추가하기
 		
+		logger.info("updateDept(no={})", no);
+		
 		JSONObject json = new JSONObject();
 		
 		return json.toJSONString();
@@ -113,6 +108,8 @@ public class DeptController {
 	@ResponseBody
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
 	public String removeDept(@RequestParam int no) {
+		// 로그인 세션 추가하기
+		
 		logger.info("deleteDept(no={})", no);
 		
 		DeptDTO data = deptService.getDeptDetail(no);

@@ -294,21 +294,22 @@
 		}
 		
 		// 부서 추가
-		function deptAdd() {			
+		function deptAdd() {
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
 				data: {
-					
+					name: 
+					mngId: 
 				},
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
 					
-					var form = document.getElementById("addDeptForm");
+					var addForm = document.getElementById("addDeptForm");
 					
-					form.deptName.value = data.deptName;
-					form.deptMngId.value = data.deptMngId;
+					addForm.deptName.value = data.deptName;
+					addForm.deptMngId.value = data.deptMngId;
 				},
 				error: function() {
 					alert("부서 추가 실패");
