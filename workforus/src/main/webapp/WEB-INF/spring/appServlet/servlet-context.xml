@@ -68,12 +68,13 @@
 	<!-- websocket -->
 	<beans:bean id="chattingHandler" class="site.workforus.forus.socket.Chatting"></beans:bean>
 	<websocket:handlers>
-		<websocket:mapping handler="chattingHandler" path="/chatting/cs"/>
+		<websocket:mapping handler="chattingHandler" path="/chat/socket"/>
 		<websocket:handshake-interceptors>
 			<beans:bean class="org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor"></beans:bean>
 		</websocket:handshake-interceptors>
 	</websocket:handlers>
-	
+
 	<!-- Multipart -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></beans:bean>
+
 </beans:beans>
