@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.workforus.forus.mapper.BoardPostMapper">
-
+	<!-- 게시글 -->
 	<resultMap type="boardPostDto" id="boardPostDtoMap">
-		<result property="postId" column="post_id"/>
+		<id property="postId" column="post_id"/>
 		<result property="writer" column="emp_id"/>
 		<result property="boardId" column="board_id"/>
 		<result property="postTitle" column="post_title"/>
@@ -18,64 +18,100 @@
 		<result property="temporaryYn" column="temporary_post_yn"/>
 		<result property="reportYn" column="report_yn"/>
 		<result property="likeCnt" column="like_cnt"/>
+		<association property="empObj" javaType="empDto">
+			<id property="empId" column="emp_id"/>
+			<result property="empNm" column="emp_nm"/>
+		</association>
+	</resultMap>
+	<!-- 게시글 댓글 -->
+	<resultMap type="postCommentDto" id="postCommentDtoMap">
+		<result property="commentId" column="comment_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="content" column="comment_content"/>
+		<result property="empId" column="emp_id"/>
+		<result property="empNm" column="emp_nm"/>
+		<result property="groupNo" column="group_no"/>
+		<result property="depth" column="comment_depth"/>
+		<result property="sort" column="comment_sort"/>
+		<result property="anonymity_yn" column="anonymity_yn"/>
+		<result property="addDate" column="comment_add_dt"/>
+	</resultMap>
+	<!-- 게시글 파일 업로드 -->
+	<resultMap type="fileUploadDto" id="insertPostUploadFile">
+		<result property="fileId" column="file_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="fileNm" column="file_nm"/>
+		<result property="uploadLocation" column="upload_location"/>
+		<result property="uploadUrl" column="upload_url"/>
+		<result property="fileType" column="file_type"/>
+		<result property="summYn" column="file_summ_yn"/>
 	</resultMap>
 	
 	<select id="selectPostAll" resultMap="boardPostDtoMap">
-		SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		  FROM TB_BOARD_POSTS
-		 WHERE BOARD_ID = #{id}  
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id}  
 	</select>
 	<!-- 게시판 상세 데이터 -->
  	 <select id="selectBoardDetail" resultMap="boardPostDtoMap" >
- 	 	SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		 FROM TB_BOARD_POSTS
-		WHERE POST_ID = #{id}
+ 	 	SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.POST_ID = #{id}
  	 </select>
 	
 	<select id="selectSearchData" resultMap="boardPostDtoMap">
-		SELECT POST_ID
-			 , EMP_ID
-			 , BOARD_ID 
-			 , POST_TITLE
-			 , POST_PW
-			 , POST_CONTENT
-			 , POST_ADD_DT
-			 , POST_MODIFY_DT
-			 , POST_REMOVE_DT
-			 , VIEW_CNT
-			 , NOTICE_YN
-			 , TEMPORARY_POST_YN
-			 , REPORT_YN
-			 , LIKE_CNT
-		  FROM TB_BOARD_POSTS
-		 WHERE BOARD_ID = #{id} 
-		   AND POST_TITLE LIKE '%' || #{search} || '%'
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id} 
+		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
 	</select>
 	
 	<!-- 일반 게시글 갯수 구하기 -->
@@ -86,5 +122,98 @@
 		   AND NOTICE_YN = 'N'
  	 </select>
  	 
+ 	 <!-- 게시글 댓글 가져오기  -->
+ 	 <select id="selectPostComment" resultMap="postCommentDtoMap">
+ 	 	SELECT * 
+		  FROM TB_POST_COMMENTS 
+		 WHERE POST_ID = #{id}
+		   AND COMMENT_REMOVE_YN = 'N'
+		 ORDER BY GROUP_NO, COMMENT_SORT
+ 	 </select>
  	 
+ 	 <!-- 댓글 개수 -->
+ 	 <select id="selectCommentCount" resultType="_int">
+ 	 	SELECT COUNT(*)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{id}
+		   AND COMMENT_REMOVE_YN = 'N' 
+ 	 </select>
+ 	 
+ 	 <!-- 게시글 댓글 추가 -->
+ 	 <insert id="insertComment" parameterType="postCommentDto">
+ 	 	INSERT INTO TB_POST_COMMENTS
+ 	 	VALUES (post_comment_seq.NEXTVAL
+ 	 		  , #{postId}
+ 	 		  , #{content}
+ 	 		  , #{empId}
+ 	 		  , #{empNm}
+ 	 		  , #{groupNo}
+ 	 		  , #{depth}
+ 	 		  , #{sort}
+ 	 		  , #{anonymity_yn}
+ 	 		  , 'N'
+ 	 		  , SYSDATE)
+ 	 </insert>
+ 	 
+ 	 <!-- sort 최댓값 구하기 -->
+ 	 <select id="selectMaxSort" resultType="_integer" parameterType="hashmap">
+ 	 	SELECT MAX(COMMENT_SORT)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{postId}
+		   AND GROUP_NO = #{groupNo}
+ 	 </select>
+ 	 
+ 	 <!-- 다음 시퀀스(postId) 가져오기 -->
+ 	 <select id="selectPostId" resultType="_int">
+ 	 	SELECT board_post_seq.NEXTVAL FROM DUAL
+ 	 </select>
+ 	 
+ 	 
+ 	 <!-- 게시글 추가 -->
+ 	 <insert id="insertBoardPost" parameterType="boardPostDto">
+ 	 	INSERT INTO TB_BOARD_POSTS
+ 	 	VALUES (#{postId}, #{writer}, #{boardId}, #{postTitle}, #{postPw}
+ 	 			, #{content}, SYSDATE, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
+ 	 			, #{noticeYn}, #{temporaryYn}, #{reportYn}, #{likeCnt})
+ 	 </insert>
+ 	 
+ 	 <!-- 게시글 파일 업로드 -->
+ 	 <insert id="insertPostUploadFile" parameterType="fileUploadDto">
+ 	 	INSERT INTO TB_POST_FILES 
+ 	 	VALUES (post_file_seq.NEXTVAL,#{postId} , #{fileNm}, #{uploadLocation},#{uploadUrl} , #{fileType}, #{summYn})
+ 	 </insert>
+ 	 
+ 	 <!-- 게시글 현재 Id 찾기 -->
+ 	 <select id="selectCurrentPostId" resultType="_int">
+ 	 	SELECT MAX(POST_ID)
+		  FROM TB_BOARD_POSTS
+ 	 </select>
+ 	 
+ 	 <!-- 게시글 파일 가져오기 -->
+ 	 <select id="selectFiles" resultMap="insertPostUploadFile">
+ 	 	SELECT * FROM TB_POST_FILES WHERE POST_ID=#{id} 
+ 	 </select>
+ 	 
+ 	 <!-- 게시글 마지막 groupNo 가져오기 -->
+ 	 <select id="selectGroupNo" resultType="_integer" parameterType="_int">
+ 	 	SELECT MAX(GROUP_NO)
+		  FROM TB_POST_COMMENTS
+		 WHERE POST_ID = #{id}
+	 </select>
+	 
+	 <!-- 파일 삭제 -->
+	 <delete id="deleteFile" parameterType="_int">
+	 	DELETE FROM TB_POST_FILES WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 댓글 삭제 -->
+	 <delete id="deleteComment" parameterType="_int">
+	 	DELETE FROM TB_POST_COMMENTS WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 게시글 삭제 -->
+	 <delete id="deleteBoardPost" parameterType="_int">
+	 	DELETE FROM TB_BOARD_POSTS WHERE POST_ID= #{id}
+	 </delete>
+	 
 </mapper>

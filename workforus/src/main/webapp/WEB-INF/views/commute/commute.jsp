@@ -1,0 +1,409 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Calendar"%>
+<%@page import="java.util.Date"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>    
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>근태관리 근태페이지</title>
+	<!-- datepicker -->
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<style type="text/css">
+		.ui-datepicker table{
+		    display: none;
+		}
+	</style>
+	<%@ include file="../module/head.jsp" %>
+	<script type="text/javascript">
+	function loadPrevNext(element){
+		var defaultText = document.getElementById("CalendaryearMonth");
+		var year1 = defaultText.innerText.substring(0,4);
+		var month1 = defaultText.innerText.substring(5) - 1;
+		
+		var currentDate = new Date(year1, month1);
+		
+		if(element == 0) {
+			 currentDate.setMonth(currentDate.getMonth() - 1);
+			// console.log(currentDate.setMonth(date.getMonth() + 1));
+			// prevMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
+		} else {
+			currentDate.setMonth(currentDate.getMonth() + 1);
+			// nextMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
+		}
+		
+		var year = currentDate.getFullYear();
+		var month = currentDate.getMonth() + 1;
+		var testText = document.getElementById("CalendaryearMonth");
+		testText.innerHTML = year + "." + month;
+		
+		$.ajax({
+			type:"GET",
+			url:"${pageContext.request.contextPath}/work/record",
+			dataType:"json",
+			data:{
+				year: year,
+				month: month
+			}
+		})
+		
+	}
+
+
+	
+	
+	
+	
+	// 출근시간 입력
+	function commuteIn() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/in",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}    
+	
+	// 퇴근시간 입력 
+	function commuteOut() {
+		var currentDate = new Date();
+		var currentTime = currentDate.getHours() + ":"
+       					+ currentDate.getMinutes() + ":"
+       				    + currentDate.getSeconds();
+		console.log(currentTime);           					
+		$.ajax({
+			type: "POST",
+			url: "${pageContext.request.contextPath}/work/out",
+			data: {
+				intime: currentTime
+			},
+			async:false,		// ajax를 동기식으로 변경함..
+			dataType: "json",
+		});
+		location.reload();
+	}
+	
+	function getMonth() {
+		var year1 = document.getElementById("CalendaryearMonth").innerText.substring(0,4);
+		console.log("year1" + year1);
+		var month1 = document.getElementById("CalendaryearMonth").innerText.substring(5);
+		console.log(month1);
+		$.ajax({
+			type: "GET",
+			url: "${pageContext.request.contextPath}/work/record",
+			data: {
+				year1 : year1,
+				month1 : month1
+			},
+			dataType: "json"
+		});
+	}
+
+	</script>
+</head>
+<body class="theme-light" style="overflow-y: auto;">
+    <%@ include file="../module/navigation.jsp" %>
+	<div class="ps__rail-x" style="left: 0px; bottom: -341px;">
+		<div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+	</div>
+	<div class="ps__rail-y" style="top: 341px; height: 569px; right: 0px;">
+		<div class="ps__thumb-y" tabindex="0" style="top: 82px; height: 137px;"></div>
+	</div>
+    <div id="main">
+		<div class="page-heading">
+		    <div class="page-title">
+		        <div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+		                <h3>근태관리</h3>
+		            </div>
+		            <div class="col-12 col-md-6 order-md-2 order-first">
+		                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+		                    <ol class="breadcrumb">
+		                        <li class="breadcrumb-item">
+									<a href="${homeUrl}">Home</a>
+	                        	</li>
+		                        <li class="breadcrumb-item">
+									<a href="#">My page</a>
+	                        	</li>
+		                        <li class="breadcrumb-item active" aria-current="page">근태관리</li>
+		                    </ol>
+		                </nav>
+		            </div>
+		             
+		        </div>
+		    </div>
+		    <section class="section">
+		        <div class="row">
+		        	<!-- sidebar	 -->
+		            <div class="col-12 col-md-3 col-lg-3">
+		                <div class="card">
+		                    <div class="card-header">
+		                   	    <% 
+							    	Date date = new Date();
+							    	request.setAttribute("date", date);
+							    %>
+		                        <h6>
+								    <fmt:formatDate value="${date}" type="date" pattern="YYYY-MM-dd(E)"/>
+		                        </h6>
+		                    </div>
+		                    <div class="card-body">
+		                    	<div>
+						   			<span class="col-12 col-md-6 col-lg-6" style="display:inline-block">
+								   		출근시간
+						   			</span>
+						   			<span class="col-12 col-md-55 col-lg-5"  style="display:inline-block; text-align:right;">
+										<c:choose>
+								    		<c:when test="${empty data.commuteTime}">
+								    			-
+								    		</c:when>
+								    		<c:otherwise>
+								    			<div>${data.commuteTime }</div>
+								    		</c:otherwise>
+								    	</c:choose>
+						   			</span>
+						   		</div>
+		                    	<div>
+						   			<span class="col-12 col-md-6 col-lg-6" style="display:inline-block">
+								   		퇴근시간
+						   			</span>
+						   			<span class="col-12 col-md-55 col-lg-5"  style="display:inline-block; text-align:right;">	
+										<c:choose>
+								    		<c:when test="${empty data.getoffTime}">
+								    			-
+								    		</c:when>
+								    		<c:otherwise>
+								    			<div>${data.getoffTime}</div>
+								    		</c:otherwise>
+								    	</c:choose>
+						   			</span>
+						   		</div>
+		                    	<div>
+						   			<span class="col-12 col-md-6 col-lg-6" style="display:inline-block">
+								   		금일근로시간
+						   			</span>
+						   			<span class="col-12 col-md-55 col-lg-5"  style="display:inline-block; text-align:right;">
+										<c:choose>
+								    		<c:when test="${empty data.getoffTime}">
+								    			-
+								    		</c:when>
+								    		<c:otherwise>
+								    			<div>${data.workTime}</div>
+								    		</c:otherwise>
+								    	</c:choose>
+						   			</span>
+						   		</div>
+		                        <div class="badges border-bottom" style="text-align:center; padding:15px 0;">
+		                            <button type="button" class="btn btn-primary col-12 col-md-5 col-lg-5" onclick="commuteIn();">
+		                                출근
+		                            </button>
+		                           <button type="button" class="btn btn-outline-primary col-12 col-md-5 col-lg-5" onclick="commuteOut()">
+		                           		퇴근
+		                           </button>
+		                        </div>
+		                        <div>
+		                        	<div style="padding-top:10px;"><h6>이번주 근로현황</h6></div>
+		                        	<div class="progress progress-primary  mb-4" style="margin-top:20px;" >
+					                    <div class="progress-bar" role="progressbar" style="width: ${progress}%" aria-valuemin="0" aria-valuemax="100">${progress}%</div>
+					                </div>
+					                <div>
+						    			 → ${weekWorktime }
+					                </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </div>
+		            <!-- 화면중앙 -->
+		            <div class="col-12 col-md-9 col-lg-9" style="text-align:center;">
+		            	<div class="col-12 col-md-3 col-lg-3" style="display:inline-block; margin:1rem">
+		            		<div class="card" style="height:6rem;">
+		            			<h6 style="padding:1rem; text-align:center;">연장근로신청</h6>
+		            			<p style="text-align:center;"><i class="bi bi-alarm"></i></p>
+		            		</div>
+		            	</div>
+		            	<div class="col-12 col-md-3 col-lg-3" style="display:inline-block;  margin:1rem">
+		            		<div class="card" style="height:6rem;">
+		            			<h6 style="padding:1rem; text-align:center;">남은연차</h6>
+		            			<!-- 현재남은연차개수 / 총연차개수 -->
+		            			<div style="text-align:center;">
+		            				0/0
+		            			</div>
+		            		</div>
+		            	</div>
+		            	<div class="col-12 col-md-3  col-lg-3" style="display:inline-block;  margin:1rem">
+		            		<div class="card" style="height:6rem;">
+		            			<h6 style="padding:1rem; text-align:center;">근로관련결제대기</h6>
+		            			<!-- 전자결재테이블 JOIN필요 -->
+		            			<div style="text-align:center;">
+		            				0 건
+		            			</div>
+		            		</div>
+		            	</div>
+
+		            	<div class="col">
+		            			
+		            			<div class="card">
+		            				<div class="list-group list-group-horizontal-sm mb-1 text-center" role="tablist">
+                              	 		 <span class="list-group-item-action" style="padding:1rem" id="list-sunday-list" data-bs-toggle="list">
+                              	 		 	이번주 누적시간 <br><br>
+                              	 		 	<c:choose>
+                              	 		 		<c:when test="${empty weekWorktime}"> 
+                              	 		 			<h5>00:00:00</h5>
+                              	 		 		</c:when>
+                              	 		 		<c:otherwise>
+                             	 		 			<h5>${weekWorktime}</h5>
+                              	 		 		</c:otherwise>
+                              	 		 	</c:choose>
+                              	 		 </span>                              	 		
+                              	 		 <span class="list-group-item-action" style="padding:1rem" id="list-sunday-list" data-bs-toggle="list">
+                              	 		 	이번주 연장시간 <br><br>
+                              	 		 	<c:choose>
+                              	 		 		<c:when test="${empty weekAddtime}"> 
+                              	 		 			<h5>00:00:00</h5>
+                              	 		 		</c:when>
+                              	 		 		<c:otherwise>
+                              	 		 			<h5>${weekAddtime}</h5>
+                              	 		 		</c:otherwise>
+                              	 		 	</c:choose>
+                              	 		 </span>                              	 		
+                              	 		 <span class="list-group-item-action" style="padding:1rem" id="list-sunday-list" data-bs-toggle="list">
+                              	 		 	이번주 잔여시간 <br><br>
+                        	 		 		<h5>${remainTime}</h5>
+                              	 		 </span>                	 		
+                          			  </div>
+		            			</div>
+		            	<div class="col-12" style="text-align:center; height:4rem;">
+		            		<ul class="pagination pagination-primary justify-content-center">
+	            				<%
+	            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+
+	            					Calendar cal = Calendar.getInstance();
+	            					cal.getTime();
+	            					int month1 = cal.get(Calendar.MONTH) + 1;
+	            				%>
+	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
+		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
+	            				</li>
+	            				<li id="result">
+		            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
+		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
+	  	            				</h4>
+	            				</li>
+	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
+		            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
+		            				
+	            				</li>
+	            				
+	            				
+	            				<!-- 페이징 -->
+	            				
+	            				
+	            				
+	            				
+	            				
+	            				
+	            				
+                            </ul>
+		            	</div>   
+ 						
+ 						
+ 						<table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>근무일자</th>
+                                        <th>출근시간</th>
+                                        <th>퇴근시간</th>
+                                        <th>근무시간</th>
+                                        <th>추가근무시간</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                		
+                                	<c:forEach items="${listData}" var="commuteData" varStatus="status">
+										<tr class="table-light">
+											<td>
+												${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
+											</td>
+											<td>
+												${commuteData.commuteTime.substring(11)}
+											</td>
+											<td>
+												${commuteData.getoffTime.substring(11)}
+											</td>
+											<td>
+												${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 
+											</td>
+											<td>
+												${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
+											</td>
+										</tr>
+									</c:forEach>	
+                                
+                                </tbody>
+                            </table>
+ 						
+ 						
+ 						
+ 						
+ 						
+ 						
+ 						                 
+						</div>
+		            </div>
+		        </div>
+		         <%@ include file="../module/footer.jsp" %>
+		    </section>
+		</div>
+    </div>
+	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="static/js/bootstrap.bundle.min.js"></script>
+
+
+    <script src="static/js/main.js"></script>
+    
+    <script type="text/javascript">
+
+
+		function changeMonth(type) {
+			  const resultElement = document.getElementById('result');
+ 			
+			  var strResult = resultElement.innerText;
+			  const arr = str.split('.');
+			  var chyear = arr[0];
+			  var chmonth = arr[1];
+			  
+			  if(type === 'p') {
+				  chmonth = parseInt(chmonth) - 1;
+			  }else if(type === 'n')  {
+				  chmonth = parseInt(chmonth) + 1;
+			  }
+			  resultElement.innerText = chyear + "." + chmonth;
+			  
+		}
+
+
+    	function getFormatDate(date){
+    	    var year = date.getFullYear();              //yyyy
+    	    var month = (1 + date.getMonth());          //M
+    	    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
+    	    return  year + month;       
+    	}
+    	
+    
+    </script>
+    
+    
+    
+</body>
+</html>

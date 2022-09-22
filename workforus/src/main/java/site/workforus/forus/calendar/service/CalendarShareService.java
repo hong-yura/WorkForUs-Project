@@ -55,8 +55,20 @@ public class CalendarShareService {
 		return res;
 	}
 
-	public ResponseEntity<Object> selectByCalId(int calId) {
+	public ResponseEntity<Object> selectById(int calShrId) {
 
+		CalendarShareMapper mapper = session.getMapper(CalendarShareMapper.class);
+
+		List<CalendarShareDTO> datas = mapper.selectById(calShrId);
+
+		ResponseDTO<List<CalendarShareDTO>> result = new ResponseDTO<>("SUCCESS", 200, datas);
+
+		ResponseEntity<Object> res = new ResponseEntity<>(result, HttpStatus.OK);
+
+		return res;
+	}
+
+	public ResponseEntity<Object> selectByCalId(int calId) {
 		CalendarShareMapper mapper = session.getMapper(CalendarShareMapper.class);
 
 		List<CalendarShareDTO> datas = mapper.selectByCalId(calId);
@@ -68,10 +80,10 @@ public class CalendarShareService {
 		return res;
 	}
 
-	public ResponseEntity<Object> selectByEmpId(String empId) {
+	public ResponseEntity<Object> selectByEmpIdAndCalId(String empId, int calId) {
 		CalendarShareMapper mapper = session.getMapper(CalendarShareMapper.class);
 
-		List<CalendarShareDTO> datas = mapper.selectByEmpId(empId);
+		List<CalendarShareDTO> datas = mapper.selectByEmpIdAndCalId(empId, calId);
 
 		ResponseDTO<List<CalendarShareDTO>> result = new ResponseDTO<>("SUCCESS", 200, datas);
 

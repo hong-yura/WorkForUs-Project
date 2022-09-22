@@ -9,40 +9,87 @@
 	<meta charset="UTF-8">
 	<title>workforus - 게시판 : ${postData.postTitle}</title>
 	<!-- 헤더 수정 후 넣기 -->
-	<%@ include file="../module/header.jsp" %>
-	<c:url var="cssUrl" value="/static"/>
-	
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="${cssUrl}/css/bootstrap.css">
-	
-	<link rel="stylesheet" href="${cssUrl}/vendors/iconly/bold.css">
-	<link rel="stylesheet" href="${cssUrl}/css/app.css">
-	
-	<link rel="stylesheet" href="${cssUrl}/vendors/perfect-scrollbar/perfect-scrollbar.css">
-	<link rel="stylesheet" href="${cssUrl}/vendors/bootstrap-icons/bootstrap-icons.css">
-	<link rel="icon" href="${cssUrl}/images/logo/favicon.ico">
-    
-    <link rel="stylesheet" href="${cssUrl}/css/pages/board.css">
+	<%@ include file="../module/head.jsp" %>
+    <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
-	<div class="container">
-	
-	</div>
-	
 	<div id="app">
       <div id="main">
-	   <%@ include file="../module/footer.jsp" %>
+      	<div class="page-heading margin-left-10">
+      		<h3>Board</h3> 
+      	</div>
+	      	<!-- board -->
+      	<div class="page-content">
+			<section class="row">
+				<div class="col-12"> 
+					<div class="post-container radius">
+						<div class="post-top">
+							<div class="avatar avatar-md emp-img"> <!-- 이미지 -->
+								<img class="emp-image" src="${staticUrl}/images/faces/1.jpg">
+								<p class="post-writer">${postData.empObj.empNm}</p>
+								<p class="add-date">${postData.addDate}</p>
+							</div>
+							<div class="title-container">
+								<h4 class="post-title black">${postData.postTitle}</h4>
+								<c:if test="${loginData.empId eq postData.writer}">
+									<div class="btn-group remo-button-controller">
+										<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color : #fff; border-style : none;">
+									    </button>
+									    <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1" style="border: solid 1px #c0c0c0; width: 40px;">
+									    	<c:url value="/board/post/modify" var="modUrl"/>
+									      <li><a class="dropdown-item" href="${modUrl}?postId=${postData.postId}"><i class="bi bi-pencil-square"></i> 글수정</a></li>
+									      <hr style="margin: 0px;">
+									      <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> 글삭제</a></li>
+									    </ul>
+									</div>
+								</c:if>
+								<hr>
+							</div>
+						</div>
+						<div class="post-main">
+							<p class="black">${postData.content}</p>
+						</div>
+						<!-- 올린 파일이 보이도록 한다. -->
+						<div class="dropdown">
+						 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+						    	파일 보기
+						  	</button>
+						  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+						  		<c:if test="${not empty files}">
+									<c:forEach items="${files}" var="file"> 
+									    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
+						  			</c:forEach>
+						  		</c:if>
+						  	</ul>
+						</div>
+						<div class="view-like-container">
+							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
+							<button type="button" class="btn black" onclick=""><i class="bi bi-hand-thumbs-up"></i> ${postData.likeCnt}</button>
+							<hr style="margin-top: 0px;">
+						</div>
+						<!-- 댓글 모듈 -->
+						 <%@ include file="../board_md/comment_module.jsp" %>
+					</div>
+				</div>
+			</section>
+		</div>
+		<!-- 글 삭제 모달 -->
+		 <%@ include file="../board_md/delete_modal.jsp" %>
+
+		<!-- footer -->
+        <%@ include file="../module/footer.jsp" %>
       </div>
     </div>
     
-    <script src="${cssUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="${cssUrl}/js/bootstrap.bundle.min.js"></script>
 
-    <script src="${cssUrl}/vendors/apexcharts/apexcharts.js"></script>
-    <script src="${cssUrl}/js/pages/dashboard.js"></script>
+    <script src="${staticUrl}/js/pages/board/index.js" ></script>
+    <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 
-    <script src="${cssUrl}/js/main.js"></script>
+    <script src="${staticUrl}/vendors/apexcharts/apexcharts.js"></script>
+    <script src="${staticUrl}/js/pages/dashboard.js"></script>
+
+    <script src="${staticUrl}/js/main.js"></script>
 </body>
 </html>

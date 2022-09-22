@@ -11,6 +11,7 @@ import site.workforus.forus.admin.model.DeptDTO;
 @ToString
 @Alias("boardDto") 
 public class BoardDTO {
+
 	private int boardId;			// 게시판 id
 	private int categoryId;			// 카테고리 id
 	private String boardNm;			// 게시판 이름

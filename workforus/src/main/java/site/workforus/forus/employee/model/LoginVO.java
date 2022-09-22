@@ -1,5 +1,6 @@
 package site.workforus.forus.employee.model;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // sercurity 로그인을 위한 UserDetails vo 객체
-public class LoginVO implements UserDetails{
+public class LoginVO implements Principal, UserDetails{
 	
 	private String empId;
 	private String empPw;
@@ -80,6 +81,12 @@ public class LoginVO implements UserDetails{
 	// 계정이 활성화 되었는가?
 	public boolean isEnabled() {
 		return true;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

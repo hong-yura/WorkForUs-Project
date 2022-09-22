@@ -50,6 +50,19 @@
 		    <version>${org.springframework-version}</version>
 		    <scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+		    <artifactId>spring-messaging</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<!-- stomp -->
+		<dependency>
+		    <groupId>org.springframework.integration</groupId>
+		    <artifactId>spring-integration-stomp</artifactId>
+		    <version>5.5.14</version>
+		</dependency>
+		
 		
 		<!-- Spring security -->
         <!-- spring-security-config -->
@@ -76,7 +89,14 @@
             <artifactId>spring-security-taglibs</artifactId>
             <version>5.7.3</version>
         </dependency>
-			
+        
+  	  <!-- https://mvnrepository.com/artifact/com.ibm.icu/icu4j -->
+		<dependency>
+		    <groupId>com.ibm.icu</groupId>
+		    <artifactId>icu4j</artifactId>
+		    <version>4.0.1</version>
+		</dependency>
+		
 		<!-- AspectJ -->
 		<!-- aspectjrt -->
 		<dependency>
@@ -245,6 +265,35 @@
 		    <artifactId>bootstrap</artifactId>
 		    <version>5.2.0</version>
 		</dependency>
+		<!-- dayjs -->
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>dayjs</artifactId>
+		    <version>1.11.1</version>
+		</dependency>
+		<!-- axios -->
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>axios</artifactId>
+		    <version>0.27.2</version>
+		</dependency>
+		<!-- React -->
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>react</artifactId>
+		    <version>18.2.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>react-dom</artifactId>
+		    <version>18.2.0</version>
+		</dependency>
+		<!-- babel-standalone -->
+		<dependency>
+		    <groupId>org.webjars.npm</groupId>
+		    <artifactId>babel-standalone</artifactId>
+		    <version>6.26.0</version>
+		</dependency>
 	
 		<!-- JSON -->
 		<!-- json-simple -->
@@ -275,7 +324,14 @@
 		    <artifactId>commons-io</artifactId>
 		    <version>2.11.0</version>
 		</dependency>	
-		
+		<!-- json -->
+		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.9.1</version>
+		</dependency>
+
 		<!-- Redis Session Stroage -->
 		<!-- spring-session-data-redis -->
 		<dependency>

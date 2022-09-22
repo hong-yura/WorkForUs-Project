@@ -74,5 +74,4 @@ public class Chatting extends TextWebSocketHandler{
 		
 		super.afterConnectionClosed(session, status);
 	}
-	
 }

@@ -1,0 +1,45 @@
+.profile-icon {
+	text-align: center;
+}
+.bi-person-circle{
+	font-size: 100px;
+}
+.info-detail {
+	margin: 20px 200px;
+}
+.form-check {
+	display: inline-block;
+	padding-right: 100px;
+}
+.col-md-4 {
+	display: inline-block;
+}
+.select-container {
+	display: flex;
+	margin-right: 90px;
+}
+.date-label {
+	padding: 6px;
+}
+.date-container {
+	display: flex;
+}
+.addr-control {
+	margin-bottom: 10px;
+}
+.addr-control {
+	display: flex;
+}
+.addr-btn {
+	width: 100px;
+	height: 37px;
+}
+.password-control {
+	display: flex;
+}
+.margin-right {
+	margin-right: 10px;
+}
+.password-form {
+	width: 500px;
+}

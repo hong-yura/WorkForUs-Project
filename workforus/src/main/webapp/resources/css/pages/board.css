@@ -4,6 +4,9 @@
 	box-sizing : border-box;
 	margin :0; padding : 0;
 }
+.margin-left-10{
+	margin-left :10px;
+}
 .black{
 	color : black; 
 }
@@ -21,6 +24,7 @@
 	background: #fff;
 	margin-bottom: 23px;
 }
+
 #app #main .page-content .row .col-12 .info-container{
 	width : 100%;
 	heigth : 120px;
@@ -32,6 +36,7 @@
 	width : 100%;
 	background-color : #fff;
 }
+
 .search-container{
 	display : inline-block;
 	float : right;
@@ -43,12 +48,22 @@
 	border-radius : 0.3rem;
 	
 }
+.display-inline{
+	display :inline;
+}
+
+.display-block{
+	display :block;
+}
 
 .padding-45 {
 	padding-top: 45px;
 }
 .padding-5 {
 	padding-top: 5px;
+}
+.margin-10 {
+	margin : 10px;
 }
 .radius {
 	border-radius: 0.7rem;
@@ -68,6 +83,7 @@
 	display : flex;
 	border-radius : 0.3rem;
 	display : inline;
+	
 }
 .main-button {
 	padding-top : 10px;
@@ -76,3 +92,134 @@ footer {
 	position : relative;
 	bottom:0;
 }
+.height-auto{
+	height : auto;
+}
+/*detail*/
+.page-content .row .post-container{
+	width : 100%;
+	height : auto;
+	background: #fff;
+	margin-bottom: 23px;
+	padding: 25px;
+}
+.post-writer{
+	margin-top : 30px;
+	margin-left : 15px;
+	font-weight : 600;
+}
+.post-main{
+	width : 98%;
+	background-color : #fff;
+	margin : 10px;
+}
+.title-container .post-title{
+	display : inline;
+}
+.title-container .remo-button-controller{
+	display : inline;
+	float : right;
+}
+.post-top .emp-img{
+	margin : 15px;
+}
+
+.commentCnt-container{
+	text-align: left;
+	margin-bottom:20px;
+}
+.post-top .emp-img .emp-image{
+	width : 50px;
+	height: 50px;
+}
+.mb-1 .emp-img .emp-image{
+	width : 40px;
+	height: 40px;
+	margin-bottom : 33px;
+	margin-right : 10px;
+	border-radius: 50%;
+}
+.card {
+	margin : 0px;
+}
+.card .emp-img .emp-image{
+	width : 40px;
+	height: 40px;
+	margin-bottom : 33px;
+	margin-right : 10px;
+	border-radius: 50%;
+}
+.title-container{
+	margin : 10px;
+}
+.btn-toggle{
+	background-color : #fff;
+}
+.view-like-container{
+	margin : 10px;
+}
+
+.add-date{
+	display : inline;
+	float : right;
+	margin-top : auto;
+	margin-left: 10px;
+}
+.textarea-content {
+	resize : none;
+	border-color :#fff;
+	border-bottom-color: #c0c0c0;
+	width : 89%;
+	height: 30px;
+	overflow-y:hidden;
+	
+}
+.comment-container , .second-comment-container{
+	border-radius : 0px;
+	margin : 0px;
+	
+}
+
+.mb-3 .card-header {
+	font-weight: 600;
+	font-size: 17px;
+	padding : 0.5rem;
+}
+input,textarea:focus {
+    outline: none;
+}
+  
+/* 대댓 */
+.second-comment-container .second-comment-controller{
+	margin-left : 45px;
+	margin-bottom : 0px;
+	width : 95%;
+}
+
+/* 게시글 추가 페이지 */
+.write-container{
+	width : 100%;
+	height : auto;
+	background: #fff;
+	margin-bottom: 23px;
+	padding: 25px;
+}
+.post-title{
+	margin-bottom: 10px;
+}
+.float-right{
+	float : right;
+	
+}
+
+/* 게시판 수정 페이지*/
+.submit-btn{
+	display: block;
+	margin-left :80%;
+}
+.border-solid{
+	border-right : solid 1px;
+}
+
+
+

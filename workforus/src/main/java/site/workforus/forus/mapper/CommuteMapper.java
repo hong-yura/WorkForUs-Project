@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import site.workforus.forus.commute.model.CommuteDTO;
 
 // 매개변수가 여러개면 @Param을 붙여서 값의 이름 지정해줘야함 
-public interface commuteMapper {
+public interface CommuteMapper {
 
 	
 	public CommuteDTO selectByEmpId(@Param("empId")String empId, @Param("today") String today);
@@ -36,6 +36,9 @@ public interface commuteMapper {
 	
 	public int updateWeekWork(@Param("empId")String empId, @Param("today")String today
 			, @Param("weekWork")Date weekWork);
+	
+	// 없는 퇴근기록 업데이트
+	public void updateGetoffTime(@Param("empId")String empId, @Param("beforeDate")String beforeDate);
 	
 	// 근무기록 조회
 	public List<CommuteDTO> selectList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
