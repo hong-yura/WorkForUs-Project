@@ -17,17 +17,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import site.workforus.forus.chat.model.ChatRoomDTO;
 import site.workforus.forus.chat.service.ChatService;
 import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.employee.model.LoginVO;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping(value="/chat")
-public class ChatController {
+public class ChatRoomController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ChatController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ChatRoomController.class);
 	
 	@Autowired
 	private ChatService chatService;
@@ -51,11 +55,14 @@ public class ChatController {
 		return "chat/chat";
 	}
 	
+	// 채팅방 개설
 	@PostMapping(value="/room/add", produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String chatRoonAdd(@RequestParam String id) {
+	public String chatRoonAdd(@RequestParam String id, Model model) {
 		JSONObject json = new JSONObject();
 		chatService.insertChatRoom(id);
+		
+		model.addAttribute("roomName", chatService.insertChatRoom(id));
 		return json.toJSONString();
 	}
 	
