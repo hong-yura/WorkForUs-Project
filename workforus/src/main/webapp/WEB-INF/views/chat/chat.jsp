@@ -9,11 +9,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Mazer Admin Dashboard</title>
-    <link rel="stylesheet" href="static/css/pages/chat.css">
-	<link rel="stylesheet" href="static/css/widgets/chat.css">
+    <%@ include file="../module/header.jsp" %>
+    <link rel="stylesheet" href="${staticUrl}/css/pages/chat.css">
+	<link rel="stylesheet" href="${staticUrl}/css/widgets/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <%@ include file="../module/header.jsp" %>
 </head>
 <style>
 .search-icon {
@@ -271,9 +271,9 @@ ul{
             <%@ include file="../module/footer.jsp" %>
         </div>
 </body>
-<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-<script src="static/js/bootstrap.bundle.min.js"></script>
-<script src="static/js/main.js"></script>
+<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+<script src="${staticUrl}/js/main.js"></script>
 <script type="text/javascript">
 var ws = new WebSocket("ws://localhost/chat/socket");
 ws.onopen = function() {
