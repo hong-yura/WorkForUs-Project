@@ -10,14 +10,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>workforus - 회원가입</title>
+    <c:url var="staticUrl" value="/static"/>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/css/bootstrap.css">
-    <link rel="stylesheet" href="static/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="static/css/app.css">
-    <link rel="stylesheet" href="static/css/pages/auth.css">
+    <link rel="stylesheet" href="${staticUrl}/css/bootstrap.css">
+    <link rel="stylesheet" href="${staticUrl}/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="${staticUrl}/css/app.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/auth.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-	<link rel="stylesheet" href="static/vendors/iconly/bold.css">
-	<link rel="stylesheet" href="static/vendors/perfect-scrollbar/perfect-scrollbar.css">
+	<link rel="stylesheet" href="${staticUrl}/vendors/iconly/bold.css">
+	<link rel="stylesheet" href="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.css">
 	<c:url var="bs5" value="/webjars/bootstrap/5.2.0" />
 	<script type="text/javascript" src="${bs5}/js/bootstrap.min.js"></script>
 </head>
@@ -106,9 +107,8 @@
 		    </div>
 		</div>
     </div>
-    <script src="static/js/bootstrap.js"></script>
-    <script src="static/js/app.js"></script>
-    <script src="static/js/signup.js"></script>
+    <script src="${staticUrl}/js/bootstrap.js"></script>
+    <script src="${staticUrl}/js/app.js"></script>
+    <script src="${staticUrl}/js/pages/login/signup.js"></script>
 </body>
-
 </html>

@@ -9,12 +9,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewpoint" content="width=device-width, initial-scale=1.0">
 	<title>workforus - 로그인</title>
-	<link rel="stylesheet" href="static/css/style.css">
+	<c:url var="staticUrl" value="/static"/>
+	<link rel="stylesheet" href="${staticUrl}/css/login.css">
 	<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/css/bootstrap.css">
-    <link rel="stylesheet" href="static/vendors/bootstrap-icons/bootstrap-icons.css">
-    <link rel="stylesheet" href="static/css/app.css">
-    <link rel="stylesheet" href="static/css/pages/auth.css">
+    <link rel="stylesheet" href="${staticUrl}/css/bootstrap.css">
+    <link rel="stylesheet" href="${staticUrl}/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="${staticUrl}/css/app.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/auth.css">
 </head>
 <body>
 	<section class="background1_section">
@@ -46,6 +47,6 @@
 	<section class="background3_section">
 		<img class="logo-photo" src="static/images/logo/logo-main.png">
 	</section>
-	<script src="static/js/login.js"></script>
+	<script src="${staticUrl}/js/pages/login/login.js"></script>
 </body>
 </html>
