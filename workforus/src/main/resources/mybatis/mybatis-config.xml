@@ -19,6 +19,9 @@
 		<!-- Commute -->
 		<package name="site.workforus.forus.commute.model"/>
 		
+		<!-- Mail -->
+		<package name="site.workforus.forus.mail.model"/>
+		
 		<!-- Calendar -->
 		<package name="site.workforus.forus.calendar.model"/>
 		
