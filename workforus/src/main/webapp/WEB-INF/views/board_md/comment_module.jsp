@@ -70,9 +70,9 @@
 						</div>
 					</div>
 				</form>
-				<c:forEach items="${commentList}" var="secComment">
-					<c:if test="${secComment.groupNo eq comment.groupNo && secComment.depth == 1}">
-						<div class="mb-1 second-comment-container">
+				<div class="mb-1 second-comment-container">
+					<c:forEach items="${commentList}" var="secComment">
+						<c:if test="${secComment.groupNo eq comment.groupNo && secComment.depth == 1}">
 							<div class="card second-comment-controller">
 								<div class="card-header black">
 									<div class="justify-content-between">
@@ -95,9 +95,9 @@
 									</c:if>
 								</div>
 							</div>
-						</div>
-					</c:if>
-				</c:forEach>
+						</c:if>
+					</c:forEach>
+				</div>
 			<!-- 대댓끝 -->
 			</div>
 		</c:if>
