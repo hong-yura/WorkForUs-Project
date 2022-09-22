@@ -5,28 +5,26 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:url var="deptAddUrl" value="/admin/dept_manage" />
 <form action="${deptAddUrl}" method="post" id="deptAddForm">
-	<div class="mb-3">
+	<div class="mb-3 font-bold">
 		<label for="deptNo" class="col-form-label">부서 코드는 자동으로 생성됩니다.</label>
-		<input type="text" class="form-control" id="id_deptNo" readonly>
+		<input id="deptNo" type="hidden" name="deptNo" class="form-control" readonly>
 	</div>
-	<div class="mb-3">
+	<div class="mb-3 font-bold">
 		<label for="deptName" class="col-form-label">부서명 :</label>
-		<input class="form-control" id="id_deptName" name="deptName" placeholder="부서명" >
+		<input id="deptName" class="form-control" name="deptName" placeholder="부서명 입력" >
 	</div>
-	<div class="mb-3">
+	<div class="mb-3 font-bold">
 		<label for="deptMngId" class="col-form-label">부서 책임자 :</label>
-		<input class="form-control" id="id_deptMngId" name="deptMngId" placeholder="부서 책임자 사원 번호" >
+		<input id="deptMngId" class="form-control" name="deptMngId" placeholder="부서 책임자 사원 번호 입력 (직급 부장 이상만 가능)" >
 	</div>
 	<div class="mb-3">
-		<label for="deptAddDt" class="col-form-label">부서 생성일 :</label>
-		<input class="form-control" id="id_deptAddDt" name="deptAddDt" readonly>
+		<input id="deptAddDt" type="hidden" class="form-control" name="deptAddDt" readonly>
 	</div>
 	<div class="mb-3">
-		<label for="deptModDt" class="col-form-label">최종 수정일 :</label>
-		<input class="form-control" id="id_deptModDt" name="deptModDt" readonly>
+		<input id="deptModDt" type="hidden" class="form-control" name="deptModDt" readonly>
 	</div>
 	<div class="modal-footer">
+		<button type="button" class="btn btn-primary" onclick="deptAdd();">추 가</button>
 		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취 소</button>
-		<button type="button" class="btn btn-primary" id="addDeptBtn" onclick="deptAdd();">추 가</button>
 	</div>
 </form>

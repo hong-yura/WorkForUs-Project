@@ -13,7 +13,7 @@ public interface DeptMapper {
 	
 	public int insertDept(DeptDTO deptDto);
 	
-	public List<DeptDTO> updateDept(DeptDTO deptDto);
+	public int updateDept(DeptDTO data);
 	
 	public int deleteDept(int no);
 	

@@ -13,8 +13,9 @@
 	</resultMap>
 	
 	<select id="selectDeptAll" resultMap="deptDtoMap">
-		SELECT * FROM TB_DEPARTMENTS
-		ORDER BY DEPT_NO
+		SELECT * 
+		  FROM TB_DEPARTMENTS
+		 ORDER BY DEPT_NO
 	</select>
 	
 	<select id="selectDeptDetail" parameterType="_int" resultMap="deptDtoMap">
@@ -37,6 +38,7 @@
 		UPDATE TB_DEPARTMENTS
 		   SET DEPT_NM = #{name}
 		     , DEPT_MANAGER_ID = #{mngId}
+		     , DEPT_MOD_DT = #{modDt}
 		 WHERE DEPT_NO = #{no}
 	</update>
 	

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import site.workforus.forus.admin.model.DeptDTO;
+import site.workforus.forus.admin.model.DeptVO;
 import site.workforus.forus.admin.service.DeptService;
 
 @Controller
@@ -71,14 +73,30 @@ public class DeptController {
 		@SuppressWarnings("unchecked")
 		@ResponseBody
 		@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
-		public String addDept(@RequestBody DeptDTO deptDto) {
+		public String addDept(@RequestBody DeptDTO deptDto
+							, @RequestParam String name
+							, @RequestParam String mngId) {
 			// 로그인 세션 추가하기
+			logger.info("addDept(DeptDTO={})", deptDto);
 			
-			logger.info("addDept(deptDto={})", deptDto);
+			DeptDTO data = new DeptDTO();
+			data.setDeptName(name);
+			data.setDeptMngId(mngId);
+			
+			boolean result = deptService.addDept(data);
 			
 			JSONObject json = new JSONObject();
-
-			return json.toJSONString();
+			if(result) {
+				json.put("title", "Success");
+				json.put("message", "부서 추가가 완료 되었습니다.");
+				return json.toJSONString();
+			} else {
+				json.put("title", "Fail");
+				json.put("message", "추가 작업 중 알 수 없는 문제가 발생하였습니다.");
+				return json.toJSONString();
+			}
+			// 추가 권한 없음
+			
 		}
 	
 	// 부서 수정 폼 요청
@@ -92,14 +110,30 @@ public class DeptController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value = "/dept_modify", produces="application/json; charset=utf-8")	
-	public String modifyDept(@RequestParam int no) {
+	public String modifyDept(@RequestParam int no
+						   , @ModelAttribute DeptVO deptVo) {
 		// 로그인 세션 추가하기
+		logger.info("modifyDept(DeptVO={})", deptVo);
 		
-		logger.info("updateDept(no={})", no);
+		DeptDTO data = deptService.getDeptDetail(no);
+		
+		//data.setDeptName(deptVo.getDeptName());
+		//data.setDeptMngId(deptVo.getDeptMngId());
+		
+		boolean result = deptService.modifyDept(data);
 		
 		JSONObject json = new JSONObject();
+		if(result) {
+			json.put("title", "Success");
+			json.put("message", "부서 수정이 완료 되었습니다.");
+			return json.toJSONString();
+		} else {
+			json.put("title", "Fail");
+			json.put("message", "수정 작업 중 알 수 없는 문제가 발생하였습니다.");
+			return json.toJSONString();
+		}
+		// 수정 권한 없음
 		
-		return json.toJSONString();
 	}
 	
 	
@@ -109,13 +143,9 @@ public class DeptController {
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
 	public String removeDept(@RequestParam int no) {
 		// 로그인 세션 추가하기
-		
-		logger.info("deleteDept(no={})", no);
-		
 		DeptDTO data = deptService.getDeptDetail(no);
 		
 		JSONObject json = new JSONObject();
-		
 		if(data == null) {
 			// 이미 삭제된 상태
 			json.put("title", "Already Deleted");
@@ -125,7 +155,6 @@ public class DeptController {
 			// 권한 조건
 			// 삭제 가능
 			try {
-				boolean result = deptService.removeDept(no);
 				json.put("title", "Delete Completed");
 				json.put("message", "삭제 처리가 완료 되었습니다.");
 				return json.toJSONString();
