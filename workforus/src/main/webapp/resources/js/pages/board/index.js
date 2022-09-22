@@ -4,11 +4,13 @@ function showToggle(element){
  
  	// 부모의 부모의 부모의 형제 형제
 	var con = element.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
-
+	var form = element.parentElement.parentElement.parentElement.nextElementSibling;
  	if(con.style.display =="none"){
     	con.style.display="inline";
+    	form.style.display = "inline";
 	}else{
     	con.style.display="none";
+    	form.style.display = "none";
 	}
  	
 }
