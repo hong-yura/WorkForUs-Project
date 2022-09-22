@@ -25,5 +25,8 @@
 		<!-- Address -->
 		<package name="site.workforus.forus.address.model"/>
 		
+		<!-- chat -->
+		<package name="site.workforus.forus.chat.model"/>
+		
 	</typeAliases>
 </configuration>

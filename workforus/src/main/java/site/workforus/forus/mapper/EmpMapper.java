@@ -1,5 +1,7 @@
 package site.workforus.forus.mapper;
 
+import java.util.List;
+
 import site.workforus.forus.employee.model.EmpDTO;
 
 public interface EmpMapper {
@@ -7,5 +9,5 @@ public interface EmpMapper {
 
 	public int insertEmployee(EmpDTO empDto);
 	
-	public EmpDTO selectEmployeeAll(EmpDTO empDto);
+	public List<EmpDTO> selectEmployeeAll();
 }
