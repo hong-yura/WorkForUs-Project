@@ -66,6 +66,8 @@ public class BoardPostService {
 		return result == 1 ? true : false;
 	}
 	
+	
+	
 	// 게시글 수정
 	public boolean updatePostData(BoardPostDTO postDto) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
@@ -73,26 +75,18 @@ public class BoardPostService {
 		return result == 1 ? true : false;
 	}
 
-	// 게시글 파일 업로드
-	public void addUploadFileData(PostUploadFileDTO fileData) {
-		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		mapper.insertPostUploadFile(fileData);
-	}
 
+
+	// 현재 postId
 	public int selectCurrentPostId(int boardId) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		int currentId = mapper.selectCurrentPostId(boardId);
 		return currentId;
 	}
 
-	// 게시글 파일 가져오기
-	public List<PostUploadFileDTO> getFiles(int postId) {
-		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		List<PostUploadFileDTO> files = mapper.selectFiles(postId);
-		logger.info("BoardPostService - getFiles(files={})", files);
-		return files;
-	}
 
+
+	// 현재 groupNO
 	public int selectGroupNo(int postId) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		Integer groupNo = mapper.selectGroupNo(postId);
@@ -103,11 +97,12 @@ public class BoardPostService {
 		}
 	}
 
+	// sort의 최대값
 	public int selectMaxSort(int postId, int groupNo) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		HashMap<String, Integer> data = new HashMap<String, Integer>();
-		data.put("groupNo", groupNo);
 		data.put("postId", postId);
+		data.put("groupNo", groupNo);
 		Integer maxSort = mapper.selectMaxSort(data);
 		if(maxSort == null) {
 			return 0;

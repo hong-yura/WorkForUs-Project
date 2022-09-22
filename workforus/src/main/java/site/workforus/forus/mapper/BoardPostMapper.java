@@ -60,6 +60,12 @@ public interface BoardPostMapper {
 
 	// sort 최댓값 구하기
 	public Integer selectMaxSort(HashMap<String, Integer> data);
+
+	// 댓글 삭제
+	public int deleteComment(int postId);
+
+	// 파일 삭제
+	public int deleteFile(int postId);
 	
 
 	

@@ -1,3 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!-- 글 삭제 모달 -->
 		<div class="modal fade" tabindex="-1" id="deleteModal">
 			<div class="modal-dialog modal-dialog-centered">
@@ -11,7 +16,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="boardDelete(${data.id});">삭제</button>
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="boardDelete(${postData.postId});">삭제</button>
 					</div>
 				</div>
 			</div>
@@ -27,6 +32,7 @@
 						<p>삭제되었습니다.</p>
 					</div>
 					<div class="modal-footer">
+						<c:url value="/board" var="boardUrl"/>
 						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${boardUrl}'">확인</button>
 					</div>
 				</div>

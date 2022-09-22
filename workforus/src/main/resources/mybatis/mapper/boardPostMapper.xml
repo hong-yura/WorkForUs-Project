@@ -159,8 +159,8 @@
  	 <select id="selectMaxSort" resultType="_integer" parameterType="map">
  	 	SELECT MAX(COMMENT_SORT)
 		  FROM TB_POST_COMMENTS
-		 WHERE POST_ID = #{data.postId}
-		   AND GROUP_NO = #{data.groupNo}
+		 WHERE POST_ID = #{item.postId}
+		   AND GROUP_NO = #{item.groupNo}
  	 </select>
  	 <!-- 다음 시퀀스(postId) 가져오기 -->
  	 <select id="selectPostId" resultType="_int">
@@ -199,5 +199,20 @@
 		  FROM TB_POST_COMMENTS
 		 WHERE POST_ID = #{id}
 	 </select>
+	 
+	 <!-- 파일 삭제 -->
+	 <delete id="deleteFile" parameterType="_int">
+	 	DELETE FROM TB_POST_FILES WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 댓글 삭제 -->
+	 <delete id="deleteComment" parameterType="_int">
+	 	DELETE FROM TB_POST_COMMENTS WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 게시글 삭제 -->
+	 <delete id="deleteBoardPost" parameterType="_int">
+	 	DELETE FROM TB_BOARD_POSTS WHERE POST_ID= #{id}
+	 </delete>
 	 
 </mapper>

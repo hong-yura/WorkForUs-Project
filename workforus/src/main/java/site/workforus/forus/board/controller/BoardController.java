@@ -32,6 +32,7 @@ import site.workforus.forus.board.service.BoardParticipService;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
 import site.workforus.forus.board.service.PostCommentService;
+import site.workforus.forus.board.service.UploadFileService;
 import site.workforus.forus.employee.model.EmpDTO;
 
 @Controller
@@ -46,7 +47,9 @@ public class BoardController {
 	private BoardParticipService participService;
 	@Autowired
 	private PostCommentService commentService;
-
+	@Autowired
+	private UploadFileService fileService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
 	@GetMapping(value="")
@@ -111,7 +114,7 @@ public class BoardController {
 		int commentCnt = commentService.selectCommentCount(pId);
 		
 		// 파일 가져오기
-		List<PostUploadFileDTO> files = postService.getFiles(pId);
+		List<PostUploadFileDTO> files = fileService.getFiles(pId);
 		logger.info("getDetailData=(files={})", files);
 		
 		// 게시글 댓글 마지막 groupNo을 가지고 온다.
@@ -127,18 +130,14 @@ public class BoardController {
 		return "/board/detail";
 	}
 	
-	// 댓글 추가
+	// 본댓글 추가
 	@PostMapping(value="/comment/add")
 	public String InsertComment(Model model, HttpSession session
 							  , @ModelAttribute PostCommentDTO commentDto
 							  ) {
 		
 		logger.info("InsertComment(commentDto={})",commentDto);
-		if(commentDto.getDepth() == 1) {
-			commentDto.setDepth(0);
-		}else {
-			commentDto.setDepth(1);
-		}
+		commentDto.setDepth(0);
 		
 		// sort 구하기
 		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
@@ -156,28 +155,32 @@ public class BoardController {
 		}
 	}
 	
-	// 댓글 추가
-		@PostMapping(value="/comment/add2")
-		public String InsertComment2(Model model, HttpSession session
-								  , @ModelAttribute PostCommentDTO commentDto) {
-			
-			logger.info("InsertComment(commentDto={})",commentDto);
-			
-			// sort 구하기
-			int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
-			commentDto.setSort(maxSort + 1); 
-			commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
-			commentDto.setEmpNm("원빈");
-			
-			// 댓글 저장
-			boolean result = commentService.addComment(commentDto);
-			if (result) {
-				return "redirect: /board/detail?postId=" + commentDto.getPostId(); 
-			}else {
-				model.addAttribute("message", "댓글 저장에 실패하였습니다.");
-				return  "/board/detail?postId" + commentDto.getPostId();
-			}
+	// 대댓 추가
+	@PostMapping(value="/comment/add2")
+	public String InsertComment2(Model model, HttpSession session
+							  , @ModelAttribute PostCommentDTO commentDto
+							  ) {
+		
+		logger.info("InsertComment(commentDto={})",commentDto);
+		commentDto.setDepth(1);
+		
+		// sort 구하기
+		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
+		commentDto.setSort(maxSort + 1); 
+		logger.info("InsertComment(sort={})",commentDto.getSort());
+		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
+		commentDto.setEmpNm("원빈");
+		
+		// 댓글 저장
+		boolean result = commentService.addComment(commentDto);
+		if (result) {
+			return "redirect: /board/detail?postId=" + commentDto.getPostId(); 
+		}else {
+			model.addAttribute("message", "댓글 저장에 실패하였습니다.");
+			return  "/board/detail?postId" + commentDto.getPostId();
 		}
+	}
+		
 	
 	
 	// 게시글 추가 화면
@@ -243,7 +246,7 @@ public class BoardController {
 				fileData.setUploadUrl(request.getContextPath() + "/static/images/board/" + savedFileName);	// url
 				
 				// DB에 파일 저장
-				postService.addUploadFileData(fileData);
+				fileService.addUploadFileData(fileData);
 			}
 		}
 		
@@ -279,6 +282,29 @@ public class BoardController {
 							, @ModelAttribute BoardPostDTO postDto) { // 저장될 데이터
 		
 		return "/board/modify";
+	}
+	
+	// 게시글 삭제
+	@PostMapping(value="/post/delete", produces = "application/json; charset=utf=8")
+	@ResponseBody
+	public String deletePost(Model model, @RequestParam int postId) {
+		logger.info("deletePost(postId={})", postId);
+		
+		JSONObject json = new JSONObject();
+		// 게시글을 삭제 하기 전에 관련된 것들을 모두 삭제해줘야 한다. -> file, comment
+		boolean delFile = fileService.deleteFile(postId);
+		boolean delComment = commentService.deleteComment(postId);
+		// 게시글 데이터 삭제 
+		boolean result = postService.deletePostData(postId);
+		
+		if(result && delFile && delComment) { // 모두 삭제가 완료 되었다면
+			json.put("massage", "삭제 완료");
+			return json.toJSONString();
+		}else {
+			json.put("message", "삭제 실패");
+			return json.toJSONString();
+		}
+		
 	}
 		
 }
