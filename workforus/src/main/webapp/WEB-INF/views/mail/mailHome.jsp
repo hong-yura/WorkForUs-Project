@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,7 +98,7 @@
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
-				                    	<tr>
+				                    	<tr  onclick="location.href='${detailUrl}'">
 				                    		<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
 				                    		<td>
 				                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
@@ -113,6 +116,29 @@
 				                    			2022-07-18
 				                    		</td>
 				                    	</tr>
+				                    	<c:forEach items="${dataList}" var="MailData" varStatus="status">
+					                    	<c:url var="detailUrl" value="/mail/detail">
+												<c:param name="mailId" value="${MailData.mailId}"/>
+											</c:url>
+											<tr class="table-light" onclick="location.href='${detailUrl}'">
+												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
+												<td>
+					                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
+					                    		</td>
+					                    		<td>
+					                    			<i class="bi bi-envelope"></i><!-- <i class="bi bi-envelope-open"></i> 읽은거 -->
+					                    		</td>
+												<td>
+													${MailData.empObj.empEmail}
+												</td>
+												<td>
+													${MailData.mailObj.mailTitle}
+												</td>
+												<td>
+													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
+												</td>
+											</tr>
+										</c:forEach>	
 				                    </tbody>
 				                </table>
 			                </div>

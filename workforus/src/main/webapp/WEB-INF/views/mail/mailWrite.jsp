@@ -37,7 +37,7 @@
 										<a href="${homeUrl}">Home</a>
 		                        	</li>
 			                        <li class="breadcrumb-item">
-										<a href="#">Mail</a>
+										<a href="${homeUrl}/mail">Mail</a>
 		                        	</li>
 			                        <li class="breadcrumb-item active" aria-current="page">메일작성</li>
 			                    </ol>
@@ -61,13 +61,14 @@
                                             <label>받는사람</label>
                                         </div>
                                         <div class="col-md-10 form-group col-lg-10">
-                                            <input type="email" id="receive-email" class="form-control" placeholder="@workforus.site">
+                                            <input type="email" id="receive-email" class="form-control"  name="receiveEmail"
+                                            	   value="${param.receiveEmail}"	placeholder="@workforus.site" required >
                                         </div>
                                         <div class="col-md-2 col-lg-2" >
                                             <label>제목</label>
                                         </div>
                                         <div class="col-md-10 form-group col-lg-10">
-                                            <input type="text" id="title" class="form-control" placeholder="제목을 입력하세요." required>
+                                            <input type="text" id="title" value="${param.mailTitle}" name="mailTitle" class="form-control" placeholder="제목을 입력하세요." required>
                                         </div>
                                         <div class="col-md-2 col-lg-2" >
                                             <label>첨부파일</label>
@@ -76,8 +77,8 @@
                                             <input type="file" id="email-id" class="form-control" placeholder="제목을 입력하세요.">
                                         </div>                                       
                                        <div class="mb-3" >
-											<textarea class="form-control" id="content" name="content"
-											      rows="5" placeholder="내용을 입력하세요."></textarea>
+											<textarea class="form-control" id="content" name="mailContent" 
+											 		 rows="5" placeholder="내용을 입력하세요.">${param.mailContent}</textarea>
 
 										</div>
                                         <div class="col-sm-12 d-flex justify-content-end">

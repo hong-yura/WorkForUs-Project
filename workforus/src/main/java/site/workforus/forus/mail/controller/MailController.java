@@ -1,16 +1,21 @@
 package site.workforus.forus.mail.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import site.workforus.forus.commute.controller.CommuteController;
+import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
 import site.workforus.forus.mail.service.MailService;
 
@@ -26,7 +31,11 @@ public class MailController {
 	// 받은메일함
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String getData(Model model /* , Principal principal*/) {
+		String empId = "A2022100";
 		
+		List<ReceiveMailDTO> dataList = service.selectDatas(empId);
+		System.out.println(dataList);
+		model.addAttribute("dataList", dataList);
 		return "mail/mailHome";
 	}
 	
@@ -43,10 +52,10 @@ public class MailController {
 			
 		// 테스트값
 		String empId = "A2022100";
+		String id = service.insertMailWrite(empId, sendMailDto);
 		
-		String id = service.mailWrite(empId, sendMailDto); 
 		 if(id != null) {
-				return "redirect:/mail/mailHome";
+			 return "redirect:/mail";
 		 } else {
 			 return "mail/mailWrite";
 		 }
@@ -57,6 +66,18 @@ public class MailController {
 	public String mailSend(Model model) {
 		
 		return "mail/mailSend";
+	}
+	
+	// 메일 상세
+	@GetMapping(value="detail")
+	public String getDetail(Model model , @RequestParam String mailId) {
+		// 테스트 값
+		String empId = "A2022100";
+		
+		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
+		
+		model.addAttribute("receiveData", receiveData);		
+		return "/mail/mailDetail";
 	}
 	
 }
