@@ -81,14 +81,15 @@
 											<div class="col col-3">
 												<ul id="tree_3" class="tree line">
 													<li class="open root">
-														<i></i><a>workforus</a>
+														<i></i><a class="font-bold">workforus</a>
 														<ul>
 														<c:forEach items="${deptDatas}" var="deptData">
 															<li class="open">
-																<i></i><a onclick="deptDetail(${deptData.deptNo});" >${deptData.deptName}</a>
+																<i></i><a onclick="deptDetail(${deptData.deptNo});" id="font-bold" class="font-bold">
+																		[${deptData.deptNo}] ${deptData.deptName}</a>
 																<ul>
 																	<li class="last leaf">
-																		<i></i><a>${deptData.deptMngId}</a>
+																		<i></i><a>부서 책임자: ${deptData.deptMngId}</a>
 																		<ul></ul>
 																	</li>
 																</ul>
@@ -133,7 +134,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptNo" disabled >
+																name="deptNo" readonly >
 														</div>
 													</div>
 												</div>
@@ -166,7 +167,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptAddDt" disabled >
+																name="deptAddDt" readonly >
 														</div>
 													</div>
 												</div>
@@ -177,7 +178,7 @@
 													<div class="form-group">
 														<div class="position-relative">
 															<input class="form-control dept-form-control" type="text"
-																name="deptModDt" disabled >
+																name="deptModDt" readonly >
 														</div>
 													</div>
 												</div>
@@ -240,16 +241,15 @@
 						</div>
 					</div>
 				</div>
-				<!-- 삭제 결과 확인 -->
+				<!-- 결과 확인 -->
 				<div class="modal fade" tabindex="-1" id="resultModal">
 					<div class="modal-dialog modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title">결과 확인</h5>
+								<h5 class="modal-title"></h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<p>삭제되었습니다.</p>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept_manage'">확인</button>
@@ -268,10 +268,10 @@
 	
 	<script type="text/javascript">
 		// 에러 체크
-		var modal = new bootstrap.Modal(document.getElementById("errorModal"), {
+		var errorCheckModal = new bootstrap.Modal(document.getElementById("errorModal"), {
 			keyboard: false
 		})
-		modal.show();
+		errorCheckModal.show();
 	
 		// 부서 정보 상세 조회
 		function deptDetail(no) {
@@ -294,21 +294,28 @@
 		}
 		
 		// 부서 추가
-		function deptAdd() {			
+		function deptAdd() {
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
 				data: {
-					
+					//name: deptAddForm.deptName.value
+					//mngId: deptAddForm.deptMngId.value
 				},
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
 					
-					var form = document.getElementById("addDeptForm");
+					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+						keyboard: false
+					});
 					
-					form.deptName.value = data.deptName;
-					form.deptMngId.value = data.deptMngId;
+					var title = resModal._element.querySelector(".modal-title");
+					var body = resModal._element.querySelector(".modal-body");
+					title.innerText = data.title;
+					body.innerHTML = "<p>" + data.message + "</p>"
+					
+					resModal.show();
 				},
 				error: function() {
 					alert("부서 추가 실패");
@@ -318,15 +325,31 @@
 		
 		// 부서 수정
 		function deptModify() {
+			var modForm = document.getElementById("deptModForm");
+			
+			var deptName = $("deptName").value;
+			var deptMngId = $("deptMngId").value;
+			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_modify",
 				data: {
-					
+					no: deptForm.deptNo.value
 				},
 				dataType: "json",
-				success: function() {
+				success: function(data) {
+					console.log(data);
 					
+					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+						keyboard: false
+					});
+					
+					var title = resModal._element.querySelector(".modal-title");
+					var body = resModal._element.querySelector(".modal-body");
+					title.innerText = data.title;
+					body.innerHTML = "<p>" + data.message + "</p>"
+					
+					resModal.show();
 				},
 				error: function() {
 					alert("부서 수정 실패");
@@ -345,18 +368,16 @@
 				},
 				dataType: "json",
 				success: function(data) {
-					var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
 					
-					console.log(myModal._element.querySelector(".modal-title"));
-					
-					var title = myModal._element.querySelector(".modal-title");
-					var body = myModal._element.querySelector(".modal-body");
+					var title = resModal._element.querySelector(".modal-title");
+					var body = resModal._element.querySelector(".modal-body");
 					title.innerText = data.title;
 					body.innerHTML = "<p>" + data.message + "</p>"
 					
-					myModal.show();
+					resModal.show();
 				},
 				error: function() {
 					alert("부서 삭제 실패");

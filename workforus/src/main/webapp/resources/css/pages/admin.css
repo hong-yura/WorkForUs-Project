@@ -6,7 +6,7 @@
 }
 
 .jui .col-3 {
-    width: 40%;
+    width: 60%;
     margin-top: 1rem;
 }
 
@@ -40,4 +40,13 @@
 
 .dept-btn-mg {
 	margin: 0 0.5rem 0 0.5rem;
+}
+
+.font-bold {
+	font-weight: bold;
+}
+
+#font-bold:hover {
+	font-weight: bold;
+	color: blue;
 }
