@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.SendMailMapper">
+	<resultMap type="sendMailDto" id="sendMailDtoMap">
+		<result property="mailId" 	column="mail_id" /> 
+		<result property="empId" 		column="emp_id" />
+		<result property="receiveEmail" 	column="receive_email" />
+		<result property="mailRef"  column="mail_ref" />
+		<result property="mailTitle" 	column="mail_title" />
+		<result property="mailContent" 	column="mail_content" />
+		<result property="mailSendTime" 	column="mail_send_time" />
+		<result property="mailEssential" 	column="mail_essential" />
+		<collection property="empObj" javaType="empDto"> 	
+ 			<id column="emp_id" property="empId"/>			
+			<result column="emp_nm" property="empNm"/>
+			<result column="emp_email" property="empEmail"/>
+		</collection>
+	</resultMap>
+	<resultMap type="receiveMailDto" id="receiveMailDtoMap">
+		<result property="mailId" 	column="mail_id" /> 
+		<result property="empId" 		column="emp_id" />
+		<result property="mailFolder" 	column="mail_folder" />
+		<result property="mailSendEmail"  column="mail_send_email" />
+		<result property="mailReadTime" 	column="mail_read_time" />
+		<result property="spamId" 	column="spam_id" />
+		<association property="mailObj" resultMap="sendMailDtoMap">
+			<id property="mailId" column="mail_id"/>
+			<result property="mailTitle" 	column="mail_title" />
+			<result property="mailContent" 	column="mail_content" />
+			<result property="mailSendTime" 	column="mail_send_time" />
+		</association>
+		<collection property="empObj" javaType="empDto"> 	
+ 			<id column="emp_id" property="empId"/>			
+			<result column="emp_nm" property="empNm"/>
+			<result column="emp_email" property="empEmail"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectByEmpId" parameterType="String" resultMap="sendMailDtoMap">
+		SELECT * 
+		  FROM tb_send_mail
+		 WHERE emp_id = #{empId} 
+		 ORDER BY 1
+	</select>
+
+	
+	<insert id="insertSendMail" parameterType="sendMailDto">
+		INSERT INTO tb_send_mail(mail_id, mail_title, mail_content, emp_id, receive_email, mail_send_time)
+			 VALUES(('S' || send_mail_seq.NEXTVAL), #{mailTitle}, #{mailContent}, #{empId}, #{receiveEmail}, SYSDATE  + (interval '9' hour))
+	</insert>
+	
+	<select id="selectReceiveAll" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		   JOIN tb_employees e
+		    ON rm.emp_id = e.emp_id  
+		 WHERE rm.emp_id = #{empId}
+		 ORDER BY 1 DESC
+	</select>
+	
+	<select id="selectDetail" parameterType="String" resultMap="receiveMailDtoMap" >
+		SELECT rm.mail_id
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		  JOIN tb_employees e
+		    ON rm.emp_id = e.emp_id
+		 WHERE rm.emp_id = #{empId}
+		   AND rm.mail_id = #{mailId}
+	</select>
+	
+	<select id="selectEmailList" resultType="String">
+		SELECT emp_email
+		  FROM tb_employees
+	</select>
+	
+	<select id="selectEmail" resultType="String" parameterType="String">
+		SELECT emp_email
+		  FROM tb_employees
+		 WHERE emp_id = #{empId}
+	</select>
+	
+	<select id="selectMailId" resultType="String"> 
+			SELECT 'S' || (LAST_NUMBER - 1)
+			  FROM USER_SEQUENCES
+			 WHERE SEQUENCE_NAME = 'SEND_MAIL_SEQ'
+	</select>
+	
+	<insert id="insertReceiveMail" parameterType="sendMailDto">
+		INSERT INTO tb_receive_mail (mail_id, emp_id, mail_send_email)
+		VALUES (#{mailId},
+			(SELECT emp_id from tb_employees Where emp_email = #{receiveEmail}	)
+			, #{empId})
+	</insert>
+</mapper>
