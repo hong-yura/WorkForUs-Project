@@ -9,7 +9,17 @@
 	<form action="${commentUrl}/add" method="post" style="margin: 10px;">
 		<div class="avatar avatar-md emp-img display-block" style="margin: 10px;"> <!-- 이미지 -->
 			<div class="commentCnt-container black">
-				<p class="comment-count">댓글 ${commentCnt}개</p>
+				<div class="row" style="margin-bottom: 0px;">
+					<div class="col-6">
+						<p class="comment-count" style="width: 100px;">댓글 ${commentCnt}개</p>
+					</div>
+					<div class="col-6">
+						<div class="text-end">
+							<c:url value="/board" var="boardUrl"/>
+							<button class="btn" onclick="location.href='${boardUrl}'" style="border: solid 1px; #c0c0c0;">목록</button>
+						</div>
+					</div>
+				</div>
 				<div class="display-inline">
 					<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
 					<input type="hidden" name="postId" value="${postData.postId}">

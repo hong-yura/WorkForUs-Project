@@ -26,9 +26,10 @@ public class UploadFileService {
 	}
 	
 	// 게시글 파일 업로드
-	public void addUploadFileData(PostUploadFileDTO fileData) {
+	public boolean addUploadFileData(PostUploadFileDTO fileData) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		mapper.insertPostUploadFile(fileData);
+		int result = mapper.insertPostUploadFile(fileData);
+		return result == 1?true:false;
 	}
 	
 	// 게시글 파일 가져오기

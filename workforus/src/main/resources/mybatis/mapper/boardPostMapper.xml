@@ -114,6 +114,16 @@
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
 	</select>
 	
+	<!-- 게시글 수정 -->
+	<update id="updateBoardPost" parameterType="boardPostDto">
+		UPDATE TB_BOARD_POSTS
+		   SET POST_TITLE = #{postTitle}
+		   	 , POST_CONTENT = #{content} 
+		   	 , POST_MODIFY_DT = SYSDATE
+		   	 , NOTICE_YN = #{noticeYn}
+		 WHERE POST_ID = ${postId}
+	</update>
+	
 	<!-- 일반 게시글 갯수 구하기 -->
  	 <select id="generalPostCount" resultType="_int">
  	 	SELECT COUNT(*)

@@ -8,8 +8,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>workforus - 게시판 : ${postData.postTitle}</title>
-	<!-- 헤더 수정 후 넣기 -->
-	<%@ include file="../module/head.jsp" %>
+
+	<%@ include file="../module/head.jsp" %> <!-- 순서는 무조건 위에  -->
+    
     <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
 </head>
 <body>
@@ -40,7 +41,7 @@
 									    	<c:url value="/board/post/modify" var="modUrl"/>
 									      <li><a class="dropdown-item" href="${modUrl}?postId=${postData.postId}"><i class="bi bi-pencil-square"></i> 글수정</a></li>
 									      <hr style="margin: 0px;">
-									      <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i> 글삭제</a></li>
+									      <li><a class="dropdown-item" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="deletePost(this)"><i class="bi bi-trash"></i> 글삭제</a></li>
 									    </ul>
 									</div>
 								</c:if>
@@ -48,7 +49,7 @@
 							</div>
 						</div>
 						<div class="post-main">
-							<p class="black">${postData.content}</p>
+							<p class="post-content black">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
 						<div class="dropdown">
@@ -82,6 +83,30 @@
       </div>
     </div>
     
+    
+    
+    <script type="text/javascript">
+    	// 섬머노트 초기화
+	$('#summernote').summernote({
+		height : 300,
+		minHeight: null,
+		maxHeight : null,
+		fcous : true,
+		lang: "ko-KR",
+		disableResizeEditor: true, // 크기 조절 기능 삭제
+		callbacks: {
+		    onImageUpload : function(files, editor, welEditable){
+	
+		        // 파일 업로드(다중업로드를 위해 반복문 사용)
+		        for (var i = files.length - 1; i >= 0; i--) {
+			         uploadSummernoteImageFile(files[i],
+			         this);
+		         }
+	         }
+         } 
+	}); 
+    </script>
+	
 
     <script src="${staticUrl}/js/pages/board/index.js" ></script>
     <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
