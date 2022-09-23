@@ -32,7 +32,6 @@ public class MailController {
 	// 받은메일함
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String getData(Model model, Principal principal) {
-		//String empId = "A2022100";
 		String empId = principal.getName();
 
 		List<ReceiveMailDTO> dataList = service.selectDatas(empId);
@@ -52,8 +51,6 @@ public class MailController {
 	@PostMapping(value="mailWrite", produces="application/json; charset=UTF-8")
 	public String writeMailPost(Model model, Principal principal ,@ModelAttribute SendMailDTO sendMailDto) {	// 로그인세션 필요
 			
-		// 테스트값
-		// String empId = "A2022100";
 		String empId = principal.getName();
 
 		String id = service.insertMailWrite(empId, sendMailDto);
@@ -75,14 +72,18 @@ public class MailController {
 	// 메일 상세
 	@GetMapping(value="detail")
 	public String getDetail(Model model, Principal principal, @RequestParam String mailId) {
-		// 테스트 값
-	//	String empId = "A2022100";
+		
 		String empId = principal.getName();
-
+		
+		// 받은메일정보 가져옴
 		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
-		System.out.println(receiveData);
-
-		model.addAttribute("receiveData", receiveData);		
+		System.out.println(receiveData.getMailReadFl() + "받은메일정보 상세");
+		// 최초 읽은 기록만 업데이트되게함
+		if(receiveData.getMailReadFl().equals("N")) {
+			// 읽은시간 수정
+			service.updateReadTime(empId, mailId);
+		}
+		model.addAttribute("receiveData", receiveData);					
 		return "/mail/mailDetail";
 	}
 	

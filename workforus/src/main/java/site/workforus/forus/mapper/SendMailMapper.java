@@ -36,4 +36,7 @@ public interface SendMailMapper {
 	
 	// 받은목록 추가 
 	public int insertReceiveMail(SendMailDTO sendMailDTO);
+	
+	// 읽은 시간 update
+	public void updateReadTime(@Param("empId") String empId, @Param("mailId") String mailId);
 }

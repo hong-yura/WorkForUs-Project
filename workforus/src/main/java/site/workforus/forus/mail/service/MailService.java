@@ -74,4 +74,12 @@ public class MailService {
 		detailData.getEmpObj().setEmpNm(mapper.selectName(detailData.getMailSendEmail()));
 		return detailData;
 	}
+	
+	// 메일 읽은 시간 update
+	public void updateReadTime(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		System.out.println("update한거?");
+		mapper.updateReadTime(empId, mailId);
+	}
+
 }

@@ -23,6 +23,7 @@
 		<result property="mailFolder" 	column="mail_folder" />
 		<result property="mailSendEmail"  column="mail_send_email" />
 		<result property="mailReadTime" 	column="mail_read_time" />
+		<result property="mailReadFl" 	column="mail_read_fl" />
 		<result property="spamId" 	column="spam_id" />
 		<association property="mailObj" resultMap="sendMailDtoMap">
 			<id property="mailId" column="mail_id"/>
@@ -56,6 +57,7 @@
 		     , rm.mail_folder
 		     , rm.mail_send_email
 		     , rm.mail_read_time
+		     , rm.mail_read_fl
 		     , rm.spam_id
 		     , sm.mail_title
 		     , sm.mail_content
@@ -77,6 +79,7 @@
 		     , rm.mail_folder
 		     , rm.mail_send_email
 		     , rm.mail_read_time
+  		     , rm.mail_read_fl
 		     , rm.spam_id
 		     , sm.mail_title
 		     , sm.mail_content
@@ -121,4 +124,12 @@
 		  FROM tb_employees
 		 WHERE emp_email = #{empEmail}
 	</select>
+	
+	<update id="updateReadTime" parameterType="String">
+		UPDATE tb_receive_Mail
+		   SET mail_read_time = (SYSDATE  + (interval '9' hour))
+		   	 , mail_read_fl = 'Y'
+		 WHERE emp_id = #{empId}
+		   AND mail_id = #{mailId}
+	</update>
 </mapper>

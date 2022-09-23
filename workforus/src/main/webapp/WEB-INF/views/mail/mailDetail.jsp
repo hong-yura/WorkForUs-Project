@@ -88,7 +88,14 @@
 				                                        </div>
 				                                        <br>
 				                                        <div class="form-group border" style="height:10rem; margin-top:1rem;">
-															<p>${receiveData.mailObj.mailContent}</p>				
+															<c:choose> 
+															 <c:when test="${receiveData.mailObj.mailContent != NULL}">
+																<p>${receiveData.mailObj.mailContent}</p>
+															</c:when>
+															<c:otherwise>
+																<p>내용없음</p>
+															</c:otherwise>				
+															</c:choose>
 				                                        </div>
 			                                        	
 				                                    </div>
