@@ -9,6 +9,7 @@
 		<meta charset="UTF-8">
 		<title>workforus - Admin</title>
 		<%@ include file="../module/head.jsp" %>
+		<link rel="stylesheet" href="${staticUrl}/css/pages/admin.css"/>
 	</head>
 	<body>
 		<%@ include file="../module/navigation.jsp" %>
@@ -38,26 +39,59 @@
 				
 				<section class="section">
 					<div class="card">
-					<c:url var="addressUrl" value="/address" />
-
 						<div class="card-header">
-							<h4 class="card-title">메뉴 로고 설정</h4>
-							<div class="card-body">
-	
-							</div>
-							<h4 class="card-title">파비콘 설정</h4>
-							<div class="card-body">
-	
-							</div>
-							<h4 class="card-title">웹 타이틀 설정</h4>
-							<div class="card-body">
-	
-							</div>
+		  <!-- logoForm --> <form action="" method="post" id="logoForm">
+								<div class="card-body">
+									<div class="row">
+										<div class="card-title-cus">
+											<h4 class="card-title">메뉴 로고 설정</h4>
+										</div>
+										<div class="col-lg-5">
+											<img alt="메뉴 로고 이미지" src="https://via.placeholder.com/145x45.png">
+										</div>
+										<div class="col-lg-4">
+											<label class="btn btn-lavender" for="upload-menu-logo-img">Upload New Menu Logo
+												<input hidden id="upload-menu-logo-img" accept="image/png" type="file" >
+											</label>
+											<button type="button" class="btn btn-outline-danger">Reset</button>
+										</div>
+									</div>
+									<div class="col-12 margin-cus">
+										<p>메뉴 네비게이션 상단의 로고 이미지를 설정 할 수 있습니다.<br>
+										※ PNG 파일 형식 145x45 사이즈로 등록하세요.
+										</p>
+									</div>
+								</div>
+								
+								<div class="card-body">
+									<div class="row">
+										<div class="card-title-cus">
+											<h4 class="card-title">로그인 배경 이미지 설정</h4>
+										</div>
+										<div class="col-lg-5">
+											<img alt="로그인 이미지" src="https://via.placeholder.com/480x270.png">
+										</div>
+										<div class="col-lg-4">
+											<label class="btn btn-lavender" for="upload-login-img">Upload New Login Image
+												<input hidden id="upload-login-img" accept="image/png, image/jpg" type="file" >
+											</label>
+											<button type="button" class="btn btn-outline-danger">Reset</button>
+										</div>
+									</div>
+									<div class="col-12 margin-cus">
+										<p>로그인 화면의 배경 이미지를 설정 할 수 있습니다.<br>
+										※ 모바일 웹 디스플레이 비율 16:9 ,  1920x1080 이상의 해상도 이미지를 권장합니다.<br>
+										※ PNG, JPG 파일 형식으로 등록하세요.
+										</p>
+									</div>
+								</div>
+								<hr>
+								<div class="col-12 d-flex justify-content-end">
+									<button type="button" class="btn btn-lg btn-primary" id="saveLogoBtn" onclick="saveLogo();">Save Changes</button>
+								</div>
+							</form>
 						</div>
-					</div>
-
-				
-				
+					</div> <!-- card End -->
 				</section>
 
 				<%@ include file="../module/footer.jsp" %>
