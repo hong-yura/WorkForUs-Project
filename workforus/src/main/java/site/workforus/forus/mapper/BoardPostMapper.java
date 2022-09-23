@@ -10,6 +10,7 @@ import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostCommentDTO;
 import site.workforus.forus.board.model.PostUploadFileDTO;
+import site.workforus.forus.employee.model.EmpDTO;
 
 public interface BoardPostMapper { 
 
@@ -77,7 +78,9 @@ public interface BoardPostMapper {
 
 	// 대댓 삭제
 	public int deleteSecComment(int commentId);
-	
+
+	public List<BoardPostDTO> selectNotNoticeList(int bId);
+
 	
 
 }

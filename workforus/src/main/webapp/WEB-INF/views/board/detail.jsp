@@ -33,7 +33,7 @@
 							</div>
 							<div class="title-container">
 								<h4 class="post-title black">${postData.postTitle}</h4>
-								<c:if test="${loginData.empId eq postData.writer}">
+								<c:if test="${loginId eq postData.writer}">
 									<div class="btn-group remo-button-controller">
 										<button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="background-color : #fff; border-style : none;">
 									    </button>

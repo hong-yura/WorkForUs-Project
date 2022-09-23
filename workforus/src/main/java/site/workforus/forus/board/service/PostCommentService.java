@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.model.PostCommentDTO;
+import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
+import site.workforus.forus.mapper.EmpMapper;
 
 
 @Service
@@ -93,6 +95,15 @@ public class PostCommentService {
 		int result = mapper.deleteSecComment(commentId);
 		logger.info("deleteSecComment(deleSecComment result={})", result);
 		return result == 1? true:false;
+	}
+
+	// 객체를 가지고 와야 한다. 
+	public EmpDTO selectEmpDto(String empId) {
+		EmpDTO empDto = new EmpDTO(); 
+		empDto.setEmpId(empId);
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		EmpDTO data = mapper.selectEmployee(empDto);
+		return data;
 	}
 	
 }
