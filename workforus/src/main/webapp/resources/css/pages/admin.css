@@ -50,3 +50,21 @@
 	font-weight: bold;
 	color: blue;
 }
+
+.btn-lavender {
+	margin: 0 10px 0 0;
+	color: #fff;
+	background-color: #BF9BD7;
+	border-color: #BF9BD7;
+	box-shadow: rgb(58 53 65 / 42%) 0px 4px 8px -4px;
+}
+.card-title-cus {
+	flex: 0 0 auto;
+	width: 20%;
+	font-size: 1.5rem;
+	margin-bottom: 0.5rem;
+	font-weight: 700;
+}
+.margin-cus {
+	margin: 10px 0 0 0;
+}
