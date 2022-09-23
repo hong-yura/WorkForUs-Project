@@ -113,4 +113,11 @@ public class BoardPostService {
 		}
 		
 	}
+
+	// 공지가 아닌 게시글만 따로 가져와야 함..
+	public List<BoardPostDTO> selectNotNotice(int bId) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		List<BoardPostDTO> notNotice = mapper.selectNotNoticeList(bId);
+		return notNotice;
+	}
 }

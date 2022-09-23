@@ -44,7 +44,7 @@
 	      					<input type="file" id="files" class="file-input form-control" name="postFiles" multiple style="margin-bottom: 5px;">
 	      					<c:if test="${not empty fileData}">
 	      						<c:forEach items="${fileData}" var="file" >
-			      					<input type="text" class="form-control display-inline" name="postTitle" value="${file.fileNm}" readonly  style="background:#fff; width: 95%;">
+			      					<input type="text" class="form-control display-inline" value="${file.fileNm}" readonly  style="background:#fff; width: 95%;">
 	      							<button class="btn display-inline" type="button" onclick="deleteFile" style="margin-bottom: 3px; width: 10px; ">x</button><br>
 	      						</c:forEach>
 	      					</c:if>

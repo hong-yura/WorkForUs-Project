@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.model.BoardDTO;
-import site.workforus.forus.employee.model.EmpDTO;
+import site.workforus.forus.employee.model.LoginVO;
 import site.workforus.forus.mapper.BoardMapper;
 
 @Service
@@ -16,10 +16,10 @@ public class BoardService {
 	@Autowired
 	private SqlSession session;
 
-	public List<BoardDTO> selectAll(EmpDTO empDto) {
+	public List<BoardDTO> selectAll(LoginVO loginVo) {
 		BoardMapper mapper = session.getMapper(BoardMapper.class);
 		
-		List<BoardDTO> datas = mapper.selectAll(empDto);
+		List<BoardDTO> datas = mapper.selectAll(loginVo);
 		return datas;
 		
 	}
