@@ -19,6 +19,9 @@ public interface SendMailMapper {
 	// 수신메일목록
 	public List<ReceiveMailDTO> selectReceiveAll(String empId);
 
+	// 발신메일목록
+	public List<ReceiveMailDTO> selectSendAll(String empId);
+	
 	// 발신목록 추가
 	public ReceiveMailDTO selectDetail(@Param("empId") String empId, @Param("mailId") String mailId);
 	
@@ -39,4 +42,9 @@ public interface SendMailMapper {
 	
 	// 읽은 시간 update
 	public void updateReadTime(@Param("empId") String empId, @Param("mailId") String mailId);
+	
+	// 읽은 여부 'N'으로 변경
+	public void updateReadFl(String mailId);
+
+
 }

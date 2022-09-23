@@ -53,12 +53,6 @@
 				                <div class="dataTable-top">
 				                </div>
 				                <ul class="list-inline m-0 d-flex">
-				                	<li style="margin:3px;">
-				                		<a href="#" class="btn btn-outline-primary"><i class="bi bi-star"></i></a>
-				                	</li>
-				                	<li style="margin:3px;">
-				                		<a href="#" class="btn btn-outline-primary"><i class="bi bi-trash"></i></a>
-				                	</li>
 				                </ul>
 				                <!-- 검색기능 
 				                <div class="dataTable-search">
@@ -70,10 +64,10 @@
 				                <table class="table table-striped dataTable-table" id="table1">
 				                    <thead>
 				                        <tr>
-				                        	<th	class="td1"><input type="checkbox"></th>
-			                        		<th data-sortable="" style="width: 5.9593%;">
-			                        			<a href="#" class="dataTable-sorter"></a> <!-- 읽은여부 -->
-			                        		</th>
+				                        	<th	class="td1">
+							            		<input type="checkbox" class="form-check-input form-check-primary form-check-glow" id="cboxAll" name="cboxAll" onclick="selectAll()">
+				                        	</th>
+			                        		<th data-sortable="" style="width: 5.9593%;"></th>
 				                        	<th data-sortable="" style="width: 29.7041%;">
 				                        		<a href="#" class="dataTable-sorter">받는사람</a>
 				                        	</th>
@@ -86,21 +80,31 @@
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
-				                    	<tr>
-				                    		<td><input type="checkbox"></td>
-				                    		<td>
-				                    			<i class="bi bi-envelope"></i><!-- <i class="bi bi-envelope-open"></i> 읽은거 -->
-				                    		</td>
-				                    		<td>
-				                    			jugi123@workforus.site
-				                    		</td>
-				                    		<td>
-				                    			이번달 식단입니다.
-				                    		</td>
-				                    		<td>
-				                    			2022-07-18
-				                    		</td>
-				                    	</tr>
+				                    	
+				                    	<c:forEach items="${dataList}" var="MailData" varStatus="status">
+					                    	<c:url var="detailUrl" value="${homeUrl}/mail/sendDetail">
+												<c:param name="mailId" value="${MailData.mailId}"/>
+											</c:url>
+											<tr class="table-light">
+												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
+					                    		<td onclick="location.href='${detailUrl}'"></td>
+												<td onclick="location.href='${detailUrl}'">
+													${MailData.empObj.empEmail}
+												</td>
+												<td onclick="location.href='${detailUrl}'">
+													${MailData.mailObj.mailTitle}
+												</td>
+												<td onclick="location.href='${detailUrl}'">
+													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
+												</td> 
+											</tr>
+										</c:forEach>	
+				                    	
+				                    	
+				                    	
+				                    	
+				                    	
+				                    	
 				                    </tbody>
 				                </table>
 			                </div>
@@ -134,5 +138,34 @@
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	
     <script src="${staticUrl}/js/main.js"></script>
+   	<script type="text/javascript">
+		function selectAll() {
+			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
+		      }
+		    if(document.getElementById("cboxAll").checked==false){
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
+		    }
+		}
+		
+		function checkSelectAll()  {
+			  // 전체 체크박스
+			  const checkboxes 
+			    = document.querySelectorAll('input[name="cbox"]');
+			  // 선택된 체크박스
+			  const checked 
+			    = document.querySelectorAll('input[name="cbox"]:checked');
+			  // select all 체크박스
+			  const selectAll 
+			    = document.querySelector('input[name="cboxAll"]');
+			  
+			  if(checkboxes.length === checked.length)  {
+			    selectAll.checked = true;
+			  }else {
+			    selectAll.checked = false;
+			  }
+
+		}
+	</script>    
 </body>
 </html>

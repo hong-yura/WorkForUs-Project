@@ -162,32 +162,32 @@
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	
     <script src="static/js/main.js"></script>
-    	<script type="text/javascript">
-	function selectAll() {
-		if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
-	         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
-	      }
-	    if(document.getElementById("cboxAll").checked==false){
-	         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
-	    }
-	}
-	
-	function checkSelectAll()  {
-		  // 전체 체크박스
-		  const checkboxes 
-		    = document.querySelectorAll('input[name="cbox"]');
-		  // 선택된 체크박스
-		  const checked 
-		    = document.querySelectorAll('input[name="cbox"]:checked');
-		  // select all 체크박스
-		  const selectAll 
-		    = document.querySelector('input[name="cboxAll"]');
-		  
-		  if(checkboxes.length === checked.length)  {
-		    selectAll.checked = true;
-		  }else {
-		    selectAll.checked = false;
-		  }
+   	<script type="text/javascript">
+		function selectAll() {
+			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
+		      }
+		    if(document.getElementById("cboxAll").checked==false){
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
+		    }
+		}
+		
+		function checkSelectAll()  {
+			  // 전체 체크박스
+			  const checkboxes 
+			    = document.querySelectorAll('input[name="cbox"]');
+			  // 선택된 체크박스
+			  const checked 
+			    = document.querySelectorAll('input[name="cbox"]:checked');
+			  // select all 체크박스
+			  const selectAll 
+			    = document.querySelector('input[name="cboxAll"]');
+			  
+			  if(checkboxes.length === checked.length)  {
+			    selectAll.checked = true;
+			  }else {
+			    selectAll.checked = false;
+			  }
 
 		}
 	</script>

@@ -25,14 +25,23 @@ public class MailService {
 		return datas;
 	}
 	
-	// 지울예정 
+	// 발신 메일 리스트 조회
+	public List<ReceiveMailDTO> selectSend(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		List<ReceiveMailDTO> datas = mapper.selectSendAll(empId);
+		return datas;
+	}
+	
+	/* 지울예정 
 	public SendMailDTO selectData(String empId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		
 		SendMailDTO data = mapper.selectByEmpId(empId);
 		return data;
 	}
-
+	*/
+	
 	// 메일 전송 요청
 	public String insertMailWrite(String empId, SendMailDTO data) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
@@ -78,8 +87,16 @@ public class MailService {
 	// 메일 읽은 시간 update
 	public void updateReadTime(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
-		System.out.println("update한거?");
 		mapper.updateReadTime(empId, mailId);
 	}
+	
+	// 안읽음 버튼 -> 읽음여부만 'N'으로 변경
+	public void updateReadFl(String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		mapper.updateReadFl(mailId);
+	}
+
+	
+
 
 }

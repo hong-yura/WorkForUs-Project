@@ -39,7 +39,8 @@
 					
 						<div class="card col-12 col-md-2 col-lg-2 ">
 	                          <!-- compose button  -->
-	                       	<a href="${homeUrl}/mail/mailWrite">
+     							<c:url value="${homeUrl}/mail/mailWrite" var="mailWriteUrl"/>	
+								<a href="${mailWriteUrl}">
 	                            <button type="button" class="btn btn-primary btn-block my-4 compose-btn">
 	                                메일쓰기
 	                            </button>
@@ -58,12 +59,15 @@
 						
 						<!-- 네비제외한 본문 -->
 						<div class="card card-body col-12 col-md-9 col-lg-9">
+							<c:url var="modReadUrl" value="${homeUrl}/mail/modRead">
+								<c:param name="mailId" value="${receiveData	.mailId}"/>
+							</c:url>
 			                <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
 				                <div class="dataTable-top">
 				                </div>
 				               	<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
 				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
-				               	<button type="button" class="btn btn-outline-primary">안읽음</button>
+				               	<a href="${modReadUrl}"><button type="button" class="btn btn-outline-primary">안읽음</button></a>
 				               	<button type="button" class="btn btn-outline-primary">답장</button>
 			                </div>
 			                <!-- 메일내용 -->

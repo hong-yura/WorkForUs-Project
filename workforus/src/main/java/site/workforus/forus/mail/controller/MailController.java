@@ -35,9 +35,20 @@ public class MailController {
 		String empId = principal.getName();
 
 		List<ReceiveMailDTO> dataList = service.selectDatas(empId);
-		System.out.println(dataList);
 		model.addAttribute("dataList", dataList);
 		return "mail/mailHome";
+	}
+	
+	// 보낸메일함
+	@RequestMapping(value="/mailSend", method=RequestMethod.GET)
+	public String mailSend(Model model, Principal principal) {
+		
+		String empId = principal.getName();
+		
+		List<ReceiveMailDTO> dataList = service.selectSend(empId);
+		model.addAttribute("dataList", dataList);
+		System.out.println(dataList);
+		return "mail/mailSend";
 	}
 	
 	// 메일작성 페이지로 이동
@@ -61,14 +72,7 @@ public class MailController {
 			 return "mail/mailWrite";
 		 }
 	}
-	
-	// 보낸메일함
-	@RequestMapping(value="/mailSend", method=RequestMethod.GET)
-	public String mailSend(Model model) {
-		
-		return "mail/mailSend";
-	}
-	
+
 	// 메일 상세
 	@GetMapping(value="detail")
 	public String getDetail(Model model, Principal principal, @RequestParam String mailId) {
@@ -87,4 +91,10 @@ public class MailController {
 		return "/mail/mailDetail";
 	}
 	
+	@GetMapping(value="/modRead")
+	public String modReadFl(Model model, @RequestParam String mailId) {
+		service.updateReadFl(mailId);
+		
+		return "redirect:/mail";
+	}
 }
