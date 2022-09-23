@@ -44,6 +44,7 @@ public class BoardPostDTO {
 
 	private EmpDTO empObj; 		// 작성자 정보 필요
 	
+	
 	public BoardPostDTO() {}
 
 	public BoardPostDTO(int postId, String writer, int boardId, String postTitle, String postPw, String content,

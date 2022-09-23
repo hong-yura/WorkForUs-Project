@@ -106,7 +106,7 @@
 													<td></td>
 													<td><i class="bi bi-megaphone-fill" ></i></td>
 													<td>${postData.postTitle}</td>
-													<td>${postData.writer}</td>
+													<td>${postData.empObj.empNm}</td>
 													<td>${postData.addDate}</td>
 													<td>${postData.viewCnt}</td>
 													<td>${postData.likeCnt}</td>
@@ -122,7 +122,7 @@
 													<td></td>
 													<td>${status.count}</td>
 													<td>${postData.postTitle}</td>
-													<td>${postData.writer}</td>
+													<td>${postData.empObj.empNm}</td>
 													<td>${postData.addDate}</td>
 													<td>${postData.viewCnt}</td>
 													<td>${postData.likeCnt}</td>

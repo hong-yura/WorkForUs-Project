@@ -72,6 +72,7 @@ public class BoardPostService {
 	public boolean updatePostData(BoardPostDTO postDto) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		int result = mapper.updateBoardPost(postDto);
+		logger.info("updatePostData(postDto={}, result={})", postDto, result);
 		return result == 1 ? true : false;
 	}
 

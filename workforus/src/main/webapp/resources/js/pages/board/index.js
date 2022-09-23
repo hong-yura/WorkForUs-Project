@@ -1,13 +1,16 @@
 
-function showToggle(e){
+// 댓글 토글
+function showToggle(element){
  
- 	var fir = e.target.parentElement.parentElement.parentElement;
- 	var sec = fir.nextElementSibling;
- 	
- 	if(sec.style.display='none'){
-    	sec.style.display='inline';
+ 	// 부모의 부모의 부모의 형제 형제
+	var con = element.parentElement.parentElement.parentElement.nextElementSibling.nextElementSibling;
+	var form = element.parentElement.parentElement.parentElement.nextElementSibling;
+ 	if(con.style.display =="none"){
+    	con.style.display="inline";
+    	form.style.display = "inline";
 	}else{
-    	sec.style.display='none';
+    	con.style.display="none";
+    	form.style.display = "none";
 	}
  	
 }
@@ -35,24 +38,61 @@ function boardDelete(pId){
 	});
 }
 
-// 댓글 삭제하기
-function commentDelete(element) { // 삭제 버튼 요소
-	var cid = element.parentElement.parentElement.firstElementChild.value;
-	var card = element.parentElement.parentElement.parentElement.parentElement;
+// 본댓글 삭제하기
+function commentDelete1(element) { // 삭제 버튼 요소
+	// 삭제 버튼을 누르면 commentId 가 있어야 한다. commentId 를 가져오기 위해서는? 
+	var commentId = element.parentElement.previousElementSibling.previousElementSibling.value;
+	var allDelete = element.parentElement.parentElement.parentElement.parentElement.parentElement; // 본댓, 대댓 다 없애기 
+	var postId = element.nextElementSibling.value;
+	console.log(postId);
+	var commentCnt = document.getElementsByClassName('comment-count')[0];
 	
 	$.ajax({
 		url: "/board/comment/delete",
 		type: "post",
 		data: {
-			id: cid
+			commentId: commentId,
+			postId: postId
 		},
+		dataType:"json",
 		success: function(data) {
 			// 서버에 데이터 전송 후 삭제 성공 하면 화면 상에서도 삭제.
-			if(data.code === "success") {
-				card.remove();
+			if(data.code === "error") {
+				alert("삭제 실패");
+			}else {
+				allDelete.remove();
+				commentCnt.innerHTML='댓글 ' + data.commentCnt + '개';
 			}
 		}
-	})
+	});
+}
+
+// 대댓 삭제하기
+function commentDelete2(element) { // 삭제 버튼 요소
+	// 삭제 버튼을 누르면 commentId 가 있어야 한다. commentId 를 가져오기 위해서는? 
+	var commentId = element.parentElement.previousElementSibling.previousElementSibling.value;
+	var allDelete = element.parentElement.parentElement.parentElement.parentElement; // 본댓, 대댓 다 없애기 
+	var postId = element.nextElementSibling.value;
+	var commentCnt = document.getElementsByClassName('comment-count')[0];
+
+	$.ajax({
+		url: "/board/comment/delete",
+		type: "post",
+		data: {
+			commentId: commentId,
+			postId: postId
+		},
+		dataType:"json",
+		success: function(data) {
+			// 서버에 데이터 전송 후 삭제 성공 하면 화면 상에서도 삭제.
+			if(data.code === "error") {
+				alert("삭제 실패");
+			}else{
+				allDelete.remove();
+				commentCnt.innerHTML='댓글 ' + data.commentCnt + '개';
+			}
+		}
+	});
 }
 
 // 댓글 ajax 구현 x

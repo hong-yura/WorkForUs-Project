@@ -191,7 +191,7 @@ input,textarea:focus {
   
 /* 대댓 */
 .second-comment-container .second-comment-controller{
-	margin-left : 45px;
+	margin-left : 60px;
 	margin-bottom : 0px;
 	width : 95%;
 }
@@ -221,5 +221,12 @@ input,textarea:focus {
 	border-right : solid 1px;
 }
 
+.card-body{
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+.comment-p{
+	margin-bottom:0px;
+}
 
 

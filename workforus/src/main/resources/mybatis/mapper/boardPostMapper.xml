@@ -114,6 +114,16 @@
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
 	</select>
 	
+	<!-- 게시글 수정 -->
+	<update id="updateBoardPost" parameterType="boardPostDto">
+		UPDATE TB_BOARD_POSTS
+		   SET POST_TITLE = #{postTitle}
+		   	 , POST_CONTENT = #{content} 
+		   	 , POST_MODIFY_DT = SYSDATE
+		   	 , NOTICE_YN = #{noticeYn}
+		 WHERE POST_ID = ${postId}
+	</update>
+	
 	<!-- 일반 게시글 갯수 구하기 -->
  	 <select id="generalPostCount" resultType="_int">
  	 	SELECT COUNT(*)
@@ -123,12 +133,19 @@
  	 </select>
  	 
  	 <!-- 게시글 댓글 가져오기  -->
- 	 <select id="selectPostComment" resultMap="postCommentDtoMap">
+ 	 <select id="selectAllPostComment" resultMap="postCommentDtoMap">
  	 	SELECT * 
 		  FROM TB_POST_COMMENTS 
 		 WHERE POST_ID = #{id}
 		   AND COMMENT_REMOVE_YN = 'N'
 		 ORDER BY GROUP_NO, COMMENT_SORT
+ 	 </select>
+ 	 
+ 	  <!-- 게시글 댓글 하나 가져오기  -->
+ 	 <select id="selectPostComment" resultMap="postCommentDtoMap">
+ 	 	SELECT * 
+		  FROM TB_POST_COMMENTS 
+		 WHERE COMMENT_ID = #{id}
  	 </select>
  	 
  	 <!-- 댓글 개수 -->
@@ -206,14 +223,28 @@
 	 	DELETE FROM TB_POST_FILES WHERE POST_ID= #{id}
 	 </delete>
 	 
-	 <!-- 댓글 삭제 -->
-	 <delete id="deleteComment" parameterType="_int">
-	 	DELETE FROM TB_POST_COMMENTS WHERE POST_ID= #{id}
-	 </delete>
-	 
 	 <!-- 게시글 삭제 -->
 	 <delete id="deleteBoardPost" parameterType="_int">
 	 	DELETE FROM TB_BOARD_POSTS WHERE POST_ID= #{id}
 	 </delete>
+	 
+	 <!-- 댓글 삭제 -->
+	 <delete id="deleteAllComment" parameterType="_int">
+	 	DELETE FROM TB_POST_COMMENTS WHERE POST_ID= #{id}
+	 </delete>
+	 
+	 <!-- 본댓 + 대댓 삭제 -->
+	  <delete id="deleteComment" parameterType="hashmap">
+	 	DELETE FROM TB_POST_COMMENTS 
+	 	 WHERE POST_ID= #{postId} 
+	 	   AND GROUP_NO = #{groupNo} 
+	 </delete>
+	 
+	 <!-- 대댓 삭제 -->
+	 <delete id="deleteSecComment" parameterType="_int">
+	 	DELETE FROM TB_POST_COMMENTS 
+	 	 WHERE COMMENT_ID= #{id}
+	 </delete>
+	 
 	 
 </mapper>

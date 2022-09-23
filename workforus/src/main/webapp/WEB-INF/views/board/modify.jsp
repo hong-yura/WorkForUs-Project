@@ -24,38 +24,47 @@
 	
     <div id="app">
       <div id="main">
-      	<div class="page-heading margin-left-10">
-      		<h3>Board</h3> <!-- 게시판 이름 -->
-      	</div>
-      	<div class="write-container radius">
-      		<div class="row">
-      			<div class="col-2">
-      				<!-- 상단 -->
-      				<div class="section-left"> <!-- 목록 -->
-      					<p class="title-c">제목</p>
-      					<p>첨부파일</p>
-      				</div>
-      			</div>
-      			<div class="col-10">
-    				<input type="text" class="form-control post-title" name="postTitle">
-      				<div class="file-controller">
-      					<input type="file" id="files" class="file-input form-control" name="postFile" multiple>
-      					
-      				</div>
-      			</div>
-      		</div>
-      		<hr>
-      		<!-- 내용 입력란 - summernote 사용 -->
-      		<div class="row">
-      			<div class="col-12">
-      				<form action="" method="post">
-	      				<textarea id="summernote" name="editordata"></textarea>
-      				</form>
-      			</div>
-      		</div>
-      	</div>
-      	
-      	
+      	<c:url value="/board/post/modify" var="modifyUrl"/>
+		<form action="${modifyUrl}?postId=${postData.postId}" method="post"  enctype="multipart/form-data" >
+	      	<div class="page-heading margin-left-10">
+	      		<h3>Board</h3> <!-- 게시판 이름 -->
+	      	</div>
+	      	<div class="write-container radius">
+	      		<div class="row">
+	      			<div class="col-2">
+	      				<!-- 상단 -->
+	      				<div class="section-left"> <!-- 목록 -->
+	      					<p class="title-c">제목</p>
+	      					<p>첨부파일</p> <!-- 첨부파일은 삭제할 수 있도록 한다. -> ajax -->
+	      				</div>
+	      			</div>
+	      			<div class="col-10">
+	    				<input type="text" class="form-control post-title" name="postTitle" value="${postData.postTitle}"> 
+	      				<div class="file-controller">
+	      					<input type="file" id="files" class="file-input form-control" name="postFiles" multiple style="margin-bottom: 5px;">
+	      					<c:if test="${not empty fileData}">
+	      						<c:forEach items="${fileData}" var="file" >
+			      					<input type="text" class="form-control display-inline" name="postTitle" value="${file.fileNm}" readonly  style="background:#fff; width: 95%;">
+	      							<button class="btn display-inline" type="button" onclick="deleteFile" style="margin-bottom: 3px; width: 10px; ">x</button><br>
+	      						</c:forEach>
+	      					</c:if>
+	      				</div>
+	      				<input type="checkbox" name="noticeYn" value="Y" style="margin-top: 10px;">공지 등록
+	      			</div>
+	      		</div>
+	      		<hr>
+	      		<!-- 내용 입력란 - summernote 사용 -->
+	      		<div class="row">
+	      			<div class="col-12">
+		      			<textarea id="summernote" name="content">${postData.content}</textarea>
+	      			</div>
+	      		</div>
+	      		<div class="text-end">
+					<button class="btn" type="submit">저장</button>
+					<button class="btn" type="button" onclick="location.href='/board'">취소</button>
+				</div>
+	      	</div>
+		</form>
       	<!-- footer -->
         <%@ include file="../module/footer.jsp" %>
       </div>
@@ -69,7 +78,25 @@
 		fcous : false,
 		lang: "ko-KR"
 	});
- 
+
+	// 이미지 파일 처리
+	function uploadSummernoteImageFile(file, el) {
+		data = new FormData();
+		
+		data.append("file", file);
+		$.ajax({
+			data : data,
+			type : "POST",
+			url : "/uploadSummernoteImageFile",
+			contentType : false,
+			enctype : 'multipart/form-data',
+			processData : false,
+			success : function(data) {
+				$(el).summernote('editor.insertImage', data.url);
+			}
+		});
+	}
+	
  </script>
 </body>
 </html>

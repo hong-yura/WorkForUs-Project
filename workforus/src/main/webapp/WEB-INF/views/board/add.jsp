@@ -56,9 +56,10 @@
 		      			<textarea id="summernote" name="content">${param.content}</textarea>
 	      			</div>
 	      		</div>
-	      		<div class="btn-group" role="group" style="display: block; float: right;">
-					  <button type="submit" class="btn btn-group-sm" name="temporaryYn" value="N" id="saveBtn">저장</button>
-					  <button type="submit" class="btn btn-group-sm" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
+	      		<div class="text-end">
+					<button class="btn" type="submit" name="temporaryYn" value="N" id="saveBtn">저장</button>
+					<button class="btn" type="submit" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
+					<button class="btn" type="button" onclick="location.href='/board'">취소</button>
 				</div>
 		     </div>
 		</form>
