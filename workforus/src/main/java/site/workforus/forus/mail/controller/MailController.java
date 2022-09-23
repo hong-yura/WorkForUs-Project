@@ -1,5 +1,6 @@
 package site.workforus.forus.mail.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -30,9 +31,10 @@ public class MailController {
 	
 	// 받은메일함
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public String getData(Model model /* , Principal principal*/) {
-		String empId = "A2022100";
-		
+	public String getData(Model model, Principal principal) {
+		//String empId = "A2022100";
+		String empId = principal.getName();
+
 		List<ReceiveMailDTO> dataList = service.selectDatas(empId);
 		System.out.println(dataList);
 		model.addAttribute("dataList", dataList);
@@ -48,10 +50,12 @@ public class MailController {
 	
 	// 메일 전송 요청
 	@PostMapping(value="mailWrite", produces="application/json; charset=UTF-8")
-	public String writeMailPost(Model model, @ModelAttribute SendMailDTO sendMailDto) {	// 로그인세션 필요
+	public String writeMailPost(Model model, Principal principal ,@ModelAttribute SendMailDTO sendMailDto) {	// 로그인세션 필요
 			
 		// 테스트값
-		String empId = "A2022100";
+		// String empId = "A2022100";
+		String empId = principal.getName();
+
 		String id = service.insertMailWrite(empId, sendMailDto);
 		
 		 if(id != null) {
@@ -70,12 +74,14 @@ public class MailController {
 	
 	// 메일 상세
 	@GetMapping(value="detail")
-	public String getDetail(Model model , @RequestParam String mailId) {
+	public String getDetail(Model model, Principal principal, @RequestParam String mailId) {
 		// 테스트 값
-		String empId = "A2022100";
-		
+	//	String empId = "A2022100";
+		String empId = principal.getName();
+
 		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
-		
+		System.out.println(receiveData);
+
 		model.addAttribute("receiveData", receiveData);		
 		return "/mail/mailDetail";
 	}

@@ -80,7 +80,7 @@
 				                                            <label><h4>${receiveData.mailObj.mailTitle }</h4></label>
 				                                        </div>
 				                                        <div >
-				                                            <label>보낸 사람 : <b>${receiveData.empObj.empNm}&lt;${receiveData.empObj.empEmail}&gt;</b></label>
+				                                            <label>보낸 사람 : <b>${receiveData.empObj.empNm}&lt;${receiveData.mailSendEmail}&gt;</b></label>
 				                                        </div>
 				                                        <div>
        														

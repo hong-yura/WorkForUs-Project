@@ -115,4 +115,10 @@
 			(SELECT emp_id from tb_employees Where emp_email = #{receiveEmail}	)
 			, #{empId})
 	</insert>
+	
+	<select id="selectName" resultType="String" parameterType="String">
+		SELECT emp_nm
+		  FROM tb_employees
+		 WHERE emp_email = #{empEmail}
+	</select>
 </mapper>

@@ -1,5 +1,6 @@
 package site.workforus.forus.commute.controller;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,10 +39,12 @@ public class CommuteController{
 	
 	// 근태 페이지 조회
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public String getData(Model model) throws Exception { 	
+	public String getData(Model model, Principal principal) throws Exception { 	
 
 		// 테스트용 empId값
-			String empId = "A2022100";
+		//	String empId = "A2022100";
+		String empId = principal.getName();
+		
 		// int commuteNo = 100; 
 		/*
 		 * empId가 일치하고 commuteDt가 있는지 체크
@@ -119,14 +122,15 @@ public class CommuteController{
 	// 출근 기록
 	@PostMapping(value="/in", produces="application/json; charset=UTF-8")
 	@ResponseBody
-	public String commuteIn(Model model, @RequestParam String intime) throws Exception {
+	public String commuteIn(Model model, @RequestParam String intime, Principal principal) throws Exception {
 		
 		JSONObject json = new JSONObject();
 		
 		// 테스트용 empId
-		String empId = "A2022100";
+		//String empId = "A2022100";
 		// 로그인세션에서 id 가져와야함
-		
+		String empId = principal.getName();
+
 		
 		// 날짜와 아이디 검색해서 출근기록 있으면 실행되면 안돼...
 		CommuteDTO data = service.selectData(empId);
@@ -144,10 +148,12 @@ public class CommuteController{
 	// 퇴근 기록
 	@RequestMapping(value="/out")
 	@ResponseBody
-	public String commuteOut(Model model) throws Exception {
+	public String commuteOut(Model model, Principal principal) throws Exception {
 		JSONObject json = new JSONObject();
 		// 테스트용 empId
-		String empId = "A2022100";
+		// String empId = "A2022100";
+		String empId = principal.getName();
+
 		Date nowTime = service.nowTime();
 		Date defaultTime = new Date(nowTime.getYear(), nowTime.getMonth(), nowTime.getDate(), 9, 0, 0);
 		CommuteDTO data = service.selectData(empId);

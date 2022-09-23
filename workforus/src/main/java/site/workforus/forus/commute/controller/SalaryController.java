@@ -1,6 +1,7 @@
 package site.workforus.forus.commute.controller;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -30,9 +31,10 @@ public class SalaryController extends HttpServlet {
 	 private SalaryService service;
 	
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public String getData(Model model) throws Exception { 
+	public String getData(Model model, Principal principal) throws Exception { 
 		// 테스용 empId
-		String empId = "A2022100";
+		// String empId = "A2022100";
+		String empId = principal.getName();
 		
 		// ',' 찍기 위해 format설정
 		DecimalFormat decFormat = new DecimalFormat("###,###");

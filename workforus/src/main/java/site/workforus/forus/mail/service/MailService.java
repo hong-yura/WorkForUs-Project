@@ -25,7 +25,7 @@ public class MailService {
 		return datas;
 	}
 	
-	
+	// 지울예정 
 	public SendMailDTO selectData(String empId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		
@@ -42,10 +42,9 @@ public class MailService {
 		// 보낸메일함 추가
 		boolean result = mapper.insertSendMail(data);
 		
-		// 전송시간으로 보낸 메일id
+		// 현재 메일id
 		String mailId = mapper.selectMailId();
 		
-		System.out.println(mailId + "메일아이디 있을텐데 시뱅이 없는척 지리죠?");
 		// 사원 이메일 리스트
 		List<String> emailList = mapper.selectEmailList();
 		
@@ -54,11 +53,10 @@ public class MailService {
 		
 		// 받는사람 이메일이 사원테이블에 있다면 수신목록도 추가 필요
 		if(emailList.contains(data.getReceiveEmail())) {
-			
-			int idx = emailList.indexOf(data.getReceiveEmail());
-			data.setReceiveEmail(emailList.get(idx));
-			data.setEmpId(sendEmail);
-			data.setMailId(mailId);
+			int idx = emailList.indexOf(data.getReceiveEmail());		// 받는사람 이메일 번호
+			data.setReceiveEmail(emailList.get(idx));					// 받는사람 이메일을 저장
+			data.setEmpId(sendEmail);									// 보낸사람 empId 저장
+			data.setMailId(mailId);										// 메일id
 			mapper.insertReceiveMail(data);
 		}
     	if(result) {
@@ -67,12 +65,13 @@ public class MailService {
     	return "";
     }
 
-
+	// 메일 상세내용 조회
 	public ReceiveMailDTO selectReceiveData(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
-
+		// 보낸사람 empId가 필요해요..email로 불러와야할듯
 		ReceiveMailDTO detailData = mapper.selectDetail(empId, mailId);
 		
+		detailData.getEmpObj().setEmpNm(mapper.selectName(detailData.getMailSendEmail()));
 		return detailData;
 	}
 }
