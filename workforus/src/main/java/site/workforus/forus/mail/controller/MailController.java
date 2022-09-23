@@ -81,7 +81,6 @@ public class MailController {
 		
 		// 받은메일정보 가져옴
 		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
-		System.out.println(receiveData.getMailReadFl() + "받은메일정보 상세");
 		// 최초 읽은 기록만 업데이트되게함
 		if(receiveData.getMailReadFl().equals("N")) {
 			// 읽은시간 수정
@@ -91,10 +90,28 @@ public class MailController {
 		return "/mail/mailDetail";
 	}
 	
+	// 전송메일 상세
+	@GetMapping(value="sendDetail")
+	public String sendDetail(Model model, Principal principal, @RequestParam String mailId) {
+		
+		String empId = principal.getName();
+		
+		// 보낸 메일정보 가져옴
+		ReceiveMailDTO sendData = service.selectSendData(empId, mailId);
+		
+		System.out.println(sendData + "이게 맞는지 한번 봅시다.");
+		model.addAttribute("sendData", sendData);
+		
+		return "/mail/mailSendDetail";
+	}
+	
+	// 안읽은 상태로 변경
 	@GetMapping(value="/modRead")
 	public String modReadFl(Model model, @RequestParam String mailId) {
 		service.updateReadFl(mailId);
 		
 		return "redirect:/mail";
 	}
+	
+
 }

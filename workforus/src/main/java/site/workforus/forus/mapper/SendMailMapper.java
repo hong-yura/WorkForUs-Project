@@ -22,9 +22,12 @@ public interface SendMailMapper {
 	// 발신메일목록
 	public List<ReceiveMailDTO> selectSendAll(String empId);
 	
-	// 발신목록 추가
+	// 수신메일 상세 조회
 	public ReceiveMailDTO selectDetail(@Param("empId") String empId, @Param("mailId") String mailId);
 	
+	// 발신메일 상세 조회
+	public ReceiveMailDTO selectSendDetail(@Param("empId") String empId, @Param("mailId") String mailId);
+
 	// 사원 이메일리스트
 	public List<String> selectEmailList();
 	
@@ -45,6 +48,7 @@ public interface SendMailMapper {
 	
 	// 읽은 여부 'N'으로 변경
 	public void updateReadFl(String mailId);
+
 
 
 }

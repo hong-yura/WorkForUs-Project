@@ -118,6 +118,28 @@
 		 WHERE rm.emp_id = #{empId}
 		   AND rm.mail_id = #{mailId}
 	</select>
+		
+	<select id="selectSendDetail" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		   JOIN tb_employees e
+		    ON sm.receive_email = e.emp_email  
+		 WHERE sm.emp_id = #{empId}
+		   AND rm.mail_id = #{mailId}
+	</select>
 	
 	<select id="selectEmailList" resultType="String">
 		SELECT emp_email

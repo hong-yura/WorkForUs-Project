@@ -59,6 +59,8 @@
 					               	 <input class="dataTable-input" placeholder="Search..." type="text">
 				                </div>
 				                 -->
+   				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
+				                 
 			                </div>
 			                <div class="dataTable-container">
 				                <table class="table table-striped dataTable-table" id="table1">
@@ -67,15 +69,18 @@
 				                        	<th	class="td1">
 							            		<input type="checkbox" class="form-check-input form-check-primary form-check-glow" id="cboxAll" name="cboxAll" onclick="selectAll()">
 				                        	</th>
-			                        		<th data-sortable="" style="width: 5.9593%;"></th>
+			                        		<th data-sortable="" style="width: 2.9593%;"></th>
 				                        	<th data-sortable="" style="width: 29.7041%;">
 				                        		<a href="#" class="dataTable-sorter">받는사람</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 40.9215%;">
+				                        	<th data-sortable="" style="width: 38.9215%;">
 				                        		<a href="#" class="dataTable-sorter">제목</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 20.1082%;">
+				                        	<th data-sortable="" style="width: 15.1082%;">
 				                        		<a href="#" class="dataTable-sorter">전송일자</a>
+			                        		</th>
+				                        	<th data-sortable="" style="width: 10.1082%;">
+				                        		<a href="#" class="dataTable-sorter">상태</a>
 			                        		</th>
 			                        	</tr>
 				                    </thead>
@@ -97,6 +102,16 @@
 												<td onclick="location.href='${detailUrl}'">
 													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
 												</td> 
+												<td onclick="location.href='${detailUrl}'">
+													<c:choose>
+		                                           		<c:when test="${sendData.mailReadFl eq 'Y'}">
+		                                           			${sendData.readTime }
+		                                           		</c:when>
+		                                           		<c:otherwise>
+		                                           			읽지않음
+		                                           		</c:otherwise>
+		                                           	</c:choose>
+												</td>												
 											</tr>
 										</c:forEach>	
 				                    	
@@ -141,10 +156,10 @@
    	<script type="text/javascript">
 		function selectAll() {
 			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
-		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
+		         for(var i=0;i<20;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
 		      }
 		    if(document.getElementById("cboxAll").checked==false){
-		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
+		         for(var i=0;i<20;i++) document.getElementsByName("cbox")[i].checked=false;  
 		    }
 		}
 		

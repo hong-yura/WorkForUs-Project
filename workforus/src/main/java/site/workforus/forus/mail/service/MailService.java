@@ -74,13 +74,21 @@ public class MailService {
     	return "";
     }
 
-	// 메일 상세내용 조회
+	// 받은메일 상세내용 조회
 	public ReceiveMailDTO selectReceiveData(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		// 보낸사람 empId가 필요해요..email로 불러와야할듯
 		ReceiveMailDTO detailData = mapper.selectDetail(empId, mailId);
 		
 		detailData.getEmpObj().setEmpNm(mapper.selectName(detailData.getMailSendEmail()));
+		return detailData;
+	}
+	
+	// 보낸메일 상세내용 조회
+	public ReceiveMailDTO selectSendData(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		ReceiveMailDTO detailData = mapper.selectSendDetail(empId, mailId);
+		
 		return detailData;
 	}
 	
@@ -95,6 +103,7 @@ public class MailService {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		mapper.updateReadFl(mailId);
 	}
+
 
 	
 

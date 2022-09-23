@@ -75,7 +75,7 @@
 				                 -->
 			                </div>
 			                <div class="dataTable-container">
-				                <table class="table table-striped dataTable-table" id="table1">
+				                <table class="table dataTable-table" id="table1">
 				                    <thead>
 				                        <tr>
 				                        	<th	class="td1">
@@ -103,7 +103,15 @@
 					                    	<c:url var="detailUrl" value="/mail/detail">
 												<c:param name="mailId" value="${MailData.mailId}"/>
 											</c:url>
-											<tr class="table-light">
+											<c:choose>
+												<c:when  test="${MailData.mailReadFl eq 'N'}"> 
+													<tr class="table-light">
+												</c:when>
+												<c:otherwise>
+													<tr style="background-color:#F2F2F2">
+												</c:otherwise>
+											</c:choose>
+											
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
 												<td onclick="location.href='${detailUrl}'">
 					                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
