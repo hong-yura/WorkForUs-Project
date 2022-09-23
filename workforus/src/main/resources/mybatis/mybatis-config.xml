@@ -16,6 +16,9 @@
 		<!-- Board -->
 		<package name="site.workforus.forus.board.model"/>
 		
+		<!-- Survey -->
+		<package name="site.workforus.forus.survey.model"/>
+		
 		<!-- Commute -->
 		<package name="site.workforus.forus.commute.model"/>
 		
