@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import site.workforus.forus.survey.model.SurveyDTO;
 import site.workforus.forus.survey.service.SurveyService;
@@ -31,7 +32,24 @@ public class SurveyController {
 		logger.info("getData(surveyList={})", surveyList);
 		
 		model.addAttribute("surveyList", surveyList);
-		return "/survey/list";
+		return "/survey/survey_list";
+	}
+	
+	@GetMapping(value="/detail")
+	public String getDetail(Model model, Authentication auth
+						  , @RequestParam int surveyNo) {
+		logger.info("getDetail(surveyNo={})", surveyNo);
+		
+		// 해당 survey 정보 가지고 오기
+		SurveyDTO surveyDto = surveyService.selectSurvey(surveyNo);
+		logger.info("getDetail(surveyNo={}, surveyDto={})", surveyNo, surveyDto);
+		
+		// 소요시간을 구해줘야 한다.
+		int takeTime = surveyService.getTakeTime(surveyNo);
+		
+		model.addAttribute("takeTime", takeTime);
+		model.addAttribute("surveyData", surveyDto);
+		return "/survey/survey_detail";
 	}
 	
 	

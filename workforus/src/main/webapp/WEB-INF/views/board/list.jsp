@@ -118,7 +118,7 @@
 												<c:param name="postId" value="${postData.postId}"/>
 											</c:url>
 											<c:if test="${postData.noticeYn eq 'N'}">
-												<tr class="table-light"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+												<tr class="table"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
 													<td></td>
 													<td>${status.count}</td>
 													<td>${postData.postTitle}</td>

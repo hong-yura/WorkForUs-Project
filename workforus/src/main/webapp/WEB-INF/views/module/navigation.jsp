@@ -333,10 +333,7 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#">SubMenu #1</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
+                <a href="${homeUrl}/survey">설문조사</a>
               </li>
             </ul>
           </li>

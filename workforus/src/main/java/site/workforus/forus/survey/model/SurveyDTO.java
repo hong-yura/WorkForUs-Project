@@ -15,7 +15,7 @@ import lombok.ToString;
 public class SurveyDTO {
 	private int surveyNo;				// 설문no
 	private String empId;				// 제출자
-	private String surveyTitle;		// 제목
+	private String surveyTitle;			// 제목
 	private Date startDt;				// 시작일
 	private Date endDt;					// 종료일
 	private String progress;			// 진행

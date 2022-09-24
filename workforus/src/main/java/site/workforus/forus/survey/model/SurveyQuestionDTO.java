@@ -1,6 +1,5 @@
 package site.workforus.forus.survey.model;
 
-import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
 
@@ -13,16 +12,16 @@ import lombok.ToString;
 @ToString
 @Alias("questionDto")
 public class SurveyQuestionDTO {
-	private int questNo;
+	private int quesNo;
 	private int surveyNo;
 	private int typeNo;
 	private String quesContent;
 	
 	public SurveyQuestionDTO() {}
 
-	public SurveyQuestionDTO(int questNo, int surveyNo, int typeNo, String quesContent) {
+	public SurveyQuestionDTO(int quesNo, int surveyNo, int typeNo, String quesContent) {
 		super();
-		this.questNo = questNo;
+		this.quesNo = quesNo;
 		this.surveyNo = surveyNo;
 		this.typeNo = typeNo;
 		this.quesContent = quesContent;
