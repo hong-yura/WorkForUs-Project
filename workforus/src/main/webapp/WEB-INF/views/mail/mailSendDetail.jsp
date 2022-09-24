@@ -104,7 +104,7 @@
 						                                        <c:otherwise>						                                        
 						                                            	<c:choose>
 						                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
-						                                            			${sendData.readTime }
+						                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
 						                                            		</c:when>
 						                                            		<c:otherwise>
 						                                            			읽지않음

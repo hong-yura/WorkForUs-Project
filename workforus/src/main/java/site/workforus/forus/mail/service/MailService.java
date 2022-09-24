@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
+import site.workforus.forus.mail.model.TempMailDTO;
 import site.workforus.forus.mapper.SendMailMapper;
 
 @Service
@@ -122,6 +123,25 @@ public class MailService {
 		ReceiveMailDTO detailData = mapper.selectOneOut(empId, mailId);
 		
 		return detailData;
+	}
+
+	// 메일 임시저장
+	public boolean insertTempMail(String empId, SendMailDTO sendMailDto) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+
+		sendMailDto.setEmpId(empId);
+		// 임시보관함 저장
+		int result = mapper.insertTempMail(sendMailDto);
+		
+		return result == 1 ? true : false;
+	}
+
+	// 임시저장 메일 조회
+	public List<TempMailDTO> selectTempData(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		List<TempMailDTO> data = mapper.selectTempList(empId);
+		
+		return data;
 	}
 
 

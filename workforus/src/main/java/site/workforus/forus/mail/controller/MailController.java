@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import site.workforus.forus.commute.controller.CommuteController;
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
+import site.workforus.forus.mail.model.TempMailDTO;
 import site.workforus.forus.mail.service.MailService;
 
 @Controller
@@ -47,7 +48,6 @@ public class MailController {
 		
 		List<ReceiveMailDTO> dataList = service.selectSend(empId);
 		model.addAttribute("dataList", dataList);
-		System.out.println(dataList);
 		return "mail/mailSend";
 	}
 	
@@ -73,6 +73,16 @@ public class MailController {
 		 }
 	}
 
+	// 임시 메일 저장
+	@PostMapping(value="saveTemp")
+	public String saveTempMail(Model model, Principal principal ,@ModelAttribute SendMailDTO sendMailDto) {
+		String empId = principal.getName();
+		
+		boolean result = service.insertTempMail(empId, sendMailDto);
+		
+		return "redirect:/mail";
+	}
+	
 	// 메일 상세
 	@GetMapping(value="detail")
 	public String getDetail(Model model, Principal principal, @RequestParam String mailId) {
@@ -99,7 +109,6 @@ public class MailController {
 		ReceiveMailDTO outData = service.selectOneOut(empId, mailId);
 		if(outData.getEmpId().equals("outMail")) {
 			model.addAttribute("sendData", outData);
-			System.out.println(outData);
 		} else {
 			// 보낸 메일정보 가져옴
 			ReceiveMailDTO sendData = service.selectSendData(empId, mailId);
@@ -130,20 +139,17 @@ public class MailController {
 		return "/mail/mailOutSend";
 	}
 	
-//	// 외부 발송메일 상세
-//	@GetMapping(value="sendDetail")
-//	public String sendOutDetail(Model model, Principal principal, @RequestParam String mailId) {
-//		
-//		String empId = principal.getName();
-//		
-//		// 외부 발송메일상세
-//		ReceiveMailDTO outData = service.selectOneOut(empId);
-//		model.addAttribute("outData", outData);
-//		
-//		model.addAttribute("sendData", Data);
-//		
-//		return "/mail/mailSendDetail";
-//	}
-//	
+	// 외부 발송메일 상세
+	@GetMapping(value="tempMail")
+	public String sendOutDetail(Model model, Principal principal) {
+		
+		String empId = principal.getName();
+		
+		List<TempMailDTO> dataList = service.selectTempData(empId);
+		
+		model.addAttribute("dataList", dataList);
+		return "/mail/mailTemp";
+	}
+	
 
 }

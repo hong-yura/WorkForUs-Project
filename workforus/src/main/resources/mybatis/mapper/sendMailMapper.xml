@@ -17,6 +17,19 @@
 			<result column="emp_email" property="empEmail"/>
 		</collection>
 	</resultMap>
+	<resultMap type="tempMailDto" id="tempMailDtoMap">
+		<result property="tempMailId" 	column="temp_mail_id" /> 
+		<result property="sendEmpId" 		column="send_emp_id" />
+		<result property="tempMailTitle" 	column="temp_mail_title" />
+		<result property="tempMailContent"  column="temp_mail_content" />
+		<result property="receiveEmail" 	column="receive_email" />
+		<result property="saveTime" 	column="save_time" />
+		<collection property="empObj" javaType="empDto"> 	
+ 			<id column="emp_id" property="empId"/>			
+			<result column="emp_nm" property="empNm"/>
+			<result column="emp_email" property="empEmail"/>
+		</collection>
+	</resultMap>
 	<resultMap type="receiveMailDto" id="receiveMailDtoMap">
 		<result property="mailId" 	column="mail_id" /> 
 		<result property="empId" 		column="emp_id" />
@@ -227,5 +240,14 @@
 		    ON rm.mail_id = sm.mail_id
 		 WHERE sm.emp_id = #{empId}
 		   AND rm.mail_id = #{mailId}
+	</select>
+	
+	<insert id="insertTempMail" parameterType="sendMailDto">
+		INSERT INTO tb_temp_mailbox
+		VALUES (temp_mailbox_seq.NEXTVAL, #{empId}, #{mailTitle}, #{mailContent}, #{receiveEmail}, SYSDATE  + (interval '9' hour))
+	</insert>
+	
+	<select id="selectTempList" parameterType="String" resultMap="tempMailDtoMap">
+		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{empId}
 	</select>
 </mapper>

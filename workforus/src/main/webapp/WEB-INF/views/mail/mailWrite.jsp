@@ -54,7 +54,7 @@
                     <div class="card-content">
                         <div class="card-body">
                    	     	<c:url value="/mail/mailWrite" var="mailWriteUrl"/>
-                            <form class="form form-horizontal" action="${mailWriteUrl}" method="post" enctype="multipart/form-data" >
+                            <form class="form form-horizontal" action="${mailWriteUrl}" name="send" method="post" enctype="multipart/form-data" >
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-md-2 col-lg-2">
@@ -82,15 +82,12 @@
 
 										</div>
                                         <div class="col-sm-12 d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary me-1 mb-1"  data-bs-toggle="modal" data-bs-target="#SendModal">전송</button>
-                                            <button type="reset" class="btn btn-light-secondary me-1 mb-1">임시저장</button>
+                                            <button type="submit" class="btn btn-primary me-1 mb-1">전송</button>
+                                            <input type="submit" class="btn btn-light-secondary me-1 mb-1" value="임시저장" formaction="/mail/saveTemp">
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                       
-                            
-                            
                         </div>
                     </div>
                 </div>
@@ -111,7 +108,7 @@
                 console.error( error );
             } );
         
-    	
+        
     </script>
 </body>
 </html>

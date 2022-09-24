@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
+import site.workforus.forus.mail.model.TempMailDTO;
 
 public interface SendMailMapper {
 
@@ -58,6 +59,12 @@ public interface SendMailMapper {
 
 	// 외부로 전송한 메일 상세 조회
 	public ReceiveMailDTO selectOneOut(@Param("empId") String empId, @Param("mailId") String mailId);
+
+	// 임시저장
+	public int insertTempMail(SendMailDTO sendMailDto);
+
+	// 임시보관함 조회
+	public List<TempMailDTO> selectTempList(String empId);
 	
 
 
