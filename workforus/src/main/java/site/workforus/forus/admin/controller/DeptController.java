@@ -159,11 +159,12 @@ public class DeptController {
 			// 권한 조건
 			// 삭제 가능
 			try {
-				json.put("title", "Delete Completed");
+				boolean result = deptService.removeDept(no);
+				json.put("title", "Success");
 				json.put("message", "삭제 처리가 완료 되었습니다.");
 				return json.toJSONString();
 			} catch (Exception e) {
-				json.put("title", "Delete Fail");
+				json.put("title", "Fail");
 				json.put("message", "삭제 작업 중 알 수 없는 문제가 발생하였습니다.");
 				return json.toJSONString();
 			}
