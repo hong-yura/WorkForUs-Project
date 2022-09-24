@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="site.workforus.forus.mapper.SurveyMapper">
+	<resultMap type="surveyDto" id="surveyDtoMap">
+		<result property="surveyNo" column="survey_no"/>
+		<result property="empId" column="emp_id"/>
+		<result property="surveyTitle" column="survey_title"/>
+		<result property="startDt" column="start_dt"/>
+		<result property="endDt" column="end_dt"/>
+		<result property="progress" column="progress"/>
+		<result property="resultOpenYn" column="result_open_yn"/>
+		<result property="surveyModifyYn" column="survey_modify_yn"/>
+		<result property="responseCnt" column="response_cnt"/>
+	</resultMap>
+	
+	<resultMap type="questionDto" id="questionDtoMap">
+		<result property="quesNo" column="ques_no"/>
+		<result property="surveyNo" column="survey_no"/>
+		<result property="typeNo" column="type_no"/>
+		<result property="quesContent" column="ques_content"/>
+	</resultMap>
+	
+	<!-- 설문 리스트 가져오기 -->
+	<select id="selectAllSurvey" resultMap="surveyDtoMap">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , progress
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+	</select>
+	
+	<!-- survey 하나만 가져오기 -->
+	<select id="selectSurvey" resultMap="surveyDtoMap">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , progress
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+		WHERE survey_no = #{id}
+	</select>
+	
+	
+	<!-- 제목 조회 기능 --> <!-- 무조건 상태랑 같이 서치해줘야 하기 ㄸ문에 map으로 해줘야 함  -->
+	<select id="SearchTitleSurvey" resultMap="surveyDtoMap" parameterType="map">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , progress
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+		WHERE survey_title like '%'||#{surveyTitle}||'%'
+		  AND progress = #{progress} 
+	</select>
+	
+	<!-- 질문자 조회 기능 --> <!-- 질문자랑 상태 -->
+	<select id="searchWriterSurvey" resultMap="surveyDtoMap" parameterType="map">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , progress
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+		WHERE emp_id = #{empId} 
+		  AND progress = #{progress}
+	</select>
+	
+	<!-- 설문 질문 가져오기 -->
+	<select id="selectQustionList" resultMap="questionDtoMap">
+		SELECT ques_no
+			 , survey_no
+			 , type_no
+			 , ques_content
+		  FROM tb_survey_questions
+		 WHERE survey_no = #{id}
+	</select>
+	
+</mapper>
