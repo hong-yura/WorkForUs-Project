@@ -23,8 +23,8 @@
 	<div class="mb-3">
 		<input id="deptModDt" type="hidden" class="form-control" name="deptModDt" readonly>
 	</div>
+</form>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-primary" onclick="deptAdd();">추 가</button>
 		<button type="button" class="btn btn-danger" data-bs-dismiss="modal">취 소</button>
 	</div>
-</form>

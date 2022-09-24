@@ -295,17 +295,34 @@
 		
 		// 부서 추가
 		function deptAdd() {
+			// 부서명 입력 value 값을 변수에 저장
+			var deptName = $("#deptName").val()
+			var deptMngId = $("#deptMngId").val()
+			
+			if(deptName.trim().length == 0) {
+				alert("부서명을 입력해주세요.");
+				$("#deptName").focus();
+				return;
+			}
+
+			if(deptMngId.trim().length == 0) {
+				alert("부서 책임자를 입력해주세요.");
+				$("#deptMngId").focus();
+				return;
+			}
+			
+			var data = {"deptName": deptName, "deptMngId": deptMngId}
+			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
-				data: {
-					//name: deptAddForm.deptName.value
-					//mngId: deptAddForm.deptMngId.value
-				},
-				dataType: "json",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
 					console.log(data);
-					
+					// if deptMngId가 null이면 참조할 객체가 없으므로 실패
+					// if deptMngId가 부서명 중복인지 확인
+					// 직급이 부장 이상만
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
@@ -325,10 +342,6 @@
 		
 		// 부서 수정
 		function deptModify() {
-			var modForm = document.getElementById("deptModForm");
-			
-			var deptName = $("deptName").value;
-			var deptMngId = $("deptMngId").value;
 			
 			$.ajax({
 				type: "post",
@@ -339,7 +352,9 @@
 				dataType: "json",
 				success: function(data) {
 					console.log(data);
-					
+					// if deptMngId가 null이면 참조할 객체가 없으므로 실패
+					// if deptMngId가 부서명 중복인지 확인
+					// 직급이 부장 이상만
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});

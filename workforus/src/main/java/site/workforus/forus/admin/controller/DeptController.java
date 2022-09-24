@@ -3,6 +3,8 @@ package site.workforus.forus.admin.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,8 @@ public class DeptController {
 	
 	// 부서 전체 조회
 	@GetMapping(value = "/dept_manage")
-	public String getDeptAll(Model model, DeptDTO deptDto) {
+	public String getDeptAll(Model model, HttpSession session
+			, DeptDTO deptDto) {
 		
 		List<DeptDTO> deptDatas = deptService.getDeptAll(); 
 		model.addAttribute("deptDatas", deptDatas);
@@ -45,8 +48,8 @@ public class DeptController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
-	public String getDeptDetail(@RequestParam int no) {
-		
+	public String getDeptDetail(HttpSession session, @RequestParam int no) {
+		logger.info("getDeptDetail(no): {}", no);
 		// 로그인 세션 추가하기
 		
 		DeptDTO data = deptService.getDeptDetail(no);
@@ -70,34 +73,33 @@ public class DeptController {
 	}
 	
 	// 부서 추가 저장 요청
-		@SuppressWarnings("unchecked")
-		@ResponseBody
-		@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
-		public String addDept(@RequestBody DeptDTO deptDto
-							, @RequestParam String name
-							, @RequestParam String mngId) {
-			// 로그인 세션 추가하기
-			logger.info("addDept(DeptDTO={})", deptDto);
-			
-			DeptDTO data = new DeptDTO();
-			data.setDeptName(name);
-			data.setDeptMngId(mngId);
-			
-			boolean result = deptService.addDept(data);
-			
-			JSONObject json = new JSONObject();
-			if(result) {
-				json.put("title", "Success");
-				json.put("message", "부서 추가가 완료 되었습니다.");
-				return json.toJSONString();
-			} else {
-				json.put("title", "Fail");
-				json.put("message", "추가 작업 중 알 수 없는 문제가 발생하였습니다.");
-				return json.toJSONString();
-			}
-			// 추가 권한 없음
-			
+	@SuppressWarnings("unchecked")
+	@ResponseBody
+	@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
+	public String addDept(HttpSession session, @RequestBody DeptDTO deptDto) {
+		// 로그인 세션 추가하기
+		logger.info("addDept(DeptDTO={})", deptDto);
+		
+		DeptDTO data = new DeptDTO();
+		data.setDeptName(deptDto.getDeptName());
+		data.setDeptMngId(deptDto.getDeptMngId());
+		boolean result = deptService.addDept(data);
+		
+		JSONObject json = new JSONObject();
+		if(result) {
+			json.put("title", "Success");
+			json.put("message", "부서 추가 작업이 완료 되었습니다.");
+			return json.toJSONString();
+		} else {
+			json.put("title", "Fail");
+			json.put("message", "부서 추가 작업 중 알 수 없는 문제가 발생하였습니다.");
+			return json.toJSONString();
 		}
+		
+		
+	}
+	
+	
 	
 	// 부서 수정 폼 요청
 	@GetMapping(value = "dept_modify")
@@ -141,8 +143,10 @@ public class DeptController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
-	public String removeDept(@RequestParam int no) {
+	public String removeDept(HttpSession session, @RequestParam int no) {
 		// 로그인 세션 추가하기
+		logger.info("removeDept(no): {}", no);
+		
 		DeptDTO data = deptService.getDeptDetail(no);
 		
 		JSONObject json = new JSONObject();

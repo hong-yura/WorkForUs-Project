@@ -19,10 +19,8 @@ public class DeptService {
 	public List<DeptDTO> getDeptAll() {
 		// Mapper 인터페이스 객체 반환
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		
 		// 오버라이딩 된 인터페이스의 메서드 실행 
 		List<DeptDTO> datas = mapper.selectDeptAll();
-		
 		return datas;
 	}
 	
@@ -34,23 +32,13 @@ public class DeptService {
 	
 	public boolean addDept(DeptDTO deptDto) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		
-		int result = mapper.insertDept(deptDto);
-		
-		// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-		// if 부서명 중복인지 확인
-		// 직급이 부장 이상만
-		
+		int result = mapper.insertDept(deptDto);		
 		return result == 1? true : false;
 	}
 	
 	public boolean modifyDept(DeptDTO data) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		int result = mapper.updateDept(data);
-		// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-		// if 부서명 중복인지 확인
-		// 직급이 부장 이상만
-		
 		return result == 1? true : false;
 	}
 	
