@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="site.workforus.forus.mapper.SurveyMapper">
+	<resultMap type="surveyDto" id="surveyDtoMap">
+		<result property="surveyNo" column="survey_no"/>
+		<result property="empId" column="emp_id"/>
+		<result property="surveyTitle" column="survey_title"/>
+		<result property="startDt" column="start_dt"/>
+		<result property="endDt" column="end_dt"/>
+		<result property="progress" column="progress"/>
+		<result property="resultOpenYn" column="result_open_yn"/>
+		<result property="surveyModifyYn" column="survey_modify_yn"/>
+		<result property="responseCnt" column="response_cnt"/>
+	</resultMap>
+	
+	<!-- 설문 리스트 가져오기 -->
+	<select id="selectAllSurvey" resultMap="surveyDtoMap">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , "progress"
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+	</select>
+	
+	<!-- 제목 조회 기능 --> <!-- 무조건 상태랑 같이 서치해줘야 하기 ㄸ문에 map으로 해줘야 함  -->
+	<select id="selectAllSurvey" resultMap="surveyDtoMap" parameterType="map">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , "progress"
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+		WHERE survey_title like '%'||#{surveyTitle}||'%'
+		  AND progress like '%'||#{progress}||'%' 
+	</select>
+	
+	<!-- 질문자 조회 기능 --> <!-- 질문자랑 상태 -->
+	<select id="selectAllSurvey" resultMap="surveyDtoMap" parameterType="map">
+		SELECT survey_no
+			 , emp_id 
+			 , survey_title
+			 , start_dt
+			 , end_dt
+			 , "progress"
+			 , result_open_yn
+			 , survey_modify_yn
+			 , response_cnt 
+		FROM tb_survey
+		WHERE emp_id like '%'||#{empId}||'%' 
+		  AND progress like '%'||#{progress}||'%'
+	</select>
+	
+</mapper>
