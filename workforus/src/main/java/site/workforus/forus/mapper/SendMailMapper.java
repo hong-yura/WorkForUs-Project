@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
+import site.workforus.forus.mail.model.TempMailDTO;
 
 public interface SendMailMapper {
 
@@ -16,12 +17,19 @@ public interface SendMailMapper {
 	// 메일발신저장
 	public boolean insertSendMail(SendMailDTO sendMailDto);
 
+	
 	// 수신메일목록
 	public List<ReceiveMailDTO> selectReceiveAll(String empId);
 
-	// 발신목록 추가
+	// 발신메일목록
+	public List<ReceiveMailDTO> selectSendAll(String empId);
+	
+	// 수신메일 상세 조회
 	public ReceiveMailDTO selectDetail(@Param("empId") String empId, @Param("mailId") String mailId);
 	
+	// 발신메일 상세 조회
+	public ReceiveMailDTO selectSendDetail(@Param("empId") String empId, @Param("mailId") String mailId);
+
 	// 사원 이메일리스트
 	public List<String> selectEmailList();
 	
@@ -36,4 +44,31 @@ public interface SendMailMapper {
 	
 	// 받은목록 추가 
 	public int insertReceiveMail(SendMailDTO sendMailDTO);
+	
+	// 외부로 전송한 메일 저장
+	public void insertReceiveOutMail(SendMailDTO data);
+		
+	// 읽은 시간 update
+	public void updateReadTime(@Param("empId") String empId, @Param("mailId") String mailId);
+	
+	// 읽은 여부 'N'으로 변경
+	public void updateReadFl(String mailId);
+
+	// 외부로 전송한 메일 조회
+	public List<ReceiveMailDTO> selectSendOutAll(String empId);
+
+	// 외부로 전송한 메일 상세 조회
+	public ReceiveMailDTO selectOneOut(@Param("empId") String empId, @Param("mailId") String mailId);
+
+	// 임시저장
+	public int insertTempMail(SendMailDTO sendMailDto);
+
+	// 임시보관함 조회
+	public List<TempMailDTO> selectTempList(String empId);
+	
+
+
+
+
+
 }

@@ -1,3 +1,4 @@
+<%@page import="java.util.Calendar"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -74,7 +75,7 @@
 				                 -->
 			                </div>
 			                <div class="dataTable-container">
-				                <table class="table table-striped dataTable-table" id="table1">
+				                <table class="table dataTable-table" id="table1">
 				                    <thead>
 				                        <tr>
 				                        	<th	class="td1">
@@ -98,45 +99,42 @@
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
-				                    	<tr  onclick="location.href='${detailUrl}'">
-				                    		<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
-				                    		<td>
-				                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
-				                    		</td>
-				                    		<td>
-				                    			<i class="bi bi-envelope"></i><!-- <i class="bi bi-envelope-open"></i> 읽은거 -->
-				                    		</td>
-				                    		<td>
-				                    			jungi123@workforus.site
-				                    		</td>
-				                    		<td>
-				                    			이번달 식단입니다.
-				                    		</td>
-				                    		<td>
-				                    			2022-07-18
-				                    		</td>
-				                    	</tr>
 				                    	<c:forEach items="${dataList}" var="MailData" varStatus="status">
 					                    	<c:url var="detailUrl" value="/mail/detail">
 												<c:param name="mailId" value="${MailData.mailId}"/>
 											</c:url>
-											<tr class="table-light" onclick="location.href='${detailUrl}'">
+											<c:choose>
+												<c:when  test="${MailData.mailReadFl eq 'N'}"> 
+													<tr class="table-light">
+												</c:when>
+												<c:otherwise>
+													<tr style="background-color:#F2F2F2">
+												</c:otherwise>
+											</c:choose>
+											
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
-												<td>
+												<td onclick="location.href='${detailUrl}'">
 					                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
 					                    		</td>
-					                    		<td>
-					                    			<i class="bi bi-envelope"></i><!-- <i class="bi bi-envelope-open"></i> 읽은거 -->
+					                    		<td onclick="location.href='${detailUrl}'">
+					                    			<c:choose>	<%-- 안읽은 모양 (readFl이 가져오도록 변경해야할듯)--%>
+					                    				<c:when  test="${MailData.mailReadFl eq 'N'}">
+						                    				<i class="bi bi-envelope"></i>
+					                    				</c:when>
+					                    				<c:otherwise>	<%-- 읽은 모양 --%>
+							                    			<i class="bi bi-envelope-open"></i> 
+					                    				</c:otherwise>
+					                    			</c:choose>
 					                    		</td>
-												<td>
+												<td onclick="location.href='${detailUrl}'">
 													${MailData.mailSendEmail}
 												</td>
-												<td>
+												<td onclick="location.href='${detailUrl}'">
 													${MailData.mailObj.mailTitle}
 												</td>
-												<td>
+												<td onclick="location.href='${detailUrl}'">
 													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
-												</td>
+												</td> 
 											</tr>
 										</c:forEach>	
 				                    </tbody>
@@ -172,32 +170,32 @@
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	
     <script src="static/js/main.js"></script>
-    	<script type="text/javascript">
-	function selectAll() {
-		if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
-	         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
-	      }
-	    if(document.getElementById("cboxAll").checked==false){
-	         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
-	    }
-	}
-	
-	function checkSelectAll()  {
-		  // 전체 체크박스
-		  const checkboxes 
-		    = document.querySelectorAll('input[name="cbox"]');
-		  // 선택된 체크박스
-		  const checked 
-		    = document.querySelectorAll('input[name="cbox"]:checked');
-		  // select all 체크박스
-		  const selectAll 
-		    = document.querySelector('input[name="cboxAll"]');
-		  
-		  if(checkboxes.length === checked.length)  {
-		    selectAll.checked = true;
-		  }else {
-		    selectAll.checked = false;
-		  }
+   	<script type="text/javascript">
+		function selectAll() {
+			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
+		      }
+		    if(document.getElementById("cboxAll").checked==false){
+		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
+		    }
+		}
+		
+		function checkSelectAll()  {
+			  // 전체 체크박스
+			  const checkboxes 
+			    = document.querySelectorAll('input[name="cbox"]');
+			  // 선택된 체크박스
+			  const checked 
+			    = document.querySelectorAll('input[name="cbox"]:checked');
+			  // select all 체크박스
+			  const selectAll 
+			    = document.querySelector('input[name="cboxAll"]');
+			  
+			  if(checkboxes.length === checked.length)  {
+			    selectAll.checked = true;
+			  }else {
+			    selectAll.checked = false;
+			  }
 
 		}
 	</script>

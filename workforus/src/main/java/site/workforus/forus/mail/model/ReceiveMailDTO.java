@@ -17,6 +17,7 @@ public class ReceiveMailDTO {
 	private int mailFolder;			// 메일보관함
 	private String mailSendEmail;	// 전송한사람 이메일
 	private Date mailReadTime;		// 읽은시간
+	private String mailReadFl;		// 메일읽은여부
 	private String spamId;			// 스팸번호
 	private SendMailDTO mailObj;
 	private EmpDTO empObj;
@@ -26,23 +27,25 @@ public class ReceiveMailDTO {
 	@Override
 	public String toString() {
 		return "ReceiveMailDTO [mailId=" + mailId + ", empId=" + empId + ", mailFolder=" + mailFolder
-				+ ", mailSendEmail=" + mailSendEmail + ", mailReadTime=" + mailReadTime + ", spamId=" + spamId
-				+ ", mailObj=" + mailObj + ", empObj=" + empObj + "]";
+				+ ", mailSendEmail=" + mailSendEmail + ", mailReadTime=" + mailReadTime + ", mailReadFl=" + mailReadFl
+				+ ", spamId=" + spamId + ", mailObj=" + mailObj + ", empObj=" + empObj + "]";
 	}
 
 	public ReceiveMailDTO(String mailId, String empId, int mailFolder, String mailSendEmail, Date mailReadTime,
-			String spamId, SendMailDTO mailObj, EmpDTO empObj) {
+			String mailReadFl, String spamId, SendMailDTO mailObj, EmpDTO empObj) {
 		super();
 		this.mailId = mailId;
 		this.empId = empId;
 		this.mailFolder = mailFolder;
 		this.mailSendEmail = mailSendEmail;
 		this.mailReadTime = mailReadTime;
+		this.mailReadFl = mailReadFl;
 		this.spamId = spamId;
 		this.mailObj = mailObj;
 		this.empObj = empObj;
 	}
-	
+
+
 	
 	
 }

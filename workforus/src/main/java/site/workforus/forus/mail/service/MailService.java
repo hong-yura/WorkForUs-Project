@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
+import site.workforus.forus.mail.model.TempMailDTO;
 import site.workforus.forus.mapper.SendMailMapper;
 
 @Service
@@ -25,14 +26,23 @@ public class MailService {
 		return datas;
 	}
 	
-	// 지울예정 
+	// 발신 메일 리스트 조회
+	public List<ReceiveMailDTO> selectSend(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		List<ReceiveMailDTO> datas = mapper.selectSendAll(empId);
+		return datas;
+	}
+	
+	/* 지울예정 
 	public SendMailDTO selectData(String empId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		
 		SendMailDTO data = mapper.selectByEmpId(empId);
 		return data;
 	}
-
+	*/
+	
 	// 메일 전송 요청
 	public String insertMailWrite(String empId, SendMailDTO data) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
@@ -58,6 +68,10 @@ public class MailService {
 			data.setEmpId(sendEmail);									// 보낸사람 empId 저장
 			data.setMailId(mailId);										// 메일id
 			mapper.insertReceiveMail(data);
+		} else {	// 사원목록에 없다면 emp_id를 'outMail'로 지정함
+			data.setEmpId(sendEmail);									
+			data.setMailId(mailId);	
+			mapper.insertReceiveOutMail(data);
 		}
     	if(result) {
     		return mailId;
@@ -65,7 +79,7 @@ public class MailService {
     	return "";
     }
 
-	// 메일 상세내용 조회
+	// 받은메일 상세내용 조회
 	public ReceiveMailDTO selectReceiveData(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		// 보낸사람 empId가 필요해요..email로 불러와야할듯
@@ -74,4 +88,64 @@ public class MailService {
 		detailData.getEmpObj().setEmpNm(mapper.selectName(detailData.getMailSendEmail()));
 		return detailData;
 	}
+	
+	// 보낸메일 상세내용 조회
+	public ReceiveMailDTO selectSendData(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		ReceiveMailDTO detailData = mapper.selectSendDetail(empId, mailId);
+		
+		return detailData;
+	}
+	
+	// 메일 읽은 시간 update
+	public void updateReadTime(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		mapper.updateReadTime(empId, mailId);
+	}
+	
+	// 안읽음 버튼 -> 읽음여부만 'N'으로 변경
+	public void updateReadFl(String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		mapper.updateReadFl(mailId);
+	}
+
+	// 외부 발신메일 가져오기
+	public List<ReceiveMailDTO> selectOutSend(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		List<ReceiveMailDTO> datas = mapper.selectSendOutAll(empId);
+		return datas;
+	}
+
+	// 외부 발신메일 상세 조회
+	public ReceiveMailDTO selectOneOut(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		ReceiveMailDTO detailData = mapper.selectOneOut(empId, mailId);
+		
+		return detailData;
+	}
+
+	// 메일 임시저장
+	public boolean insertTempMail(String empId, SendMailDTO sendMailDto) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+
+		sendMailDto.setEmpId(empId);
+		// 임시보관함 저장
+		int result = mapper.insertTempMail(sendMailDto);
+		
+		return result == 1 ? true : false;
+	}
+
+	// 임시저장 메일 조회
+	public List<TempMailDTO> selectTempData(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		List<TempMailDTO> data = mapper.selectTempList(empId);
+		
+		return data;
+	}
+
+
+	
+
+
 }

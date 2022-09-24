@@ -54,8 +54,15 @@
 			                <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
 				                <div class="dataTable-top">
 				                </div>
-				                <ul class="list-inline m-0 d-flex"></ul>
+				                <ul class="list-inline m-0 d-flex">
+				                </ul>
+				                <!-- 검색기능 
+				                <div class="dataTable-search">
+					               	 <input class="dataTable-input" placeholder="Search..." type="text">
+				                </div>
+				                 -->
    				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
+				                 
 			                </div>
 			                <div class="dataTable-container">
 				                <table class="table table-striped dataTable-table" id="table1">
@@ -64,19 +71,16 @@
 				                        	<th	class="td1">
 							            		<input type="checkbox" class="form-check-input form-check-primary form-check-glow" id="cboxAll" name="cboxAll" onclick="selectAll()">
 				                        	</th>
-			                        		<th data-sortable="" style="width: 2.9593%;"></th>
-				                        	<th data-sortable="" style="width: 29.7041%;">
-				                        		<a href="#" class="dataTable-sorter">받는사람</a>
+				                        	<th data-sortable="" style="width: 22.7041%;">
+				                        		<a href="#" class="dataTable-sorter">수신외부이메일</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 38.9215%;">
+				                        	<th data-sortable="" style="width: 44.9215%;">
 				                        		<a href="#" class="dataTable-sorter">제목</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 15.1082%;">
+				                        	<th data-sortable="" style="width: 17.1082%;">
 				                        		<a href="#" class="dataTable-sorter">전송일자</a>
 			                        		</th>
-				                        	<th data-sortable="" style="width: 10.1082%;">
-				                        		<a href="#" class="dataTable-sorter">상태</a>
-			                        		</th>
+			                        		<th data-sortable="" style="width: 10.9593%;">상세정보</th>
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
@@ -87,27 +91,20 @@
 											</c:url>
 											<tr class="table-light">
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
-					                    		<td onclick="location.href='${detailUrl}'"></td>
-												<td onclick="location.href='${detailUrl}'">
-													${MailData.empObj.empEmail}
+												<td>
+													${MailData.mailObj.receiveEmail}
 												</td>
-												<td onclick="location.href='${detailUrl}'">
+												<td>
 													${MailData.mailObj.mailTitle}
 												</td>
-												<td onclick="location.href='${detailUrl}'">
+												<td>
 													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
 												</td> 
-												<td onclick="location.href='${detailUrl}'">
-													<c:choose>
-		                                           		<c:when test="${MailData.mailReadFl eq 'Y'}">
-						                                 	읽음
-		                                           		</c:when>
-		                                           		<c:otherwise>
-		                                           			읽지않음
-		                                           		</c:otherwise>
-		                                           	</c:choose>
-												</td>												
+					                    		<td>
+               		   				               	<button type="submit" class="btn btn-outline-primary"  onclick="location.href='${detailUrl}'">조회</button>
+					                    		</td>
 											</tr>
+		
 										</c:forEach>	
 				                    </tbody>
 				                </table>
@@ -160,8 +157,8 @@
 			  }else {
 			    selectAll.checked = false;
 			  }
-
 		}
+		
 	</script>    
 </body>
 </html>

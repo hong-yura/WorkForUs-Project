@@ -68,45 +68,32 @@
 				                        	<th data-sortable="" style="width: 29.7041%;">
 				                        		<a href="#" class="dataTable-sorter">받는사람</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 38.9215%;">
+				                        	<th data-sortable="" style="width: 48.9215%;">
 				                        		<a href="#" class="dataTable-sorter">제목</a>
 				                        	</th>
 				                        	<th data-sortable="" style="width: 15.1082%;">
-				                        		<a href="#" class="dataTable-sorter">전송일자</a>
-			                        		</th>
-				                        	<th data-sortable="" style="width: 10.1082%;">
-				                        		<a href="#" class="dataTable-sorter">상태</a>
+				                        		<a href="#" class="dataTable-sorter">저장</a>
 			                        		</th>
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
 				                    	
 				                    	<c:forEach items="${dataList}" var="MailData" varStatus="status">
-					                    	<c:url var="detailUrl" value="${homeUrl}/mail/sendDetail">
-												<c:param name="mailId" value="${MailData.mailId}"/>
+					                    	<c:url var="detailUrl" value="${homeUrl}/mail/tempDetail">
+												<c:param name="mailId" value="${MailData.tempMailId}"/>
 											</c:url>
 											<tr class="table-light">
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
 					                    		<td onclick="location.href='${detailUrl}'"></td>
 												<td onclick="location.href='${detailUrl}'">
-													${MailData.empObj.empEmail}
+													${MailData.receiveEmail}
 												</td>
 												<td onclick="location.href='${detailUrl}'">
-													${MailData.mailObj.mailTitle}
+													${MailData.tempMailTitle}
 												</td>
 												<td onclick="location.href='${detailUrl}'">
-													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
-												</td> 
-												<td onclick="location.href='${detailUrl}'">
-													<c:choose>
-		                                           		<c:when test="${MailData.mailReadFl eq 'Y'}">
-						                                 	읽음
-		                                           		</c:when>
-		                                           		<c:otherwise>
-		                                           			읽지않음
-		                                           		</c:otherwise>
-		                                           	</c:choose>
-												</td>												
+													<fmt:formatDate value="${MailData.saveTime}" type="date" pattern="YYYY-MM-dd"/>
+												</td> 										
 											</tr>
 										</c:forEach>	
 				                    </tbody>

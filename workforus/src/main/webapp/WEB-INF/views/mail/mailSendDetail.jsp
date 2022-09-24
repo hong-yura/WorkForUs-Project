@@ -19,16 +19,16 @@
 			<div class="page-title">
 				<div class="row">
 					<div class="col-12 col-md-6 order-md-1 order-last">
-						<h3>받은메일함</h3>
+						<h3>보낸메일함</h3>
 					</div>
 					<div class="col-12 col-md-6 order-md-2 order-first">
 						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item">
-									<a href="#">Home</a></li>
+									<a href="${homeUrl}">Home</a></li>
 								<li class="breadcrumb-item">
-									<a href="#">Mail</a></li>
-								<li class="breadcrumb-item active" aria-current="page">받은메일함</li>
+									<a href="${homeUrl}/mail">Mail</a></li>
+								<li class="breadcrumb-item active" aria-current="page">보낸메일함</li>
 							</ol> 
 						</nav>
 					</div>
@@ -39,60 +39,86 @@
 					
 						<div class="card col-12 col-md-2 col-lg-2 ">
 	                          <!-- compose button  -->
-     							<c:url value="${homeUrl}/mail/mailWrite" var="mailWriteUrl"/>	
-								<a href="${mailWriteUrl}">
+	                       	<a href="${homeUrl}/mail/mailWrite">
 	                            <button type="button" class="btn btn-primary btn-block my-4 compose-btn">
 	                                메일쓰기
 	                            </button>
 	                       	</a>
                             <hr>
                             <div style="margin: 8px 0;">
-                            	<a href="${homeUrl}/mail">받은메일함</a>
+                            	<a href="${homeUrl}/mail/mailSend">보낸메일함</a>
                             </div>
                             <div style="margin: 8px 0;">
-                            	<a href="${homeUrl}/mail/spam">스팸메일함</a>
+                            	<a href="/mail/tempMail">임시저장함</a>
                             </div>
                             <div style="margin: 8px 0;">
-                            	<a href="${homeUrl}/mail/delMail">휴지통</a>
+                            	<a href="/mail/outMail">외부전송메일함</a>
                             </div>
 						</div>
 						
 						<!-- 네비제외한 본문 -->
 						<div class="card card-body col-12 col-md-9 col-lg-9">
-							<c:url var="modReadUrl" value="${homeUrl}/mail/modRead">
+							<c:url var="modReadUrl" value="${homeUrl}/mail/delSend">
 								<c:param name="mailId" value="${receiveData	.mailId}"/>
 							</c:url>
 			                <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
 				                <div class="dataTable-top">
 				                </div>
-				               	<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
-				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
-				               	<a href="${modReadUrl}"><button type="button" class="btn btn-outline-primary">안읽음</button></a>
-				               	<button type="button" class="btn btn-outline-primary">답장</button>
+				               	<a href="javascript:history.back();" class="btn btn-outline-primary">목록</a>
 			                </div>
 			                <!-- 메일내용 -->
 			                <div class="dataTable-container">
 				                <div class="card"> 
+				                
+				                
 				                    <div class="card-content">
 				                        <div class="card-body">
 				                            <form class="form form-horizontal">
 				                                <div class="form-body">
 				                                    <div class="row">
 				                                        <div >
-				                                            <label><h4>${receiveData.mailObj.mailTitle }</h4></label>
+				                                            <label><h4>${sendData.mailObj.mailTitle }</h4></label>
 				                                        </div>
 				                                        <div >
-				                                            <label>보낸 사람 : <b>${receiveData.empObj.empNm}&lt;${receiveData.mailSendEmail}&gt;</b></label>
+				                                            <label>받는사람 : 
+				                                            	<c:choose>
+				                                            		<c:when test="${sendData.empId eq 'outMail' }">
+				                                            			${sendData.mailObj.receiveEmail}
+				                                            		</c:when>
+				                                            		<c:otherwise>
+				                                            			<b>${sendData.empObj.empNm}&lt;${sendData.empObj.empEmail}&gt;</b>
+				                                            		</c:otherwise>
+				                                            	</c:choose>
+				                                            
+				                                            </label>
 				                                        </div>
 				                                        <div>
-       														
-				                                            <label>보낸일자 : <fmt:formatDate value="${receiveData.mailObj.mailSendTime}" type="both"/></label>
+				                                            <label>보낸일자 : <fmt:formatDate value="${sendData.mailObj.mailSendTime}" type="both"/></label>
+				                                        </div>
+				                                        <div>
+				                                            <label>읽은시간 : 
+				                                        	<c:choose>
+			                                            		<c:when test="${sendData.empId eq 'outMail' }">
+			                                            			외부메일(알수없음)
+						                                        </c:when>
+						                                        <c:otherwise>						                                        
+						                                            	<c:choose>
+						                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
+						                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
+						                                            		</c:when>
+						                                            		<c:otherwise>
+						                                            			읽지않음
+						                                            		</c:otherwise>
+						                                            	</c:choose>
+						                                        </c:otherwise>
+						                                    </c:choose>
+				                                            </label>
 				                                        </div>
 				                                        <br>
 				                                        <div class="form-group border" style="height:10rem; margin-top:1rem;">
 															<c:choose> 
-															 <c:when test="${receiveData.mailObj.mailContent != NULL}">
-																<p>${receiveData.mailObj.mailContent}</p>
+															 <c:when test="${sendData.mailObj.mailContent != NULL}">
+																<p>${sendData.mailObj.mailContent}</p>
 															</c:when>
 															<c:otherwise>
 																<p>내용없음</p>
@@ -105,10 +131,22 @@
 				                            </form>
 				                        </div>
 				                    </div>
+
+
+
+
 				                </div>
 			                </div>
 	              	  </div>
            		 </div>
+					
+					
+					
+					
+					
+					
+					
+				
 			</section>
 			</div>
 		</div>	

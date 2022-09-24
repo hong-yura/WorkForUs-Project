@@ -17,12 +17,26 @@
 			<result column="emp_email" property="empEmail"/>
 		</collection>
 	</resultMap>
+	<resultMap type="tempMailDto" id="tempMailDtoMap">
+		<result property="tempMailId" 	column="temp_mail_id" /> 
+		<result property="sendEmpId" 		column="send_emp_id" />
+		<result property="tempMailTitle" 	column="temp_mail_title" />
+		<result property="tempMailContent"  column="temp_mail_content" />
+		<result property="receiveEmail" 	column="receive_email" />
+		<result property="saveTime" 	column="save_time" />
+		<collection property="empObj" javaType="empDto"> 	
+ 			<id column="emp_id" property="empId"/>			
+			<result column="emp_nm" property="empNm"/>
+			<result column="emp_email" property="empEmail"/>
+		</collection>
+	</resultMap>
 	<resultMap type="receiveMailDto" id="receiveMailDtoMap">
 		<result property="mailId" 	column="mail_id" /> 
 		<result property="empId" 		column="emp_id" />
 		<result property="mailFolder" 	column="mail_folder" />
 		<result property="mailSendEmail"  column="mail_send_email" />
 		<result property="mailReadTime" 	column="mail_read_time" />
+		<result property="mailReadFl" 	column="mail_read_fl" />
 		<result property="spamId" 	column="spam_id" />
 		<association property="mailObj" resultMap="sendMailDtoMap">
 			<id property="mailId" column="mail_id"/>
@@ -50,12 +64,14 @@
 			 VALUES(('S' || send_mail_seq.NEXTVAL), #{mailTitle}, #{mailContent}, #{empId}, #{receiveEmail}, SYSDATE  + (interval '9' hour))
 	</insert>
 	
+	<!-- 수신메일목록 -->
 	<select id="selectReceiveAll" parameterType="String" resultMap="receiveMailDtoMap">
 		SELECT rm.mail_id
 		     , rm.emp_id
 		     , rm.mail_folder
 		     , rm.mail_send_email
 		     , rm.mail_read_time
+		     , rm.mail_read_fl
 		     , rm.spam_id
 		     , sm.mail_title
 		     , sm.mail_content
@@ -71,12 +87,36 @@
 		 ORDER BY 1 DESC
 	</select>
 	
+	<!-- 발신메일목록 -->
+	<select id="selectSendAll" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT sm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		   JOIN tb_employees e
+		    ON sm.receive_email = e.emp_email  
+		 WHERE sm.emp_id = #{empId}
+		 ORDER BY 1 DESC
+	</select>
+	
 	<select id="selectDetail" parameterType="String" resultMap="receiveMailDtoMap" >
 		SELECT rm.mail_id
 		     , rm.emp_id
 		     , rm.mail_folder
 		     , rm.mail_send_email
 		     , rm.mail_read_time
+  		     , rm.mail_read_fl
 		     , rm.spam_id
 		     , sm.mail_title
 		     , sm.mail_content
@@ -89,6 +129,28 @@
 		  JOIN tb_employees e
 		    ON rm.emp_id = e.emp_id
 		 WHERE rm.emp_id = #{empId}
+		   AND rm.mail_id = #{mailId}
+	</select>
+		
+	<select id="selectSendDetail" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		   JOIN tb_employees e
+		    ON sm.receive_email = e.emp_email  
+		 WHERE sm.emp_id = #{empId}
 		   AND rm.mail_id = #{mailId}
 	</select>
 	
@@ -116,9 +178,76 @@
 			, #{empId})
 	</insert>
 	
+	<insert id="insertReceiveOutMail" parameterType="sendMailDto">
+		INSERT INTO tb_receive_mail (mail_id, emp_id, mail_send_email)
+		VALUES (#{mailId}, 'outMail', #{empId})
+	</insert>
+	
 	<select id="selectName" resultType="String" parameterType="String">
 		SELECT emp_nm
 		  FROM tb_employees
 		 WHERE emp_email = #{empEmail}
+	</select>
+	
+	<update id="updateReadTime" parameterType="String">
+		UPDATE tb_receive_mail
+		   SET mail_read_time = (SYSDATE  + (interval '9' hour))
+		   	 , mail_read_fl = 'Y'
+		 WHERE emp_id = #{empId}
+		   AND mail_id = #{mailId}
+	</update>
+	
+	<update id="updateReadFl" parameterType="String">
+		UPDATE tb_receive_mail
+		   SET mail_read_fl = 'N'
+		 WHERE mail_id = #{mailId}
+	</update>
+	
+	<select id="selectSendOutAll" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT sm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.receive_email 
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id 
+		 WHERE rm.emp_id = 'outMail'
+		   AND sm.emp_id = #{empId}
+		 ORDER BY 1 DESC
+	</select>
+	
+	<select id="selectOneOut" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.receive_email 
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		 WHERE sm.emp_id = #{empId}
+		   AND rm.mail_id = #{mailId}
+	</select>
+	
+	<insert id="insertTempMail" parameterType="sendMailDto">
+		INSERT INTO tb_temp_mailbox
+		VALUES (temp_mailbox_seq.NEXTVAL, #{empId}, #{mailTitle}, #{mailContent}, #{receiveEmail}, SYSDATE  + (interval '9' hour))
+	</insert>
+	
+	<select id="selectTempList" parameterType="String" resultMap="tempMailDtoMap">
+		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{empId}
 	</select>
 </mapper>
