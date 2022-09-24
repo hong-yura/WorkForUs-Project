@@ -52,18 +52,20 @@
 							<p class="post-content black">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
-						<div class="dropdown">
-						 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-						    	파일 보기
-						  	</button>
-						  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-						  		<c:if test="${not empty files}">
-									<c:forEach items="${files}" var="file"> 
-									    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
-						  			</c:forEach>
-						  		</c:if>
-						  	</ul>
-						</div>
+						<c:if test="${not empty files}">
+							<div class="dropdown">
+							 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							    	파일 보기
+							  	</button>
+							  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							  		<c:if test="${not empty files}">
+										<c:forEach items="${files}" var="file"> 
+										    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
+							  			</c:forEach>
+							  		</c:if>
+							  	</ul>
+							</div>
+						</c:if>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
 							<button type="button" class="btn black" onclick=""><i class="bi bi-hand-thumbs-up"></i> ${postData.likeCnt}</button>

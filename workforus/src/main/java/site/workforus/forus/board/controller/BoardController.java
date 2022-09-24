@@ -116,7 +116,7 @@ public class BoardController {
 		int groupNo = postService.selectGroupNo(pId); 
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
-		model.addAttribute("postData", postData);
+		model.addAttribute("postData", postData); 
 		model.addAttribute("loginId", loginVo.getUsername()); 
 		logger.info("detail(loginVo={})", loginVo);
 		

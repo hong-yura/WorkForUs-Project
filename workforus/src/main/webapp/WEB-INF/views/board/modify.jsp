@@ -61,7 +61,8 @@
 	      		</div>
 	      		<div class="text-end">
 					<button class="btn" type="submit">저장</button>
-					<button class="btn" type="button" onclick="location.href='/board'">취소</button>
+					<c:url value="/board" var="boardUrl"/>
+					<button class="btn" type="button" onclick="location.href='${boardUrl}?bId=${postData.boardId}'">취소</button>
 				</div>
 	      	</div>
 		</form>
