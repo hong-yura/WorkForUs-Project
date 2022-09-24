@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import site.workforus.forus.commute.model.SalaryDTO;
+import site.workforus.forus.employee.model.EmpDTO;
 
 public interface SalaryMapper {
 	
@@ -32,5 +33,11 @@ public interface SalaryMapper {
 	public boolean updatePrevMonth(@Param("empId")String empId, @Param("yearMonth")String yearMonth
 			,@Param("prevMonthSalary")int prevMonthSalary, @Param("calTax")int calTax
 			, @Param("calIncome")int calIncome);
+
+	// 사원정보
+	public EmpDTO selectData(String empId);
+	
+	// 월급정보 없으면 업데이트
+	public void updateSalary(String empId);
 	
 }

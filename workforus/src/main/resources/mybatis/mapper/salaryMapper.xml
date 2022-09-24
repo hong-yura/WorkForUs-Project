@@ -10,7 +10,10 @@
 		<result property="incomeTax" 		column="income_tax" />
 		<result property="empId" 			column="emp_id" />
 	</resultMap>
-	
+	<resultMap type="empDto" id="empSalaryMap">
+		<result property="empId" column="emp_id" />
+		<result property="empSalary" column="emp_salary"/>
+	</resultMap>
 	
 	<select id="selectCnt" parameterType="String" resultType="_int">
 		SELECT COUNT(*)
@@ -63,4 +66,13 @@
 		  AND salary_log_dt = #{yearMonth}
 	</update>
 	
+	<select id="selectData" parameterType="String" resultMap="empSalaryMap">
+		SELECT * FROM TB_EMPLOYEES WHERE emp_id = #{empId}
+	</select>	
+	
+	<update id="updateSalary" parameterType="String">
+		 UPDATE tb_employees
+		    SET emp_salary = 2800000
+		  WHERE emp_id = #{empId}
+	</update>
 </mapper>
