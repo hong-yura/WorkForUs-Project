@@ -54,11 +54,12 @@ ul{
             		<button class="btn btn-secondary search-icon"><i class="bi bi-search"></i></button>
             	</div>
             	<div>
+            		<form action="${chatUrl}" method="post">
 	            	<div class="table-responsive">
 	            		<table class="table table-lg">
 		            		<c:if test="${not empty chatRoomDatas}">
 			            		<c:forEach items="${chatRoomDatas}" var="data">
-			            			<tr class="chat-room">
+			            			<tr class="chat-room" onclick="chatRoomEnter('${data.chatRoomNo}');">
 			            				<td class="chat-room-profile">
 			            					<div class="avatar bg-warning me-3">
 			            						<span class="avatar-content">AS</span>
@@ -78,6 +79,7 @@ ul{
 	            		</table>
 	            		<i class="bi bi-plus-circle-fill chat-plus-icon" onclick="chatRoomAddModal()"></i>
 	            	</div>
+	            	</form>
             	</div>
             	
             	<!-- 채팅방 추가 모달 -->
@@ -161,8 +163,8 @@ ul{
 		                        </div>
 		                    </div>
 		                    <div class="card-body pt-4 bg-grey" id="id_chat">
-		                    	<!--  
 		                        <div class="chat-content">
+		                        	<!-- 
 		                            <div class="chat">
 		                                <div class="chat-body">
 		                                    <div class="chat-message" id="id_chat"></div>
@@ -175,8 +177,8 @@ ul{
 		                                    <div class="chat-message">With bootstrap certainly</div>
 		                                </div>
 		                            </div>
+		                            -->
 		                        </div>
-		                        -->
 		                    </div>
 		                    <div class="card-footer">
 		                    	<form onsubmit="return sendMessage(this.context);">
@@ -184,7 +186,7 @@ ul{
 		                            <a href="http://" class="black"><i data-feather="smile"></i></a>
 		                            <div class="d-flex flex-grow-1 ml-4">
 		                                <input type="text" class="form-control" id="id_context" name="context" placeholder="Type your message..">
-		                                <button type="submit" class="submit-btn">전송</button>
+		                                <button type="submit" class="submit-btn" id="button-send">전송</button>
 		                            </div>
 		                        </div>
 		                        </form>
@@ -277,9 +279,162 @@ ul{
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
-	var ws = new WebSocket("ws://localhost/stomp/chat");
-	var stomp = Stomp.over(ws);
+	/*
+	var roomName = [[${chatRoomDto.chatTitle}]];
+	console.log('${chatRoomDto.chatTitle}');
+	var roomId = [[${chatRoomDto.chatRoomNo}]];
+	console.log('${chatRoomDto.chatRoomNo}');
+	var username = [[${loginEmp.getUsername()}]];
+	console.log('${loginEmp.getUsername()}');
 	
+	console.log(roomName + ", " + roomId ", " + username);
+	*/
+	function chatRoomEnter(data) {
+		console.log(data);
+		var roomId= data;
+		console.log(roomId);
+		var username = '${loginEmp.getUsername()}';
+		console.log(username);
+		
+		$.ajax ({
+			url: "${chatUrl}/room/"+roomId,
+			type: "get",
+			dataType: "json",
+			success: function(data) {
+				console.log("ajax success");
+				var ws = new WebSocket("ws://localhost/stomp/chat");
+				var stomp = Stomp.over(ws);
+				stomp.connect({}, function(){
+					console.log("stomp connection");
+					
+					stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
+						console.log(chat);
+						var content = JSON.parse(chat.body);
+						console.log(content);
+						var writer = content.empId;
+						console.log(writer);
+						
+						var str = '';
+						if(writer === username) {
+							str = "<div class='chat-content'>";
+							str += "<div class='chat'>";
+							str += "<div class='chat-body'>";
+							str += "<div class='chat-message'>";
+							str += "<b>" + writer + " : " + message + "</b>";
+							str += "</div></div></div></div>"
+							$("#id_chat").append(str);
+						} else {
+							str = "<div class='chat-content'>";
+							str += "<div class='chat chat-left'>";
+							str += "<div class='chat-body'>";
+							str += "<div class='chat-message'>";
+							str += "<b>" + writer + " : " + message + "</b>";
+							str += "</div></div></div></div>"
+							$("#id_chat").append(str);
+						}
+					})
+					stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}));
+				})
+				function sendMessage(text) {
+					var msg = text.value;
+					stomp.send("/pub/chat/message", {}, JSON.stringify({'sendMessage':msg}))
+					msg.value = '';
+				}
+			}
+		})
+		
+		/*
+		var ws = new WebSocket("ws://localhost/stomp/chat");
+		var stomp = Stomp.over(ws);
+		stomp.connect({}, function(){
+			console.log("stomp connection");
+			
+			stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
+				console.log(chat);
+				var content = JSON.parse(chat.body);
+				console.log(content);
+				var writer = content.empId;
+				console.log(writer);
+				
+				var str = '';
+				if(writer === username) {
+					str = "<div class='chat-content'>";
+					str += "<div class='chat'>";
+					str += "<div class='chat-body'>";
+					str += "<div class='chat-message'>";
+					str += "<b>" + writer " : " + message "</b>";
+					str += "</div></div></div></div>"
+					$("#id_chat").append(str);
+				} else {
+					str = "<div class='chat-content'>";
+					str += "<div class='chat chat-left'>";
+					str += "<div class='chat-body'>";
+					str += "<div class='chat-message'>";
+					str += "<b>" + writer " : " + message "</b>";
+					str += "</div></div></div></div>"
+					$("#id_chat").append(str);
+				}
+			})
+			stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}));
+			*/
+			/*
+			stomp.subscribe('/sub/roomId', function(msg){
+				console.log(msg);
+				printMessage(JSON.parse(msg.body).sendMessage + "/" + JSON.parse(msg.body).senderName);
+			});
+			stomp.subscribe('/sub/out', function(msg){
+				printMessage(msg.body);
+			});
+			stomp.subscribe('/sub/in', function(msg){
+				printMessage(msg.body);
+			});
+			// 입장글
+			stomp.send("/pub/in", {}, ' is in connection');
+		})
+			*/
+	}
+	/*
+	function chatRoomEnter(data) {
+		console.lo(data)
+		stomp.connect({}, function (){
+			console.log("STOMP Connection");
+			
+			stomp.subscribe("/sub/chat/room" + roomId, function(chat) {
+				var content = JSON.parse(chat.body);
+				var writer = content.writer;
+				var str = '';
+				
+				if(writer === username) {
+					str = "<div class='chat-content'>";
+					str += "<div class='chat'>";
+					str += "<div class='chat-body'>";
+					str += "<div class='chat-message'>";
+					str += "<b>" + writer " : " + message "</b>";
+					str += "</div></div></div></div>"
+					$("#id_chat").append(str);
+				} else {
+					str = "<div class='chat-content'>";
+					str += "<div class='chat chat-left'>";
+					str += "<div class='chat-body'>";
+					str += "<div class='chat-message'>";
+					str += "<b>" + writer " : " + message "</b>";
+					str += "</div></div></div></div>"
+					$("#id_chat").append(str);
+				}
+				$("#id_chat").append(str);
+			});
+			stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
+		});
+	}
+	
+	$("#button-send").on("click", function(e){
+		var msg = document.getElementById("id_context");
+		console.log(username + " : " + msg.value);
+		stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg, wrtier: username}));
+		msg.value = '';
+	})
+	*/
+	/*
 	ws.onopen = function() {
 		console.log("채팅 입장");
 	};
@@ -298,7 +453,7 @@ ul{
 		element.focus();
 		return false;
 	};
-	
+	*/
 	
 	function chatRoomAddModal() {
 		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
@@ -323,7 +478,6 @@ ul{
 				listInner[i].style.display = "none";
 			}
 		}
-		
 	}
 	
 	function addChatMember(data) {
@@ -359,5 +513,21 @@ ul{
 			}
 		})
 	}
+	/*
+	function chatRoomEnter(data) {
+		console.log(data);
+		$.ajax ({
+			url: "${chatUrl}/room/roomId",
+			type: "post",
+			data: {
+				id: data
+			},
+			dataType: "json",
+			success: function(data) {
+				console.log("ajax success");
+			}
+		})
+	}
+	*/
 </script>
 </html>

@@ -17,7 +17,7 @@ import oracle.sql.DATE;
 @ToString
 @Alias("chatRoomDto")
 public class ChatRoomDTO {
-	private String chatRoomNo;
+	private int chatRoomNo;
 	private String empId;
 	private String chatTitle;
 	private String chatProfile;
@@ -25,12 +25,4 @@ public class ChatRoomDTO {
 	private String chatLastCont;
 	private String ChatRoomType;
 	private Set<WebSocketSession> sessions = new HashSet<>();
-	
-	public static ChatRoomDTO create(String name) {
-		ChatRoomDTO room = new ChatRoomDTO();
-		
-		room.chatRoomNo = UUID.randomUUID().toString();
-		room.chatTitle = name;
-		return room;
-	}
 }
