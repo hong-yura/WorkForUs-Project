@@ -12,7 +12,6 @@
 		<result property="anonymityYn" column="anonymity_yn"/>
 		<result property="invLink" column="inv_link"/>
 		<result property="deptNo" column="dept_no"/>
-		<result property="deptYn" column="dept_type_yn"/>
 		<result property="boardManager" column="board_manager"/>
 	</resultMap>
 	
@@ -35,7 +34,6 @@
 			 , B.ANONYMITY_YN
 			 , B.INV_LINK
 			 , B.DEPT_NO
-			 , B.DEPT_TYPE_YN as deptYn
 			 , B.BOARD_MANAGER
 		  FROM TB_BOARDS B 
 		  JOIN TB_BOARD_PARTICIPATION_LIST PL 
@@ -51,7 +49,6 @@
 			 , ANONYMITY_YN
 			 , INV_LINK
 			 , DEPT_NO
-			 , DEPT_TYPE_YN as deptYn
 			 , BOARD_MANAGER
 		  FROM TB_BOARDS B 
 		 WHERE BOARD_ID = #{id}

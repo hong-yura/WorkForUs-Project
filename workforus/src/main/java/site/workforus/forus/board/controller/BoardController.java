@@ -2,7 +2,6 @@ package site.workforus.forus.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +35,8 @@ import site.workforus.forus.board.service.BoardService;
 import site.workforus.forus.board.service.PostCommentService;
 import site.workforus.forus.board.service.UploadFileService;
 import site.workforus.forus.employee.model.EmpDTO;
+import site.workforus.forus.employee.model.LoginVO;
+import site.workforus.forus.employee.service.EmpService;
 
 @Controller
 @RequestMapping(value="/board")
@@ -56,40 +57,30 @@ public class BoardController {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
 	@GetMapping(value="")
-	public String getData(Model model, HttpSession session,Authentication auth //@RequestParam(required=false) int boardId 
-			) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
-		// 임의의 empDto
-		EmpDTO empDto = new EmpDTO(); 
-//		LoginVO loginVo = (LoginVO) auth.getPrincipal();
-		empDto.setEmpId("A2022105"); empDto.setEmpNm("원빈");
-		int boardId = 2; // 임의로 넣어줌 -> 이건 나중에 URL로 넣어주기
-		
-//		session.setAttribute("empId", loginVo.getUsername());
-		
-//		아래 거는 나중에 추가해주기
-//		session.setAttribute("loginData", empDto);
-//		session.getAttribute("loginData");
-//		if(boardId==0) { // 만약 boardId 가 없다면 기본적으로 1로 설정해줘야 한다.
-//			boardId = 1;
-//		}
+	public String getData(Model model, HttpSession session, Authentication auth
+						, @RequestParam(required=false) int bId) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
+		logger.info("getData(bId={})", bId);
+		LoginVO loginVo = (LoginVO)auth.getPrincipal();
+		logger.info("getData(loginVo={})", loginVo);
 		
 		// 게시판 가져오기 -> navbar에 들어갈 내용
-		List<BoardDTO> boardNav = boardService.selectAll(empDto); // 사원에 해당하는 게시판 데이터를 가지고 옴
+		List<BoardDTO> boardNav = boardService.selectAll(loginVo); // 사원에 해당하는 게시판 데이터를 가지고 옴
 	
 		// 사원이 선택한 게시판 가져오기 
-		BoardDTO boardData = boardService.selectBoardData(boardId);
+		BoardDTO boardData = boardService.selectBoardData(bId);
 		
 		// 게시글 가져오기 -> 사원이 어떤 게시판을 클릭했는지 확인 해야 한다. -> url을 통해서 어떤 
-		List<BoardPostDTO> postList = postService.selectAll(boardId); // 어떤 게시판의 게시글인지 확인을 해야 한다.
-		
+		List<BoardPostDTO> postList = postService.selectAll(bId); // 어떤 게시판의 게시글인지 확인을 해야 한다.
+		List<BoardPostDTO> notNotice = postService.selectNotNotice(bId);
 		// 참여명단을 가져와야 한다. 
 		List<BoardParticipDTO> participList = participService.selectAll(boardData);
 		
 		// 게시글 갯수 notice_yn = 'N'인 게시글만 가지고 온다. 
-		int postCnt = postService.getPostCnt(boardId);
+		int postCnt = postService.getPostCnt(bId);
 		
 		model.addAttribute("boardList", boardNav);
 		model.addAttribute("postList", postList);
+		model.addAttribute("notNotice", notNotice);
 		model.addAttribute("boardData", boardData);
 		model.addAttribute("participList", participList);
 		model.addAttribute("postCnt", postCnt);
@@ -98,13 +89,14 @@ public class BoardController {
 	}
 	// 게시글 상세 
 	@GetMapping(value="/detail")
-	public String getDetailData(Model model, HttpSession session
+	public String getDetailData(Model model, HttpSession session, Authentication auth
 									, @RequestParam String postId) { // 어떤 post id인지 알아야 한다.
 
 		logger.info("postId={}", postId);
 		// 얘는 나중에 session 으로 변경해주기
-		EmpDTO loginData = new EmpDTO(); 
-		loginData.setEmpId("A2022105"); loginData.setEmpNm("원빈");
+		LoginVO loginVo = (LoginVO)auth.getPrincipal();
+		logger.info("getData(loginVo={})", loginVo);
+		
 		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함 
 		// 게시글 데이터를 가지고 와야 한다.
 		BoardPostDTO postData = postService.getPostData(pId);// postId -> 해당 게시글 데이터를 가져온다.
@@ -125,7 +117,9 @@ public class BoardController {
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData);
-		model.addAttribute("loginData", loginData); // 이건 나중에 session 있으면 필요 없음
+		model.addAttribute("loginId", loginVo.getUsername()); 
+		logger.info("detail(loginVo={})", loginVo);
+		
 		model.addAttribute("commentList", commentList);
 		model.addAttribute("commentCnt", commentCnt);
 		model.addAttribute("groupNo", groupNo + 1); // + 1을 한 이유 : 댓글 추가기능에서 groupNo 서버에 전달할 때 null값이 전달되는 걸 방지 
@@ -135,18 +129,24 @@ public class BoardController {
 	
 	// 본댓글 추가
 	@PostMapping(value="/comment/add")
-	public String InsertComment(Model model, HttpSession session
+	public String InsertComment(Model model, HttpSession session, Authentication auth
 							  , @ModelAttribute PostCommentDTO commentDto
 							  ) {
 		
 		logger.info("InsertComment(commentDto={})",commentDto);
 		commentDto.setDepth(0);
 		
+		LoginVO loginVo = (LoginVO)auth.getPrincipal();
+		// loginVo 에서 empId를 가지고 와서 empNm을 찾아야 함 -> empNm은 내가 따로..?
+		EmpDTO empDto = commentService.selectEmpDto(loginVo.getUsername());
+		logger.info("InsertComment(loginVo.getUsername={})", loginVo.getUsername());
+		logger.info("InsertComment(empDto={})", empDto);
+		
 		// sort 구하기
 		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
 		commentDto.setSort(maxSort + 1); 
-		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
-		commentDto.setEmpNm("원빈");
+		commentDto.setEmpId(empDto.getEmpId());
+		commentDto.setEmpNm(empDto.getEmpNm());
 		
 		// 댓글 저장
 		boolean result = commentService.addComment(commentDto);
@@ -160,20 +160,22 @@ public class BoardController {
 	
 	// 대댓 추가
 	@PostMapping(value="/comment/add2")
-	public String InsertComment2(Model model, HttpSession session
+	public String InsertComment2(Model model, Authentication auth
 							  , @ModelAttribute PostCommentDTO commentDto
 							  ) {
 		
 		logger.info("InsertComment(commentDto={})",commentDto);
 		commentDto.setDepth(1);
 		
+		LoginVO loginVo = (LoginVO)auth.getPrincipal();
+		// loginVo 에서 empId를 가지고 와서 empNm을 찾아야 함 -> empNm은 내가 따로..?
+		EmpDTO empDto = commentService.selectEmpDto(loginVo.getUsername());
+		
 		// sort 구하기
 		int maxSort = postService.selectMaxSort(commentDto.getPostId(), commentDto.getGroupNo()); // groupNo은 몇 번째 그룹의 sort를 구할지 알아야 하기 때문에
-		logger.info("maxSort={}", maxSort);
 		commentDto.setSort(maxSort + 1); 
-		logger.info("InsertComment(sort={})",commentDto.getSort());
-		commentDto.setEmpId("A2022105"); // -> 나중에는 session에 저장되어 있는 정보를 넣어준다.
-		commentDto.setEmpNm("원빈");
+		commentDto.setEmpId(empDto.getEmpId());
+		commentDto.setEmpNm(empDto.getEmpNm());
 		
 		// 댓글 저장
 		boolean result = commentService.addComment(commentDto);
@@ -201,7 +203,8 @@ public class BoardController {
 
 	// 게시글 추가 요청
 	@PostMapping(value="/post/add")
-	public String addPost(Model model, HttpSession session, HttpServletRequest request, int boardId // 어디 게시판에 추가할지 알아야함
+	public String addPost(Model model, HttpSession session, Authentication auth
+						, HttpServletRequest request, int boardId // 어디 게시판에 추가할지 알아야함
 						, @ModelAttribute BoardPostDTO postDto // 저장할 데이터
 						, @RequestParam(value="postFiles", required = false) MultipartFile[] files) throws IllegalStateException, IOException {
 		// 게시판 정보가 필요
@@ -216,10 +219,11 @@ public class BoardController {
 		// 만약 공지가 null이면 N을 해준다.
 		if(postDto.getNoticeYn()==null) {
 			postDto.setNoticeYn("N");
+			logger.info("postDto.getNoticeYn={}",postDto.getNoticeYn());
 		}
-	
+		LoginVO loginVo = (LoginVO)auth.getPrincipal();
 		// 게시글을 먼저 저장해야 한다. 
-		postDto.setWriter("A2022105"); // -> 나중에는 session에 저장된 loginData.empId 넘기기
+		postDto.setWriter(loginVo.getUsername()); // -> 나중에는 session에 저장된 loginData.empId 넘기기
 		int postId = postService.addPostData(postDto); // 상세화면으로 넘어가야 하기 때문에 postId를 받아와야 한다.
 		
 		// 파일이 없을 수도 있으니까

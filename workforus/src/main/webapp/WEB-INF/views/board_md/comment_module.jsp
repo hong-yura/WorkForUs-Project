@@ -16,7 +16,7 @@
 					<div class="col-6">
 						<div class="text-end">
 							<c:url value="/board" var="boardUrl"/>
-							<button class="btn" onclick="location.href='${boardUrl}'" style="border: solid 1px; #c0c0c0;">목록</button>
+							<button class="btn" type="button" onclick="location.href='${boardUrl}?bId=${postData.boardId}'" style="border: solid 1px; #c0c0c0;">목록</button>
 						</div>
 					</div>
 				</div>
@@ -52,7 +52,7 @@
 						<div class="card-body" style="padding-bottom:0px;">
 							<input type="hidden" name=commentId value="${comment.commentId}"> <!-- comment id를 숨겨두기 -> 어떤 댓글인지 알아야 해서  -->
 							<p class="card-text black comment-p">${comment.content}</p>
-							<c:if test="${loginData.empId eq comment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
+							<c:if test="${loginId eq comment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 								<div class="text-end">
 									<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
 									<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete1(this);">삭제</button>
@@ -96,7 +96,7 @@
 								<div class="card-body" style="padding-bottom:0px;">
 									<input type="hidden" name=commentId value="${secComment.commentId}"> <!-- comment id를 숨겨두기 -> 어떤 댓글인지 알아야 해서  -->
 									<p class="card-text black">${secComment.content}</p>
-									<c:if test="${loginData.empId eq secComment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
+									<c:if test="${loginId eq secComment.empId}"> <!-- 본인이 작성한 게시글에 대해서만 수정 삭제 나오도록  -->
 										<div class="text-end">
 											<button class="btn btn-sm btn-outline-dark" type="button" onclick="changeModify(this);">수정</button>
 											<button class="btn btn-sm btn-outline-dark" type="button" onclick="commentDelete2(this);">삭제</button>

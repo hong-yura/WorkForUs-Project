@@ -67,7 +67,37 @@
 		  JOIN TB_EMPLOYEES E
 		    ON P.EMP_ID = E.EMP_ID
 		 WHERE P.BOARD_ID = #{id}  
+		   AND P.TEMPORARY_POST_YN = 'N'
+		   ORDER BY 1 DESC
 	</select>
+	
+	<!-- 공지가 아닌 것들만 가져오기 -->
+	<select id="selectNotNoticeList" resultMap="boardPostDtoMap">
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id}  
+		   AND P.TEMPORARY_POST_YN = 'N'
+		   AND (P.NOTICE_YN = 'N'
+		    OR P.NOTICE_YN IS NULL)
+		    ORDER BY 1 DESC
+	</select>
+	
 	<!-- 게시판 상세 데이터 -->
  	 <select id="selectBoardDetail" resultMap="boardPostDtoMap" >
  	 	SELECT P.POST_ID
@@ -191,7 +221,7 @@
  	 	INSERT INTO TB_BOARD_POSTS
  	 	VALUES (#{postId}, #{writer}, #{boardId}, #{postTitle}, #{postPw}
  	 			, #{content}, SYSDATE, #{modifyDate},#{removeDate}, 'N', #{viewCnt}
- 	 			, #{noticeYn}, #{temporaryYn}, #{reportYn}, #{likeCnt})
+ 	 			, #{noticeYn}, #{temporaryYn},'N' , #{likeCnt})
  	 </insert>
  	 
  	 <!-- 게시글 파일 업로드 -->
@@ -245,6 +275,8 @@
 	 	DELETE FROM TB_POST_COMMENTS 
 	 	 WHERE COMMENT_ID= #{id}
 	 </delete>
+	 
+	 
 	 
 	 
 </mapper>

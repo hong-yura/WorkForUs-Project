@@ -127,3 +127,12 @@ function addComment(element, groupNo, depth, postId){
 	});
 }
 
+function boardUrlCopy(){
+	var copyText = document.getElementById("board-url");
+	copyText.select();
+	document.execCommand('copy');
+	
+	
+	console.log('게시판 주소가 복사되었습니다.');
+}
+
