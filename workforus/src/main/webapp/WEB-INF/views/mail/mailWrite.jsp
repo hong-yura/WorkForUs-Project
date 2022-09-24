@@ -82,12 +82,13 @@
 
 										</div>
                                         <div class="col-sm-12 d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-primary me-1 mb-1">전송</button>
+                                            <button type="button" class="btn btn-primary me-1 mb-1"  data-bs-toggle="modal" data-bs-target="#SendModal">전송</button>
                                             <button type="reset" class="btn btn-light-secondary me-1 mb-1">임시저장</button>
                                         </div>
                                     </div>
                                 </div>
                             </form>
+                       
                             
                             
                         </div>
@@ -109,6 +110,8 @@
             .catch( error => {
                 console.error( error );
             } );
+        
+    	
     </script>
 </body>
 </html>

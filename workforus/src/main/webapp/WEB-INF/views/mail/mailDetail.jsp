@@ -73,8 +73,6 @@
 			                <!-- 메일내용 -->
 			                <div class="dataTable-container">
 				                <div class="card"> 
-				                
-				                
 				                    <div class="card-content">
 				                        <div class="card-body">
 				                            <form class="form form-horizontal">
@@ -107,22 +105,10 @@
 				                            </form>
 				                        </div>
 				                    </div>
-
-
-
-
 				                </div>
 			                </div>
 	              	  </div>
            		 </div>
-					
-					
-					
-					
-					
-					
-					
-				
 			</section>
 			</div>
 		</div>	

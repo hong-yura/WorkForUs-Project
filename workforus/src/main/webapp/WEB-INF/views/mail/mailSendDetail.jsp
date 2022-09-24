@@ -51,6 +51,9 @@
                             <div style="margin: 8px 0;">
                             	<a href="/mail/tempMail">임시저장함</a>
                             </div>
+                            <div style="margin: 8px 0;">
+                            	<a href="/mail/outMail">외부전송메일함</a>
+                            </div>
 						</div>
 						
 						<!-- 네비제외한 본문 -->
@@ -77,21 +80,38 @@
 				                                            <label><h4>${sendData.mailObj.mailTitle }</h4></label>
 				                                        </div>
 				                                        <div >
-				                                            <label>받는 사람 : <b>${sendData.empObj.empNm}&lt;${sendData.empObj.empEmail}&gt;</b></label>
+				                                            <label>받는사람 : 
+				                                            	<c:choose>
+				                                            		<c:when test="${sendData.empId eq 'outMail' }">
+				                                            			${sendData.mailObj.receiveEmail}
+				                                            		</c:when>
+				                                            		<c:otherwise>
+				                                            			<b>${sendData.empObj.empNm}&lt;${sendData.empObj.empEmail}&gt;</b>
+				                                            		</c:otherwise>
+				                                            	</c:choose>
+				                                            
+				                                            </label>
 				                                        </div>
 				                                        <div>
 				                                            <label>보낸일자 : <fmt:formatDate value="${sendData.mailObj.mailSendTime}" type="both"/></label>
 				                                        </div>
 				                                        <div>
 				                                            <label>읽은시간 : 
-				                                            	<c:choose>
-				                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
-				                                            			${sendData.readTime }
-				                                            		</c:when>
-				                                            		<c:otherwise>
-				                                            			읽지않음
-				                                            		</c:otherwise>
-				                                            	</c:choose>
+				                                        	<c:choose>
+			                                            		<c:when test="${sendData.empId eq 'outMail' }">
+			                                            			외부메일(알수없음)
+						                                        </c:when>
+						                                        <c:otherwise>						                                        
+						                                            	<c:choose>
+						                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
+						                                            			${sendData.readTime }
+						                                            		</c:when>
+						                                            		<c:otherwise>
+						                                            			읽지않음
+						                                            		</c:otherwise>
+						                                            	</c:choose>
+						                                        </c:otherwise>
+						                                    </c:choose>
 				                                            </label>
 				                                        </div>
 				                                        <br>

@@ -76,7 +76,7 @@
 	
 	<!-- 발신메일목록 -->
 	<select id="selectSendAll" parameterType="String" resultMap="receiveMailDtoMap">
-		SELECT rm.mail_id			
+		SELECT sm.mail_id			
 		     , rm.emp_id
 		     , rm.mail_folder
 		     , rm.mail_send_email
@@ -165,6 +165,11 @@
 			, #{empId})
 	</insert>
 	
+	<insert id="insertReceiveOutMail" parameterType="sendMailDto">
+		INSERT INTO tb_receive_mail (mail_id, emp_id, mail_send_email)
+		VALUES (#{mailId}, 'outMail', #{empId})
+	</insert>
+	
 	<select id="selectName" resultType="String" parameterType="String">
 		SELECT emp_nm
 		  FROM tb_employees
@@ -184,4 +189,43 @@
 		   SET mail_read_fl = 'N'
 		 WHERE mail_id = #{mailId}
 	</update>
+	
+	<select id="selectSendOutAll" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT sm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.receive_email 
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id 
+		 WHERE rm.emp_id = 'outMail'
+		   AND sm.emp_id = #{empId}
+		 ORDER BY 1 DESC
+	</select>
+	
+	<select id="selectOneOut" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id			
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.receive_email 
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		 WHERE sm.emp_id = #{empId}
+		   AND rm.mail_id = #{mailId}
+	</select>
 </mapper>

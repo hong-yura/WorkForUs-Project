@@ -67,6 +67,10 @@ public class MailService {
 			data.setEmpId(sendEmail);									// 보낸사람 empId 저장
 			data.setMailId(mailId);										// 메일id
 			mapper.insertReceiveMail(data);
+		} else {	// 사원목록에 없다면 emp_id를 'outMail'로 지정함
+			data.setEmpId(sendEmail);									
+			data.setMailId(mailId);	
+			mapper.insertReceiveOutMail(data);
 		}
     	if(result) {
     		return mailId;
@@ -102,6 +106,22 @@ public class MailService {
 	public void updateReadFl(String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		mapper.updateReadFl(mailId);
+	}
+
+	// 외부 발신메일 가져오기
+	public List<ReceiveMailDTO> selectOutSend(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		List<ReceiveMailDTO> datas = mapper.selectSendOutAll(empId);
+		return datas;
+	}
+
+	// 외부 발신메일 상세 조회
+	public ReceiveMailDTO selectOneOut(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		ReceiveMailDTO detailData = mapper.selectOneOut(empId, mailId);
+		
+		return detailData;
 	}
 
 

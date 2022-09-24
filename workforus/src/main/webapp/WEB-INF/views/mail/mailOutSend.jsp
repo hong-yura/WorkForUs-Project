@@ -6,7 +6,6 @@
 	<meta charset="UTF-8">
 	<title>보낸 메일함</title>
 	<%@ include file="../module/head.jsp" %>
-	
 </head>
 <body>
     <%@ include file="../module/navigation.jsp" %>
@@ -72,19 +71,16 @@
 				                        	<th	class="td1">
 							            		<input type="checkbox" class="form-check-input form-check-primary form-check-glow" id="cboxAll" name="cboxAll" onclick="selectAll()">
 				                        	</th>
-			                        		<th data-sortable="" style="width: 2.9593%;"></th>
-				                        	<th data-sortable="" style="width: 29.7041%;">
-				                        		<a href="#" class="dataTable-sorter">받는사람</a>
+				                        	<th data-sortable="" style="width: 22.7041%;">
+				                        		<a href="#" class="dataTable-sorter">수신외부이메일</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 38.9215%;">
+				                        	<th data-sortable="" style="width: 44.9215%;">
 				                        		<a href="#" class="dataTable-sorter">제목</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 15.1082%;">
+				                        	<th data-sortable="" style="width: 17.1082%;">
 				                        		<a href="#" class="dataTable-sorter">전송일자</a>
 			                        		</th>
-				                        	<th data-sortable="" style="width: 10.1082%;">
-				                        		<a href="#" class="dataTable-sorter">상태</a>
-			                        		</th>
+			                        		<th data-sortable="" style="width: 10.9593%;">상세정보</th>
 			                        	</tr>
 				                    </thead>
 				                    <tbody>
@@ -95,34 +91,21 @@
 											</c:url>
 											<tr class="table-light">
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
-					                    		<td onclick="location.href='${detailUrl}'"></td>
-												<td onclick="location.href='${detailUrl}'">
-													${MailData.empObj.empEmail}
+												<td>
+													${MailData.mailObj.receiveEmail}
 												</td>
-												<td onclick="location.href='${detailUrl}'">
+												<td>
 													${MailData.mailObj.mailTitle}
 												</td>
-												<td onclick="location.href='${detailUrl}'">
+												<td>
 													<fmt:formatDate value="${MailData.mailObj.mailSendTime}" type="date" pattern="YYYY-MM-dd"/>
 												</td> 
-												<td onclick="location.href='${detailUrl}'">
-													<c:choose>
-		                                           		<c:when test="${sendData.mailReadFl eq 'Y'}">
-		                                           			${sendData.readTime }
-		                                           		</c:when>
-		                                           		<c:otherwise>
-		                                           			읽지않음
-		                                           		</c:otherwise>
-		                                           	</c:choose>
-												</td>												
+					                    		<td>
+               		   				               	<button type="submit" class="btn btn-outline-primary"  onclick="location.href='${detailUrl}'">조회</button>
+					                    		</td>
 											</tr>
+		
 										</c:forEach>	
-				                    	
-				                    	
-				                    	
-				                    	
-				                    	
-				                    	
 				                    </tbody>
 				                </table>
 			                </div>
@@ -139,14 +122,6 @@
 			                </div>
 	              	  </div>
            		 </div>
-					
-					
-					
-					
-					
-					
-					
-				
 			</section>
 			</div>
 		</div>	
@@ -182,8 +157,8 @@
 			  }else {
 			    selectAll.checked = false;
 			  }
-
 		}
+		
 	</script>    
 </body>
 </html>

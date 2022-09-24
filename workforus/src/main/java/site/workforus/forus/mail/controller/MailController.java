@@ -96,12 +96,15 @@ public class MailController {
 		
 		String empId = principal.getName();
 		
-		// 보낸 메일정보 가져옴
-		ReceiveMailDTO sendData = service.selectSendData(empId, mailId);
-		
-		System.out.println(sendData + "이게 맞는지 한번 봅시다.");
-		model.addAttribute("sendData", sendData);
-		
+		ReceiveMailDTO outData = service.selectOneOut(empId, mailId);
+		if(outData.getEmpId().equals("outMail")) {
+			model.addAttribute("sendData", outData);
+			System.out.println(outData);
+		} else {
+			// 보낸 메일정보 가져옴
+			ReceiveMailDTO sendData = service.selectSendData(empId, mailId);
+			model.addAttribute("sendData", sendData);
+		}
 		return "/mail/mailSendDetail";
 	}
 	
@@ -113,5 +116,34 @@ public class MailController {
 		return "redirect:/mail";
 	}
 	
+	// 외부 전송 메일 목록 조회
+	@GetMapping(value="outMail")
+	public String outMail(Model model, Principal principal) {
+		
+		String empId = principal.getName();
+		
+		// 외부 발송메일목록
+		List<ReceiveMailDTO> dataList = service.selectOutSend(empId);
+		model.addAttribute("dataList", dataList);
+		
+		
+		return "/mail/mailOutSend";
+	}
+	
+//	// 외부 발송메일 상세
+//	@GetMapping(value="sendDetail")
+//	public String sendOutDetail(Model model, Principal principal, @RequestParam String mailId) {
+//		
+//		String empId = principal.getName();
+//		
+//		// 외부 발송메일상세
+//		ReceiveMailDTO outData = service.selectOneOut(empId);
+//		model.addAttribute("outData", outData);
+//		
+//		model.addAttribute("sendData", Data);
+//		
+//		return "/mail/mailSendDetail";
+//	}
+//	
 
 }
