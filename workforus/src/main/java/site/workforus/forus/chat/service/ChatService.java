@@ -25,6 +25,7 @@ public class ChatService {
 		chatRoomDTOMap = new LinkedHashMap<>(); 
 	}
 	
+	// 사원 목록 조회
 	public List<EmpDTO> selectEmployeeAll() {
 		EmpMapper mapper = session.getMapper(EmpMapper.class);
 		
@@ -33,31 +34,43 @@ public class ChatService {
 		return result;
 	}
 
-	public ChatRoomDTO insertChatRoom(String username) {
+	// 채팅방 생성
+	public void createChatRoom(String username) {
 		ChatMapper mapper = session.getMapper(ChatMapper.class);
 		
 		System.out.println(username);
 		
-		int result = mapper.insertChatRoom(username);
-		
-		ChatRoomDTO room = ChatRoomDTO.create(username);
-		chatRoomDTOMap.put(room.getChatRoomNo(), room);
-		
-		System.out.println(result);
-		
-		return room;
+		int result = mapper.createChatRoom(username);
 	}
 
-	public List<ChatRoomDTO> selectChatRoom(String username) {
+	// 채팅방 목록 조회
+//	public List<ChatRoomDTO> selectChatRooms(String username) {
+//		ChatMapper mapper = session.getMapper(ChatMapper.class);
+//		
+//		List<ChatRoomDTO> chatRoom = mapper.selectChatRooms(username);
+//		
+//		return chatRoom;
+//	}
+	
+	public List<ChatRoomDTO> selectChatRooms() {
 		ChatMapper mapper = session.getMapper(ChatMapper.class);
 		
-		List<ChatRoomDTO> chatRoom = mapper.selectChatRoom(username);
+		List<ChatRoomDTO> chatRoom = mapper.selectChatRooms();
 		
 		return chatRoom;
 	}
 	
-	public ChatRoomDTO findRoomById(String id) {
-		return chatRoomDTOMap.get(id);
+
+	// 채팅방 들어가기
+	public ChatRoomDTO findRoomById(int id) {
+		ChatMapper mapper = session.getMapper(ChatMapper.class);
+		
+		ChatRoomDTO chatRoomDto = mapper.findRoomById(id);
+		
+		System.out.println(chatRoomDto);
+		
+		return chatRoomDto;
 	}
+	
 	
 }

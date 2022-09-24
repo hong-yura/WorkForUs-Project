@@ -222,7 +222,7 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="form-element-input.html">개인정보수정</a>
+                <a href="${homeUrl}/info">개인정보수정</a>
               </li>
               <li class="submenu-item">
                 <a href="${homeUrl}/commute">근태관리</a>
@@ -281,19 +281,11 @@
             </ul>
           </li>
 
-          <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
+          <li class="sidebar-item">
+            <a href="${homeUrl}/chat" class="sidebar-link">
               <i class="bi bi-chat-dots"></i>
               <span>Chat</span>
             </a>
-            <ul class="submenu">
-              <li class="submenu-item">
-                <a href="#">SubMenu #1</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
-              </li>
-            </ul>
           </li>
 
           <li class="sidebar-item has-sub">

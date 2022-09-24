@@ -4,7 +4,9 @@ import java.util.List;
 import site.workforus.forus.chat.model.ChatRoomDTO;
 
 public interface ChatMapper {
-	public int insertChatRoom(String username);
+	public int createChatRoom(String username);
 
-	public List<ChatRoomDTO> selectChatRoom(String username);
+	public List<ChatRoomDTO> selectChatRooms();
+
+	public ChatRoomDTO findRoomById(int id);
 }
