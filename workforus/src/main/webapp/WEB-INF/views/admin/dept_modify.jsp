@@ -6,19 +6,18 @@
 <c:url var="deptModUrl" value="/admin/dept_manage" />
 <form action="${deptModUrl}" method="post" id="deptModForm">
 	<div class="mb-3 font-bold">
-		<label for="deptNo" class="col-form-label">부서 코드는 수정 할 수 없습니다.</label>
-		<input id="deptNo" type="hidden" class="form-control" name="deptNo">
+		<label id="deptModNo" class="col-form-label">부서 코드는 수정 할 수 없습니다.</label>
 	</div>
 	<div class="mb-3 font-bold">
-		<label for="deptName" class="col-form-label">부서명 :</label>
-		<input id="deptName" class="form-control" name="deptName" placeholder="부서명 입력">
+		<label for="deptModName" class="col-form-label">부서명 :</label>
+		<input id="deptModName" class="form-control" name="deptName" placeholder="부서명 입력">
 	</div>
 	<div class="mb-3 font-bold">
-		<label for="deptMngId" class="col-form-label">부서 책임자 :</label>
-		<input id="deptMngId" class="form-control" name="deptMngId" placeholder="부서 책임자 사원 번호 입력 (직급 부장 이상만 가능)">
+		<label for="deptModMngId" class="col-form-label">부서 책임자 :</label>
+		<input id="deptModMngId" class="form-control" name="deptMngId" placeholder="부서 책임자 사원 번호 입력 (직급 부장 이상만 가능)">
 	</div>
 	<div class="mb-3 font-bold">
-		<input id="deptModDt" type="hidden" class="form-control" name="deptModDt" readonly>
+		<input id="modDeptModDt" type="hidden" class="form-control" name="deptModDt" readonly>
 	</div>
 	<div class="modal-footer">
 		<button type="button" class="btn btn-info" onclick="deptModify();">수 정</button>

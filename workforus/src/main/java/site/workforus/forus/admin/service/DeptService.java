@@ -24,9 +24,9 @@ public class DeptService {
 		return datas;
 	}
 	
-	public DeptDTO getDeptDetail(int no) {
+	public DeptDTO getDeptDetail(int deptNo) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		DeptDTO result = mapper.selectDeptDetail(no);
+		DeptDTO result = mapper.selectDeptDetail(deptNo);
 		return result;
 	}
 	
@@ -43,9 +43,9 @@ public class DeptService {
 	}
 	
 	
-	public boolean removeDept(int no) {
+	public boolean removeDept(int deptNo) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
-		int result = mapper.deleteDept(no);
+		int result = mapper.deleteDept(deptNo);
 		return result == 1? true : false;
 	}	
 	

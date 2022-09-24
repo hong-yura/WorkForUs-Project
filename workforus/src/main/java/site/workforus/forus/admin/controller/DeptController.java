@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import site.workforus.forus.admin.model.DeptDTO;
-import site.workforus.forus.admin.model.DeptVO;
 import site.workforus.forus.admin.service.DeptService;
 
 @Controller
@@ -48,11 +46,11 @@ public class DeptController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
-	public String getDeptDetail(HttpSession session, @RequestParam int no) {
-		logger.info("getDeptDetail(no): {}", no);
+	public String getDeptDetail(HttpSession session, @RequestParam int deptNo) {
+		logger.info("getDeptDetail(deptNo): {}", deptNo);
 		// 로그인 세션 추가하기
 		
-		DeptDTO data = deptService.getDeptDetail(no);
+		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
 		JSONObject json = new JSONObject();
 		
@@ -99,8 +97,6 @@ public class DeptController {
 		
 	}
 	
-	
-	
 	// 부서 수정 폼 요청
 	@GetMapping(value = "dept_modify")
 	public String modifyDept() {
@@ -112,15 +108,13 @@ public class DeptController {
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value = "/dept_modify", produces="application/json; charset=utf-8")	
-	public String modifyDept(@RequestParam int no
-						   , @ModelAttribute DeptVO deptVo) {
+	public String modifyDept(HttpSession session, @RequestBody DeptDTO deptDto) {
 		// 로그인 세션 추가하기
-		logger.info("modifyDept(DeptVO={})", deptVo);
+		logger.info("modifyDept(deptDto={})", deptDto);
 		
-		DeptDTO data = deptService.getDeptDetail(no);
-		
-		//data.setDeptName(deptVo.getDeptName());
-		//data.setDeptMngId(deptVo.getDeptMngId());
+		DeptDTO data = deptService.getDeptDetail(deptDto.getDeptNo());
+		data.setDeptName(deptDto.getDeptName());
+		data.setDeptMngId(deptDto.getDeptMngId());
 		
 		boolean result = deptService.modifyDept(data);
 		
@@ -138,16 +132,15 @@ public class DeptController {
 		
 	}
 	
-	
 	// 부서 삭제
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
-	public String removeDept(HttpSession session, @RequestParam int no) {
+	public String removeDept(HttpSession session, @RequestParam int deptNo) {
 		// 로그인 세션 추가하기
-		logger.info("removeDept(no): {}", no);
+		logger.info("removeDept(deptNo): {}", deptNo);
 		
-		DeptDTO data = deptService.getDeptDetail(no);
+		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
 		JSONObject json = new JSONObject();
 		if(data == null) {
@@ -159,7 +152,7 @@ public class DeptController {
 			// 권한 조건
 			// 삭제 가능
 			try {
-				boolean result = deptService.removeDept(no);
+				boolean result = deptService.removeDept(deptNo);
 				json.put("title", "Success");
 				json.put("message", "삭제 처리가 완료 되었습니다.");
 				return json.toJSONString();

@@ -274,12 +274,12 @@
 		errorCheckModal.show();
 	
 		// 부서 정보 상세 조회
-		function deptDetail(no) {
+		function deptDetail(deptNo) {
 			$.ajax({
 				type: "get",
 				url: "${adminUrl}/dept_detail",
 				data: {
-					no: no
+					deptNo: deptNo
 				},
 				success: function(data) {
 					var form = document.getElementById("deptForm");
@@ -295,19 +295,18 @@
 		
 		// 부서 추가
 		function deptAdd() {
-			// 부서명 입력 value 값을 변수에 저장
-			var deptName = $.trim($("#deptName").val())
-			var deptMngId = $.trim($("#deptMngId").val())
+			var deptName = $.trim($("#deptAddName").val())
+			var deptMngId = $.trim($("#deptAddMngId").val())
 			
 			if(deptName.trim().length == 0) {
 				alert("부서명을 입력해주세요.");
-				$("#deptName").focus();
+				$("#deptAddName").focus();
 				return;
 			}
 
 			if(deptMngId.trim().length == 0) {
 				alert("부서 책임자를 입력해주세요.");
-				$("#deptMngId").focus();
+				$("#deptAddMngId").focus();
 				return;
 			}
 			
@@ -323,8 +322,6 @@
 				data: JSON.stringify(data),
 				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
-					console.log(data);
-
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
@@ -344,18 +341,32 @@
 		
 		// 부서 수정
 		function deptModify() {
+			var deptNo = deptForm.deptNo.value
+			var deptName = $.trim($("#deptModName").val())
+			var deptMngId = $.trim($("#deptModMngId").val())
+			
+			if(deptName.trim().length == 0) {
+				alert("부서명을 입력해주세요.");
+				$("#deptModName").focus();
+				return;
+			}
+
+			if(deptMngId.trim().length == 0) {
+				alert("부서 책임자를 입력해주세요.");
+				$("#deptModMngId").focus();
+				return;
+			}
 			
 			// if deptMngId가 null이면 참조할 객체가 없으므로 실패
 			// if deptMngId가 부서명 중복인지 확인
 			// 직급이 부장 이상만
+			var data = {"deptNo": deptNo, "deptName": deptName, "deptMngId": deptMngId}
 			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_modify",
-				data: {
-					no: deptForm.deptNo.value
-				},
-				dataType: "json",
+				data: JSON.stringify(data),
+				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
 					console.log(data);
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
@@ -382,7 +393,7 @@
 				type: "post",
 				url: "${adminUrl}/dept_delete",
 				data: {
-					no: deptForm.deptNo.value
+					deptNo: deptForm.deptNo.value
 				},
 				dataType: "json",
 				success: function(data) {
