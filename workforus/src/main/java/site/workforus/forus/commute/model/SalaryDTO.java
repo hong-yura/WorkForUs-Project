@@ -11,14 +11,14 @@ import lombok.Setter;
 @Setter
 @Alias("salaryDto")
 public class SalaryDTO {
-	private String salaryId;
+	private int salaryId;
 	private String salaryLogDt;
 	private int salaryLog;
 	private int salaryTax;
 	private int incomeTax;
 	private String empId;
 	
-	public SalaryDTO(String salaryId, String salaryLogDt, int salaryLog, int salaryTax, int incomeTax, String empId) {
+	public SalaryDTO(int salaryId, String salaryLogDt, int salaryLog, int salaryTax, int incomeTax, String empId) {
 		super();
 		this.salaryId = salaryId;
 		this.salaryLogDt = salaryLogDt;
