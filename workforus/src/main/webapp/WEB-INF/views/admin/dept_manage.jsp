@@ -11,8 +11,8 @@
 	<%@ include file="../module/head.jsp" %>
 	<link rel="stylesheet" href="${staticUrl}/css/pages/jui-ui.min.classic.css" />
 	<link rel="stylesheet" href="${staticUrl}/css/pages/admin.css" />
-	<script src="${staticUrl}/js/pages/admin/jui-core.min.js"></script>
-	<script src="${staticUrl}/js/pages/admin/jui-ui.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/jui-core.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/jui-ui.min.js"></script>
 </head>
 <!-- <script type="text/javascript">
  	function formCheck(form) {
@@ -263,16 +263,16 @@
 		</div>
 	</div>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	<script src="${staticUrl}/js/main.js"></script>
 	
 	<script type="text/javascript">
-		// 에러 체크
+/* 		// 에러 체크
 		var errorCheckModal = new bootstrap.Modal(document.getElementById("errorModal"), {
 			keyboard: false
 		})
 		errorCheckModal.show();
-	
+	 */
+	 
 		// 부서 정보 상세 조회
 		function deptDetail(deptNo) {
 			$.ajax({
@@ -368,7 +368,6 @@
 				data: JSON.stringify(data),
 				contentType: "application/json; charset=UTF-8",
 				success: function(data) {
-					console.log(data);
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
@@ -415,6 +414,6 @@
 		}
 		
 	</script>
-	
+	<script type="text/javascript" src="${staticUrl}/js/pages/admin/department/add-department-modal.js"></script>
 </body>
 </html>
