@@ -266,19 +266,11 @@
             </ul>
           </li>
 
-          <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
+          <li class="sidebar-item">
+            <a href="${homeUrl}/calendar" class="sidebar-link">
               <i class="bi bi-calendar-check"></i>
               <span>Calendar</span>
             </a>
-            <ul class="submenu">
-              <li class="submenu-item">
-                <a href="${homeUrl}/calendar">calendar</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
-              </li>
-            </ul>
           </li>
 
           <li class="sidebar-item">
@@ -288,17 +280,14 @@
             </a>
           </li>
 
-          <li class="sidebar-item has-sub">
+          <li class="sidebar-item has-sub" hidden>
             <a href="#" class="sidebar-link">
               <i class="bi bi-file-text"></i>
               <span>Documents</span>
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#l">SubMenu #1</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
+                <a href="#l">#1</a>
               </li>
             </ul>
           </li>
@@ -358,12 +347,12 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="${homeUrl}/admin/logo">로고 설정</a>
+                <a href="${homeUrl}/admin/logo">테마 설정</a>
               </li>
               <li class="submenu-item">
                 <a href="${homeUrl}/admin/dept_manage">조직도 관리</a>
               </li>
-              <li class="submenu-item">
+              <li class="submenu-item" hidden>
                 <a href="${homeUrl}/admin/perm_manage">권한 관리</a>
               </li>
             </ul>
