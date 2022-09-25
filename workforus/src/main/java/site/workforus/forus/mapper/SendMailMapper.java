@@ -74,6 +74,9 @@ public interface SendMailMapper {
 
 	// 메일 복구
 	public int updateRecoveryMail(@Param("empId") String empId, @Param("mailId") String mailId);
+
+	// 메일 영구삭제
+	public int updateDeleteMail(@Param("empId") String empId, @Param("mailId") String mailId);
 	
 
 

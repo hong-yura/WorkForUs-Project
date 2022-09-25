@@ -291,5 +291,12 @@
 	 	   AND mail_id = #{mailId}
 	</update>
 	
+	<update id="updateDeleteMail" parameterType="String">
+	 	UPDATE tb_receive_mail
+	 	   SET mail_folder = 4
+	 	 WHERE emp_id = #{empId}
+	 	   AND mail_id = #{mailId}
+	</update>
+	
 	
 </mapper>

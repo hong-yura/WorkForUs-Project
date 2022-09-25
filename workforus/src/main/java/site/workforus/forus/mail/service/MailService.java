@@ -159,11 +159,20 @@ public class MailService {
 		return datas;
 	}
 
+	// 메일 복구
 	public int updateRecoveryMail(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
 		
 		int result = mapper.updateRecoveryMail(empId, mailId);
 		return result;
+	}
+
+	// 메일 영구삭제
+	public boolean updateDeleteMail(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateDeleteMail(empId, mailId);
+		return result == 1 ? true : false;
 	}
 
 

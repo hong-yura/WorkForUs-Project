@@ -175,10 +175,10 @@
    	<script type="text/javascript">
 		function selectAll() {
 			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출
-		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
+		         for(var i=0;i<100;i++) document.getElementsByName("cbox")[i].checked=true;   //name 을 사용하여 배열 형태로 담아 호출
 		      }
 		    if(document.getElementById("cboxAll").checked==false){
-		         for(var i=0;i<3;i++) document.getElementsByName("cbox")[i].checked=false;  
+		         for(var i=0;i<100;i++) document.getElementsByName("cbox")[i].checked=false;  
 		    }
 		}
 		
