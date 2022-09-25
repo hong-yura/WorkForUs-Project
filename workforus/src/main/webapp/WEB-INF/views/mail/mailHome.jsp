@@ -117,7 +117,7 @@
 					                    			<i class="bi bi-star"></i>	<!-- 중요도 -->
 					                    		</td>
 					                    		<td onclick="location.href='${detailUrl}'">
-					                    			<c:choose>	<%-- 안읽은 모양 (readFl이 가져오도록 변경해야할듯)--%>
+					                    			<c:choose>	<%-- 안읽은 모양 --%>
 					                    				<c:when  test="${MailData.mailReadFl eq 'N'}">
 						                    				<i class="bi bi-envelope"></i>
 					                    				</c:when>
