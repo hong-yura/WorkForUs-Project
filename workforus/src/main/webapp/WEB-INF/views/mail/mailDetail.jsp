@@ -68,6 +68,11 @@
 							<c:url var="recoveryMail" value="${homeUrl}/mail/recoveryMail">
                            		<c:param name="mailId" value="${receiveData.mailId}"/>
                            	</c:url>
+							<c:url var="replyMail" value="${homeUrl}/mail/replyMail">
+                           		<c:param name="email" value="${receiveData.mailSendEmail}"/>
+                           		<c:param name="title" value="${receiveData.mailObj.mailTitle}"/>
+                           		<c:param name="content" value="${receiveData.mailObj.mailContent}"/>                         
+                         	</c:url>
 			                <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
 				                <div class="dataTable-top">
 				                </div>
@@ -81,7 +86,7 @@
 		 								<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
 						               	<a href="${trashMail}"><button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button></a>
 						               	<a href="${modReadUrl}"><button type="button" class="btn btn-outline-primary">안읽음</button></a>
-				             		  	<button type="button" class="btn btn-outline-primary">답장</button>
+				             		  	<a href="${replyMail}"><button type="button" class="btn btn-outline-primary">답장</button></a>
 				                	</c:otherwise>
 				                </c:choose>
 			                </div>
@@ -131,7 +136,7 @@
 	</div>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
-    <script src="/${staticUrl}/js/main.js"></script>
+    <script src="${staticUrl}/js/main.js"></script>
 	
 
 </body>

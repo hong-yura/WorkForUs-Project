@@ -178,4 +178,19 @@ public class MailController {
 		
 		return "redirect:/mail";
 	}
+	
+	@GetMapping(value="replyMail")
+	public String replyMail(Model model, Principal principal
+			, @RequestParam String email
+			, @RequestParam String title
+			, @RequestParam String content) {
+		
+		model.addAttribute("email", email);
+		model.addAttribute("title", title);
+		model.addAttribute("content", content);
+		
+		return "/mail/mailWrite";
+	}
+	
+	
 }
