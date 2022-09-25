@@ -109,7 +109,7 @@
 				                                            <label>보낸일자 : <fmt:formatDate value="${receiveData.mailObj.mailSendTime}" type="both"/></label>
 				                                        </div>
 				                                        <br>
-				                                        <div class="form-group border" style="height:10rem; margin-top:1rem;">
+				                                        <div class="form-group border" style="min-height:200px; height:auto; margin-top:1rem;">
 															<c:choose> 
 															 <c:when test="${receiveData.mailObj.mailContent != NULL}">
 																<p>${receiveData.mailObj.mailContent}</p>

@@ -115,7 +115,7 @@
 				                                            </label>
 				                                        </div>
 				                                        <br>
-				                                        <div class="form-group border" style="height:10rem; margin-top:1rem;">
+				                                        <div class="form-group border" style="height:auto; min-height:200px; margin-top:1rem;">
 															<c:choose> 
 															 <c:when test="${sendData.mailObj.mailContent != NULL}">
 																<p>${sendData.mailObj.mailContent}</p>
