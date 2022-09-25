@@ -1,5 +1,6 @@
 package site.workforus.forus.board.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
-import site.workforus.forus.board.model.PostUploadFileDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
@@ -21,10 +21,42 @@ public class BoardPostService {
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
 	// 게시글 리스트 가져오기 -> paging 해야 한다. 
-	public List<BoardPostDTO> selectAll(int boardId) {
+	public List<BoardPostDTO> selectAll(int boardId, String search, String searchType) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		List<BoardPostDTO> datas = new ArrayList<BoardPostDTO>();
+		if(search == null) {
+			// 검색 기능 사용 x
+			datas = mapper.selectPostAll(boardId);
+		}else {
+			// 검색 기능 사용 o
+			HashMap<String, Object> searchData = new HashMap<String, Object>();
+			searchData.put("boardId", boardId);
+			searchData.put("search", search);
+			searchData.put("searchType", searchType);
+			
+			datas = mapper.selectSearchData(searchData);
+		}
+		
+		return datas;
+	}
+	
+	// 공지가 아닌 게시글만 따로 가져와야 함..
+	public List<BoardPostDTO> selectNotNotice(int boardId, String search, String searchType) {
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		
-		List<BoardPostDTO> datas = mapper.selectPostAll(boardId);
+		List<BoardPostDTO> datas = new ArrayList<BoardPostDTO>();
+		if(search == null) {
+			// 검색 기능 사용 x
+			datas = mapper.selectNotNoticeList(boardId);
+		}else {
+			// 검색 기능 사용 o
+			HashMap<String, Object> searchData = new HashMap<String, Object>();
+			searchData.put("boardId", boardId);
+			searchData.put("search", search);
+			searchData.put("searchType", searchType);
+			
+			datas = mapper.selectNotNoticeSearchList(searchData);
+		}
 		return datas;
 	}
 
@@ -114,10 +146,5 @@ public class BoardPostService {
 		
 	}
 
-	// 공지가 아닌 게시글만 따로 가져와야 함..
-	public List<BoardPostDTO> selectNotNotice(int bId) {
-		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		List<BoardPostDTO> notNotice = mapper.selectNotNoticeList(bId);
-		return notNotice;
-	}
+
 }

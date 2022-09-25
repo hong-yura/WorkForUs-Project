@@ -17,9 +17,25 @@
 	<%@ include file="../module/navigation.jsp" %>
 	<div id="app">
       <div id="main">
-      	<div class="page-heading margin-left-10">
-      		<h3>Board</h3> 
-      	</div>
+      	<div class="page-heading">
+			<div class="page-title">
+				<div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+						<h3>Board</h3>
+					</div>
+					<div class="col-12 col-md-6 order-md-2 order-first">
+						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="views/home.jsp">home</a></li> <!-- curl로 수정 -->
+								<li class="breadcrumb-item active" aria-current="page">Board</li>
+								<li class="breadcrumb-item active" aria-current="page">상세페이지</li>
+							</ol> 
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	      	<!-- board -->
       	<div class="page-content">
 			<section class="row">
@@ -49,7 +65,7 @@
 							</div>
 						</div>
 						<div class="post-main">
-							<p class="post-content black">${postData.content}</p>
+							<p class="post-content" style="color: black;">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
 						<c:if test="${not empty files}">

@@ -10,9 +10,11 @@
 .black{
 	color : black; 
 }
+/*
 .row{
 	margin : 0px  0px 50px 0px;
 }
+*/
 #app #main .page-content {
 	padding : 0px;
 	margin : 0px;

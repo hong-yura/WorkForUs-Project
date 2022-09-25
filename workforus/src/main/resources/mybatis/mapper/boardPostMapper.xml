@@ -98,6 +98,41 @@
 		    ORDER BY 1 DESC
 	</select>
 	
+	<!-- 공지 아닌 게시글 검색 기능 -->
+	<select id="selectNotNoticeSearchList" resultMap="boardPostDtoMap" parameterType="hashmap">
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_PW
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.POST_REMOVE_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.TEMPORARY_POST_YN
+			 , P.REPORT_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{id}
+		   AND P.TEMPORARY_POST_YN = 'N'
+		   AND (P.NOTICE_YN = 'N'
+		    OR P.NOTICE_YN IS NULL)
+		 <choose>
+		   <when test='searchType != null and searchType == "title"'>
+		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
+		   </when> 
+		   <otherwise>
+		   AND E.EMP_NM LIKE '%' || #{search} || '%'
+		   </otherwise>
+		 </choose> 
+		 ORDER BY 1 DESC
+	</select>
+	
 	<!-- 게시판 상세 데이터 -->
  	 <select id="selectBoardDetail" resultMap="boardPostDtoMap" >
  	 	SELECT P.POST_ID
@@ -121,7 +156,7 @@
 		 WHERE P.POST_ID = #{id}
  	 </select>
 	
-	<select id="selectSearchData" resultMap="boardPostDtoMap">
+	<select id="selectSearchData" resultMap="boardPostDtoMap" parameterType="hashmap">
 		SELECT P.POST_ID
 			 , P.EMP_ID
 			 , P.BOARD_ID 
@@ -140,9 +175,18 @@
 		  FROM TB_BOARD_POSTS P
 		  JOIN TB_EMPLOYEES E
 		    ON P.EMP_ID = E.EMP_ID
-		 WHERE P.BOARD_ID = #{id} 
+		 WHERE P.BOARD_ID = #{id}
+		 <choose>
+		   <when test='searchType != null and searchType == "title"'>
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
+		   </when> 
+		   <otherwise>
+		   AND E.EMP_NM LIKE '%' || #{search} || '%'
+		   </otherwise>
+		 </choose> 
 	</select>
+	
+	
 	
 	<!-- 게시글 수정 -->
 	<update id="updateBoardPost" parameterType="boardPostDto">

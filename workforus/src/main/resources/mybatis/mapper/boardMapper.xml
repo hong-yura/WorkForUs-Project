@@ -25,6 +25,7 @@
  		</association>
 	</resultMap>
  	 
+ 	 <!-- 게시판 리스트 (네비에서 필요) -->
  	 <select id="selectAll" resultMap="boardDtoMap">
  	 	SELECT B.BOARD_ID
 			 , B.CATEGORY_ID
@@ -36,10 +37,13 @@
 			 , B.DEPT_NO
 			 , B.BOARD_MANAGER
 		  FROM TB_BOARDS B 
-		  JOIN TB_BOARD_PARTICIPATION_LIST PL 
+		  LEFT JOIN TB_BOARD_PARTICIPATION_LIST PL 
 		    ON B.BOARD_ID = PL.BOARD_ID
-		 WHERE PL.EMP_ID = #{empId}
+		 WHERE (PL.EMP_ID = #{empId} 
+		 	OR B.DEPT_NO IS NULL)
+		   AND B.DELETED_YN = 'N'
  	 </select>
+ 	 <!-- 게시판 하나 -->
  	 <select id="selectBoardData" resultMap="boardDtoMap">
  	 	SELECT BOARD_ID
 			 , CATEGORY_ID
@@ -52,7 +56,10 @@
 			 , BOARD_MANAGER
 		  FROM TB_BOARDS B 
 		 WHERE BOARD_ID = #{id}
+		   AND DELETED_YN = 'N'
  	 </select>
+ 	 
+ 	 <!-- 참여명단 불러오기 -->
  	 <select id="selectParticipList" resultMap="participDtoMap">
  	 	SELECT P.PARTICIP_NO
  	 		 , P.EMP_ID

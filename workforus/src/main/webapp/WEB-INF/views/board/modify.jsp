@@ -24,11 +24,29 @@
 	
     <div id="app">
       <div id="main">
+      
+      <div class="page-heading">
+			<div class="page-title">
+				<div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+						<h3>Board</h3>
+					</div>
+					<div class="col-12 col-md-6 order-md-2 order-first">
+						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
+								<li class="breadcrumb-item active" aria-current="page">Board</li>
+								<li class="breadcrumb-item active" aria-current="page">글수정</li>
+							</ol> 
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		
       	<c:url value="/board/post/modify" var="modifyUrl"/>
 		<form action="${modifyUrl}?postId=${postData.postId}" method="post"  enctype="multipart/form-data" >
-	      	<div class="page-heading margin-left-10">
-	      		<h3>Board</h3> <!-- 게시판 이름 -->
-	      	</div>
 	      	<div class="write-container radius">
 	      		<div class="row">
 	      			<div class="col-2">

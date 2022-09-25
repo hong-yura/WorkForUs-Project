@@ -16,10 +16,27 @@
 	
     <div id="app">
       <div id="main">
-      	<div class="page-heading margin-left-10">
-      		<h3>Board</h3> <!-- 게시판 이름 -->
-      	</div>
-	      	<!-- board -->
+      
+    	<div class="page-heading">
+			<div class="page-title">
+				<div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+						<h3>Board</h3>
+					</div>
+					<div class="col-12 col-md-6 order-md-2 order-first">
+						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
+								<li class="breadcrumb-item active" aria-current="page">Board</li>
+							</ol> 
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	    <!-- board -->
       	<div class="page-content">
 			<section class="row">
 				<div class="col-12"> 
@@ -33,46 +50,52 @@
 								</li>
 								<li>운영자 : ${boardData.boardManager}</li>
 							</ul>
-							<hr style="margin: 0px; width: 99%">
-							<div class="dropdown" >
-								<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
-								게시판 멤버</a>
-								<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
-									<li>
-										<h6 class="dropdown-header">멤버</h6>
-									</li>
-									<c:if test="${not empty participList}">
-										<c:forEach items="${participList}" var="participDto">
-											<li>
-												<a class="dropdown-item" href="#">
-													<i class="icon-mid bi bi-person me-2"></i>${participDto.empObj.empNm}
-												</a>
-											</li>
-										</c:forEach>
-									</c:if>
-								</ul>
-							</div>
+							<c:if test="${boardData.deptNo != 0}"> 
+								<hr style="margin: 0px; width: 99%">
+								<div class="dropdown" >
+									<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+									게시판 멤버</a>
+									<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
+										<li>
+											<h6 class="dropdown-header">멤버</h6>
+										</li>
+										<c:if test="${not empty participList}">
+											<c:forEach items="${participList}" var="participDto">
+												<li>
+													<a class="dropdown-item" href="#">
+														<i class="icon-mid bi bi-person me-2"></i>${participDto.empObj.empNm}
+													</a>
+												</li>
+											</c:forEach>
+										</c:if>
+									</ul>
+								</div>
+							</c:if>
+							
 						</div>
 					</div>
 					<!-- 메인 -->
-					<div class="section-main radius">
-						<div class="main-button">
-							<c:url value="/board/post/add" var="postAddUrl"/>
-							<c:url value="/board/add" var="boardAddUrl"/>
-							<button type="submit" class="btn black" onclick="location.href='${postAddUrl}?boardId=${boardData.boardId}'" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
-							<button type="submit" class="btn black"  onclick="location.href='${boardAddUrl}'"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
-							<div class="search-container">
-								<!-- <select class="form-select">
-									<option>제목</option>
-									<option>작성자</option>
-									<option>작성일</option>
-								</select>
-								 -->
-								<i class="bi bi-search"> </i><input class="search-input" type="search" placeholder=" 입력">
-								<button class="btn-style black" type="button">검색</button>
+						<div class="section-main radius">
+						<c:url value="/board" var="boardUrl"/>
+						<form action="${boardUrl}?bId=${boardData.boardId}" method="get">
+							<div class="main-button">
+								<c:url value="/board/post/add" var="postAddUrl"/>
+								<c:url value="/board/add" var="boardAddUrl"/>
+								<button type="button" class="btn black" onclick="location.href='${postAddUrl}?boardId=${boardData.boardId}'" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
+								<button type="button" class="btn black"  onclick="location.href='${boardAddUrl}'"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
+									<div class="search-container">
+										<select class="searchType" name="searchType" style="border: solid 1px #d0d3cd; border-radius: 0.3rem;">
+											  <option selected value="title">제목</option>
+											  <option value="writer">작성자</option>
+										</select>
+										<i class="bi bi-search"> </i>
+										<input class="search-input" type="search" name="search" placeholder=" 입력">
+										<input class="board-id" type="text" name="bId" value="${boardData.boardId}" hidden>
+										<button class="btn-style black" type="submit">검색</button>
+									</div>
+								<hr style="margin: 0px; margin-bottom: 3px;">
 							</div>
-							<hr style="margin: 0px; margin-bottom: 3px;">
-						</div>
+						</form>
 						<div class="dataTable-container">
 							<table class="table dataTable-table black">
 								 <colgroup>
@@ -118,7 +141,7 @@
 	                                    <c:url var="detailUrl" value="/board/detail">
 	                                       <c:param name="postId" value="${notNotice.postId}"/>
 	                                    </c:url>
-	                                       <tr class="table-light"  style="cursor: pointer;" onclick="location.href='${detailUrl}'">
+	                                       <tr class="table"  style="cursor: pointer; color: black;" onclick="location.href='${detailUrl}'">
 	                                          <td></td>
 	                                          <td>${status.count}</td>
 	                                          <td>${notNotice.postTitle}</td>

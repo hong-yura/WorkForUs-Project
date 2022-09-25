@@ -23,11 +23,30 @@
 	<%@ include file="../module/navigation.jsp" %>
     <div id="app">
       <div id="main">
+      
+       <div class="page-heading">
+			<div class="page-title">
+				<div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+						<h3>Board</h3>
+					</div>
+					<div class="col-12 col-md-6 order-md-2 order-first">
+						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
+								<li class="breadcrumb-item active" aria-current="page">Board</li>
+								<li class="breadcrumb-item active" aria-current="page">글작성</li>
+							</ol> 
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+		
       	<c:url value="/board/post/add" var="postAddUrl"/>
 		<form action="${postAddUrl}?boardId=${boardId}" method="post" enctype="multipart/form-data" >
-	      	<div class="page-heading margin-left-10">
-	      		<h3>Board</h3> <!-- 게시판 이름 -->
-	      	</div>
+	      	
 	      	<div class="write-container radius">
 	      		<div class="row">
 	      			<div class="col-2">
@@ -59,7 +78,7 @@
 	      		<div class="text-end">
 					<button class="btn" type="submit" name="temporaryYn" value="N" id="saveBtn">저장</button>
 					<button class="btn" type="submit" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
-					<button class="btn" type="button" onclick="location.href='/board'">취소</button>
+					<button class="btn" type="button" onclick="location.href='/board?bId=${boardId}'">취소</button>
 				</div>
 		     </div>
 		</form>
