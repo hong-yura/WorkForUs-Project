@@ -1,12 +1,12 @@
 const CalendarInfoFrame = (props) => {
   const [checks, setChecks] = React.useState([false, false, false]);
   const [inputs, setInputs] = React.useState(props.calendarInfo);
-  
-  React.useEffect(()=>{
-  	const newChecks = Array.from(checks);
-  	newChecks[+props.calendarInfo.calAccess]=true;
-  	setChecks(newChecks);
-  },[props.calendarInfo]);
+
+  React.useEffect(() => {
+    const newChecks = Array.from(checks);
+    newChecks[+props.calendarInfo.calAccess] = true;
+    setChecks(newChecks);
+  }, [props.calendarInfo]);
 
   const onInputChange = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
@@ -27,25 +27,27 @@ const CalendarInfoFrame = (props) => {
           alert("캘린더 생성에 성공하였습니다.");
         }
         props.setCalendarInfoModal(false);
-      }).then((res)=>{
-	    props.addCalendar(inputs);      	
+      })
+      .then((res) => {
+        props.addCalendar(inputs);
       })
       .catch();
   };
-  
+
   const onClickDelete = (event) => {
-   axios.delete(`http://localhost/calendar/list/${inputs.calId}`)
-   	.then((res)=> {
-   		if (res.data.result === "FAIL") 
-          alert("캘린더 삭제에 실패하였습니다.");
-        else 
-          alert("캘린더 삭제에 성공하였습니다.");
-     return res;
-   	}).then((res)=>{
+    axios
+      .delete(`http://localhost/calendar/list/${inputs.calId}`)
+      .then((res) => {
+        if (res.data.result === "FAIL") alert("캘린더 삭제에 실패하였습니다.");
+        else alert("캘린더 삭제에 성공하였습니다.");
+        return res;
+      })
+      .then((res) => {
         props.setCalendarInfoModal(false);
-	    props.addCalendar(inputs);   	
-   	}).catch();
-  }
+        props.addCalendar(inputs);
+      })
+      .catch();
+  };
 
   return (
     <ModalPortal onClick={() => props.setOnModal(false)}>
@@ -64,13 +66,13 @@ const CalendarInfoFrame = (props) => {
               <button
                 type="button"
                 className="close"
-                 onClick={() => props.setCalendarInfoModal(false)}
+                onClick={() => props.setCalendarInfoModal(false)}
               >
-                <i data-feather="x" className="bi bi-x fs-5" ></i>
+                <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
-            <form action="#">
-              <div className="modal-body">
+            <div className="modal-body">
+              <form action="#">
                 <label>캘린더 제목: </label>
                 <div className="form-group">
                   <input
@@ -123,20 +125,24 @@ const CalendarInfoFrame = (props) => {
                     전체 공개
                   </label>
                 </div>
-              </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-alert ml-1" onClick={onClickDelete}>
-                  <span className="d-none d-sm-block">삭제하기</span>
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-light-secondary"
-                  onClick={() => props.setCalendarInfoModal(false)}
-                >
-                  <span className="d-none d-sm-block">닫기</span>
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-alert ml-1"
+                onClick={onClickDelete}
+              >
+                <span className="d-none d-sm-block">삭제하기</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-light-secondary"
+                onClick={() => props.setCalendarInfoModal(false)}
+              >
+                <span className="d-none d-sm-block">닫기</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
