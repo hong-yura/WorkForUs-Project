@@ -22,11 +22,13 @@ public class BoardPostService {
 	
 	// 게시글 리스트 가져오기 -> paging 해야 한다. 
 	public List<BoardPostDTO> selectAll(int boardId, String search, String searchType) {
+		logger.info("selectAll(boardId={}, search={}, searchType={})", boardId, search, searchType);
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		List<BoardPostDTO> datas = new ArrayList<BoardPostDTO>();
-		if(search == null) {
+		if(search == null && searchType == null) {
 			// 검색 기능 사용 x
 			datas = mapper.selectPostAll(boardId);
+			logger.info("selectAll(검색x datas={})", datas);
 		}else {
 			// 검색 기능 사용 o
 			HashMap<String, Object> searchData = new HashMap<String, Object>();
@@ -35,6 +37,7 @@ public class BoardPostService {
 			searchData.put("searchType", searchType);
 			
 			datas = mapper.selectSearchData(searchData);
+			logger.info("selectAll(검색O searchData={})", searchData);
 		}
 		
 		return datas;
@@ -48,6 +51,7 @@ public class BoardPostService {
 		if(search == null) {
 			// 검색 기능 사용 x
 			datas = mapper.selectNotNoticeList(boardId);
+			logger.info("selectNotNotice(공지X 검색X datas={})", datas);
 		}else {
 			// 검색 기능 사용 o
 			HashMap<String, Object> searchData = new HashMap<String, Object>();
@@ -56,6 +60,7 @@ public class BoardPostService {
 			searchData.put("searchType", searchType);
 			
 			datas = mapper.selectNotNoticeSearchList(searchData);
+			logger.info("selectNotNotice(공지X 검색O searchData={})", searchData);
 		}
 		return datas;
 	}

@@ -98,6 +98,7 @@
 		    ORDER BY 1 DESC
 	</select>
 	
+	
 	<!-- 공지 아닌 게시글 검색 기능 -->
 	<select id="selectNotNoticeSearchList" resultMap="boardPostDtoMap" parameterType="hashmap">
 		SELECT P.POST_ID
@@ -118,18 +119,17 @@
 		  FROM TB_BOARD_POSTS P
 		  JOIN TB_EMPLOYEES E
 		    ON P.EMP_ID = E.EMP_ID
-		 WHERE P.BOARD_ID = #{id}
+		 WHERE P.BOARD_ID = #{boardId}
 		   AND P.TEMPORARY_POST_YN = 'N'
 		   AND (P.NOTICE_YN = 'N'
 		    OR P.NOTICE_YN IS NULL)
-		 <choose>
-		   <when test='searchType != null and searchType == "title"'>
+		   <if test='searchType.equals("title")'>
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
-		   </when> 
-		   <otherwise>
+		   </if> 
+		   
+		   <if test='searchType.equals("writer")'>
 		   AND E.EMP_NM LIKE '%' || #{search} || '%'
-		   </otherwise>
-		 </choose> 
+		   </if>
 		 ORDER BY 1 DESC
 	</select>
 	
@@ -175,15 +175,13 @@
 		  FROM TB_BOARD_POSTS P
 		  JOIN TB_EMPLOYEES E
 		    ON P.EMP_ID = E.EMP_ID
-		 WHERE P.BOARD_ID = #{id}
-		 <choose>
-		   <when test='searchType != null and searchType == "title"'>
+		 WHERE P.BOARD_ID = #{boardId}
+		   <if test='searchType.equals("title")'>
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
-		   </when> 
-		   <otherwise>
+		   </if> 
+		   <if test='searchType.equals("writer")'>
 		   AND E.EMP_NM LIKE '%' || #{search} || '%'
-		   </otherwise>
-		 </choose> 
+		   </if>
 	</select>
 	
 	

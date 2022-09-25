@@ -121,37 +121,39 @@
 								<tbody>
 									<!-- 첫 번째 c:foreach문으로 공지를 출력하고, 두 번째 c:foreach문으로 일반 게시글을 출력 -->
 		                           <c:if test="${not empty postList}">
-	                                 <c:forEach items="${postList}" var="postData">
-	                                    <c:if test="${postData.noticeYn eq 'Y' && not empty postData.noticeYn}">
-	                                    <c:url var="detailUrl" value="/board/detail">
-	                                       <c:param name="postId" value="${postData.postId}"/>
-	                                    </c:url>
-	                                       <tr class="table-primary" style="cursor: pointer;"  onclick="location.href='${detailUrl}'">
-	                                          <td></td>
-	                                          <td><i class="bi bi-megaphone-fill" ></i></td>
-	                                          <td>${postData.postTitle}</td>
-	                                          <td>${postData.empObj.empNm}</td>
-	                                          <td>${postData.addDate}</td>
-	                                          <td>${postData.viewCnt}</td>
-	                                          <td>${postData.likeCnt}</td>
-	                                       </tr>
-	                                    </c:if>
-	                                 </c:forEach>
-	                                 <c:forEach items="${notNotice}" var="notNotice" varStatus="status">
-	                                    <c:url var="detailUrl" value="/board/detail">
-	                                       <c:param name="postId" value="${notNotice.postId}"/>
-	                                    </c:url>
-	                                       <tr class="table"  style="cursor: pointer; color: black;" onclick="location.href='${detailUrl}'">
-	                                          <td></td>
-	                                          <td>${status.count}</td>
-	                                          <td>${notNotice.postTitle}</td>
-	                                          <td>${notNotice.empObj.empNm}</td>
-	                                          <td>${notNotice.addDate}</td>
-	                                          <td>${notNotice.viewCnt}</td>
-	                                          <td>${notNotice.likeCnt}</td>
-	                                       </tr>
-	                                 </c:forEach>
-		                           </c:if>
+		                                 <c:forEach items="${postList}" var="postData">
+		                                    <c:if test="${postData.noticeYn eq 'Y' && not empty postData.noticeYn}">
+		                                    <c:url var="detailUrl" value="/board/detail">
+		                                       <c:param name="postId" value="${postData.postId}"/>
+		                                    </c:url>
+		                                       <tr class="table-primary" style="cursor: pointer;"  onclick="location.href='${detailUrl}'">
+		                                          <td></td>
+		                                          <td><i class="bi bi-megaphone-fill" ></i></td>
+		                                          <td>${postData.postTitle}</td>
+		                                          <td>${postData.empObj.empNm}</td>
+		                                          <td>${postData.addDate}</td>
+		                                          <td>${postData.viewCnt}</td>
+		                                          <td>${postData.likeCnt}</td>
+		                                       </tr>
+		                                    </c:if>
+		                                 </c:forEach>
+	                                 </c:if>
+	                                 <c:if test="${not empty notNotice}">
+		                                 <c:forEach items="${notNotice}" var="notNotice" varStatus="status">
+		                                    <c:url var="detailUrl" value="/board/detail">
+		                                       <c:param name="postId" value="${notNotice.postId}"/>
+		                                    </c:url>
+		                                       <tr class="table"  style="cursor: pointer; color: black;" onclick="location.href='${detailUrl}'">
+		                                          <td></td>
+		                                          <td>${status.count}</td>
+		                                          <td>${notNotice.postTitle}</td>
+		                                          <td>${notNotice.empObj.empNm}</td>
+		                                          <td>${notNotice.addDate}</td>
+		                                          <td>${notNotice.viewCnt}</td>
+		                                          <td>${notNotice.likeCnt}</td>
+		                                       </tr>
+		                                 </c:forEach>
+	                                 </c:if>
 								</tbody>
 							</table>
 						</div>
