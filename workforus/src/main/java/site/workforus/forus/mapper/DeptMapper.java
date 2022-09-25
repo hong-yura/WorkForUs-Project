@@ -9,12 +9,12 @@ public interface DeptMapper {
 	
 	public List<DeptDTO> selectDeptAll();
 	
-	public DeptDTO selectDeptDetail(int no);
+	public DeptDTO selectDeptDetail(int deptNo);
 	
 	public int insertDept(DeptDTO deptDto);
 	
 	public int updateDept(DeptDTO data);
 	
-	public int deleteDept(int no);
+	public int deleteDept(int deptNo);
 	
 }
