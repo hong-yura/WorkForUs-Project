@@ -151,5 +151,31 @@ public class MailController {
 		return "/mail/mailTemp";
 	}
 	
-
+	// 메일 휴지통으로 보내기
+	@GetMapping(value="trash")
+	public String trashMail(Model model, Principal principal, @RequestParam String mailId) {
+		String empId = principal.getName();
+		int result = service.updateMailFolder(empId, mailId);
+		
+		return "redirect:/mail";
+	}
+	
+	// 휴지통 목록
+	@GetMapping(value="trashMail")
+	public String trashList(Model model, Principal principal) {
+		String empId = principal.getName();
+		
+		List<ReceiveMailDTO> dataList = service.selectTrashDatas(empId);
+		model.addAttribute("dataList", dataList);
+		return "/mail/mailHome";
+	}
+	
+	// 기본 메일함으로 복구
+	@GetMapping(value="recoveryMail")
+	public String recoveryMail(Model model, Principal principal, @RequestParam String mailId) {
+		String empId = principal.getName();
+		int result = service.updateRecoveryMail(empId, mailId);
+		
+		return "redirect:/mail";
+	}
 }

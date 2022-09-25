@@ -112,6 +112,7 @@
 				                    </tbody>
 				                </table>
 			                </div>
+			                <!-- 
 			                <div class="dataTable-bottom">
 				                <nav class="dataTable-pagination">
 					                <ul class="dataTable-pagination-list pagination pagination-primary">
@@ -123,6 +124,7 @@
 					                </ul>
 				                </nav>
 			                </div>
+			                 -->
 	              	  </div>
            		 </div>
 			</section>

@@ -53,7 +53,7 @@
                             	<a href="${homeUrl}/mail/spam">스팸메일함</a>
                             </div>
                             <div style="margin: 8px 0;">
-                            	<a href="${homeUrl}/mail/delMail">휴지통</a>
+                            	<a href="${homeUrl}/mail/trashMail">휴지통</a>
                             </div>
 						</div>
 						<div class="card card-body col-12 col-md-9 col-lg-9">
@@ -140,6 +140,7 @@
 				                    </tbody>
 				                </table>
 			                </div>
+			                <!-- 
 			                <div class="dataTable-bottom">
 				                <nav class="dataTable-pagination">
 					                <ul class="dataTable-pagination-list pagination pagination-primary">
@@ -151,6 +152,7 @@
 					                </ul>
 				                </nav>
 			                </div>
+			                 -->
 	              	  </div>
            		 </div>
 					
@@ -169,7 +171,7 @@
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	
-    <script src="static/js/main.js"></script>
+    <script src="${staticUrl}/js/main.js"></script>
    	<script type="text/javascript">
 		function selectAll() {
 			if(document.getElementById("cboxAll").checked==true){  //id 를 사용하여 하나의 객체만을 호출

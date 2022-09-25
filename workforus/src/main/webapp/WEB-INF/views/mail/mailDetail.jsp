@@ -25,9 +25,9 @@
 						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item">
-									<a href="#">Home</a></li>
+									<a href="${homeUrl}">Home</a></li>
 								<li class="breadcrumb-item">
-									<a href="#">Mail</a></li>
+									<a href="${homeUrl}/mail">Mail</a></li>
 								<li class="breadcrumb-item active" aria-current="page">받은메일함</li>
 							</ol> 
 						</nav>
@@ -53,7 +53,7 @@
                             	<a href="${homeUrl}/mail/spam">스팸메일함</a>
                             </div>
                             <div style="margin: 8px 0;">
-                            	<a href="${homeUrl}/mail/delMail">휴지통</a>
+                            	<a href="${homeUrl}/mail/trashMail">휴지통</a>
                             </div>
 						</div>
 						
@@ -62,13 +62,28 @@
 							<c:url var="modReadUrl" value="${homeUrl}/mail/modRead">
 								<c:param name="mailId" value="${receiveData	.mailId}"/>
 							</c:url>
+							<c:url var="trashMail" value="${homeUrl}/mail/trash">
+                           		<c:param name="mailId" value="${receiveData.mailId}"/>
+                           	</c:url>
+							<c:url var="recoveryMail" value="${homeUrl}/mail/recoveryMail">
+                           		<c:param name="mailId" value="${receiveData.mailId}"/>
+                           	</c:url>
 			                <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
 				                <div class="dataTable-top">
 				                </div>
-				               	<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
-				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
-				               	<a href="${modReadUrl}"><button type="button" class="btn btn-outline-primary">안읽음</button></a>
-				               	<button type="button" class="btn btn-outline-primary">답장</button>
+				                <c:choose>
+				                	<c:when test="${receiveData.mailFolder eq '3'}">
+			                		 	<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
+			               				<a href="${trashMail}"><button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button></a>
+   						               	<a href="${recoveryMail}"><button type="button" class="btn btn-outline-primary">복구</button></a>
+				                	</c:when>
+				                	<c:otherwise>
+		 								<a href="${homeUrl}/mail" class="btn btn-outline-primary">목록</a>
+						               	<a href="${trashMail}"><button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button></a>
+						               	<a href="${modReadUrl}"><button type="button" class="btn btn-outline-primary">안읽음</button></a>
+				             		  	<button type="button" class="btn btn-outline-primary">답장</button>
+				                	</c:otherwise>
+				                </c:choose>
 			                </div>
 			                <!-- 메일내용 -->
 			                <div class="dataTable-container">
@@ -116,8 +131,8 @@
 	</div>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+    <script src="/${staticUrl}/js/main.js"></script>
 	
-    <script src="${staticUrl}/js/main.js"></script>
 
 </body>
 </html>

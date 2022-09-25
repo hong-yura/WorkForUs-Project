@@ -144,6 +144,28 @@ public class MailService {
 		return data;
 	}
 
+	// 휴지통으로 이동
+	public int updateMailFolder(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateMailFolder(empId, mailId);
+		return result;
+	}
+	
+	// 휴지통메일 목록
+	public List<ReceiveMailDTO> selectTrashDatas(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		List<ReceiveMailDTO> datas = mapper.selectReceiveTrash(empId);
+		return datas;
+	}
+
+	public int updateRecoveryMail(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateRecoveryMail(empId, mailId);
+		return result;
+	}
+
 
 	
 

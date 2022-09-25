@@ -66,6 +66,15 @@ public interface SendMailMapper {
 	// 임시보관함 조회
 	public List<TempMailDTO> selectTempList(String empId);
 	
+	// 메일 휴지통으로 이동
+	public int updateMailFolder(@Param("empId") String empId, @Param("mailId") String mailId);
+
+	// 휴지통 목록
+	public List<ReceiveMailDTO> selectReceiveTrash(String empId);
+
+	// 메일 복구
+	public int updateRecoveryMail(@Param("empId") String empId, @Param("mailId") String mailId);
+	
 
 
 
