@@ -352,13 +352,10 @@ public class CommuteService{
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
 		Date weekTime = defaultSdf.parse(weekWorktime);
-		System.out.println(weekTime);
 		double progress = 0;
 		if(weekTime.getTime()/defaultTime.getTime() < 1) {
 			double dftTime = defaultTime.getTime() * 1.0 + 32400000;	// 음수가 나와서 한국시간 더해줌 
 			double wkTime = weekTime.getTime() * 1.0 + 32400000; 		// 음수가 나와서 한국시간 더해줌 
-			System.out.println(dftTime);
-			System.out.println(wkTime + "@@@");
 			progress = (wkTime / dftTime);
 			progress = Double.parseDouble(String.format("%.2f", progress));
 		} else {
@@ -507,7 +504,6 @@ public class CommuteService{
 		}
 		
 		String yearmonth1 = yearstr + monthstr;
-		System.out.println(yearmonth1);
 		
 		List<CommuteDTO> listData = getList(empId, yearmonth1);
 
