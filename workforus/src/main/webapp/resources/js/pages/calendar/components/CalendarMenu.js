@@ -24,13 +24,17 @@ const CalendarMenu = (props) => {
             menuName="내 캘린더"
             subMenu={props.myCal}
             addCalendar={props.addCalendar}
-        	setCalendarInfoModal={props.setCalendarInfoModal}
-        	setCalendarInfo={props.setCalendarInfo}
+            setCalendarInfoModal={props.setCalendarInfoModal}
+            setCalendarInfo={props.setCalendarInfo}
             checkCalendarVisibilitiy={props.checkCalendarVisibilitiy}
           />
           <CalendarSubShareMenu
             menuName="공유 캘린더"
             subMenu={props.shareCal}
+            addCalendar={props.addShareCalendar}
+            setCalendarInfo={props.setCalendarInfo}
+            setCalendarInfoModal={props.setCalendarInfoModal}
+            checkCalendarVisibilitiy={props.checkCalendarVisibilitiy}
           />
         </ul>
       </div>
