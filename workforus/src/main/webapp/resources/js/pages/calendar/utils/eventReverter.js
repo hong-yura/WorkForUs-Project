@@ -7,8 +7,8 @@ const eventReverter = (event) => {
       scheName: event.title,
       scheContent: event.body,
       scheAlltime: "Y",
-      scheDateStart: dayjs(event.start.d.d).format('YYYY-MM-DD'),
-      scheDateEnd: dayjs(event.end.d.d).format('YYYY-MM-DD'),
+      scheDateStart: dayjs(event.start.d.d).format("YYYY-MM-DD"),
+      scheDateEnd: dayjs(event.end.d.d).format("YYYY-MM-DD"),
       scheTimeStart: null,
       scheTimeEnd: null,
     };
@@ -19,11 +19,16 @@ const eventReverter = (event) => {
       scheName: event.title,
       scheContent: event.body,
       scheAlltime: "N",
-      scheDateStart: dayjs(event.start.d.d).format('YYYY-MM-DD'),
-      scheDateEnd: dayjs(event.end.d.d).format('YYYY-MM-DD'),
+      scheDateStart: dayjs(event.start.d.d).format("YYYY-MM-DD"),
+      scheDateEnd: dayjs(event.end.d.d).format("YYYY-MM-DD"),
       scheTimeStart:
-        event.start.d.d.getHours() + ":" + event.start.d.d.getMinutes(),
-      scheTimeEnd: event.end.d.d.getHours() + ":" + event.end.d.d.getMinutes(),
+        new String(event.start.d.d.getHours()).padStart(2, 0) +
+        ":" +
+        new String(event.start.d.d.getMinutes()).padStart(2, 0),
+      scheTimeEnd:
+        new String(event.end.d.d.getHours()).padStart(2, 0) +
+        ":" +
+        new String(event.end.d.d.getMinutes()).padStart(2, 0),
     };
   }
   console.log(schedule);

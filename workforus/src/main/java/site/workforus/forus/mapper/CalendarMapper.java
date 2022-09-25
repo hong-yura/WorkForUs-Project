@@ -14,6 +14,8 @@ public interface CalendarMapper {
 
 	public List<CalendarDTO> selectByCalId(int calId);
 
+	public List<CalendarDTO> selectRecentData(String empId);
+
 	public boolean updateData(CalendarDTO calendarDTO);
 
 	public boolean deleteById(int calId);

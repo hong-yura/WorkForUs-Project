@@ -22,6 +22,7 @@ pageEncoding="UTF-8"%>
   </head>
 
   <body>
+  	<script type="text/javascript">const empId = "${empId}"</script>
     <%@ include file="../module/navigation.jsp" %>
     <div id="app">
       <div id="main">
@@ -43,6 +44,8 @@ pageEncoding="UTF-8"%>
     <script type="text/babel" src="static/js/pages/calendar/modal/ModalPortal.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddCalendarFrame.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddCalendarModal.js"></script>
+    <script type="text/babel" src="static/js/pages/calendar/modal/AddShareCalendarFrame.js"></script>
+    <script type="text/babel" src="static/js/pages/calendar/modal/AddShareCalendarModal.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddScheduleFrame.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/AddScheduleModal.js"></script>
     <script type="text/babel" src="static/js/pages/calendar/modal/CalendarInfoFrame.js"></script>

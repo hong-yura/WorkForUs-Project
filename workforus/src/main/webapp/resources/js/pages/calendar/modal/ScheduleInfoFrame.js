@@ -1,11 +1,10 @@
 const ScheduleInfoFrame = (props) => {
   const [inputs, setInputs] = React.useState(props.eventInfo);
 
-  React.useEffect(()=>{
-  if(props.eventInfo !== null)
-  	setInputs(eventReverter(props.eventInfo));
-  },[props.eventInfo]);
-  
+  React.useEffect(() => {
+    if (props.eventInfo !== null) setInputs(eventReverter(props.eventInfo));
+  }, [props.eventInfo]);
+
   const onInputChange = (event) => {
     setInputs({ ...inputs, [event.target.name]: event.target.value });
   };
@@ -33,33 +32,37 @@ const ScheduleInfoFrame = (props) => {
       setInputs({ ...inputs, [scheTimeStart]: null, [scheTimeEnd]: null });
     }
   };
-  
+
   const onClickUpdate = () => {
-  	axios.put("http://localhost/schedule", inputs).
-  	then((res)=>{
-  		if(res.data.result === "FAIL") {
-  			alert("일정 수정에 실패하였습니다.");
-  		} else {
-  			alert("일정 수정에 성공하였습니다.");
-  		}
-  	}).catch((e)=>console.error(e));
-  	props.onUpdateEvent(eventConverter(inputs));
-  	props.setOnInfoModal(false)
-  }
-  
+    axios
+      .put("http://localhost/schedule", inputs)
+      .then((res) => {
+        if (res.data.result === "FAIL") {
+          alert("일정 수정에 실패하였습니다.");
+        } else {
+          alert("일정 수정에 성공하였습니다.");
+        }
+      })
+      .catch((e) => console.error(e));
+    props.onUpdateEvent(eventConverter(inputs));
+    props.setOnInfoModal(false);
+  };
+
   const onClickDelete = () => {
-  	axios.delete(`http://localhost/schedule/${inputs.scheId}`).
-  	then((res)=>{
-  		if(res.data.result === "FAIL") {
-  			alert("일정 삭제에 실패하였습니다.");
-  		} else {
-  			alert("일정 삭제에 성공하였습니다.");
-  		}
-  	}).catch((e)=>console.error(e));
+    axios
+      .delete(`http://localhost/schedule/${inputs.scheId}`)
+      .then((res) => {
+        if (res.data.result === "FAIL") {
+          alert("일정 삭제에 실패하였습니다.");
+        } else {
+          alert("일정 삭제에 성공하였습니다.");
+        }
+      })
+      .catch((e) => console.error(e));
     props.onDeleteEvent(eventConverter(inputs));
-  	props.setOnInfoModal(false)
-  }
-  
+    props.setOnInfoModal(false);
+  };
+
   return (
     <ModalPortal onClick={() => props.setOnInfoModal(false)}>
       <div
@@ -82,8 +85,8 @@ const ScheduleInfoFrame = (props) => {
                 <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
-            <form action="#">
-              <div className="modal-body">
+            <div className="modal-body">
+              <form action="#">
                 <label>캘린더</label>
                 <select
                   value={inputs.calId}
@@ -92,7 +95,11 @@ const ScheduleInfoFrame = (props) => {
                   name="calId"
                 >
                   {props.myCal.map((cal) => {
-                    return <option key={cal.calId} value={cal.calId}>{cal.calName}</option>;
+                    return (
+                      <option key={cal.calId} value={cal.calId}>
+                        {cal.calName}
+                      </option>
+                    );
                   })}
                 </select>
                 <label>일정 제목: </label>
@@ -124,7 +131,9 @@ const ScheduleInfoFrame = (props) => {
                     type="date"
                     name="scheDateStart"
                     className="form-control"
-                    defaultValue={dayjs(inputs.scheDateStart).format('YYYY-MM-DD')}
+                    defaultValue={dayjs(inputs.scheDateStart).format(
+                      "YYYY-MM-DD"
+                    )}
                     onChange={onDateChange}
                     onBlur={onDateChange}
                   />
@@ -145,17 +154,15 @@ const ScheduleInfoFrame = (props) => {
                 <div className="form-check">
                   <input
                     className="form-check-input"
-                    name="scheAllday"
+                    name="scheAlltime"
                     type="checkbox"
                     onChange={onCheckBoxChange}
                     onBlur={onCheckBoxBlur}
-                    checked={inputs.scheAllday === "Y" ? true : false}
+                    checked={inputs.scheAlltime === "Y" ? true : false}
                   />
-                  <label className="form-check-label">
-                    종일 여부
-                  </label>
+                  <label className="form-check-label">종일 여부</label>
                 </div>
-                {inputs.scheAllday === "N" && (
+                {inputs.scheAlltime !== "Y" && (
                   <React.Fragment>
                     <label>일정 시작 시간: </label>
                     <div className="form-group">
@@ -163,7 +170,7 @@ const ScheduleInfoFrame = (props) => {
                         type="time"
                         name="scheTimeStart"
                         className="form-control"
-                    	defaultValue={inputs.scheTimeStart}
+                        defaultValue={inputs.scheTimeStart}
                         onChange={onInputChange}
                         onBlur={onInputBlur}
                       />
@@ -175,30 +182,38 @@ const ScheduleInfoFrame = (props) => {
                         type="time"
                         name="scheTimeEnd"
                         className="form-control"
-                    	defaultValue={inputs.scheTimeEnd}
+                        defaultValue={inputs.scheTimeEnd}
                         onChange={onInputChange}
                         onBlur={onInputBlur}
                       />
                     </div>
                   </React.Fragment>
                 )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light-secondary"
-                  onClick={() => props.setOnInfoModal(false)}
-                >
-                  <span className="d-none d-sm-block">닫기</span>
-                </button>
-                <button type="button" className="btn btn-alert ml-1" onClick={onClickDelete}>
-                  <span className="d-none d-sm-block">삭제하기</span>
-                </button>
-                <button type="button" className="btn btn-primary ml-1" onClick={onClickUpdate}>
-                  <span className="d-none d-sm-block">수정하기</span>
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-light-secondary"
+                onClick={() => props.setOnInfoModal(false)}
+              >
+                <span className="d-none d-sm-block">닫기</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-alert ml-1"
+                onClick={onClickDelete}
+              >
+                <span className="d-none d-sm-block">삭제하기</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary ml-1"
+                onClick={onClickUpdate}
+              >
+                <span className="d-none d-sm-block">수정하기</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

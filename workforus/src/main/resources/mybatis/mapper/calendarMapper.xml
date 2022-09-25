@@ -46,6 +46,17 @@
 		SELECT * FROM TB_CALENDARS WHERE EMP_ID = #{empId}
 	</select>
 	
+	<select id="selectRecentData" parameterType="string" resultMap="calendarDtoMap">
+		<![CDATA[
+		SELECT * FROM 
+			(SELECT * FROM 
+				TB_CALENDARS 
+				WHERE EMP_ID=#{empId} 
+				ORDER BY CAL_ID desc) 
+		WHERE ROWNUM  < = 1
+		]]>
+	</select>
+	
 
 	<delete id="deleteById">
 		DELETE FROM TB_CALENDARS
