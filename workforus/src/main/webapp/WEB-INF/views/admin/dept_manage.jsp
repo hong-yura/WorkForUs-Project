@@ -11,8 +11,8 @@
 	<%@ include file="../module/head.jsp" %>
 	<link rel="stylesheet" href="${staticUrl}/css/pages/jui-ui.min.classic.css" />
 	<link rel="stylesheet" href="${staticUrl}/css/pages/admin.css" />
-	<script src="${staticUrl}/js/pages/admin/department/jui-core.min.js"></script>
-	<script src="${staticUrl}/js/pages/admin/department/jui-ui.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/jui-core.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/jui-ui.min.js"></script>
 </head>
 <!-- <script type="text/javascript">
  	function formCheck(form) {
@@ -263,23 +263,23 @@
 		</div>
 	</div>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	<script src="${staticUrl}/js/main.js"></script>
 	
 	<script type="text/javascript">
-/* 		// 에러 체크
+		// 에러 체크
 		var errorCheckModal = new bootstrap.Modal(document.getElementById("errorModal"), {
 			keyboard: false
 		})
 		errorCheckModal.show();
-	 */
-	 
+	
 		// 부서 정보 상세 조회
-		function deptDetail(deptNo) {
+		function deptDetail(no) {
 			$.ajax({
 				type: "get",
 				url: "${adminUrl}/dept_detail",
 				data: {
-					deptNo: deptNo
+					no: no
 				},
 				success: function(data) {
 					var form = document.getElementById("deptForm");
@@ -295,33 +295,17 @@
 		
 		// 부서 추가
 		function deptAdd() {
-			var deptName = $.trim($("#deptAddName").val())
-			var deptMngId = $.trim($("#deptAddMngId").val())
-			
-			if(deptName.trim().length == 0) {
-				alert("부서명을 입력해주세요.");
-				$("#deptAddName").focus();
-				return;
-			}
-
-			if(deptMngId.trim().length == 0) {
-				alert("부서 책임자를 입력해주세요.");
-				$("#deptAddMngId").focus();
-				return;
-			}
-			
-			// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-			// if deptMngId가 부서명 중복인지 확인
-			// 직급이 부장 이상만
-
-			var data = {"deptName": deptName, "deptMngId": deptMngId}
-			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_add",
-				data: JSON.stringify(data),
-				contentType: "application/json; charset=UTF-8",
+				data: {
+					//name: deptAddForm.deptName.value
+					//mngId: deptAddForm.deptMngId.value
+				},
+				dataType: "json",
 				success: function(data) {
+					console.log(data);
+					
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
@@ -341,33 +325,21 @@
 		
 		// 부서 수정
 		function deptModify() {
-			var deptNo = deptForm.deptNo.value
-			var deptName = $.trim($("#deptModName").val())
-			var deptMngId = $.trim($("#deptModMngId").val())
+			var modForm = document.getElementById("deptModForm");
 			
-			if(deptName.trim().length == 0) {
-				alert("부서명을 입력해주세요.");
-				$("#deptModName").focus();
-				return;
-			}
-
-			if(deptMngId.trim().length == 0) {
-				alert("부서 책임자를 입력해주세요.");
-				$("#deptModMngId").focus();
-				return;
-			}
-			
-			// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-			// if deptMngId가 부서명 중복인지 확인
-			// 직급이 부장 이상만
-			var data = {"deptNo": deptNo, "deptName": deptName, "deptMngId": deptMngId}
+			var deptName = $("deptName").value;
+			var deptMngId = $("deptMngId").value;
 			
 			$.ajax({
 				type: "post",
 				url: "${adminUrl}/dept_modify",
-				data: JSON.stringify(data),
-				contentType: "application/json; charset=UTF-8",
+				data: {
+					no: deptForm.deptNo.value
+				},
+				dataType: "json",
 				success: function(data) {
+					console.log(data);
+					
 					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 						keyboard: false
 					});
@@ -392,7 +364,7 @@
 				type: "post",
 				url: "${adminUrl}/dept_delete",
 				data: {
-					deptNo: deptForm.deptNo.value
+					no: deptForm.deptNo.value
 				},
 				dataType: "json",
 				success: function(data) {
@@ -414,6 +386,6 @@
 		}
 		
 	</script>
-	<script type="text/javascript" src="${staticUrl}/js/pages/admin/department/add-department-modal.js"></script>
+	
 </body>
 </html>
