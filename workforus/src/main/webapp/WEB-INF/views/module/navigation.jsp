@@ -313,7 +313,7 @@
                 <span style="font-size: 14px;">전사 게시판</span>
                 <hr style="margin: 0px; border: 1px;">
                 <ul id="submenu-item2" style="list-style: none;">
-                	<c:forEach items="${boardList}" var="board">
+                	<c:forEach items="${sessionScope.boardList}" var="board">
                 		<c:if test="${board.deptNo == 0}">
 		                	<li>
 		                		<a href="${homeUrl}/board?bId=${board.boardId}">${board.boardNm}</a>
@@ -326,7 +326,7 @@
                 <span style="font-size: 14px;">부서 게시판</span>
                 <hr style="margin: 0px; border: 1px;">
                 <ul id="submenu-item2" style="list-style: none;">
-                	<c:forEach items="${boardList}" var="board">
+                	<c:forEach items="${sessionScope.boardList}" var="board">
                 		<c:if test="${board.deptNo > 0}">
 		                	<li>
 		                		<a href="${homeUrl}/board?bId=${board.boardId}">${board.boardNm}</a>

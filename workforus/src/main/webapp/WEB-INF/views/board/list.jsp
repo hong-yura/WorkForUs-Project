@@ -97,7 +97,7 @@
 							</div>
 						</form>
 						<div class="dataTable-container">
-							<table class="table dataTable-table black">
+							<table class="table table-hover table-light dataTable-table black">
 								 <colgroup>
 								 	<col width="2%">
 						            <col width=8%>
@@ -108,7 +108,7 @@
 						            <col width=10%>
 						        </colgroup>
 								<thead>
-									<tr>
+									<tr class="table-light">
 										<th></th>
 										<th>번호</th>
 										<th>제목</th>
