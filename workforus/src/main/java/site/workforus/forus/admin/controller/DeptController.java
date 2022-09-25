@@ -47,7 +47,7 @@ public class DeptController {
 	@ResponseBody
 	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
 	public String getDeptDetail(HttpSession session, @RequestParam int deptNo) {
-		logger.info("getDeptDetail(deptNo): {}", deptNo);
+		logger.info("getDeptDetail(no): {}", deptNo);
 		// 로그인 세션 추가하기
 		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
