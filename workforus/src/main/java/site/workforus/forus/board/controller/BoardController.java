@@ -58,21 +58,36 @@ public class BoardController {
 	
 	@GetMapping(value="")
 	public String getData(Model model, HttpSession session, Authentication auth
-						, @RequestParam(required=false) int bId) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
+						, @RequestParam(value="bId",required=false) int bId
+						, @RequestParam(value="search", required=false) String search
+						, @RequestParam(value="searchType", required=false) String searchType) { // 사용자가 어떤 게시판 url로 이동했는지 파라미터로 전달한다.
 		logger.info("getData(bId={})", bId);
+		logger.info("getData(search={})", search);
+		logger.info("getData(searchType={})", searchType);
+		
+		// 로그인 데이터 가져오기
 		LoginVO loginVo = (LoginVO)auth.getPrincipal();
 		logger.info("getData(loginVo={})", loginVo);
 		
+		
 		// 게시판 가져오기 -> navbar에 들어갈 내용
 		List<BoardDTO> boardNav = boardService.selectAll(loginVo); // 사원에 해당하는 게시판 데이터를 가지고 옴
-	
+		logger.info("getData(boardNav={})", boardNav);
+		
 		// 사원이 선택한 게시판 가져오기 
 		BoardDTO boardData = boardService.selectBoardData(bId);
 		
-		// 게시글 가져오기 -> 사원이 어떤 게시판을 클릭했는지 확인 해야 한다. -> url을 통해서 어떤 
-		List<BoardPostDTO> postList = postService.selectAll(bId); // 어떤 게시판의 게시글인지 확인을 해야 한다.
-		List<BoardPostDTO> notNotice = postService.selectNotNotice(bId);
-		// 참여명단을 가져와야 한다. 
+		// 게시글 가져오기 -> 사원이 어떤 게시판을 클릭했는지 확인 해야 한다. -> url을 통해서
+		// 검색 기능을 사용하지 않았다면 -> 모든 게시글을 가지고 온다.
+		// 검색 기능을 사용했다면 -> 검색한 게시판에 해당하는 데이터만 가지고 온다.
+		List<BoardPostDTO> postList = postService.selectAll(bId, search,searchType); // 어떤 게시판의 게시글인지 확인을 해야 한다.
+		logger.info("getData(postList)={}", postList);
+		
+		List<BoardPostDTO> notNotice = postService.selectNotNotice(bId, search, searchType);
+		logger.info("getData(notNotice)={}", notNotice);
+		
+		
+		// 참여명단을 가져오기 
 		List<BoardParticipDTO> participList = participService.selectAll(boardData);
 		
 		// 게시글 갯수 notice_yn = 'N'인 게시글만 가지고 온다. 
@@ -116,7 +131,7 @@ public class BoardController {
 		int groupNo = postService.selectGroupNo(pId); 
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
-		model.addAttribute("postData", postData);
+		model.addAttribute("postData", postData); 
 		model.addAttribute("loginId", loginVo.getUsername()); 
 		logger.info("detail(loginVo={})", loginVo);
 		

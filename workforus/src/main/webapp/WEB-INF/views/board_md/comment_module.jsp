@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<!-- 대댓 -->
-				<form action="${commentUrl}/add2" class="secComm" method="post">
+				<form action="${commentUrl}/add2" class="secComm" method="post" style="display:none;">
 					<div class="card">
 						<div class="display-inline emp-img margin-left-10">
 							<img class="emp-image display-inline" src="${staticUrl}/images/faces/1.jpg">
@@ -80,7 +80,7 @@
 						</div>
 					</div>
 				</form>
-				<div class="mb-1 second-comment-container">
+				<div class="mb-1 second-comment-container" style="display: none;">
 					<c:forEach items="${commentList}" var="secComment">
 						<c:if test="${secComment.groupNo eq comment.groupNo && secComment.depth == 1}">
 							<div class="card second-comment-controller">

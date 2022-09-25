@@ -313,27 +313,26 @@
                 <span style="font-size: 14px;">전사 게시판</span>
                 <hr style="margin: 0px; border: 1px;">
                 <ul id="submenu-item2" style="list-style: none;">
-                	<li>
-                		<a href="${homeUrl}/board?bId=1">일정공지</a>
-                	</li>
-                	<li>
-                		<a href="${homeUrl}/board?bId=2">주간식단표</a>
-                	</li>
-                	<li>
-                		<a href="${homeUrl}/board?bId=8">이달의뉴스</a>
-                	</li>
+                	<c:forEach items="${sessionScope.boardList}" var="board">
+                		<c:if test="${board.deptNo == 0}">
+		                	<li>
+		                		<a href="${homeUrl}/board?bId=${board.boardId}">${board.boardNm}</a>
+		                	</li>
+                		</c:if>
+                	</c:forEach>
                 </ul>
               </li>
               <li class="submenu-item">
                 <span style="font-size: 14px;">부서 게시판</span>
                 <hr style="margin: 0px; border: 1px;">
                 <ul id="submenu-item2" style="list-style: none;">
-                	<li>
-                		<a href="${homeUrl}/board?bId=7">IT관리부</a>
-                	</li>
-                	<li>
-                		<a href="${homeUrl}/board?bId=6">인공지능개발팀</a>
-                	</li>
+                	<c:forEach items="${sessionScope.boardList}" var="board">
+                		<c:if test="${board.deptNo > 0}">
+		                	<li>
+		                		<a href="${homeUrl}/board?bId=${board.boardId}">${board.boardNm}</a>
+		                	</li>
+                		</c:if>
+                	</c:forEach>
                 </ul>
               </li>
               </li>

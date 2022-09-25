@@ -9,7 +9,7 @@ import site.workforus.forus.employee.model.LoginVO;
 
 
 public interface BoardMapper {
-	// 게시판 가져오기
+	// 게시판 리스트 가져오기
 	public List<BoardDTO> selectAll(LoginVO loginVo); // Mapper.xml의 id와 같게 한다.
 	// 게시판 하나만 가져오기
 	public BoardDTO selectBoardData(int boardId);

@@ -17,9 +17,25 @@
 	<%@ include file="../module/navigation.jsp" %>
 	<div id="app">
       <div id="main">
-      	<div class="page-heading margin-left-10">
-      		<h3>Board</h3> 
-      	</div>
+      	<div class="page-heading">
+			<div class="page-title">
+				<div class="row">
+					<div class="col-12 col-md-6 order-md-1 order-last">
+						<h3>Board</h3>
+					</div>
+					<div class="col-12 col-md-6 order-md-2 order-first">
+						<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item">
+									<a href="views/home.jsp">home</a></li> <!-- curl로 수정 -->
+								<li class="breadcrumb-item active" aria-current="page">Board</li>
+								<li class="breadcrumb-item active" aria-current="page">상세페이지</li>
+							</ol> 
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
 	      	<!-- board -->
       	<div class="page-content">
 			<section class="row">
@@ -49,21 +65,23 @@
 							</div>
 						</div>
 						<div class="post-main">
-							<p class="post-content black">${postData.content}</p>
+							<p class="post-content" style="color: black;">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
-						<div class="dropdown">
-						 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-						    	파일 보기
-						  	</button>
-						  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-						  		<c:if test="${not empty files}">
-									<c:forEach items="${files}" var="file"> 
-									    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
-						  			</c:forEach>
-						  		</c:if>
-						  	</ul>
-						</div>
+						<c:if test="${not empty files}">
+							<div class="dropdown">
+							 	<button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							    	파일 보기
+							  	</button>
+							  	<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							  		<c:if test="${not empty files}">
+										<c:forEach items="${files}" var="file"> 
+										    <li><a class="dropdown-item link-secondary" href="${file.uploadUrl}" download="${file.fileNm}"><i class="bi bi-paperclip"></i>${file.fileNm}</a></li>
+							  			</c:forEach>
+							  		</c:if>
+							  	</ul>
+							</div>
+						</c:if>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
 							<button type="button" class="btn black" onclick=""><i class="bi bi-hand-thumbs-up"></i> ${postData.likeCnt}</button>

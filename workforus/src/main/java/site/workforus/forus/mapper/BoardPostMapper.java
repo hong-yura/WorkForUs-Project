@@ -18,7 +18,7 @@ public interface BoardPostMapper {
 	public List<BoardPostDTO> selectPostAll(int boardId);
 	
 	// 검색한 게시글 가져오기
-	public List<BoardPostDTO> selectSearchData(int boardId, String search); // 특정 단어로 검색한 경우 -> 한 개가 아닐 수도 있음 
+	public List<BoardPostDTO> selectSearchData(HashMap<String, Object> searchData); // 특정 단어로 검색한 경우 -> 한 개가 아닐 수도 있음 
 	
 	// 게시글 상세
 	public BoardPostDTO selectBoardDetail(int postId);
@@ -79,8 +79,10 @@ public interface BoardPostMapper {
 	// 대댓 삭제
 	public int deleteSecComment(int commentId);
 
+	// 공지 아닌 게시글
 	public List<BoardPostDTO> selectNotNoticeList(int bId);
 
+	public List<BoardPostDTO> selectNotNoticeSearchList(HashMap<String, Object> search);
 	
 
 }
