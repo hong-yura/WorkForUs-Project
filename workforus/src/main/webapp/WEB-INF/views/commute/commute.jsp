@@ -19,36 +19,42 @@
 	</style>
 	<%@ include file="../module/head.jsp" %>
 	<script type="text/javascript">
-	function loadPrevNext(element){
+	function loadPrevNext(element, value){
 		var defaultText = document.getElementById("CalendaryearMonth");
 		var year1 = defaultText.innerText.substring(0,4);
 		var month1 = defaultText.innerText.substring(5) - 1;
 		
 		var currentDate = new Date(year1, month1);
+
+		
+		var table = value.parentElement.parentElement.nextElementSibling;
 		
 		if(element == 0) {
 			 currentDate.setMonth(currentDate.getMonth() - 1);
-			// console.log(currentDate.setMonth(date.getMonth() + 1));
-			// prevMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
 		} else {
 			currentDate.setMonth(currentDate.getMonth() + 1);
-			// nextMonth(currentDate.getFullYear(), currentDate.getMonth() + 1);
 		}
 		
 		var year = currentDate.getFullYear();
 		var month = currentDate.getMonth() + 1;
 		var testText = document.getElementById("CalendaryearMonth");
 		testText.innerHTML = year + "." + month;
-		
+		var month2 = currentDate.getMonth();
 		$.ajax({
-			type:"GET",
+			type:"POST",
 			url:"${pageContext.request.contextPath}/work/record",
 			dataType:"json",
 			data:{
 				year: year,
-				month: month
-			}
+				month: month2
+			},
+			success : function(data) { 	// controllor에서 list를 return 받았음
+	                var listData =  data;
+					$("tableBody").html(data);
+			 }							
 		})
+		
+		
 		
 	}
 
@@ -95,21 +101,7 @@
 		location.reload();
 	}
 	
-	function getMonth() {
-		var year1 = document.getElementById("CalendaryearMonth").innerText.substring(0,4);
-		console.log("year1" + year1);
-		var month1 = document.getElementById("CalendaryearMonth").innerText.substring(5);
-		console.log(month1);
-		$.ajax({
-			type: "GET",
-			url: "${pageContext.request.contextPath}/work/record",
-			data: {
-				year1 : year1,
-				month1 : month1
-			},
-			dataType: "json"
-		});
-	}
+	
 
 	</script>
 </head>
@@ -283,86 +275,54 @@
                               	 		 </span>                	 		
                           			  </div>
 		            			</div>
-		            	<div class="col-12" style="text-align:center; height:4rem;">
-		            		<ul class="pagination pagination-primary justify-content-center">
-	            				<%
-	            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
-	            					Calendar cal = Calendar.getInstance();
-	            					cal.getTime();
-	            					int month1 = cal.get(Calendar.MONTH) + 1;
-	            				%>
-	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
-		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
-	            				</li>
-	            				<li id="result">
-		            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
-		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
-	  	            				</h4>
-	            				</li>
-	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
-		            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
+			            	<div class="col-12" style="text-align:center; height:4rem;">
+			            		<ul class="pagination pagination-primary justify-content-center">
+		            				<%
+		            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+	
+		            					Calendar cal = Calendar.getInstance();
+		            					cal.getTime();
+		            					int month1 = cal.get(Calendar.MONTH) + 1;
+		            				%>
+		            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0, this);">
+			            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
+		            				</li>
+		            				<li id="result">
+			            				<h4 id="CalendaryearMonth" onchange="getList(this);"> 
+			            					<span id="year1"><%= cal.get(Calendar.YEAR) %></span>.<span id="month1"><%= month1 %></span>
+		  	            				</h4>
+		            				</li>
+		            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1, this);">
+			            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
+			            				
+		            				</li>
 		            				
-	            				</li>
-	            				
-	            				
-	            				<!-- 페이징 -->
-	            				
-	            				
-	            				
-	            				
-	            				
-	            				
-	            				
-                            </ul>
-		            	</div>   
- 						
- 						
- 						<table class="table table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>근무일자</th>
-                                        <th>출근시간</th>
-                                        <th>퇴근시간</th>
-                                        <th>근무시간</th>
-                                        <th>추가근무시간</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                		
-                                	<c:forEach items="${listData}" var="commuteData" varStatus="status">
-										<tr class="table-light">
-											<td>
-												${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
-											</td>
-											<td>
-												${commuteData.commuteTime.substring(11)}
-											</td>
-											<td>
-												${commuteData.getoffTime.substring(11)}
-											</td>
-											<td>
-												${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 
-											</td>
-											<td>
-												${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
-											</td>
-										</tr>
-									</c:forEach>	
-                                
-                                </tbody>
-                            </table>
- 						
- 						
- 						
- 						
- 						
- 						
- 						                 
+		            				
+	                            </ul>
+			            	</div>   
+	 						<div style="margin-bottom:4rem;">
+		 						<table class="table table-striped mb-0">
+	                                <thead>
+	                                    <tr>
+	                                        <th>근무일자</th>
+	                                        <th>출근시간</th>
+	                                        <th>퇴근시간</th>
+	                                        <th>추가근무시간</th>
+	                                        <th>근무시간</th>
+	                                    </tr>
+	                                </thead>
+	                                <tbody id="tableBody">
+	                                	<!-- 이번달 근무표 -->	
+	                                	<%@include file="./commuteList.jsp" %>
+	                                		
+	                                </tbody>
+	                            </table>
+							</div>            
 						</div>
 		            </div>
 		        </div>
-		         <%@ include file="../module/footer.jsp" %>
+		        <%@ include file="../module/footer.jsp" %>
 		    </section>
 		</div>
     </div>
@@ -398,9 +358,10 @@
     	    var month = (1 + date.getMonth());          //M
     	    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
     	    return  year + month;       
+    	    
+    	    
     	}
     	
-    
     </script>
     
     

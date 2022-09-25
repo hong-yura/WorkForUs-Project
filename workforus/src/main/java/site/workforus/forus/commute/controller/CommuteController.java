@@ -41,11 +41,8 @@ public class CommuteController{
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public String getData(Model model, Principal principal) throws Exception { 	
 
-		// 테스트용 empId값
-		//	String empId = "A2022100";
 		String empId = principal.getName();
 		
-		// int commuteNo = 100; 
 		/*
 		 * empId가 일치하고 commuteDt가 있는지 체크
 		 * 1. commuteDt가 일치하는게 없다면 -> 출근하면됨
@@ -53,10 +50,6 @@ public class CommuteController{
 		 * 	  a. commuteTime이 나타나야함 
 		 * 	  b. 출근버튼이 다시 눌리면 안됨
 		 */
-		
-		// 근태내역 정보 조회
-		// Employee loginData = (Employee)session.getAttribute("loginData");
-		// String empId = loginData.getEmpId(); 
 		
 		// 오늘날짜랑, 사원id -> 오늘날짜에 출근기록이 있음
 		CommuteDTO data = service.selectData(empId);
@@ -126,9 +119,6 @@ public class CommuteController{
 		
 		JSONObject json = new JSONObject();
 		
-		// 테스트용 empId
-		//String empId = "A2022100";
-		// 로그인세션에서 id 가져와야함
 		String empId = principal.getName();
 
 		
@@ -142,7 +132,6 @@ public class CommuteController{
 		}
 		
 		return json.toJSONString();
-		// return "redirect:/commute/commute";
 	}
 	
 	// 퇴근 기록
@@ -150,8 +139,6 @@ public class CommuteController{
 	@ResponseBody
 	public String commuteOut(Model model, Principal principal) throws Exception {
 		JSONObject json = new JSONObject();
-		// 테스트용 empId
-		// String empId = "A2022100";
 		String empId = principal.getName();
 
 		Date nowTime = service.nowTime();
@@ -175,20 +162,20 @@ public class CommuteController{
 	}
 	
 	// 근태기록 조회하기
-	@GetMapping(value="/record")
+	@PostMapping(value="/record")
 	@ResponseBody
-	public String commuteRec(Model model, @RequestParam int year, @RequestParam int month) {
-		// test값 	
-		String empId = "A2022100";
-		
-		
+	public Object commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
+		String empId = principal.getName();
+
 		List<CommuteDTO> listData = service.selectList(empId, year, month);
 		System.out.println("반갑습니다~");
 		model.addAttribute("listData", listData);
 		System.out.println(listData);
-		
-		JSONObject json = new JSONObject();
-		return json.toJSONString();
+	
+		return listData;
+//		return "/commute/commute";
+//		JSONObject json = new JSONObject();
+//		return json.toJSONString();
 	}
 	
 	/*

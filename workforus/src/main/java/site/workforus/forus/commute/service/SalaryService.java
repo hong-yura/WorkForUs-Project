@@ -35,8 +35,12 @@ public class SalaryService {
 	public int selectEmpSalary(String empId) {
 		SalaryMapper mapper = session.getMapper(SalaryMapper.class);
 		
+		EmpDTO data = mapper.selectData(empId);
+		// 월급 저장된 값이 없다면 2,800,000으로 수정함
+		if(data.getEmpSalary() == null) { 
+			mapper.updateSalary(empId);
+		}
 		int empSalary = mapper.selectEmpSalary(empId);
-		
 		return empSalary;
 	}
 	

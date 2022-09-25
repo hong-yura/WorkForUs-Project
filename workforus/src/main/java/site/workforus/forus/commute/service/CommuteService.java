@@ -30,7 +30,7 @@ public class CommuteService{
 	public CommuteDTO selectData(String empId){
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		String today = today();
-		logger.info("today:{}", today);
+
 		CommuteDTO data = mapper.selectByEmpId(empId, today);
 		return data;
 	}
@@ -117,7 +117,7 @@ public class CommuteService{
 		// 현재시간을 date타입으로 형변환
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 		Date nowTime = sdf.parse(inTime);		
-		logger.info("nowTime:{}", nowTime);
+
 		return nowTime;
 	}
 	
@@ -181,10 +181,10 @@ public class CommuteService{
 		} 
 		// 9시 이후 출근
 		else {
-			// 23시 이후에 출근
-			if(incommute.after(lastTime) || incommute.equals(lastTime)) {
-				return _beforelunch(time2, inTime);
-			} else {
+//			// 23시 이후에 출근
+//			if(incommute.after(lastTime) || incommute.equals(lastTime)) {
+//				return _beforelunch(time2, inTime);
+//			} else {
 				// a. 1시 이후 퇴근
 				if(time2.after(lunchTime) || time2.equals(lunchTime)) {
 					return _afterlunch(time2, inTime);		
@@ -193,7 +193,7 @@ public class CommuteService{
 				else {
 					return _beforelunch(time2, inTime);		
 				}
-			}
+//			}
 		}
 	}
 	
@@ -211,7 +211,6 @@ public class CommuteService{
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
 		Date workTime = sdf.parse(time);
 		
-		logger.info("workTime은 {}", workTime);	
 		
 		return workTime;
 	}
@@ -221,7 +220,11 @@ public class CommuteService{
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
 		Date time1 = sdf.parse(inTime);		// 출근시간
-		long time3 = (time2.getTime() - time1.getTime())/1000;   
+		long time3 = (time2.getTime() - time1.getTime())/1000;
+		// 근무시간이 1시간이 안되면 점심시간 뺄때 음수가 안되도록
+		if(time3 <= 3600) {
+			time3 += 3600;
+		}
 		long hour = time3 / (60 * 60) - 1;		// 점심시간 1시간 제외
 		long minute = ((time3 % (60 * 60))) / 60;
 		long second = ((time3 % (60 * 60))) % 60;	
@@ -229,7 +232,6 @@ public class CommuteService{
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
 		Date workTime = sdf.parse(time);
 		
-		logger.info("workTime은 {}", workTime);	
 		return workTime;
 	}
 	
@@ -260,14 +262,13 @@ public class CommuteService{
 				int month = cal.get(Calendar.MONTH) + 1;
 				int date = cal.get(Calendar.DAY_OF_MONTH);
 				String beforeDate = String.format("%02d%02d%02d", year, month, date); 
-				System.out.println(beforeDate);
+
 				CommuteDTO data = mapper.selectByEmpId(empId, beforeDate);
 				if(data != null) {
 					tmp = data;					
 				}
 				i++;
 			}
-			
 		}
 		return tmp;
 		
@@ -308,7 +309,7 @@ public class CommuteService{
 				int month = cal.get(Calendar.MONTH) + 1;
 				int date = cal.get(Calendar.DAY_OF_MONTH);
 				String beforeDate = String.format("%02d%02d%02d", year, month, date); 
-				System.out.println(beforeDate);
+
 				CommuteDTO data = mapper.selectByEmpId(empId, beforeDate);
 				if(data != null) {
 					if(data.getCommuteTime() != null && data.getGetoffTime() == null) {		// 출근시간만 있고 퇴근시간 없을때
@@ -343,10 +344,6 @@ public class CommuteService{
 		long second = ((time3 % (60 * 60))) % 60;	
 		String time = String.format("%02d:%02d:%02d", hour, minute, second);
 		
-		
-		logger.info("time2는 {}", time2);	
-		logger.info("time은 {}", time);	
-		
 		return time;
 	}
 	
@@ -355,19 +352,15 @@ public class CommuteService{
 		SimpleDateFormat defaultSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date defaultTime = defaultSdf.parse("1970-01-02 16:00:00");
 		Date weekTime = defaultSdf.parse(weekWorktime);
-		System.out.println(weekTime);
 		double progress = 0;
 		if(weekTime.getTime()/defaultTime.getTime() < 1) {
 			double dftTime = defaultTime.getTime() * 1.0 + 32400000;	// 음수가 나와서 한국시간 더해줌 
 			double wkTime = weekTime.getTime() * 1.0 + 32400000; 		// 음수가 나와서 한국시간 더해줌 
-			System.out.println(dftTime);
-			System.out.println(wkTime + "@@@");
 			progress = (wkTime / dftTime);
 			progress = Double.parseDouble(String.format("%.2f", progress));
 		} else {
 			progress = 1;
 		}
-		System.out.println(progress + "!!");
 		return (long) (progress * 100);
 	}
 	
@@ -445,10 +438,6 @@ public class CommuteService{
 						mapper.updateWeekAdd(empId, data.getCommuteDt(), weekAddtime);
 						mapper.updateWeekWork(empId, data.getCommuteDt(), weekWorktime);
 						
-						logger.info(calData.getCommuteDt());
-						logger.info("★weekAddtime: {}",weekAddtime);
-						logger.info("★weekWorktime: {}",weekWorktime);
-						
 						
 					}
 				}	
@@ -493,12 +482,6 @@ public class CommuteService{
 						mapper.updateWeekAdd(empId, data.getCommuteDt(), weekAddtime);
 						mapper.updateWeekWork(empId, data.getCommuteDt(), weekWorktime);
 
-						logger.info(calData.getCommuteDt());
-						logger.info("★weekAddtime: {}",weekAddtime);
-						logger.info("★weekWorktime: {}",weekWorktime);
-						
-//						model.addAttribute("weekAddtime", weekAddtime);
-//						model.addAttribute("weekWorktime", weekWorktime);
 					}
 				}
 				
@@ -521,11 +504,9 @@ public class CommuteService{
 		}
 		
 		String yearmonth1 = yearstr + monthstr;
-		System.out.println(yearmonth1);
 		
 		List<CommuteDTO> listData = getList(empId, yearmonth1);
 
-		System.out.println("여기를 지나가나요?");
 		return listData;
 		
 	}
