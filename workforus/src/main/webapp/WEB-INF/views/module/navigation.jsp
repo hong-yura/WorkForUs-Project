@@ -225,7 +225,7 @@
                 <a href="${homeUrl}/info">개인정보수정</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/commute">근태관리</a>
+                <a href="${homeUrl}/work">근태관리</a>
               </li>
               <li class="submenu-item">
                 <a href="${homeUrl}/salary">월급조회</a>
