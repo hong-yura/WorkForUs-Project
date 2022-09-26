@@ -26,39 +26,46 @@
 								<h6 class="dropdown-header">Mail</h6>
 							</li>
 							<li>
-								<a class="dropdown-item" href="#">new mail</a>
+								<a class="dropdown-item" href="${homeUrl}/mail/mailWrite">new mail</a>
 							</li>
 						</ul>
 					</li>
 					<li class="nav-item dropdown me-3">
 					<a class="nav-link active dropdown-toggle text-gray-600" href="#"
-						data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+						data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false" >
 						<i class='bi bi-bell bi-sub fs-4'></i>
 					</a>
 						<ul class="dropdown-menu dropdown-menu-end notification-dropdown"
-							aria-labelledby="dropdownMenuButton">
+							aria-labelledby="dropdownMenuButton" >
 							<li class="dropdown-header">
 								<h6>Notifications</h6>
 							</li>
 							<li class="dropdown-item notification-item">
-							<a class="d-flex align-items-center" href="#">
-								<div class="notification-icon bg-primary">
-									<i class="bi bi-cart-check"></i>
+							<a class="d-flex align-items-center" href="${homeUrl}/mail">
+								<div class="notification-icon bg-danger">
+									<c:choose>
+										<c:when test="${cntMail > 99}">
+											<p id="mailNum" style="margin-top:7px;">99+</p>
+										</c:when>
+										<c:otherwise>
+											<p id="mailNum" style="margin-top:7px;">${cntMail}</p>
+										</c:otherwise>
+									</c:choose>
 								</div>
 								<div class="notification-text ms-4">
-									<p class="notification-title font-bold">Event today</p>
-									<p class="notification-subtitle font-thin text-sm">Reminder that you have an event today</p>
+									<p class="notification-title font-bold">Unread Mail</p>
+									<p class="notification-subtitle font-thin text-sm">Please Reply as soon as posiible</p>
 								</div>
 							</a>
 							</li>
 							<li class="dropdown-item notification-item">
 							<a class="d-flex align-items-center" href="#">
 								<div class="notification-icon bg-success">
-									<i class="bi bi-file-earmark-check"></i>
+									<p style="margin-top:7px;">0</p>
 								</div>
 								<div class="notification-text ms-4">
-									<p class="notification-title font-bold">David send you a chat</p>
-									<p class="notification-subtitle font-thin text-sm">1 Minutes ago</p>
+									<p class="notification-title font-bold">Application for approval</p>
+									<p class="notification-subtitle font-thin text-sm">application...</p>
 								</div>
 							</a>
 							</li>
@@ -74,8 +81,8 @@
 					<a href="#" data-bs-toggle="dropdown" aria-expanded="false">
 						<div class="user-menu d-flex">
 							<div class="user-name text-end me-3">
-								<h6 class="mb-0 text-gray-600">John Ducky</h6>
-								<p class="mb-0 text-sm text-gray-600">Administrator</p>
+								<h6 class="mb-0 text-gray-600">${empNm}</h6>
+								<p class="mb-0 text-sm text-gray-600">${deptNm}</p>
 							</div>
 							<div class="user-img d-flex align-items-center">
 								<div class="avatar avatar-md">
@@ -86,10 +93,10 @@
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
 						<li>
-							<h6 class="dropdown-header">Hello, John!</h6>
+							<h6 class="dropdown-header">Hello, ${empNm}!</h6>
 						</li>
 						<li>
-							<a class="dropdown-item" href="#">
+							<a class="dropdown-item" href="${homrUrl}/info">
 								<i class="icon-mid bi bi-person me-2"></i> My Profile
 							</a>
 						</li>
@@ -97,7 +104,7 @@
 							<hr class="dropdown-divider">
 						</li>
 						<li>
-							<a class="dropdown-item" href="#">
+							<a class="dropdown-item" href="${homeUrl}/logout">
 								<i class="icon-mid bi bi-box-arrow-left me-2"></i> Logout
 							</a>
 						</li>
@@ -266,19 +273,11 @@
             </ul>
           </li>
 
-          <li class="sidebar-item has-sub">
-            <a href="#" class="sidebar-link">
+          <li class="sidebar-item">
+            <a href="${homeUrl}/calendar" class="sidebar-link">
               <i class="bi bi-calendar-check"></i>
               <span>Calendar</span>
             </a>
-            <ul class="submenu">
-              <li class="submenu-item">
-                <a href="${homeUrl}/calendar">calendar</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
-              </li>
-            </ul>
           </li>
 
           <li class="sidebar-item">
@@ -288,17 +287,14 @@
             </a>
           </li>
 
-          <li class="sidebar-item has-sub">
+          <li class="sidebar-item has-sub" hidden>
             <a href="#" class="sidebar-link">
               <i class="bi bi-file-text"></i>
               <span>Documents</span>
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="#l">SubMenu #1</a>
-              </li>
-              <li class="submenu-item">
-                <a href="#">SubMenu #2</a>
+                <a href="#l">#1</a>
               </li>
             </ul>
           </li>
@@ -358,12 +354,12 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="${homeUrl}/admin/logo">로고 설정</a>
+                <a href="${homeUrl}/admin/logo">테마 설정</a>
               </li>
               <li class="submenu-item">
                 <a href="${homeUrl}/admin/dept_manage">조직도 관리</a>
               </li>
-              <li class="submenu-item">
+              <li class="submenu-item" hidden>
                 <a href="${homeUrl}/admin/perm_manage">권한 관리</a>
               </li>
             </ul>

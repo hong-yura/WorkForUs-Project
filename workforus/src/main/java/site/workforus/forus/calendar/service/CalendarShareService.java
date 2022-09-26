@@ -12,8 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.calendar.model.CalendarShareDTO;
+import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.global.dto.ResponseDTO;
 import site.workforus.forus.mapper.CalendarShareMapper;
+import site.workforus.forus.mapper.EmpMapper;
 
 @Service
 public class CalendarShareService {
@@ -126,6 +128,24 @@ public class CalendarShareService {
 			result = new ResponseDTO<>("FAIL", 400, "캘린더 공유 삭제에 실패하였습니다.", json);
 			res = new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
 		}
+
+		return res;
+	}
+
+	public ResponseEntity<Object> getEmpList() {
+		EmpMapper empMapper = session.getMapper(EmpMapper.class);
+
+		List<EmpDTO> datas = empMapper.selectEmployeeAll();
+
+		Map<String, String> map = new HashMap<>();
+
+		datas.stream().forEach(data -> {
+			map.put(data.getEmpId(), data.getEmpNm());
+		});
+
+		ResponseDTO<Map<String, String>> result = new ResponseDTO<>("SUCCESS", 200, map);
+
+		ResponseEntity<Object> res = new ResponseEntity<>(result, HttpStatus.OK);
 
 		return res;
 	}

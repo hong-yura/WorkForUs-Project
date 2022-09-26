@@ -5,18 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping(value = "/admin")
-public class LogoController {
+public class AdminFileUploadController {
 	
-	// private static final Logger logger = LoggerFactory.getLogger(LogoController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminFileUploadController.class);
 	
-	@GetMapping(value = "/logo")
+	@GetMapping(value = "/thema")
 	public String getPage() {
 		
-		return "admin/logo";
+		return "admin/thema";
 		
 	}
 	

@@ -68,7 +68,8 @@
  	 	  FROM TB_BOARD_PARTICIPATION_LIST P
  	 	  JOIN TB_EMPLOYEES E
  	 	    ON P.EMP_ID = E.EMP_ID
- 	 	 WHERE BOARD_ID = #{boardId} 
+ 	 	 WHERE P.BOARD_ID = #{boardId} 
+ 	 	   AND E.DEPT_NO != 10
  	 </select>
  	 
  	 

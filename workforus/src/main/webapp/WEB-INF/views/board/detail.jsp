@@ -84,17 +84,19 @@
 						</c:if>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
-							<button type="button" class="btn black" onclick=""><i class="bi bi-hand-thumbs-up"></i> ${postData.likeCnt}</button>
+							<button type="button" class="btn black" onclick="incLike();"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
+							</button>
 							<hr style="margin-top: 0px;">
 						</div>
+						<input value="${postData.postId}" id="like-postId" hidden>
 						<!-- 댓글 모듈 -->
 						 <%@ include file="../board_md/comment_module.jsp" %>
 					</div>
 				</div>
-			</section>
+			</section> 
 		</div>
 		<!-- 글 삭제 모달 -->
-		 <%@ include file="../board_md/delete_modal.jsp" %>
+		  <%@ include file="../board_md/delete_modal.jsp" %>
 
 		<!-- footer -->
         <%@ include file="../module/footer.jsp" %>
@@ -102,8 +104,9 @@
     </div>
     
     
-    
     <script type="text/javascript">
+
+
     	// 섬머노트 초기화
 	$('#summernote').summernote({
 		height : 300,
@@ -123,6 +126,8 @@
 	         }
          } 
 	}); 
+    	
+
     </script>
 	
 

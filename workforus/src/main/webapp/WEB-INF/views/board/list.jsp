@@ -50,27 +50,35 @@
 								</li>
 								<li>운영자 : ${boardData.boardManager}</li>
 							</ul>
-							<c:if test="${boardData.deptNo != 0}"> 
-								<hr style="margin: 0px; width: 99%">
-								<div class="dropdown" >
-									<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
-									게시판 멤버</a>
-									<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
-										<li>
-											<h6 class="dropdown-header">멤버</h6>
-										</li>
-										<c:if test="${not empty participList}">
-											<c:forEach items="${participList}" var="participDto">
-												<li>
-													<a class="dropdown-item" href="#">
-														<i class="icon-mid bi bi-person me-2"></i>${participDto.empObj.empNm}
-													</a>
-												</li>
-											</c:forEach>
-										</c:if>
-									</ul>
-								</div>
-							</c:if>
+							<c:choose>
+								<c:when test="${boardData.deptNo != 0}"> 
+									<hr style="margin: 0px; width: 99%">
+									<div class="dropdown" >
+										<a class="nav-link active dropdown-toggle text-gray-600" href="#" data-bs-toggle="dropdown" aria-expanded="false" style="color: black;">
+										게시판 멤버</a>
+										<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="min-width: 11rem;">
+											<li>
+												<h6 class="dropdown-header">멤버</h6>
+											</li>
+											<c:if test="${not empty participList}">
+												<c:forEach items="${participList}" var="participDto">
+													<li>
+														<a class="dropdown-item" href="#">
+															<i class="icon-mid bi bi-person me-2"></i>${participDto.empObj.empNm}
+														</a>
+													</li>
+												</c:forEach>
+											</c:if>
+										</ul>
+									</div>
+								</c:when>
+								<c:when test="${boardData.deptNo == 0 }">
+									<hr style="margin: 0px; width: 99%">
+									<div style="padding: 0.5rem 1rem; ">
+										전사게시판
+									</div>
+								</c:when>
+							</c:choose>
 							
 						</div>
 					</div>
@@ -80,9 +88,11 @@
 						<form action="${boardUrl}?bId=${boardData.boardId}" method="get">
 							<div class="main-button">
 								<c:url value="/board/post/add" var="postAddUrl"/>
-								<c:url value="/board/add" var="boardAddUrl"/>
+								<c:url value="/board/board_add" var="boardAddUrl"/>
 								<button type="button" class="btn black" onclick="location.href='${postAddUrl}?boardId=${boardData.boardId}'" style="font-weight: bold;"><i class="bi bi-pencil"></i> 새글작성</button>
-								<button type="button" class="btn black"  onclick="location.href='${boardAddUrl}'"> <i class="bi bi-plus-circle"></i> 게시판생성</button>
+								<!-- Button trigger modal -->
+								<button type="button" class="btn black" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="bi bi-plus-circle"></i> 게시판생성</button>
+								 <%@ include file="./board_add.jsp" %>
 									<div class="search-container">
 										<select class="searchType" name="searchType" style="border: solid 1px #d0d3cd; border-radius: 0.3rem;">
 											  <option selected value="title">제목</option>
@@ -121,37 +131,39 @@
 								<tbody>
 									<!-- 첫 번째 c:foreach문으로 공지를 출력하고, 두 번째 c:foreach문으로 일반 게시글을 출력 -->
 		                           <c:if test="${not empty postList}">
-	                                 <c:forEach items="${postList}" var="postData">
-	                                    <c:if test="${postData.noticeYn eq 'Y' && not empty postData.noticeYn}">
-	                                    <c:url var="detailUrl" value="/board/detail">
-	                                       <c:param name="postId" value="${postData.postId}"/>
-	                                    </c:url>
-	                                       <tr class="table-primary" style="cursor: pointer;"  onclick="location.href='${detailUrl}'">
-	                                          <td></td>
-	                                          <td><i class="bi bi-megaphone-fill" ></i></td>
-	                                          <td>${postData.postTitle}</td>
-	                                          <td>${postData.empObj.empNm}</td>
-	                                          <td>${postData.addDate}</td>
-	                                          <td>${postData.viewCnt}</td>
-	                                          <td>${postData.likeCnt}</td>
-	                                       </tr>
-	                                    </c:if>
-	                                 </c:forEach>
-	                                 <c:forEach items="${notNotice}" var="notNotice" varStatus="status">
-	                                    <c:url var="detailUrl" value="/board/detail">
-	                                       <c:param name="postId" value="${notNotice.postId}"/>
-	                                    </c:url>
-	                                       <tr class="table"  style="cursor: pointer; color: black;" onclick="location.href='${detailUrl}'">
-	                                          <td></td>
-	                                          <td>${status.count}</td>
-	                                          <td>${notNotice.postTitle}</td>
-	                                          <td>${notNotice.empObj.empNm}</td>
-	                                          <td>${notNotice.addDate}</td>
-	                                          <td>${notNotice.viewCnt}</td>
-	                                          <td>${notNotice.likeCnt}</td>
-	                                       </tr>
-	                                 </c:forEach>
-		                           </c:if>
+		                                 <c:forEach items="${postList}" var="postData">
+		                                    <c:if test="${postData.noticeYn eq 'Y' && not empty postData.noticeYn}">
+		                                    <c:url var="detailUrl" value="/board/detail">
+		                                       <c:param name="postId" value="${postData.postId}"/>
+		                                    </c:url>
+		                                       <tr class="table-primary" style="cursor: pointer;"  onclick="location.href='${detailUrl}'">
+		                                          <td></td>
+		                                          <td><i class="bi bi-megaphone-fill" ></i></td>
+		                                          <td>${postData.postTitle}</td>
+		                                          <td>${postData.empObj.empNm}</td>
+		                                          <td>${postData.addDate}</td>
+		                                          <td>${postData.viewCnt}</td>
+		                                          <td>${postData.likeCnt}</td>
+		                                       </tr>
+		                                    </c:if>
+		                                 </c:forEach>
+	                                 </c:if>
+	                                 <c:if test="${not empty notNotice}">
+		                                 <c:forEach items="${notNotice}" var="notNotice" varStatus="status">
+		                                    <c:url var="detailUrl" value="/board/detail">
+		                                       <c:param name="postId" value="${notNotice.postId}"/>
+		                                    </c:url>
+		                                       <tr class="table"  style="cursor: pointer; color: black;" onclick="location.href='${detailUrl}'">
+		                                          <td></td>
+		                                          <td>${status.count}</td>
+		                                          <td>${notNotice.postTitle}</td>
+		                                          <td>${notNotice.empObj.empNm}</td>
+		                                          <td>${notNotice.addDate}</td>
+		                                          <td>${notNotice.viewCnt}</td>
+		                                          <td>${notNotice.likeCnt}</td>
+		                                       </tr>
+		                                 </c:forEach>
+	                                 </c:if>
 								</tbody>
 							</table>
 						</div>

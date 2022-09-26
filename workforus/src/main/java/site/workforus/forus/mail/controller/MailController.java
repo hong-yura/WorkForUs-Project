@@ -4,8 +4,8 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
-
 import org.json.simple.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +38,16 @@ public class MailController {
 	
 	// 받은메일함
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public String getData(Model model, Principal principal) {
+	public String getData(Model model,HttpSession session, Principal principal) {
 		String empId = principal.getName();
 
 		List<ReceiveMailDTO> dataList = service.selectDatas(empId);
 		model.addAttribute("dataList", dataList);
+		
+		// 안읽은메일 수
+		int cntMail = service.selectCntMail(empId);
+		session.setAttribute("cntMail", cntMail);
+		
 		return "mail/mailHome";
 	}
 	
@@ -91,7 +96,7 @@ public class MailController {
 	
 	// 메일 상세
 	@GetMapping(value="detail")
-	public String getDetail(Model model, Principal principal, @RequestParam String mailId) {
+	public String getDetail(Model model, HttpSession session, Principal principal, @RequestParam String mailId) {
 		
 		String empId = principal.getName();
 		
@@ -103,6 +108,9 @@ public class MailController {
 			service.updateReadTime(empId, mailId);
 		}
 		model.addAttribute("receiveData", receiveData);					
+		// 안읽은메일 수
+		int cntMail = service.selectCntMail(empId);
+		session.setAttribute("cntMail", cntMail);
 		return "/mail/mailDetail";
 	}
 	

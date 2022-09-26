@@ -1,8 +1,7 @@
 const AddCalendarModal = (props) => {
-  console.log(props.addCalendar);
   return (
     <AddCalendarFrame
-      setOnModal={props.setOnModal}
+      onClickClose={props.onClickClose}
       addCalendar={props.addCalendar}
     />
   );

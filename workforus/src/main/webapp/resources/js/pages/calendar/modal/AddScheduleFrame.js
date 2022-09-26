@@ -1,6 +1,6 @@
 const AddScheduleFrame = (props) => {
   const [inputs, setInputs] = React.useState({
-    empId: "A2022100",
+    empId: empId,
     calId: null,
     scheName: null,
     scheContent: null,
@@ -81,8 +81,8 @@ const AddScheduleFrame = (props) => {
                 <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>
-            <form action="#">
-              <div className="modal-body">
+            <div className="modal-body overflow-scroll">
+              <form action="#">
                 <label>캘린더 선택</label>
                 <select
                   className="form-select"
@@ -152,9 +152,7 @@ const AddScheduleFrame = (props) => {
                     onChange={onCheckBoxChange}
                     onBlur={onCheckBoxBlur}
                   />
-                  <label className="form-check-label">
-                    종일 여부
-                  </label>
+                  <label className="form-check-label">종일 여부</label>
                 </div>
                 {inputs.scheAlltime === "N" && (
                   <React.Fragment>
@@ -181,26 +179,26 @@ const AddScheduleFrame = (props) => {
                     </div>
                   </React.Fragment>
                 )}
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-light-secondary"
-                  onClick={() => props.setOnModal(false)}
-                >
-                  <i className="bx bx-x d-block d-sm-none"></i>
-                  <span className="d-none d-sm-block">닫기</span>
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-primary ml-1"
-                  onClick={onSubmit}
-                >
-                  <i className="bx bx-check d-block d-sm-none"></i>
-                  <span className="d-none d-sm-block">등록</span>
-                </button>
-              </div>
-            </form>
+              </form>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-light-secondary"
+                onClick={() => props.setOnModal(false)}
+              >
+                <i className="bx bx-x d-block d-sm-none"></i>
+                <span className="d-none d-sm-block">닫기</span>
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary ml-1"
+                onClick={onSubmit}
+              >
+                <i className="bx bx-check d-block d-sm-none"></i>
+                <span className="d-none d-sm-block">등록</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

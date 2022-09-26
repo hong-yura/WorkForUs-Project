@@ -81,6 +81,18 @@ public class CalendarService {
 		return res;
 	}
 
+	public ResponseEntity<Object> selectRecendDate(String empId) {
+		CalendarMapper mapper = session.getMapper(CalendarMapper.class);
+
+		List<CalendarDTO> datas = mapper.selectRecentData(empId);
+
+		ResponseDTO<List<CalendarDTO>> result = new ResponseDTO<>("SUCCESS", 200, datas);
+
+		ResponseEntity<Object> res = new ResponseEntity<>(result, HttpStatus.OK);
+
+		return res;
+	}
+
 	public ResponseEntity<Object> updateCalendar(CalendarDTO calendarDTO) {
 		CalendarMapper mapper = session.getMapper(CalendarMapper.class);
 
