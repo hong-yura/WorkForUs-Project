@@ -23,7 +23,7 @@
 	background-color: #5a8dee;
 	border: #5a8dee;
 }
-ul{
+.file-menu {
 	list-style: none;
 	padding: 10px 10px 10px 10px;
 	font-size: 17px;
@@ -200,12 +200,12 @@ ul{
 	            		<button class="btn btn-secondary search-icon"><i class="bi bi-search"></i></button>
             		</div>
             		<div class="sidebar-menu">
-        				<ul class="menu sub-menu">
+        				<ul class="menu sub-menu file-menu">
             				<li class="sidebar-item has-sub">
 				            	<a href="#" class="sidebar-link">
 				              		<span>대화 상대</span>
 				            	</a>
-				            	<ul class="submenu">
+				            	<ul class="submenu file-menu">
 				              		<li class="submenu-item sub-list">
 				                		<a href="#">1</a>
 				              		</li>
@@ -217,12 +217,12 @@ ul{
 						</ul>
           			</div>
           			<div class="sidebar-menu">
-        				<ul class="menu sub-menu">
+        				<ul class="menu sub-menu file-menu">
             				<li class="sidebar-item has-sub">
 				            	<a href="#" class="sidebar-link">
 				              		<span>이미지 파일</span>
 				            	</a>
-				            	<ul class="submenu">
+				            	<ul class="submenu file-menu">
 				              		<li class="submenu-item sub-list">
 				                		<a href="#">1</a>
 				              		</li>
@@ -234,12 +234,12 @@ ul{
 						</ul>
           			</div>
           			<div class="sidebar-menu">
-        				<ul class="menu sub-menu">
+        				<ul class="menu sub-menu file-menu">
             				<li class="sidebar-item has-sub">
 				            	<a href="#" class="sidebar-link">
 				              		<span>첨부 파일</span>
 				            	</a>
-				            	<ul class="submenu">
+				            	<ul class="submenu file-menu">
 				              		<li class="submenu-item sub-list">
 				                		<a href="#">1</a>
 				              		</li>
@@ -251,12 +251,12 @@ ul{
 						</ul>
           			</div>
           			<div class="sidebar-menu">
-        				<ul class="menu sub-menu">
+        				<ul class="menu sub-menu file-menu">
             				<li class="sidebar-item has-sub">
 				            	<a href="#" class="sidebar-link">
 				              		<span>URL 링크</span>
 				            	</a>
-				            	<ul class="submenu">
+				            	<ul class="submenu file-menu">
 				              		<li class="submenu-item sub-list">
 				                		<a href="#">1</a>
 				              		</li>
@@ -269,8 +269,8 @@ ul{
           			</div>
             	</div>
             </div>
+      		<%@ include file="../module/footer.jsp" %>
             </div>
-            <%@ include file="../module/footer.jsp" %>
         </div>
 </body>
 <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>

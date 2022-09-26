@@ -53,5 +53,21 @@ public class EmpService implements UserDetailsService{
 		loginVo.setPassword(empDto.getEmpPw());
 		return new LoginVO(empDto);
 	}
+
+	public EmpDTO selectEmployeeInfo(String empId) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		
+		EmpDTO empDto = mapper.selectEmployeeInfo(empId);
+		
+		return empDto;
+	}
+
+	public boolean updateEmployeeInfo(EmpDTO empDto) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		
+		int result = mapper.updateEmployeeInfo(empDto);
+		
+		return result == 1 ? true : false;
+	}
 	
 }
