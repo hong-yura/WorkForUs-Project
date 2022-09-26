@@ -81,7 +81,7 @@
 			async:false,		// ajax를 동기식으로 변경함..
 			dataType: "json",
 		});
-		location.reload();
+		location.href="${pageContext.request.contextPath}/work";
 	}    
 	
 	// 퇴근시간 입력 
@@ -100,7 +100,7 @@
 			async:false,		// ajax를 동기식으로 변경함..
 			dataType: "json",
 		});
-		location.reload();
+		location.href="${pageContext.request.contextPath}/work";
 	}
 	
 	
@@ -163,7 +163,7 @@
 								    			-
 								    		</c:when>
 								    		<c:otherwise>
-								    			<div>${data.commuteTime }</div>
+								    			<div>${data.commuteTime}</div>
 								    		</c:otherwise>
 								    	</c:choose>
 						   			</span>
@@ -292,7 +292,7 @@
 		            				</li>
 		            				<li id="result">
 			            				<h4 id="CalendaryearMonth" onchange="getList(this);"> 
-			            					<span id="year1"><%= cal.get(Calendar.YEAR) %></span>.<span id="month1"><%= month1 %></span>
+			            					<span id="year1">${year}</span>.<span id="month1">${month}</span>
 		  	            				</h4>
 		            				</li>
 		            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1, this);">
@@ -312,11 +312,11 @@
 		    </section>
 		</div>
     </div>
-	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
+	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 
 
-    <script src="static/js/main.js"></script>
+    <script src="${staticUrl}/js/main.js"></script>
     
     <script type="text/javascript">
 

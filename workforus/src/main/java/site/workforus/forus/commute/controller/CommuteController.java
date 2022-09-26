@@ -39,7 +39,7 @@ public class CommuteController{
 	
 	// 근태 페이지 조회
 	@RequestMapping(value="", method=RequestMethod.GET)
-	public String getData(Model model, Principal principal) throws Exception { 	
+	public String getData(Model model, HttpSession session, Principal principal) throws Exception { 	
 
 		String empId = principal.getName();
 		
@@ -86,8 +86,8 @@ public class CommuteController{
 					progress = service.progress(temp.getWeekWorktime());	
 					temp.setWeekAddtime(temp.getWeekAddtime().substring(11));
 					
-					model.addAttribute("weekWorktime", tempTime);
-					model.addAttribute("weekAddtime", temp.getWeekAddtime());
+					session.setAttribute("weekWorktime", tempTime);
+					session.setAttribute("weekAddtime", temp.getWeekAddtime());
 				}
 			
 			}
@@ -98,15 +98,15 @@ public class CommuteController{
 			data.setWeekAddtime(data.getWeekAddtime().substring(11));
 			data.setWeekWorktime(data.getWeekWorktime().substring(11));
 			
-			model.addAttribute("weekWorktime", tempTime);
-			model.addAttribute("weekAddtime", data.getWeekAddtime());
+			session.setAttribute("weekWorktime", tempTime);
+			session.setAttribute("weekAddtime", data.getWeekAddtime());
 			
 		}
 		
-		model.addAttribute("data", data);
-		model.addAttribute("remainTime", remainTime);
-		model.addAttribute("progress", progress);
-		
+		session.setAttribute("data", data);
+		session.setAttribute("remainTime", remainTime);
+		session.setAttribute("progress", progress);
+	
 		return "commute/commute";
 	}
 	
@@ -115,43 +115,34 @@ public class CommuteController{
 	// 출근 기록
 	@PostMapping(value="/in", produces="application/json; charset=UTF-8")
 	@ResponseBody
-	public String commuteIn(Model model, @RequestParam String intime, Principal principal) throws Exception {
-		
+	public String commuteIn(Model model, HttpSession session, @RequestParam String intime, Principal principal) throws Exception {
 		JSONObject json = new JSONObject();
 		
 		String empId = principal.getName();
-
 		
 		// 날짜와 아이디 검색해서 출근기록 있으면 실행되면 안돼...
 		CommuteDTO data = service.selectData(empId);
 		
 		if(data == null) {
 			service.insertIntime(empId);			
-		} else {
-			logger.info("데이터 있으니까 그냥 넘어가야함");
 		}
-		
 		return json.toJSONString();
 	}
 	
 	// 퇴근 기록
 	@RequestMapping(value="/out")
 	@ResponseBody
-	public String commuteOut(Model model, Principal principal) throws Exception {
+	public String commuteOut(Model model, HttpSession session, Principal principal) throws Exception {
 		JSONObject json = new JSONObject();
 		String empId = principal.getName();
 
 		Date nowTime = service.nowTime();
 		Date defaultTime = new Date(nowTime.getYear(), nowTime.getMonth(), nowTime.getDate(), 9, 0, 0);
 		CommuteDTO data = service.selectData(empId);
-		Calendar cal = Calendar.getInstance();
 
-		
-				
 		if(data != null) {	// 출근기록이 있음
 			if(nowTime.after(defaultTime)) { // 9시 이전 퇴근 불가능
 				service.updateOuttime(empId); // 퇴근시간 업데이트
-				
 				service.updateWeek(empId, data);
 			}			
 		}
@@ -162,39 +153,17 @@ public class CommuteController{
 	}
 	
 	// 근태기록 조회하기
-	@PostMapping(value="/record")
-	@ResponseBody
-	public Object commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
+	@GetMapping(value="/record")
+	public String commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
 		String empId = principal.getName();
-
+		
+		// 해당월 기록
 		List<CommuteDTO> listData = service.selectList(empId, year, month);
-		System.out.println("반갑습니다~");
+		
 		model.addAttribute("listData", listData);
-		System.out.println(listData);
-	
-		return listData;
-//		return "/commute/commute";
-//		JSONObject json = new JSONObject();
-//		return json.toJSONString();
+		model.addAttribute("year", year);
+		model.addAttribute("month", month + 1);
+		return "/commute/commuteCalendar";
 	}
-	
-	/*
-	// 관리자 페이지
-	@RequestMapping(value="/admin", method=RequestMethod.GET)
-	public String commuteAdmin(Model model) {
-		
-		String empId = "A2022100";
-		
-		List<CommuteDTO> datas = service.selectAdmin(empId);
-		
-		
-		return "commute/commuteAdmin";
-	}
-	
-	*/
 
-	
-
-	
-	
 } 	
