@@ -53,3 +53,41 @@ function sample6_execDaumPostcode() {
         }
     }).open();
 }
+
+var start_year = '1900';
+var today = new Date();
+var today_year = today.getFullYear();
+var index = 0;
+for(var y = start_year; y <= today_year; y++) {
+	document.getElementById('select_year').options[index] = new Option(y, y);
+	index++;
+}
+
+document.getElementById('select_year').innerHTML += "<option selected>년</option>"
+
+index = 0;
+for(var m = 1; m <= 12; m++) {
+	document.getElementById('select_month').options[index] = new Option(m, m);
+	index++;
+}
+
+document.getElementById('select_month').innerHTML += "<option selected>월</option>"
+
+lastDay();
+
+function lastDay() {
+	var Year = document.getElementById('select_year').value;
+	var Month = document.getElementById('select_month').value;
+	var Day = new Date(new Date(Year, Month, 1) - 86400000).getDate();
+	
+	var dayIndex_len = document.getElementById('select_day').length;
+	if(Day > dayIndex_len) {
+		for(var i = (dayIndex_len); i <= Day; i++) {
+			document.getElementById('select_day').options[i-1] = new Option(i, i);
+		}
+	} else if(Day < dayIndex_len) {
+		for(var i = dayIndex_len; i >= Day; i--) {
+			document.getElementById('select_day').options[i] = null;
+		}
+	}
+}

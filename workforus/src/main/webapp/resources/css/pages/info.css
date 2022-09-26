@@ -43,3 +43,13 @@
 .password-form {
 	width: 500px;
 }
+.info-body {
+	background-color: #fff;
+	height: 1130px;
+	border-radius: 25px;
+	margin-bottom: 50px;
+}
+.div-btn {
+	margin-top:10px;
+	float: right;
+}
