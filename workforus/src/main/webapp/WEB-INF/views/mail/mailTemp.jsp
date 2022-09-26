@@ -68,11 +68,11 @@
 				                        	<th data-sortable="" style="width: 29.7041%;">
 				                        		<a href="#" class="dataTable-sorter">받는사람</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 48.9215%;">
+				                        	<th data-sortable="" style="width: 45.9215%;">
 				                        		<a href="#" class="dataTable-sorter">제목</a>
 				                        	</th>
-				                        	<th data-sortable="" style="width: 15.1082%;">
-				                        		<a href="#" class="dataTable-sorter">저장</a>
+				                        	<th data-sortable="" style="width: 18.1082%;">
+				                        		<a href="#" class="dataTable-sorter">저장일자</a>
 			                        		</th>
 			                        	</tr>
 				                    </thead>
@@ -99,6 +99,7 @@
 				                    </tbody>
 				                </table>
 			                </div>
+			                <!-- 
 			                <div class="dataTable-bottom">
 				                <nav class="dataTable-pagination">
 					                <ul class="dataTable-pagination-list pagination pagination-primary">
@@ -110,6 +111,7 @@
 					                </ul>
 				                </nav>
 			                </div>
+			                 -->
 	              	  </div>
            		 </div>
 			</section>

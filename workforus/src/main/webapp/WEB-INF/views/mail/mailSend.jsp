@@ -58,7 +58,7 @@
    				               	<button type="button" class="btn btn-outline-primary"><i class="bi bi-trash"></i></button>
 			                </div>
 			                <div class="dataTable-container">
-				                <table class="table table-striped dataTable-table" id="table1">
+				                <table class="table dataTable-table" id="table1">
 				                    <thead>
 				                        <tr>
 				                        	<th	class="td1">
@@ -74,7 +74,7 @@
 				                        	<th data-sortable="" style="width: 15.1082%;">
 				                        		<a href="#" class="dataTable-sorter">전송일자</a>
 			                        		</th>
-				                        	<th data-sortable="" style="width: 10.1082%;">
+				                        	<th data-sortable="" style="width: 12.1082%;">
 				                        		<a href="#" class="dataTable-sorter">상태</a>
 			                        		</th>
 			                        	</tr>
@@ -85,7 +85,14 @@
 					                    	<c:url var="detailUrl" value="${homeUrl}/mail/sendDetail">
 												<c:param name="mailId" value="${MailData.mailId}"/>
 											</c:url>
-											<tr class="table-light">
+											<c:choose>
+												<c:when  test="${MailData.mailReadFl eq 'N'}"> 
+													<tr class="table-light">
+												</c:when>
+												<c:otherwise>
+													<tr style="background-color:#F2F2F2">
+												</c:otherwise>
+											</c:choose>
 												<td><input type="checkbox" class="form-check-input form-check-primary form-check-glow" name="cbox" id="mailList" onclick="checkSelectAll()"></td>
 					                    		<td onclick="location.href='${detailUrl}'"></td>
 												<td onclick="location.href='${detailUrl}'">
@@ -112,6 +119,7 @@
 				                    </tbody>
 				                </table>
 			                </div>
+			                <!-- 
 			                <div class="dataTable-bottom">
 				                <nav class="dataTable-pagination">
 					                <ul class="dataTable-pagination-list pagination pagination-primary">
@@ -123,6 +131,7 @@
 					                </ul>
 				                </nav>
 			                </div>
+			                 -->
 	              	  </div>
            		 </div>
 			</section>

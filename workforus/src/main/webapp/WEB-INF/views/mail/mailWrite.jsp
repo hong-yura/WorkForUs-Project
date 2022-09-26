@@ -61,8 +61,16 @@
                                             <label>받는사람</label>
                                         </div>
                                         <div class="col-md-10 form-group col-lg-10">
-                                            <input type="email" id="receive-email" class="form-control"  name="receiveEmail"
-                                            	   value="${param.receiveEmail}"	placeholder="@workforus.site" required >
+                                        	<c:choose>
+	                                        	<c:when test="${email eq NULL }">
+		                                            <input type="email" id="receive-email" class="form-control"  name="receiveEmail"
+		                                            	   value="${param.receiveEmail}"	placeholder="@workforus.site" required >
+	                                        	</c:when>
+	                                        	<c:otherwise>
+		                                            <input type="email" id="receive-email" class="form-control"  name="receiveEmail"
+		                                            	   value="${email}"	placeholder="@workforus.site" required >
+	                                        	</c:otherwise>
+                                        	</c:choose>
                                         </div>
                                         <div class="col-md-2 col-lg-2" >
                                             <label>제목</label>
@@ -77,9 +85,21 @@
                                             <input type="file" id="email-id" class="form-control" placeholder="제목을 입력하세요.">
                                         </div>                                       
                                        <div class="mb-3" >
-											<textarea class="form-control" id="content" name="mailContent" 
-											 		 rows="5" placeholder="내용을 입력하세요.">${param.mailContent}</textarea>
-
+                                       		<c:choose>
+	                                        	<c:when test="${email eq NULL }">
+													<textarea class="form-control" id="content" name="mailContent" 
+												 		 rows="5" placeholder="내용을 입력하세요.">${param.mailContent}</textarea>
+	                                        	</c:when>
+	                                        	<c:otherwise>
+													<textarea class="form-control" id="content" name="mailContent" 
+												 		 rows="5" placeholder="내용을 입력하세요.">
+												 	<br><br><br>=====================REPLY=====================<br>
+												 	제목 : ${title} <br>
+												 	보낸이 : ${email} <br>
+												 	내용 : ${content}
+												 	</textarea>
+	                                        	</c:otherwise>
+                                        	</c:choose>
 										</div>
                                         <div class="col-sm-12 d-flex justify-content-end">
                                             <button type="submit" class="btn btn-primary me-1 mb-1">전송</button>

@@ -84,8 +84,34 @@
 		   JOIN tb_employees e
 		    ON rm.emp_id = e.emp_id  
 		 WHERE rm.emp_id = #{empId}
+ 		   AND rm.mail_folder = 1
 		 ORDER BY 1 DESC
 	</select>
+	<!-- 휴지통목록 -->
+	<select id="selectReceiveTrash" parameterType="String" resultMap="receiveMailDtoMap">
+		SELECT rm.mail_id
+		     , rm.emp_id
+		     , rm.mail_folder
+		     , rm.mail_send_email
+		     , rm.mail_read_time
+		     , rm.mail_read_fl
+		     , rm.spam_id
+		     , sm.mail_title
+		     , sm.mail_content
+		     , sm.mail_send_time
+		     , e.emp_nm
+		     , e.emp_email
+		  FROM tb_receive_mail rm
+		  JOIN tb_send_mail sm
+		    ON rm.mail_id = sm.mail_id
+		   JOIN tb_employees e
+		    ON rm.emp_id = e.emp_id  
+		 WHERE rm.emp_id = #{empId}
+ 		   AND rm.mail_folder = 3
+		 ORDER BY 1 DESC
+	</select>
+	<!-- 휴지통목록 -->
+	
 	
 	<!-- 발신메일목록 -->
 	<select id="selectSendAll" parameterType="String" resultMap="receiveMailDtoMap">
@@ -250,7 +276,7 @@
 	<select id="selectTempList" parameterType="String" resultMap="tempMailDtoMap">
 		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{empId}
 	</select>
-	
+
 	<select id="selectCntMail" parameterType="String" resultType="int">
 		SELECT COUNT(*) 
 		  FROM tb_receive_mail
@@ -269,4 +295,30 @@
 	   USING (DEPT_NO)
 		WHERE EMP_ID = #{empId}
 	</select>
+  
+  <update id="updateMailFolder" parameterType="String">
+	 	UPDATE tb_receive_mail
+	 	   SET mail_folder = 3
+	 	 WHERE emp_id = #{empId}
+	 	   AND mail_id = #{mailId}
+	</update>
+
+	<update id="updateRecoveryMail" parameterType="String">
+	 	UPDATE tb_receive_mail
+	 	   SET mail_folder = 1
+	 	 WHERE emp_id = #{empId}
+	 	   AND mail_id = #{mailId}
+	</update>
+	
+	<update id="updateDeleteMail" parameterType="String">
+	 	UPDATE tb_receive_mail
+	 	   SET mail_folder = 4
+	 	 WHERE emp_id = #{empId}
+	 	   AND mail_id = #{mailId}
+	</update>
+	
+	<select id="selectTempMail" resultMap="tempMailDtoMap" parameterType="tempMailDto">
+		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{sendEmpId} and temp_mail_id = #{tempMailId}
+	</select>
+	
 </mapper>

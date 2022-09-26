@@ -65,6 +65,9 @@
 				                <div class="dataTable-top">
 				                </div>
 				               	<a href="javascript:history.back();" class="btn btn-outline-primary">목록</a>
+				                <c:if test="${tempDetail ne null}">
+					               	<a href="javascript:history.back();" class="btn btn-primary">전송</a>
+				                </c:if>
 			                </div>
 			                <!-- 메일내용 -->
 			                <div class="dataTable-container">
@@ -77,52 +80,89 @@
 				                                <div class="form-body">
 				                                    <div class="row">
 				                                        <div >
-				                                            <label><h4>${sendData.mailObj.mailTitle }</h4></label>
+				                                        	<c:choose>
+					                                       		<c:when test="${tempDetail eq Null}">
+						                                            <label><h4>${sendData.mailObj.mailTitle }</h4></label>
+					                                       		</c:when>
+																<c:otherwise>
+						                                            <label><h4>${tempDetail.tempMailTitle}</h4></label>
+																</c:otherwise>
+															</c:choose>
 				                                        </div>
 				                                        <div >
 				                                            <label>받는사람 : 
 				                                            	<c:choose>
-				                                            		<c:when test="${sendData.empId eq 'outMail' }">
-				                                            			${sendData.mailObj.receiveEmail}
+				                                            		<c:when test="${tempDetail eq Null}">
+				                                            			<c:choose>
+						                                            		<c:when test="${sendData.empId eq 'outMail' }">
+						                                            			${sendData.mailObj.receiveEmail}
+						                                            		</c:when>
+						                                            		<c:otherwise>
+						                                            			<b>${sendData.empObj.empNm}&lt;${sendData.empObj.empEmail}&gt;</b>
+						                                            		</c:otherwise>
+						                                            	</c:choose>
 				                                            		</c:when>
 				                                            		<c:otherwise>
-				                                            			<b>${sendData.empObj.empNm}&lt;${sendData.empObj.empEmail}&gt;</b>
+				                                            			${tempDetail.receiveEmail}
 				                                            		</c:otherwise>
 				                                            	</c:choose>
 				                                            
 				                                            </label>
 				                                        </div>
 				                                        <div>
-				                                            <label>보낸일자 : <fmt:formatDate value="${sendData.mailObj.mailSendTime}" type="both"/></label>
+				                                        		<c:choose>
+				                                            		<c:when test="${tempDetail eq Null}">
+			                                          				    <label>보낸일자 : <fmt:formatDate value="${sendData.mailObj.mailSendTime}" type="both"/></label>
+				                                            		</c:when>
+				                                            		<c:otherwise>
+			                                           					<label>저장일자 : <fmt:formatDate value="${tempDetail.saveTime}" type="both"/></label>
+				                                            		</c:otherwise>
+				                                            	</c:choose>
 				                                        </div>
 				                                        <div>
-				                                            <label>읽은시간 : 
-				                                        	<c:choose>
-			                                            		<c:when test="${sendData.empId eq 'outMail' }">
-			                                            			외부메일(알수없음)
-						                                        </c:when>
-						                                        <c:otherwise>						                                        
-						                                            	<c:choose>
-						                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
-						                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
-						                                            		</c:when>
-						                                            		<c:otherwise>
-						                                            			읽지않음
-						                                            		</c:otherwise>
-						                                            	</c:choose>
-						                                        </c:otherwise>
-						                                    </c:choose>
-				                                            </label>
+		                                            		<c:if test="${tempDetail eq Null}">
+					                                            <label>읽은시간 : 
+					                                        	<c:choose>
+				                                            		<c:when test="${sendData.empId eq 'outMail' }">
+				                                            			외부메일(알수없음)
+							                                        </c:when>
+							                                        <c:otherwise>						                                        
+							                                            	<c:choose>
+							                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
+							                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
+							                                            		</c:when>
+							                                            		<c:otherwise>
+							                                            			읽지않음
+							                                            		</c:otherwise>
+							                                            	</c:choose>
+							                                        </c:otherwise>
+							                                    </c:choose>
+					                                            </label>
+						                                    </c:if>
 				                                        </div>
 				                                        <br>
-				                                        <div class="form-group border" style="height:10rem; margin-top:1rem;">
-															<c:choose> 
-															 <c:when test="${sendData.mailObj.mailContent != NULL}">
-																<p>${sendData.mailObj.mailContent}</p>
-															</c:when>
-															<c:otherwise>
-																<p>내용없음</p>
-															</c:otherwise>				
+				                                        <div class="form-group border" style="height:auto; min-height:200px; margin-top:1rem;">
+															<c:choose>
+					                                       		<c:when test="${tempDetail eq Null}">
+																	<c:choose> 
+																	 <c:when test="${sendData.mailObj.mailContent != NULL}">
+																		<p>${sendData.mailObj.mailContent}</p>
+																	</c:when>
+																	<c:otherwise>
+																		<p>내용없음</p>
+																	</c:otherwise>				
+																	</c:choose>
+					                                       		</c:when>
+																<c:otherwise>
+																	<c:choose> 
+																	 <c:when test="${tempDetail.tempMailContent != NULL}">
+																		<p>${tempDetail.tempMailContent}</p>
+																	</c:when>
+																	<c:otherwise>
+																		<p>내용없음</p>
+																	</c:otherwise>				
+																	</c:choose>
+																</c:otherwise>
 															</c:choose>
 				                                        </div>
 			                                        	

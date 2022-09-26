@@ -144,6 +144,45 @@ public class MailService {
 		
 		return data;
 	}
+	// 임시저장메일 상세
+	public TempMailDTO selectTempMail(String empId, int tempMailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		TempMailDTO detailData = mapper.selectTempMail(empId, tempMailId);
+		
+		return detailData;
+	}
+
+	// 휴지통으로 이동
+	public int updateMailFolder(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateMailFolder(empId, mailId);
+		return result;
+	}
+	
+	// 휴지통메일 목록
+	public List<ReceiveMailDTO> selectTrashDatas(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		List<ReceiveMailDTO> datas = mapper.selectReceiveTrash(empId);
+		return datas;
+	}
+
+	// 메일 복구
+	public int updateRecoveryMail(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateRecoveryMail(empId, mailId);
+		return result;
+	}
+
+	// 메일 영구삭제
+	public boolean updateDeleteMail(String empId, String mailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		
+		int result = mapper.updateDeleteMail(empId, mailId);
+		return result == 1 ? true : false;
+	}
+
 
 	// 안읽은메일 개수
 	public int selectCntMail(String empId) {

@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+import org.json.simple.JSONObject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
 
 import site.workforus.forus.commute.controller.CommuteController;
 import site.workforus.forus.mail.model.ReceiveMailDTO;
@@ -127,6 +131,20 @@ public class MailController {
 		return "/mail/mailSendDetail";
 	}
 	
+	// 임시저장메일 상세
+	@GetMapping(value="tempDetail")
+	public String tempDetail(Model model, Principal principal, @RequestParam int mailId) {
+		
+		String empId = principal.getName();
+		
+		TempMailDTO tempDetail = service.selectTempMail(empId, mailId);
+		
+		// 보낸 메일정보 가져옴
+		model.addAttribute("tempDetail", tempDetail);
+		
+		return "/mail/mailSendDetail";
+	}
+	
 	// 안읽은 상태로 변경
 	@GetMapping(value="/modRead")
 	public String modReadFl(Model model, @RequestParam String mailId) {
@@ -161,5 +179,81 @@ public class MailController {
 		return "/mail/mailTemp";
 	}
 	
+	// 메일 휴지통으로 보내기
+	@GetMapping(value="trash")
+	public String trashMail(Model model, Principal principal, @RequestParam String mailId) {
+		String empId = principal.getName();
+		int result = service.updateMailFolder(empId, mailId);
+		
+		return "redirect:/mail";
+	}
+	
+	// 휴지통 목록
+	@GetMapping(value="trashMail")
+	public String trashList(Model model, Principal principal) {
+		String empId = principal.getName();
+		
+		List<ReceiveMailDTO> dataList = service.selectTrashDatas(empId);
+		model.addAttribute("dataList", dataList);
+		return "/mail/mailHome";
+	}
+	
+	// 기본 메일함으로 복구
+	@GetMapping(value="recoveryMail")
+	public String recoveryMail(Model model, Principal principal, @RequestParam String mailId) {
+		String empId = principal.getName();
+		int result = service.updateRecoveryMail(empId, mailId);
+		
+		return "redirect:/mail";
+	}
+	
+	// 메일 답장
+	@GetMapping(value="replyMail")
+	public String replyMail(Model model, Principal principal
+			, @RequestParam String email
+			, @RequestParam String title
+			, @RequestParam String content) {
+		
+		model.addAttribute("email", email);
+		model.addAttribute("title", title);
+		model.addAttribute("content", content);
+		
+		return "/mail/mailWrite";
+	}
+	
+	// 메일영구삭제
+	@PostMapping(value="/maildelete", produces = "application/json; charset=UTF-8")
+	@ResponseBody //ajax로 인해 responsebody와 produces가 필요함
+	public String delete(Principal principal, @RequestParam String mailId){
+		String empId = principal.getName();
+		
+		ReceiveMailDTO receiveData = service.selectReceiveData(empId, mailId);
 
+		JSONObject json = new JSONObject();
+		
+		if(receiveData == null) {
+			//이미 삭제
+			json.put("title", "삭제가 된 데이터");
+			json.put("message", "해당 데이터는 이미 삭제가 되었습니다");
+			return json.toJSONString();
+		} else {
+			// 삭제
+			try {
+				// 삭제 성공
+				boolean result = service.updateDeleteMail(empId, mailId);
+				json.put("title", "삭제 완료");
+				json.put("message", "삭제 처리가 완료되었습니다.");
+				return json.toJSONString();					
+			} catch (Exception e) { 
+				// 삭제 실패
+				json.put("title", "삭제 실패");
+				json.put("message", "삭제 작업 중 알 수 없는 오류가 발생하였습니다.");
+				return json.toJSONString();
+			}				
+		}
+	}
+	
+	
+	
+	
 }
