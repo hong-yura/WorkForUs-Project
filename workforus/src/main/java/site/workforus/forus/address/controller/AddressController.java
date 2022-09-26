@@ -1,5 +1,6 @@
 package site.workforus.forus.address.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -28,14 +29,12 @@ public class AddressController {
 	
 	// 공용 주소록 조회
 	@GetMapping(value = "")
-	public String getData(Model model, DeptDTO deptDto, EmpDTO empDto) {
-		logger.info("data: {}, {}, {}", empDto.getEmpNm(), deptDto.getDeptName(), empDto.getEmpEmail());
+	public String getAddress(Model model, HttpSession session, Principal principal) {
 		
-		
-		String empNm = "A2022100";
+		String empId = principal.getName();
 				
-		List<AddressDTO> data = addrService.getData(empNm);
-		model.addAttribute("data", data);
+		List<AddressDTO> data = addrService.getAddress(empId);
+		model.addAttribute("addrData", data);
 		return "address/address";
 	}
 	
