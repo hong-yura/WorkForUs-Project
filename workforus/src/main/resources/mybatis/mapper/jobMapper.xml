@@ -6,6 +6,33 @@
 	<resultMap type="jobDto" id="jobDtoMap">
 		<result property="jobId" column="job_id" />
 		<result property="jobName" column="job_nm" />
+		<association property="empObj" javaType="empDto" >
+			<id property="empId" column="emp_id" />
+			<result property="jobId" column="job_id" />
+			<result property="empNm" column="emp_nm" />
+		</association>
 	</resultMap>
-
+	
+	<!-- 직급별 사원 조회 -->
+	<select id="selectJobData" resultMap="jobDtoMap">
+		SELECT E.EMP_ID 
+			 , E.EMP_NM
+			 , J.JOB_NM
+		  FROM TB_JOBS J
+		  JOIN TB_EMPLOYEES E
+		 	ON J.JOB_ID = E.JOB_ID
+		 WHERE JOB_NM = #{jobName}
+	</select>
+	
+	<!-- 사원별 직급 조회 -->
+	<select id="selectEmpJob" resultMap="jobDtoMap" parameterType="String">
+		SELECT E.EMP_ID 
+			 , E.EMP_NM
+			 , J.JOB_NM
+		  FROM TB_JOBS J
+		  JOIN TB_EMPLOYEES E
+		 	ON J.JOB_ID = E.JOB_ID
+		 WHERE EMP_ID = #{empId};
+	</select>
+	
 </mapper>
