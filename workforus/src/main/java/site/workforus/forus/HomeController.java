@@ -21,6 +21,7 @@ import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
 import site.workforus.forus.employee.model.LoginVO;
+import site.workforus.forus.mail.service.MailService;
 
 @Controller
 public class HomeController {
@@ -28,6 +29,9 @@ public class HomeController {
 	@Autowired
 	private BoardService boardService;
 	
+	@Autowired
+	private MailService mailService;
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -47,6 +51,17 @@ public class HomeController {
 		// 게시판 가져오기 -> navbar에 들어갈 내용
 		List<BoardDTO> boardNav = boardService.selectAll(loginVo); // 사원에 해당하는 게시판 데이터를 가지고 옴
 				
+		// 안읽은 메일 수
+		int cntMail = mailService.selectCntMail(loginVo.getUsername());
+		session.setAttribute("cntMail", cntMail);
+		
+		// 사원이름
+		String empNm = mailService.selectEmp(loginVo.getUsername());
+		session.setAttribute("empNm", empNm);
+		
+		// 부서이름
+		String deptNm = mailService.selectDeptNm(loginVo.getUsername());
+		session.setAttribute("deptNm", deptNm);
 		
 		session.setAttribute("boardList", boardNav);
 		model.addAttribute("serverTime", formattedDate );

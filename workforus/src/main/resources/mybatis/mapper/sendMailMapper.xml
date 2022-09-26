@@ -250,4 +250,23 @@
 	<select id="selectTempList" parameterType="String" resultMap="tempMailDtoMap">
 		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{empId}
 	</select>
+	
+	<select id="selectCntMail" parameterType="String" resultType="int">
+		SELECT COUNT(*) 
+		  FROM tb_receive_mail
+		 WHERE emp_id = #{empId}
+		   AND mail_read_fl = 'N'
+	</select>
+	
+	<select id="selectEmp" parameterType="String" resultType="String">
+		SELECT emp_nm FROM TB_EMPLOYEES WHERE EMP_ID = #{empId}
+	</select>
+	
+	<select id="selectdeptNm" parameterType="String" resultType="String">
+		SELECT dept_nm
+		FROM TB_EMPLOYEES 
+		JOIN TB_DEPARTMENTS td 
+	   USING (DEPT_NO)
+		WHERE EMP_ID = #{empId}
+	</select>
 </mapper>

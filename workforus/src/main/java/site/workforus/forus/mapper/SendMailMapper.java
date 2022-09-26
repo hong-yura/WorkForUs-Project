@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
 import site.workforus.forus.mail.model.TempMailDTO;
@@ -65,6 +66,15 @@ public interface SendMailMapper {
 
 	// 임시보관함 조회
 	public List<TempMailDTO> selectTempList(String empId);
+	
+	// 안읽은메일개수
+	public int selectCntMail(String empId);
+	
+	// 회원정보
+	public String selectEmp(String empId);
+	
+	// 부서이름 
+	public String selectdeptNm(String empId);
 	
 
 
