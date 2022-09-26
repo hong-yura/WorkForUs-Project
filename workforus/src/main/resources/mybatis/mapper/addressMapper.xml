@@ -7,25 +7,25 @@
 		<result property="addrId" column="ADDR_ID" />
 		<result property="addrIndvId" column="ADDR_INDV_ID" />
 		<result property="empId" column="EMP_ID" />
- 		<!-- <association property="empDTO" javaType="empDto">
-			<id property="empId" column="EMP_ID" />
+ 		<collection property="empObj" javaType="empDto">
+			<id 	property="empId" column="EMP_ID" />
 			<result property="empNm" column="EMP_NM" />
-			<result property="empPhone" column="EMP_PHONE" />
 			<result property="empEmail" column="EMP_EMAIL" />
+			<result property="deptNo" column="DEPT_NO" />
 			<result property="empTel" column="EMP_TEL" />
-		</association> -->
+		</collection>
 	</resultMap>
 	
-	<select id="selectData" resultMap="addressDtoMap">
-		SELECT E.EMP_NM
-			 , E.DEPT_NO 
+	<!-- 공용 주소록 조회 -->
+	<select id="selectAddress" resultMap="addressDtoMap" parameterType="String">
+		SELECT A.EMP_ID
+			 , E.EMP_NM
+			 , E.DEPT_NO
 			 , E.EMP_EMAIL
-			 , E.EMP_PHONE
 			 , E.EMP_TEL
 		  FROM TB_ADDRESS A
 		  JOIN TB_EMPLOYEES E
-		  	ON A.EMP_ID = E.EMP_ID
-		 WHERE A.EMP_ID = #{empId}
+		    ON A.EMP_ID = #{empId}
 	</select>
 	
 </mapper>
