@@ -36,7 +36,6 @@ import site.workforus.forus.board.service.PostCommentService;
 import site.workforus.forus.board.service.UploadFileService;
 import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.employee.model.LoginVO;
-import site.workforus.forus.employee.service.EmpService;
 
 @Controller
 @RequestMapping(value="/board")
@@ -102,6 +101,31 @@ public class BoardController {
 		return "/board/list";
 		 
 	}
+	
+	// 게시판 생성 페이지
+	@PostMapping(value="/add")
+	public String addBoard(Model model, Authentication auth 
+						, @ModelAttribute BoardDTO boardDto) {
+		
+		logger.info("addBoard(boardDto={})", boardDto);
+		
+		
+		
+		return "redirect:/board?bId=" + boardDto.getBoardId() ;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 게시글 상세 
 	@GetMapping(value="/detail")
 	public String getDetailData(Model model, HttpSession session, Authentication auth

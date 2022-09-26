@@ -18,19 +18,29 @@
 			        </div>
 			        <div class="info">
 			        	<div class="info-detail">
-				        	<label>이름</label>
-				        	<input type="text" class="form-control">
+				        	<label>게시판 이름</label>
+				        	<input type="text" name="boardNm" value="${boardData.boardNm}" class="form-control">
 			        	</div>
 			        	<div class="info-detail">
-				        	<label>성별</label>
+				        	<label>공개 여부</label>
 				        	<div>
 					        	<div class="form-check">
-								    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-								    <label class="form-check-label" for="flexRadioDefault1">남</label>
+								    <input class="form-check-input" type="radio" name="publicYn" value="Y" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">전체 공개</label>
 								</div>
 								<div class="form-check">
-								    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-								    <label class="form-check-label" for="flexRadioDefault1">여</label>
+								    <input class="form-check-input" type="radio" name="publicYn" id="flexRadioDefault1" onclick="">
+								    <label class="form-check-label" for="flexRadioDefault1">일부 공개</label>
+								    <div>
+									    <select class="form-select" name="participEmpNm" aria-label="Default select example">
+									    	<option selected>멤버</option>
+									    	<!-- 
+									    	<c:forEach items="participList" var="particip">
+												<option value="">Three</option>
+									    	</c:forEach>
+									    	 -->
+									    </select>
+								    </div>
 								</div>
 							</div>
 						</div>
