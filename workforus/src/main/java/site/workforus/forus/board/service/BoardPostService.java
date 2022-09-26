@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,11 +24,13 @@ public class BoardPostService {
 	
 	// 게시글 리스트 가져오기 -> paging 해야 한다. 
 	public List<BoardPostDTO> selectAll(int boardId, String search, String searchType) {
+		logger.info("selectAll(boardId={}, search={}, searchType={})", boardId, search, searchType);
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		List<BoardPostDTO> datas = new ArrayList<BoardPostDTO>();
-		if(search == null) {
+		if(search == null && searchType == null) {
 			// 검색 기능 사용 x
 			datas = mapper.selectPostAll(boardId);
+			logger.info("selectAll(검색x datas={})", datas);
 		}else {
 			// 검색 기능 사용 o
 			HashMap<String, Object> searchData = new HashMap<String, Object>();
@@ -35,6 +39,7 @@ public class BoardPostService {
 			searchData.put("searchType", searchType);
 			
 			datas = mapper.selectSearchData(searchData);
+			logger.info("selectAll(검색O searchData={})", searchData);
 		}
 		
 		return datas;
@@ -48,6 +53,7 @@ public class BoardPostService {
 		if(search == null) {
 			// 검색 기능 사용 x
 			datas = mapper.selectNotNoticeList(boardId);
+			logger.info("selectNotNotice(공지X 검색X datas={})", datas);
 		}else {
 			// 검색 기능 사용 o
 			HashMap<String, Object> searchData = new HashMap<String, Object>();
@@ -56,6 +62,7 @@ public class BoardPostService {
 			searchData.put("searchType", searchType);
 			
 			datas = mapper.selectNotNoticeSearchList(searchData);
+			logger.info("selectNotNotice(공지X 검색O searchData={})", searchData);
 		}
 		return datas;
 	}
@@ -145,6 +152,23 @@ public class BoardPostService {
 		}
 		
 	}
+
+	// 게시글 좋아요
+	public BoardPostDTO likeUp(BoardPostDTO postDto,  HttpSession httpSession) {
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		int result = mapper.updateLikeUp(postDto);
+		logger.info("likeUp(db에 like + 1을 한 후 postDto={})", postDto);
+		if(result == 1) {
+			// 성공했다면 -> 전달받은 현재 게시글 데이터에서 likeCnt를 + 1 해줘야 한다.
+			// ajax로 할 거기 때문에 안 그러면 리로딩을 해야지만 좋아요가 올라감 즉, db엔 증가했지만 브라우저엔 반영이 안 됨
+			postDto.setLikeCnt(postDto.getLikeCnt() + 1);
+			logger.info("likeUp(+1을 따로 해준 경우 postDto={})", postDto);
+			return postDto;
+		}else {
+			return null;
+		}
+	}
+	
 
 
 }

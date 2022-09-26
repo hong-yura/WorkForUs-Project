@@ -46,21 +46,17 @@
 		<result property="fileType" column="file_type"/>
 		<result property="summYn" column="file_summ_yn"/>
 	</resultMap>
-	
+	<!-- 게시글 리스트 가져오기 (최소한의 정보만 가져오기)-->
 	<select id="selectPostAll" resultMap="boardPostDtoMap">
 		SELECT P.POST_ID
 			 , P.EMP_ID
 			 , P.BOARD_ID 
 			 , P.POST_TITLE
-			 , P.POST_PW
 			 , P.POST_CONTENT
 			 , P.POST_ADD_DT
 			 , P.POST_MODIFY_DT
-			 , P.POST_REMOVE_DT
 			 , P.VIEW_CNT
 			 , P.NOTICE_YN
-			 , P.TEMPORARY_POST_YN
-			 , P.REPORT_YN
 			 , P.LIKE_CNT
 			 , E.EMP_NM
 		  FROM TB_BOARD_POSTS P
@@ -70,6 +66,30 @@
 		   AND P.TEMPORARY_POST_YN = 'N'
 		   ORDER BY 1 DESC
 	</select>
+	<!-- 게시판 리스트 검색 기능 -->
+	<select id="selectSearchData" resultMap="boardPostDtoMap" parameterType="hashmap">
+		SELECT P.POST_ID
+			 , P.EMP_ID
+			 , P.BOARD_ID 
+			 , P.POST_TITLE
+			 , P.POST_CONTENT
+			 , P.POST_ADD_DT
+			 , P.POST_MODIFY_DT
+			 , P.VIEW_CNT
+			 , P.NOTICE_YN
+			 , P.LIKE_CNT
+			 , E.EMP_NM
+		  FROM TB_BOARD_POSTS P
+		  JOIN TB_EMPLOYEES E
+		    ON P.EMP_ID = E.EMP_ID
+		 WHERE P.BOARD_ID = #{boardId}
+		   <if test='searchType.equals("title")'>
+		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
+		   </if> 
+		   <if test='searchType.equals("writer")'>
+		   AND E.EMP_NM LIKE '%' || #{search} || '%'
+		   </if>
+	</select>
 	
 	<!-- 공지가 아닌 것들만 가져오기 -->
 	<select id="selectNotNoticeList" resultMap="boardPostDtoMap">
@@ -77,15 +97,10 @@
 			 , P.EMP_ID
 			 , P.BOARD_ID 
 			 , P.POST_TITLE
-			 , P.POST_PW
 			 , P.POST_CONTENT
 			 , P.POST_ADD_DT
 			 , P.POST_MODIFY_DT
-			 , P.POST_REMOVE_DT
 			 , P.VIEW_CNT
-			 , P.NOTICE_YN
-			 , P.TEMPORARY_POST_YN
-			 , P.REPORT_YN
 			 , P.LIKE_CNT
 			 , E.EMP_NM
 		  FROM TB_BOARD_POSTS P
@@ -98,38 +113,33 @@
 		    ORDER BY 1 DESC
 	</select>
 	
+	
 	<!-- 공지 아닌 게시글 검색 기능 -->
 	<select id="selectNotNoticeSearchList" resultMap="boardPostDtoMap" parameterType="hashmap">
 		SELECT P.POST_ID
 			 , P.EMP_ID
 			 , P.BOARD_ID 
 			 , P.POST_TITLE
-			 , P.POST_PW
 			 , P.POST_CONTENT
 			 , P.POST_ADD_DT
 			 , P.POST_MODIFY_DT
-			 , P.POST_REMOVE_DT
 			 , P.VIEW_CNT
-			 , P.NOTICE_YN
-			 , P.TEMPORARY_POST_YN
-			 , P.REPORT_YN
 			 , P.LIKE_CNT
 			 , E.EMP_NM
 		  FROM TB_BOARD_POSTS P
 		  JOIN TB_EMPLOYEES E
 		    ON P.EMP_ID = E.EMP_ID
-		 WHERE P.BOARD_ID = #{id}
+		 WHERE P.BOARD_ID = #{boardId}
 		   AND P.TEMPORARY_POST_YN = 'N'
 		   AND (P.NOTICE_YN = 'N'
 		    OR P.NOTICE_YN IS NULL)
-		 <choose>
-		   <when test='searchType != null and searchType == "title"'>
+		   <if test='searchType.equals("title")'>
 		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
-		   </when> 
-		   <otherwise>
+		   </if> 
+		   
+		   <if test='searchType.equals("writer")'>
 		   AND E.EMP_NM LIKE '%' || #{search} || '%'
-		   </otherwise>
-		 </choose> 
+		   </if>
 		 ORDER BY 1 DESC
 	</select>
 	
@@ -147,7 +157,6 @@
 			 , P.VIEW_CNT
 			 , P.NOTICE_YN
 			 , P.TEMPORARY_POST_YN
-			 , P.REPORT_YN
 			 , P.LIKE_CNT
 			 , E.EMP_NM
 		  FROM TB_BOARD_POSTS P
@@ -156,35 +165,6 @@
 		 WHERE P.POST_ID = #{id}
  	 </select>
 	
-	<select id="selectSearchData" resultMap="boardPostDtoMap" parameterType="hashmap">
-		SELECT P.POST_ID
-			 , P.EMP_ID
-			 , P.BOARD_ID 
-			 , P.POST_TITLE
-			 , P.POST_PW
-			 , P.POST_CONTENT
-			 , P.POST_ADD_DT
-			 , P.POST_MODIFY_DT
-			 , P.POST_REMOVE_DT
-			 , P.VIEW_CNT
-			 , P.NOTICE_YN
-			 , P.TEMPORARY_POST_YN
-			 , P.REPORT_YN
-			 , P.LIKE_CNT
-			 , E.EMP_NM
-		  FROM TB_BOARD_POSTS P
-		  JOIN TB_EMPLOYEES E
-		    ON P.EMP_ID = E.EMP_ID
-		 WHERE P.BOARD_ID = #{id}
-		 <choose>
-		   <when test='searchType != null and searchType == "title"'>
-		   AND P.POST_TITLE LIKE '%' || #{search} || '%'
-		   </when> 
-		   <otherwise>
-		   AND E.EMP_NM LIKE '%' || #{search} || '%'
-		   </otherwise>
-		 </choose> 
-	</select>
 	
 	
 	
@@ -320,7 +300,10 @@
 	 	 WHERE COMMENT_ID= #{id}
 	 </delete>
 	 
-	 
+	 <!-- 좋아요 -->
+	 <update id="updateLikeUp" parameterType="boardPostDto">
+	 	UPDATE TB_BOARD_POSTS SET LIKE_CNT = #{likeCnt + 1}  WHERE POST_ID = #{postId}
+	 </update>
 	 
 	 
 </mapper>
