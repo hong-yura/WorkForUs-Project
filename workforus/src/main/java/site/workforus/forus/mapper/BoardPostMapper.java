@@ -83,6 +83,9 @@ public interface BoardPostMapper {
 	public List<BoardPostDTO> selectNotNoticeList(int bId);
 
 	public List<BoardPostDTO> selectNotNoticeSearchList(HashMap<String, Object> search);
+
+	// 좋아요
+	public int updateLikeUp(BoardPostDTO postDto);
 	
 
 }
