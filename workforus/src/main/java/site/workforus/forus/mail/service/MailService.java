@@ -144,6 +144,14 @@ public class MailService {
 		return data;
 	}
 
+	// 임시저장메일 상세
+	public TempMailDTO selectTempMail(String empId, int tempMailId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		TempMailDTO detailData = mapper.selectTempMail(empId, tempMailId);
+		
+		return detailData;
+	}
+
 	// 휴지통으로 이동
 	public int updateMailFolder(String empId, String mailId) {
 		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
@@ -174,6 +182,7 @@ public class MailService {
 		int result = mapper.updateDeleteMail(empId, mailId);
 		return result == 1 ? true : false;
 	}
+
 
 
 	

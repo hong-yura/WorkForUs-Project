@@ -298,5 +298,8 @@
 	 	   AND mail_id = #{mailId}
 	</update>
 	
+	<select id="selectTempMail" resultMap="tempMailDtoMap" parameterType="tempMailDto">
+		SELECT * FROM tb_temp_mailbox WHERE send_emp_id = #{sendEmpId} and temp_mail_id = #{tempMailId}
+	</select>
 	
 </mapper>

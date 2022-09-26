@@ -123,6 +123,20 @@ public class MailController {
 		return "/mail/mailSendDetail";
 	}
 	
+	// 임시저장메일 상세
+	@GetMapping(value="tempDetail")
+	public String tempDetail(Model model, Principal principal, @RequestParam int mailId) {
+		
+		String empId = principal.getName();
+		
+		TempMailDTO tempDetail = service.selectTempMail(empId, mailId);
+		
+		// 보낸 메일정보 가져옴
+		model.addAttribute("tempDetail", tempDetail);
+		
+		return "/mail/mailSendDetail";
+	}
+	
 	// 안읽은 상태로 변경
 	@GetMapping(value="/modRead")
 	public String modReadFl(Model model, @RequestParam String mailId) {

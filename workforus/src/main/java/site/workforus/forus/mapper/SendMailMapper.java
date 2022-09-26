@@ -66,6 +66,9 @@ public interface SendMailMapper {
 	// 임시보관함 조회
 	public List<TempMailDTO> selectTempList(String empId);
 	
+	// 임시보관함 메일 상세
+	public TempMailDTO selectTempMail(@Param("sendEmpId") String sendEmpId, @Param("tempMailId") int tempMailId);
+
 	// 메일 휴지통으로 이동
 	public int updateMailFolder(@Param("empId") String empId, @Param("mailId") String mailId);
 
@@ -77,6 +80,7 @@ public interface SendMailMapper {
 
 	// 메일 영구삭제
 	public int updateDeleteMail(@Param("empId") String empId, @Param("mailId") String mailId);
+
 	
 
 
