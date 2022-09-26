@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.mail.model.ReceiveMailDTO;
 import site.workforus.forus.mail.model.SendMailDTO;
 import site.workforus.forus.mail.model.TempMailDTO;
@@ -144,7 +145,27 @@ public class MailService {
 		return data;
 	}
 
+	// 안읽은메일 개수
+	public int selectCntMail(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		int result = mapper.selectCntMail(empId);
+		
+		return result;
+	}
 
+	// 회원이름
+	public String selectEmp(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		String empNm = mapper.selectEmp(empId);
+		return empNm;
+	}
+	
+	// 부서이름
+	public String selectDeptNm(String empId) {
+		SendMailMapper mapper = session.getMapper(SendMailMapper.class);
+		String deptNm = mapper.selectdeptNm(empId);
+		return deptNm;
+	}
 	
 
 
