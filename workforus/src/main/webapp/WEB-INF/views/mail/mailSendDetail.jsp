@@ -120,23 +120,25 @@
 				                                            	</c:choose>
 				                                        </div>
 				                                        <div>
-				                                            <label>읽은시간 : 
-				                                        	<c:choose>
-			                                            		<c:when test="${sendData.empId eq 'outMail' }">
-			                                            			외부메일(알수없음)
-						                                        </c:when>
-						                                        <c:otherwise>						                                        
-						                                            	<c:choose>
-						                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
-						                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
-						                                            		</c:when>
-						                                            		<c:otherwise>
-						                                            			읽지않음
-						                                            		</c:otherwise>
-						                                            	</c:choose>
-						                                        </c:otherwise>
-						                                    </c:choose>
-				                                            </label>
+		                                            		<c:if test="${tempDetail eq Null}">
+					                                            <label>읽은시간 : 
+					                                        	<c:choose>
+				                                            		<c:when test="${sendData.empId eq 'outMail' }">
+				                                            			외부메일(알수없음)
+							                                        </c:when>
+							                                        <c:otherwise>						                                        
+							                                            	<c:choose>
+							                                            		<c:when test="${sendData.mailReadFl eq 'Y'}">
+							                                            			<fmt:formatDate value="${sendData.mailReadTime}" type="both"/>
+							                                            		</c:when>
+							                                            		<c:otherwise>
+							                                            			읽지않음
+							                                            		</c:otherwise>
+							                                            	</c:choose>
+							                                        </c:otherwise>
+							                                    </c:choose>
+					                                            </label>
+						                                    </c:if>
 				                                        </div>
 				                                        <br>
 				                                        <div class="form-group border" style="height:auto; min-height:200px; margin-top:1rem;">
