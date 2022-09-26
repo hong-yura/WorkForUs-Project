@@ -93,7 +93,7 @@
 						 <%@ include file="../board_md/comment_module.jsp" %>
 					</div>
 				</div>
-			</section>
+			</section> 
 		</div>
 		<!-- 글 삭제 모달 -->
 		  <%@ include file="../board_md/delete_modal.jsp" %>
