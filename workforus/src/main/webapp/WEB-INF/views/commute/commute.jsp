@@ -283,86 +283,91 @@
                               	 		 </span>                	 		
                           			  </div>
 		            			</div>
-		            	<div class="col-12" style="text-align:center; height:4rem;">
-		            		<ul class="pagination pagination-primary justify-content-center">
-	            				<%
-	            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
-
-	            					Calendar cal = Calendar.getInstance();
-	            					cal.getTime();
-	            					int month1 = cal.get(Calendar.MONTH) + 1;
-	            				%>
-	            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
-		            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
-	            				</li>
-	            				<li id="result">
-		            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
-		            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
-	  	            				</h4>
-	            				</li>
-	            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
-		            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
+			            	<div class="col-12" style="text-align:center; height:4rem;">
+			            		<ul class="pagination pagination-primary justify-content-center">
+		            				<%
+		            					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
+	
+		            					Calendar cal = Calendar.getInstance();
+		            					cal.getTime();
+		            					int month1 = cal.get(Calendar.MONTH) + 1;
+		            				%>
+		            				<li style="margin-top: 0.3rem;  margin-right: 1rem;" onclick="loadPrevNext(0);">
+			            				<i class="bi bi-caret-left" style="cursor:pointer;" ></i>
+		            				</li>
+		            				<li id="result">
+			            				<h4 id="CalendaryearMonth" onchange="getMonth();"> 
+			            					<%= cal.get(Calendar.YEAR) %>.<%= month1 %>
+		  	            				</h4>
+		            				</li>
+		            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1);">
+			            				<i class="bi bi-caret-right" style="cursor:pointer;"></i>
+			            				
+		            				</li>
 		            				
-	            				</li>
-	            				
-	            				
-	            				<!-- 페이징 -->
-	            				
-	            				
-	            				
-	            				
-	            				
-	            				
-	            				
-                            </ul>
-		            	</div>   
- 						
- 						
- 						<table class="table table-striped mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>근무일자</th>
-                                        <th>출근시간</th>
-                                        <th>퇴근시간</th>
-                                        <th>근무시간</th>
-                                        <th>추가근무시간</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                		
-                                	<c:forEach items="${listData}" var="commuteData" varStatus="status">
-										<tr class="table-light">
-											<td>
-												${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
-											</td>
-											<td>
-												${commuteData.commuteTime.substring(11)}
-											</td>
-											<td>
-												${commuteData.getoffTime.substring(11)}
-											</td>
-											<td>
-												${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 
-											</td>
-											<td>
-												${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
-											</td>
-										</tr>
-									</c:forEach>	
-                                
-                                </tbody>
-                            </table>
- 						
- 						
- 						
- 						
- 						
- 						
- 						                 
+		            				
+		            				<!-- 페이징 -->
+		            				
+		            				
+		            				
+		            				
+		            				
+		            				
+		            				
+	                            </ul>
+			            	</div>   
+	 						<div style="margin-bottom:4rem;">
+		 						<table class="table table-striped mb-0">
+	                                <thead>
+	                                    <tr>
+	                                        <th>근무일자</th>
+	                                        <th>출근시간</th>
+	                                        <th>퇴근시간</th>
+	                                        <th>추가근무시간</th>
+	                                        <th>근무시간</th>
+	                                    </tr>
+	                                </thead>
+	                                <tbody>	
+	                                	<c:forEach items="${listData}" var="commuteData" varStatus="status">
+											<tr class="table-light">
+												<td>
+													${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
+												</td>
+												<td>
+													${commuteData.commuteTime.substring(11)}
+												</td>
+												<td>
+													${commuteData.getoffTime.substring(11)}
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${empty commuteData.getoffTime}">
+															-
+														</c:when>
+														<c:otherwise>
+															${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 													
+														</c:otherwise>
+													</c:choose>
+												</td>
+												<td>
+													<c:choose>
+														<c:when test="${empty commuteData.getoffTime}">
+															-
+														</c:when>
+														<c:otherwise>
+															${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
+														</c:otherwise>
+													</c:choose>
+												</td>
+											</tr>
+										</c:forEach>	
+	                                </tbody>
+	                            </table>
+							</div>            
 						</div>
 		            </div>
 		        </div>
-		         <%@ include file="../module/footer.jsp" %>
+		        <%@ include file="../module/footer.jsp" %>
 		    </section>
 		</div>
     </div>
