@@ -12,87 +12,9 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	<style type="text/css">
-		.ui-datepicker table{
-		    display: none;
-		}
-	</style>
+	
 	<%@ include file="../module/head.jsp" %>
-	<script type="text/javascript">
-	var chageData;
-	
-	function loadPrevNext(element, value){
-		var defaultText = document.getElementById("CalendaryearMonth");
-		var year1 = defaultText.innerText.substring(0,4);
-		var month1 = defaultText.innerText.substring(5) - 1;
-		
-		var currentDate = new Date(year1, month1);
-
-		
-		var table = value.parentElement.parentElement.nextElementSibling;
-		
-		if(element == 0) {
-			 currentDate.setMonth(currentDate.getMonth() - 1);
-		} else {
-			currentDate.setMonth(currentDate.getMonth() + 1);
-		}
-		
-		var year = currentDate.getFullYear();
-		var month = currentDate.getMonth() + 1;
-		var testText = document.getElementById("CalendaryearMonth");
-		testText.innerHTML = year + "." + month;
-		var month2 = currentDate.getMonth();
-		
-		location.href="/work/record?year=" + year + "&month=" + month2;
-		
-	}
-
-
-	
-	
-	
-	
-	// 출근시간 입력
-	function commuteIn() {
-		var currentDate = new Date();
-		var currentTime = currentDate.getHours() + ":"
-       					+ currentDate.getMinutes() + ":"
-       				    + currentDate.getSeconds();
-		console.log(currentTime);           					
-		$.ajax({
-			type: "POST",
-			url: "${pageContext.request.contextPath}/work/in",
-			data: {
-				intime: currentTime
-			},
-			async:false,		// ajax를 동기식으로 변경함..
-			dataType: "json",
-		});
-		location.reload();
-	}    
-	
-	// 퇴근시간 입력 
-	function commuteOut() {
-		var currentDate = new Date();
-		var currentTime = currentDate.getHours() + ":"
-       					+ currentDate.getMinutes() + ":"
-       				    + currentDate.getSeconds();
-		console.log(currentTime);           					
-		$.ajax({
-			type: "POST",
-			url: "${pageContext.request.contextPath}/work/out",
-			data: {
-				intime: currentTime
-			},
-			async:false,		// ajax를 동기식으로 변경함..
-			dataType: "json",
-		});
-		location.reload();
-	}
-	
-	
-
-	</script>
+	<script src="${staticUrl}/js/pages/commute/commute.js"></script>
 </head>
 <body class="theme-light" style="overflow-y: auto;">
     <%@ include file="../module/navigation.jsp" %>
@@ -302,42 +224,6 @@
 	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="static/js/bootstrap.bundle.min.js"></script>
 
-
-    <script src="static/js/main.js"></script>
-    
-    <script type="text/javascript">
-
-
-		function changeMonth(type) {
-			  const resultElement = document.getElementById('result');
- 			
-			  var strResult = resultElement.innerText;
-			  const arr = str.split('.');
-			  var chyear = arr[0];
-			  var chmonth = arr[1];
-			  
-			  if(type === 'p') {
-				  chmonth = parseInt(chmonth) - 1;
-			  }else if(type === 'n')  {
-				  chmonth = parseInt(chmonth) + 1;
-			  }
-			  resultElement.innerText = chyear + "." + chmonth;
-			  
-		}
-
-
-    	function getFormatDate(date){
-    	    var year = date.getFullYear();              //yyyy
-    	    var month = (1 + date.getMonth());          //M
-    	    month = month >= 10 ? month : '0' + month;  //month 두자리로 저장
-    	    return  year + month;       
-    	    
-    	    
-    	}
-    	
-    </script>
-    
-    
-    
+    <script src="${staticUrl}/js/main.js"></script>
 </body>
 </html>
