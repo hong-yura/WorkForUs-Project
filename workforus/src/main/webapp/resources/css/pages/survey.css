@@ -223,4 +223,7 @@ input,textarea:focus {
 	margin-bottom:0px;
 }
 
-
+/*설문*/
+.start-page{
+	min-height: 300px;
+}

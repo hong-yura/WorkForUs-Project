@@ -21,10 +21,10 @@ public class BoardService {
 	private SqlSession session;
 
 	// 모든 게시판 
-	public List<BoardDTO> selectAll(LoginVO loginVo) {
+	public List<BoardDTO> selectAll(LoginVO login) {
 		BoardMapper mapper = session.getMapper(BoardMapper.class);
 		
-		List<BoardDTO> datas = mapper.selectAll(loginVo);
+		List<BoardDTO> datas = mapper.selectAll(login);
 		return datas;
 		
 	}
