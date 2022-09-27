@@ -71,14 +71,14 @@
 	      		<hr>
 	      		<!-- 내용 입력란 - summernote 사용 -->
 	      		<div class="row">
-	      			<div class="col-12">
+	      			<div class="col-12 black">
 		      			<textarea id="summernote" name="content">${param.content}</textarea>
 	      			</div>
 	      		</div>
-	      		<div class="text-end">
-					<button class="btn" type="submit" name="temporaryYn" value="N" id="saveBtn">저장</button>
-					<button class="btn" type="submit" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
-					<button class="btn" type="button" onclick="location.href='/board?bId=${boardId}'">취소</button>
+	      		<div class="text-end margin-10">
+					<button class="btn btn-outline-secondary" type="submit" name="temporaryYn" value="N" id="saveBtn">저장</button>
+					<button class="btn btn-outline-secondary" type="submit" name="temporaryYn" value="Y" id="saveBtn">임시 저장</button>
+					<button class="btn btn-outline-danger" type="button" onclick="location.href='/board?bId=${boardId}'">취소</button>
 				</div>
 		     </div>
 		</form>

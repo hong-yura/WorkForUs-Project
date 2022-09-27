@@ -302,7 +302,7 @@
 	 
 	 <!-- 좋아요 -->
 	 <update id="updateLikeUp" parameterType="boardPostDto">
-	 	UPDATE TB_BOARD_POSTS SET LIKE_CNT = #{likeCnt + 1}  WHERE POST_ID = #{postId}
+	 	UPDATE TB_BOARD_POSTS SET LIKE_CNT = #{likeCnt} + 1  WHERE POST_ID = #{postId}
 	 </update>
 	 
 	 

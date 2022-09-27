@@ -23,4 +23,10 @@ public interface BoardMapper {
 	// 게시판 멤버 가져오기 -> 해당 게시판 id 필요
 	public List<BoardParticipDTO> selectParticipList(BoardDTO boardDto);
 	
+	// 다음 시퀀스
+	public int nextBoardSeq();
+	
+	// 참여명단 추가
+	public int insertParticip(BoardParticipDTO participDto);
+	
 } 

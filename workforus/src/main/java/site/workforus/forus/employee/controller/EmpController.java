@@ -1,19 +1,30 @@
 package site.workforus.forus.employee.controller;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.ibm.icu.text.SimpleDateFormat;
+
 import site.workforus.forus.employee.model.EmpDTO;
+import site.workforus.forus.employee.model.LoginVO;
 import site.workforus.forus.employee.service.EmpService;
 import site.workforus.forus.employee.service.MailSendService;
 
@@ -67,7 +78,7 @@ public class EmpController {
 	public String loginFail(Model model) {
 		return "login/login_fail";
 	}
-	
+
 	@GetMapping(value="/mailCheck")
 	@ResponseBody
 	public String mailCheck(String email) {

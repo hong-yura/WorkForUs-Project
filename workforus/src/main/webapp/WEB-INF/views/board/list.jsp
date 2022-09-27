@@ -10,6 +10,7 @@
 	<title>workforus - 게시판</title>
     <%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/info.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
@@ -29,6 +30,7 @@
 								<li class="breadcrumb-item">
 									<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
 								<li class="breadcrumb-item active" aria-current="page">Board</li>
+								<li class="breadcrumb-item active" aria-current="page">${boardData.boardNm }</li>
 							</ol> 
 						</nav>
 					</div>
@@ -83,7 +85,7 @@
 						</div>
 					</div>
 					<!-- 메인 -->
-						<div class="section-main radius">
+						<div class="section-main radius" style="min-height: 300px;">
 						<c:url value="/board" var="boardUrl"/>
 						<form action="${boardUrl}?bId=${boardData.boardId}" method="get">
 							<div class="main-button">

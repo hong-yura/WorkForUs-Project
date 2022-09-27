@@ -85,8 +85,7 @@ public class LoginVO implements Principal, UserDetails{
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return empId;
 	}
 
 }

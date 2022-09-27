@@ -354,7 +354,7 @@
             </a>
             <ul class="submenu">
               <li class="submenu-item">
-                <a href="${homeUrl}/admin/logo">테마 설정</a>
+                <a href="${homeUrl}/admin/thema">테마 설정</a>
               </li>
               <li class="submenu-item">
                 <a href="${homeUrl}/admin/dept_manage">조직도 관리</a>

@@ -27,7 +27,7 @@
 								<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 									<ol class="breadcrumb">
 										<li class="breadcrumb-item">
-											<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
+											<a href="${homeUrl}">Home</a></li>
 										<li class="breadcrumb-item active" aria-current="page">Address</li>
 									</ol> 
 								</nav>
@@ -68,40 +68,25 @@
 								</div>
 								<div class="dataTable-container">
 									<table class="table table-hover dataTable-table" id="table1">
-										
-										<colgroup>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-										</colgroup>
 										<thead class="table-primary">
 											<tr>
+												<th data-sortable>사 번</th>
 												<th data-sortable>이 름</th>
 												<th data-sortable>부 서</th>
-												<th data-sortable>휴 대 전 화</th>
 												<th data-sortable>이 메 일</th>
 												<th data-sortable>내 선 번 호</th>
 											</tr>
 										</thead>
 										<tbody>
-											<%-- <c:forEach items="${data}" var="data"> --%>
+											 <c:forEach items="${addrData}" var="addrData">
 											<tr>
-												<th>박보검</th>
-												<th>연구개발부</th>
-												<th>010-0000-0000</th>
-												<th>bogum@workforus.site</th>
-												<th>070-0000-0000</th>
+												<th>${addrData.empId}</th>
+												<th>${addrData.empObj.empNm}</th>
+												<th>${addrData.empObj.deptNo}</th>
+												<th>${addrData.empObj.empEmail}</th>
+												<th>${addrData.empObj.empTel}</th>
 											</tr>
-											<tr>
-												<th>강동원</th>
-												<th>기획전략부</th>
-												<th>010-0000-0000</th>
-												<th>dongdong@workforus.site</th>
-												<th>070-0000-0000</th>
-											</tr>
-											<%-- </c:forEach> --%>
+											</c:forEach>
 										</tbody>
 									</table>
 								</div>
@@ -158,17 +143,16 @@
 				<%@ include file="../module/footer.jsp" %>
 			</div>
 		</div>
-		<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-		<script src="static/js/bootstrap.bundle.min.js"></script>
+		<script src="${staticUrl}/vendors/simple-datatables/simple-datatables.js"></script>
+		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 		
-		<script src="static/vendors/simple-datatables/simple-datatables.js"></script>
+		
 		<script type="text/javascript">
-			let table1 = document.querySelector('#table1');
-	        let dataTable = new simpleDatatables.DataTable(table1);
+			var table1 = document.querySelector('#table1');
+	        var dataTable = new simpleDatatables.DataTable(table1);
 	        
 	        $(document).ready(function() {
 	            $('#table1').DataTable( {
-	                order: [[ 0, 'desc' ], [ 1, 'desc' ]]
 	            } );
 	        } );
 	        

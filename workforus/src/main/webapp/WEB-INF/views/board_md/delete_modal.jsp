@@ -33,7 +33,7 @@
 					</div>
 					<div class="modal-footer">
 						<c:url value="/board" var="boardUrl"/>
-						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${boardUrl}'">확인</button>
+						<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${boardUrl}?bId=${postData.boardId}'">확인</button>
 					</div>
 				</div>
 			</div>

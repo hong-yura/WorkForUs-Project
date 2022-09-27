@@ -10,4 +10,8 @@ public interface EmpMapper {
 	public int insertEmployee(EmpDTO empDto);
 	
 	public List<EmpDTO> selectEmployeeAll();
+
+	public EmpDTO selectEmployeeInfo(String empId);
+
+	public int updateEmployeeInfo(EmpDTO empDto);
 }
