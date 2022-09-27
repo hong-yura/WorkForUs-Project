@@ -65,14 +65,7 @@ public class CommuteController{
 		
 		// 금일 출근기록이 있음
 		if(data != null) {
-			// db에 저장된 date타입에서 시간만 잘라냄
-			data.setCommuteTime(data.getCommuteTime().substring(11));
-			// 퇴근기록이 있음
-			if(data.getGetoffTime() != null) {
-				data.setGetoffTime(data.getGetoffTime().substring(11));
-				data.setWorkTime(data.getWorkTime().substring(11));
-				data.setAddedTime(data.getAddedTime().substring(11));
-			}
+			service.getData(data);
 		}
 		
 		String remainTime = "00:00:00";
@@ -81,6 +74,7 @@ public class CommuteController{
 			if(service.beforeSelect(empId) != null) {
 				CommuteDTO temp = service.beforeSelect(empId); // 이번주에 마지막 출근기록 DTO
 				if(temp.getGetoffTime()!= null) {
+					
 					String tempTime = (service.calculate(temp.getWeekWorktime()));
 					remainTime = service.remainTime(temp.getWeekWorktime());
 					progress = service.progress(temp.getWeekWorktime());	
@@ -92,8 +86,8 @@ public class CommuteController{
 			
 			}
 		} else {
-			 String tempTime = (service.calculate(data.getWeekWorktime()));
-			 remainTime = service.remainTime(data.getWeekWorktime());
+			String tempTime = (service.calculate(data.getWeekWorktime()));
+			remainTime = service.remainTime(data.getWeekWorktime());
 			progress = service.progress(data.getWeekWorktime());	
 			data.setWeekAddtime(data.getWeekAddtime().substring(11));
 			data.setWeekWorktime(data.getWeekWorktime().substring(11));

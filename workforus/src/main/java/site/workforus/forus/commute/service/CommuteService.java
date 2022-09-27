@@ -511,6 +511,19 @@ public class CommuteService{
 		
 	}
 	
-
 	
+	// 금일 출근기록이 있을 때
+	public CommuteDTO getData(CommuteDTO data){
+		// db에 저장된 date타입에서 시간만 잘라냄
+		data.setCommuteTime(data.getCommuteTime().substring(11));
+		// 퇴근기록이 있음
+		if(data.getGetoffTime() != null) {
+			data.setGetoffTime(data.getGetoffTime().substring(11));
+			data.setWorkTime(data.getWorkTime().substring(11));
+			data.setAddedTime(data.getAddedTime().substring(11));
+		}
+		return data;
+	}
+	
+
 }
