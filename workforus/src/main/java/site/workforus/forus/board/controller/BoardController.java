@@ -2,6 +2,7 @@ package site.workforus.forus.board.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,9 +70,8 @@ public class BoardController {
 		logger.info("getData(searchType={})", searchType);
 		
 		// 로그인 데이터 가져오기
-		LoginVO loginVo = (LoginVO)auth.getPrincipal();
-		logger.info("getData(loginVo={})", loginVo.toString());
-		
+		LoginVO loginVo =  (LoginVO)auth.getPrincipal();
+		logger.info("getData(loginVo={})", loginVo);
 		
 		// 게시판 가져오기 -> navbar에 들어갈 내용
 		List<BoardDTO> boardNav = boardService.selectAll(loginVo); // 사원에 해당하는 게시판 데이터를 가지고 옴

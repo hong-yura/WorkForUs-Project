@@ -17,10 +17,27 @@
 	
     <div id="app">
     	<div id="main">
-    		<div class="page-heading margin-left-10">
-      			<h3>Board</h3> <!-- 게시판 이름 -->
-      		</div>
-	      	<!-- board -->
+
+	    	<div class="page-heading">
+				<div class="page-title">
+					<div class="row">
+						<div class="col-12 col-md-6 order-md-1 order-last">
+							<h3>survey</h3>
+						</div>
+						<div class="col-12 col-md-6 order-md-2 order-first">
+							<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+								<ol class="breadcrumb">
+									<li class="breadcrumb-item">
+										<a href="views/home.jsp">Home</a></li> <!-- curl로 수정 -->
+									<li class="breadcrumb-item active" aria-current="page">survey</li>
+								</ol> 
+							</nav>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<c:url value="/survey/question" var="questionUrl"/>
       		<div class="page-content">
 				<section class="row">
 					<div class="col-12"> 
@@ -60,10 +77,10 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="btn-group">
-							<button class="btn btn-outline-dark" style="background-color: #fff; border-color: #c0c0c0;" type="button">참여하기</button>
+							<button class="btn btn-outline-dark" style="border-color: #c0c0c0;" type="submit" onclick="location.href='${questionUrl}?surveyNo=${surveyData.surveyNo}'">참여하기</button>
 						</div>
 						<div class="btn-group">
-							<button class="btn btn-outline-dark" style="background-color: #fff; border-color: #c0c0c0" type="button">목록</button>
+							<button class="btn btn-outline-dark" style="border-color: #c0c0c0" type="button">목록</button>
 						</div>
 					</div>
 				</div>

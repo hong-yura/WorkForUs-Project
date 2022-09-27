@@ -14,7 +14,7 @@ import lombok.ToString;
 public class SurveyQuestionDTO {
 	private int quesNo;
 	private int surveyNo;
-	private int typeNo;
+	private int typeNo; // 1 : 주관, 2: 객관, 3: 날짜
 	private String quesContent;
 	
 	public SurveyQuestionDTO() {}

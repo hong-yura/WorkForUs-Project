@@ -22,6 +22,12 @@
 		<result property="quesContent" column="ques_content"/>
 	</resultMap>
 	
+	<resultMap type="distractorDto" id="distractorDtoMap">
+		<result property="distractorNo" column="distractor_no"/>
+		<result property="quesNo" column="ques_no"/>
+		<result property="distractorContent" column="distractor_content"/>
+	</resultMap>
+	
 	<!-- 설문 리스트 가져오기 -->
 	<select id="selectAllSurvey" resultMap="surveyDtoMap">
 		SELECT survey_no
@@ -92,6 +98,18 @@
 			 , ques_content
 		  FROM tb_survey_questions
 		 WHERE survey_no = #{id}
+	</select>
+	
+	<!-- 객관식 선택지 가져오기 -->
+	<select id="selectDistractorList" resultMap="distractorDtoMap" parameterType="java.util.List">
+		select distractor_no
+			 , ques_no
+			 , distractor_content
+	      from tb_objective_distractors
+	     where ques_no in 
+	     <foreach collection="list" item="value" index="idx" separator="," open="(" close=")">
+    		#{value}
+   		 </foreach>
 	</select>
 	
 </mapper>

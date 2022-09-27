@@ -9,10 +9,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import site.workforus.forus.survey.model.ObjectiveDistractorDTO;
 import site.workforus.forus.survey.model.SurveyDTO;
+import site.workforus.forus.survey.model.SurveyQuestionDTO;
 import site.workforus.forus.survey.service.SurveyService;
 
 @Controller
@@ -51,6 +55,38 @@ public class SurveyController {
 		model.addAttribute("surveyData", surveyDto);
 		return "/survey/survey_detail";
 	}
+
+	
+	
+	@GetMapping(value="/question")
+	public String getQestion(Model model
+						   , @RequestParam int surveyNo) {
+		logger.info("getQestion(surveyNo={})", surveyNo);
+		
+		// 설문조사 데이터 가져오기
+		SurveyDTO surveyData = surveyService.selectSurvey(surveyNo);
+		logger.info("getQestion(surveyData={})", surveyData);
+		// 해당 설문조사에 대한 질문 가져오기
+		List<SurveyQuestionDTO> questionDatas = surveyService.selectQuestionList(surveyNo);
+		logger.info("getQestion(questionDatas={})", questionDatas);
+		
+		// 객관식 선택지 가져오기
+		List<ObjectiveDistractorDTO> distractorData = surveyService.selectDistractorList(questionDatas);
+		
+		model.addAttribute("distractorData", distractorData);
+		model.addAttribute("questionDatas", questionDatas);
+		model.addAttribute("surveyData", surveyData);
+		return "/survey/survey_question";
+	}
+	
+//	@PostMapping(value="/response")
+//	public String addResponse(Model model
+//							) {
+//		
+//	}
+	
 	
 	
 }
+
+
