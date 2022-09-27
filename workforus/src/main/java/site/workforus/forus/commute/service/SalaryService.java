@@ -37,7 +37,7 @@ public class SalaryService {
 		
 		EmpDTO data = mapper.selectData(empId);
 		// 월급 저장된 값이 없다면 2,800,000으로 수정함
-		if(data.getEmpSalary() == null) { 
+		if(data.getEmpSalary() == 0) { 
 			mapper.updateSalary(empId);
 		}
 		int empSalary = mapper.selectEmpSalary(empId);
@@ -212,9 +212,6 @@ public class SalaryService {
 	 */
 	
     static Set<String> holidaysSet = new HashSet<>();
-    public static final int LD_SUNDAY = 7;
-    public static final int LD_SATURDAY = 6;
-    public static final int LD_MONDAY = 1;
     
     //음력날짜를 양력날짜로 변환
     public String Lunar2Solar(String yyyymmdd) {
