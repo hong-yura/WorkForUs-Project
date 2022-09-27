@@ -44,19 +44,6 @@
 		var month2 = currentDate.getMonth();
 		
 		location.href="/work/record?year=" + year + "&month=" + month2;
-		// $.ajax({
-		//	type:"GET",
-		//	url:"${pageContext.request.contextPath}/work/record",
-		//	dataType:"json",
-		//	data:{
-		//	year: year,
-		//		month: month2
-		//	},
-		//	success : function(data) { 	// controllor에서 list를 return 받았음
-	    //           changeData =  data;
-		//			$("tableBody").html(data);
-		//	 }							
-		//})
 		
 	}
 

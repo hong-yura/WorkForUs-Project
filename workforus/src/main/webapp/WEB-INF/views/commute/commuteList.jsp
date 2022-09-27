@@ -23,13 +23,23 @@
 						${commuteData.commuteTime.substring(11)}
 					</td>
 					<td>
-						${commuteData.getoffTime.substring(11)}
+						<c:choose>
+				    		<c:when test="${commuteData.getoffTime.substring(11) eq '23:59:59'}">
+				    			<div>관리자문의</div>
+				    		</c:when>
+				    		<c:otherwise>
+								${commuteData.getoffTime.substring(11)}
+				    		</c:otherwise>
+						</c:choose>
 					</td>
 					<td>
 						<c:choose>
 							<c:when test="${empty commuteData.getoffTime}">
 								-
 							</c:when>
+							<c:when test="${commuteData.getoffTime.substring(11) eq '23:59:59'}">
+				    			<div>관리자문의</div>
+				    		</c:when>
 							<c:otherwise>
 								${commuteData.addedTime.substring(11, 13)}h ${commuteData.addedTime.substring(14, 16)}m ${commuteData.addedTime.substring(17)}s 													
 							</c:otherwise>
@@ -40,6 +50,9 @@
 							<c:when test="${empty commuteData.getoffTime}">
 								-
 							</c:when>
+							<c:when test="${commuteData.getoffTime.substring(11) eq '23:59:59'}">
+				    			<div>관리자문의</div>
+				    		</c:when>
 							<c:otherwise>
 								${commuteData.workTime.substring(11, 13)}h ${commuteData.workTime.substring(14, 16)}m ${commuteData.workTime.substring(17)}s
 							</c:otherwise>
