@@ -42,7 +42,7 @@
 							<div class="card">
 								<div class="card">
 		                    		<div class="card-header">
-		                                 <h4>설문 조사</h4>
+		                                 <h4>설문 조사</h4> 
 		                                 <p>${surveyData.surveyTitle }</p>
 		                             </div>
 	                                <div class="card-body">
