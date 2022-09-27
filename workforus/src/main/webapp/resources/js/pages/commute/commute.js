@@ -38,7 +38,7 @@
 		console.log(currentTime);           					
 		$.ajax({
 			type: "POST",
-			url: "${pageContext.request.contextPath}/work/in",
+			url: "/work/in",
 			data: {
 				intime: currentTime
 			},
@@ -57,7 +57,7 @@
 		console.log(currentTime);           					
 		$.ajax({
 			type: "POST",
-			url: "${pageContext.request.contextPath}/work/out",
+			url: "/work/out",
 			data: {
 				intime: currentTime
 			},
