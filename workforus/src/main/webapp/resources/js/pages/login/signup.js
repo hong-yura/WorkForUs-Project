@@ -54,7 +54,7 @@ function check_pw() {
 		document.getElementById('checkPw').style.color = '#FF0000';
 		return false;
 	} else {
-		document.getElementById('okCheck').innerText = '';
+		document.getElementById('checkPw').innerText = '';
 		return true;
 	}
 }
@@ -66,7 +66,7 @@ function check_email() {
 	var email = document.getElementById('email_id').value;
 	
 	if(re.test(email)) {
-		document.getElementById('okCheck').innerText = '';
+		checkEmail.innerText = '';
 		return true;
 	} else {
 		checkEmail.innerText = '적합하지 못한 이메일 형식입니다.';
@@ -82,7 +82,7 @@ function check_assist_email() {
 	var emailAssist = document.getElementById('email_assist_id').value;
 	
 	if(re.test(emailAssist)) {
-		document.getElementById('okCheck').innerText = '';
+		checkAssistEmail.innerText = '';
 		return true;
 	} else {
 		checkAssistEmail.innerText = '적합하지 못한 이메일 형식입니다.';
@@ -99,7 +99,11 @@ function ok_signup_check() {
 	var emailId = document.getElementById('email_id');
 	var emailAssistId = document.getElementById('email_assist_id');
 
-	var modal = new bootstrap.Modal(document.getElementById("signupCompleteModal"), {
+	var email = document.getElementById('email_assist_id').value;
+	console.log(email);
+	var checkInput = document.getElementById('email-check-input');
+	
+	var modal = new bootstrap.Modal(document.getElementById("mailCheck"), {
 		keyboard: false
 	});
 	
@@ -138,5 +142,34 @@ function ok_signup_check() {
 		emailAssistId.focus();
 		return false;
 	}
+	
+	$.ajax({
+		type: "get",
+		url: "/mailCheck",
+		data: {
+			email : email
+		},
+		success: function (data) {
+			console.log(data);
+			code = data;
+			alert("인증번호가 전송되었습니다.")
+			
+			// 인증번호 비교
+			// blur -> focus가 벗어나는 경우 발생
+			document.getElementById("mail-check-input").blur(function() {
+				var inputCode = document.getElementById("mail-check-input").value;
+				var resultMsg = document.getElementById("mail-check-warn");
+				
+				if(inputCode === code) {
+					resultMsg.innerHTML = "인증번호가 일치합니다.";
+					resultMsg.style = "color:green";
+				} else {
+					resultMsg.innerHTML = "인증번호가 불일치 합니다. 다시 확인해주세요!"
+					resultMsg.style = "color:red";
+				}
+			})
+		}
+	})
 	modal.show();
 }
+

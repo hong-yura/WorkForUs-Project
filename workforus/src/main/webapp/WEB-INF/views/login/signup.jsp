@@ -83,6 +83,27 @@
 		                <p class='text-gray-600'>Already have an account? <a href="auth-login.html" class="font-bold">Log in</a>.</p>
 		            </div>
 		            
+		            <div class="modal fade" id="mailCheck" tabindex="-1" aria-labelledby="errorModalLabel">
+						<div class="modal-dialog  modal-dialog-centered">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title" id="errorModalLabel">이메일 인증</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mail-check-box">
+										<label>인증번호 6자리를 입력해주세요.</label>
+										<input class="form-control" id="mail-check-input" placeholder="인증번호" maxlength="6">
+				      				</div>
+				      				<span id="mail-check-warn"></span> 
+			      				</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">확인</button>
+								</div>
+							</div>
+						</div>
+					</div>
+		            
 			        <div class="modal fade" id="signupCompleteModal" tabindex="-1" aria-labelledby="errorModalLabel">
 						<div class="modal-dialog  modal-dialog-centered">
 							<div class="modal-content">
@@ -107,6 +128,10 @@
 		    </div>
 		</div>
     </div>
+    <script type="text/javascript">
+    	
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.js"></script>
     <script src="${staticUrl}/js/app.js"></script>
     <script src="${staticUrl}/js/pages/login/signup.js"></script>
