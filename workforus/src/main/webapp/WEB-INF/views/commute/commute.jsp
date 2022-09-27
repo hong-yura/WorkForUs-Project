@@ -118,7 +118,16 @@
 		                        <div>
 		                        	<div style="padding-top:10px;"><h6>이번주 근로현황</h6></div>
 		                        	<div class="progress progress-primary  mb-4" style="margin-top:20px;" >
-					                    <div class="progress-bar" role="progressbar" style="width: ${progress}%" aria-valuemin="0" aria-valuemax="100">${progress}%</div>
+					                    <div class="progress-bar" role="progressbar" style="width: ${progress}%" aria-valuemin="0" aria-valuemax="100">
+					                    	<c:choose>
+					                    		<c:when test="${progress > 100}">
+								                    100%
+					                    		</c:when>
+					                    		<c:otherwise>
+								                    ${progress}%
+					                    		</c:otherwise>
+					                    	</c:choose>
+					                    </div>
 					                </div>
 					                <div>
 						    			 → ${weekWorktime }
