@@ -1,5 +1,7 @@
 package site.workforus.forus.board.model;
 
+import java.io.Serializable;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Getter;
@@ -10,7 +12,7 @@ import site.workforus.forus.admin.model.DeptDTO;
 @Setter
 @ToString
 @Alias("boardDto") 
-public class BoardDTO {
+public class BoardDTO implements Serializable {
 
 	private int boardId;			// 게시판 id
 	private int categoryId;			// 카테고리 id

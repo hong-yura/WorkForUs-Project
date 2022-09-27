@@ -10,6 +10,7 @@
 	<title>workforus - 게시판</title>
     <%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/board.css">
+    <link rel="stylesheet" href="${staticUrl}/css/pages/info.css">
 </head>
 <body>
 	<%@ include file="../module/navigation.jsp" %>
