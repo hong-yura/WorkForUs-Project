@@ -44,4 +44,5 @@ public interface CommuteMapper {
 	public List<CommuteDTO> selectList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
 	
 	public int selectCntList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
+	
 }

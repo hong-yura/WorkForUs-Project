@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-	
+
 	<%@ include file="../module/head.jsp" %>
 	<script src="${staticUrl}/js/pages/commute/commute.js"></script>
 </head>
@@ -72,7 +72,7 @@
 								    			-
 								    		</c:when>
 								    		<c:otherwise>
-								    			<div>${data.commuteTime }</div>
+								    			<div>${data.commuteTime}</div>
 								    		</c:otherwise>
 								    	</c:choose>
 						   			</span>
@@ -201,7 +201,7 @@
 		            				</li>
 		            				<li id="result">
 			            				<h4 id="CalendaryearMonth" onchange="getList(this);"> 
-			            					<span id="year1"><%= cal.get(Calendar.YEAR) %></span>.<span id="month1"><%= month1 %></span>
+			            					<span id="year1">${year}</span>.<span id="month1">${month}</span>
 		  	            				</h4>
 		            				</li>
 		            				<li style="margin-top: 0.3rem;  margin-left: 1rem;" onclick="loadPrevNext(1, this);">
@@ -221,8 +221,8 @@
 		    </section>
 		</div>
     </div>
-	<script src="static/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-    <script src="static/js/bootstrap.bundle.min.js"></script>
+	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 
     <script src="${staticUrl}/js/main.js"></script>
 </body>
