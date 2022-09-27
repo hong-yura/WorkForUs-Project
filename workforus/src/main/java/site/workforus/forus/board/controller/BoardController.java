@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import site.workforus.forus.admin.model.DeptDTO;
+import site.workforus.forus.admin.service.DeptService;
 import site.workforus.forus.board.model.BoardDTO;
 import site.workforus.forus.board.model.BoardParticipDTO;
 import site.workforus.forus.board.model.BoardPostDTO;
@@ -36,7 +38,6 @@ import site.workforus.forus.board.service.PostCommentService;
 import site.workforus.forus.board.service.UploadFileService;
 import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.employee.model.LoginVO;
-import site.workforus.forus.employee.service.EmpService;
 
 @Controller
 @RequestMapping(value="/board")
@@ -53,6 +54,8 @@ public class BoardController {
 	private PostCommentService commentService;
 	@Autowired
 	private UploadFileService fileService;
+	@Autowired
+	private DeptService deptService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(BoardController.class);   
 	
@@ -67,7 +70,7 @@ public class BoardController {
 		
 		// 로그인 데이터 가져오기
 		LoginVO loginVo = (LoginVO)auth.getPrincipal();
-		logger.info("getData(loginVo={})", loginVo);
+		logger.info("getData(loginVo={})", loginVo.toString());
 		
 		
 		// 게시판 가져오기 -> navbar에 들어갈 내용
@@ -86,6 +89,9 @@ public class BoardController {
 		List<BoardPostDTO> notNotice = postService.selectNotNotice(bId, search, searchType);
 		logger.info("getData(notNotice)={}", notNotice);
 		
+		// 부서를 가지고 와야 한다. -> 게시판 생성할 때 필요
+		List<DeptDTO> deptDto = deptService.getDeptAll();
+		
 		
 		// 참여명단을 가져오기 
 		List<BoardParticipDTO> participList = participService.selectAll(boardData);
@@ -99,9 +105,35 @@ public class BoardController {
 		model.addAttribute("boardData", boardData);
 		model.addAttribute("participList", participList);
 		model.addAttribute("postCnt", postCnt);
+		model.addAttribute("deptData", deptDto);
 		return "/board/list";
 		 
 	}
+	
+	// 게시판 생성 페이지
+	@PostMapping(value="/add")
+	public String addBoard(Model model, Authentication auth 
+						, @ModelAttribute BoardDTO boardDto
+						, @RequestParam int currentBoardId) {
+		
+		logger.info("addBoard(boardDto={})", boardDto);
+		boardDto.setBoardManager(auth.getName()); // empId 넣어주기
+		
+		logger.info("addBoard(boardDto={})", boardDto);
+		
+		// 저장한 후 상세 데이터를 가지고 와야 한다.
+		BoardDTO boardData = boardService.addBoard(boardDto);
+		logger.info("게시판 추가 후 : addBoard(boardData={})", boardData);
+		
+		if(boardData != null) {
+			return "redirect:/board?bId=" + boardData.getBoardId();
+		}else {
+			return "/board?bId=" + currentBoardId;
+		}
+		
+	}
+	
+	
 	// 게시글 상세 
 	@GetMapping(value="/detail")
 	public String getDetailData(Model model, HttpSession session, Authentication auth

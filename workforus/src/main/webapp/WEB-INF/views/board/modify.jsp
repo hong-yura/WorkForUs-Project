@@ -77,10 +77,10 @@
 		      			<textarea id="summernote" name="content">${postData.content}</textarea>
 	      			</div>
 	      		</div>
-	      		<div class="text-end">
-					<button class="btn" type="submit">저장</button>
+	      		<div class="text-end margin-10">
+					<button class="btn btn-outline-secondary" type="submit">저장</button>
 					<c:url value="/board" var="boardUrl"/>
-					<button class="btn" type="button" onclick="location.href='${boardUrl}?bId=${postData.boardId}'">취소</button>
+					<button class="btn btn-outline-secondary" type="button" onclick="location.href='${boardUrl}?bId=${postData.boardId}'">취소</button>
 				</div>
 	      	</div>
 		</form>

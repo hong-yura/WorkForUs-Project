@@ -64,8 +64,8 @@
 								<hr>
 							</div>
 						</div>
-						<div class="post-main">
-							<p class="post-content" style="color: black;">${postData.content}</p>
+						<div class="post-main"  style="color: black; min-height: 200px;">
+							<p class="post-content">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
 						<c:if test="${not empty files}">
@@ -84,11 +84,11 @@
 						</c:if>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
-							<button type="button" class="btn black" onclick="incLike();"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
+							<button type="button" class="btn black" onclick="incLike(id_like, ${postData.postId}, ${postData.likeCnt });"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
 							</button>
 							<hr style="margin-top: 0px;">
 						</div>
-						<input value="${postData.postId}" id="like-postId" hidden>
+						<input value="n" id="like-yn" hidden>
 						<!-- 댓글 모듈 -->
 						 <%@ include file="../board_md/comment_module.jsp" %>
 					</div>
@@ -104,34 +104,8 @@
     </div>
     
     
-    <script type="text/javascript">
-
-
-    	// 섬머노트 초기화
-	$('#summernote').summernote({
-		height : 300,
-		minHeight: null,
-		maxHeight : null,
-		fcous : true,
-		lang: "ko-KR",
-		disableResizeEditor: true, // 크기 조절 기능 삭제
-		callbacks: {
-		    onImageUpload : function(files, editor, welEditable){
-	
-		        // 파일 업로드(다중업로드를 위해 반복문 사용)
-		        for (var i = files.length - 1; i >= 0; i--) {
-			         uploadSummernoteImageFile(files[i],
-			         this);
-		         }
-	         }
-         } 
-	}); 
-    	
-
-    </script>
-	
-
-    <script src="${staticUrl}/js/pages/board/index.js" ></script>
+    <script src="${staticUrl}/js/pages/board/index.js"></script>
+    
     <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 

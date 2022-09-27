@@ -71,6 +71,20 @@
  	 	 WHERE P.BOARD_ID = #{boardId} 
  	 	   AND E.DEPT_NO != 10
  	 </select>
+ 	 <!-- 게시판 추가 -->
+ 	 <insert id="insertBoard" parameterType="boardDto">
+ 	 	INSERT INTO TB_BOARDS(BOARD_ID, BOARD_NM, DELETED_YN, PUBLIC_YN, ANONYMITY_YN, DEPT_NO, BOARD_MANAGER)
+ 	 	VALUES(#{boardId},#{boardNm},#{deletedYn},"N",#{publicYn},#{anonymityYn},#{dept_no},#{board_manager})
+ 	 </insert>
  	 
+ 	 <!-- 참여명단 추가 -->
+ 	 <insert id="insertParticip" parameterType="boardParticipDto">
+ 	 	INSERT INTO tb_board_participation_list
+ 	 	VALUES(board_particip_seq.NEXTVAL,#{empId},#{boardId})
+ 	 </insert>
  	 
+ 	 <!-- 다음 게시판 시퀀스 -->
+ 	 <select id="nextBoardSeq" resultType="_int">
+ 	 	select board_seq.NEXTVAL FROM DUAL
+ 	 </select>
 </mapper>

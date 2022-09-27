@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
   <!-- 게시판 생성 modal -->
-  <form>
+  <form method="post" action="${boardUrl}/add">
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  	<div class="modal-dialog modal-xl">
 		    <div class="modal-content">
@@ -18,96 +18,60 @@
 			        </div>
 			        <div class="info">
 			        	<div class="info-detail">
-				        	<label>이름</label>
-				        	<input type="text" class="form-control">
+			        		<input hidden name="currentBoardId" value="${boardData.boardId}">
+				        	<label>게시판 이름</label>
+				        	<input type="text" name="boardNm" class="form-control">
 			        	</div>
 			        	<div class="info-detail">
-				        	<label>성별</label>
+				        	<label>공개 여부</label>
 				        	<div>
 					        	<div class="form-check">
-								    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-								    <label class="form-check-label" for="flexRadioDefault1">남</label>
+								    <input class="form-check-input" type="radio" name="publicYn" value="Y" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">전체 공개</label>
 								</div>
 								<div class="form-check">
-								    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-								    <label class="form-check-label" for="flexRadioDefault1">여</label>
+								    <input class="form-check-input" type="radio"  id="flexRadioDefault1" onclick="showMember(this);"> <!-- 공유할 사람들을 작성할 입력란이 보이도록 한다. -->
+								    <label class="form-check-label" for="flexRadioDefault1">일부 공개</label>
 								</div>
+								<input type="text" class="form-control" style="background: #fff; width: 480px; border-style: none; font-color: red;" readonly placeholder="* 일부 공개 시 게시판 url을 공유하여 초대가 가능합니다.">
 							</div>
 						</div>
 						<div class="info-detail">
-				        	<label>생년월일</label>
-				        	<div class="date-container">
-			        			<div class="select-container col-md-3">
-						        	<select class="form-select" aria-label="Default select example">
-										<option selected>년</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
-									</select>
-									<label class="date-label">년</label>
+				        	<label>익명 여부</label>
+				        	<div>
+					        	<div class="form-check">
+								    <input class="form-check-input" type="radio" name="anonymityYn" value="Y" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">익명</label>
 								</div>
-								<div class="select-container col-md-3">
-									<select class="form-select" aria-label="Default select example">
-										<option selected>월</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
-									</select>
-									<label class="date-label">월</label>
+								<div class="form-check">
+								    <input class="form-check-input" type="radio" name="anonymityYn" value="N" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">실명</label>
 								</div>
-								<div class="select-container col-md-3">
-									<select class="form-select" aria-label="Default select example">
-										<option selected>일</option>
-										<option value="1">One</option>
-										<option value="2">Two</option>
-										<option value="3">Three</option>
-									</select>
-									<label class="date-label">일</label>
-								</div>
-							</div>
+				        	</div>
 			        	</div>
 			        	<div class="info-detail">
-				        	<label>주소</label>
-				        	<div class="addr-control">
-					        	<input type="text" class="form-control margin-right" id="sample6_postcode" placeholder="우편번호">
-								<button type="button" class="btn btn-secondary addr-btn" onclick="sample6_execDaumPostcode()">검색</button>
-							</div>
-							<div class="addr-control">
-								<input type="text" class="form-control" id="sample6_address" placeholder="주소">
-							</div>
-							<div class="addr-control">
-								<input type="text" class="form-control margin-right" id="sample6_detailAddress" placeholder="상세주소">
-								<input type="text" class="form-control" id="sample6_extraAddress" placeholder="참고항목">
+				        	<label>익명 여부</label>
+				        	<div>
+								<div class="form-check">
+								    <input class="form-check-input" type="radio" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">부서게시판</label>
+								</div>
+								<div class="form-check">
+								    <input class="form-check-input" type="radio" name="deptNo" value="0" id="flexRadioDefault1">
+								    <label class="form-check-label" for="flexRadioDefault1">전사게시판</label>
+								</div>
+								<div class="select-container col-md-3">
+									<select class="form-select" name="deptNo" aria-label="Default select example">
+										<option selected>선택</option>
+										<c:if test="${not empty deptData}">
+											<c:forEach items="${deptData}" var="dept">
+												<option value="${dept.deptNo}">${dept.deptName}</option>
+											</c:forEach>
+										</c:if>
+									</select>
+								</div>
 				        	</div>
-				        </div>
-				        <div class="info-detail">
-				        	<label>사내 이메일</label>
-				        	<input type="text" class="form-control">
-				        </div>
-				        <div class="info-detail">
-				        	<label>사내 번호</label>
-				        	<input type="text" class="form-control">
-				        </div>
-				        <div class="info-detail">
-				        	<label>부서</label>
-				        	<input type="text" class="form-control" disabled>
-				        </div>
-				        <div class="info-detail">
-				        	<label>직급</label>
-				        	<input type="text" class="form-control" disabled>
-				        </div>
-				        <div class="info-detail">
-				        	<div class="password-control">
-				        		<div class="password-form margin-right">
-						        	<label>비밀번호 재설정</label>
-						        	<input type="text" class="form-control">
-					        	</div>
-					        	<div class="password-form">
-						        	<label>확인</label>
-						        	<input type="text" class="form-control">
-						        </div>
-				        	</div>
-				        </div>
+			        	</div>
 			        </div>
 			    </div>
 			    <div class="modal-footer">
