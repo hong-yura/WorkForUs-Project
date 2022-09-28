@@ -38,7 +38,7 @@
 									<a href="${homeUrl}">Home</a>
 	                        	</li>
 		                        <li class="breadcrumb-item">
-									<a href="#">My page</a>
+									<a href="${homeUrl}/info">My page</a>
 	                        	</li>
 		                        <li class="breadcrumb-item active" aria-current="page">근태관리</li>
 		                    </ol>
