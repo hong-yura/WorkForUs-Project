@@ -44,7 +44,7 @@ const AddScheduleFrame = (props) => {
 
   const onSubmit = () => {
     axios
-      .post("http://localhost/schedule", inputs)
+      .post("https://workforus.site/schedule", inputs)
       .then((res) => {
         console.log(res);
         if (res.data.result === "FAIL") {

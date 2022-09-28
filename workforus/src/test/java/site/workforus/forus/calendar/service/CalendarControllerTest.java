@@ -29,11 +29,11 @@ class CalendarControllerTest {
 
 	}
 
-	@Test
-	@DisplayName("화면 조회 테스트")
-	void testGetPage() throws Exception {
-		this.mockMvc.perform(get("/calendar")).andExpect(status().isOk()).andExpect(view().name("calendar/calendar"));
-	}
+	// @Test
+	// @DisplayName("화면 조회 테스트")
+	// void testGetPage() throws Exception {
+	// 	this.mockMvc.perform(get("/calendar")).andExpect(status().isOk()).andExpect(view().name("calendar/calendar"));
+	// }
 //
 //	@Test
 //	void testGetList() {

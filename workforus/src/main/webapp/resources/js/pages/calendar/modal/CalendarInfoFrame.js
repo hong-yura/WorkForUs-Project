@@ -15,7 +15,7 @@ const CalendarInfoFrame = (props) => {
   const onClickSubmit = (event) => {
     const { empId, calName, calAccess } = inputs;
     axios
-      .post("http://localhost/calendar/list", {
+      .post("https://workforus.site/calendar/list", {
         empId,
         calName,
         calAccess,
@@ -36,7 +36,7 @@ const CalendarInfoFrame = (props) => {
 
   const onClickDelete = (event) => {
     axios
-      .delete(`http://localhost/calendar/list/${inputs.calId}`)
+      .delete(`https://workforus.site/calendar/list/${inputs.calId}`)
       .then((res) => {
         if (res.data.result === "FAIL") alert("캘린더 삭제에 실패하였습니다.");
         else alert("캘린더 삭제에 성공하였습니다.");
