@@ -1,5 +1,6 @@
 .profile-icon {
 	text-align: center;
+	cursor: pointer;
 }
 .bi-person-circle{
 	font-size: 100px;
@@ -52,4 +53,11 @@
 .div-btn {
 	margin-top:10px;
 	float: right;
+}
+#btnImage {
+    visibility: hidden;
+}
+#prevImage {
+	height: 150px;
+	cursor: pointer;
 }

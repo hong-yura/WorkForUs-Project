@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
@@ -14,8 +15,16 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import site.workforus.forus.employee.model.EmpDTO;
+import site.workforus.forus.employee.service.EmpService;
+
+
 @Component
 public class Chatting extends TextWebSocketHandler{
+	
+	@Autowired
+	private EmpService service;
+	
 	private Map<String, WebSocketSession> sessionMap = new HashMap<String, WebSocketSession>();
 	
 	// 연결 후 (세션을 적절한 컬렉션에 저장)
@@ -27,10 +36,11 @@ public class Chatting extends TextWebSocketHandler{
 		
 		// empId 알아내기
 		String username = session.getPrincipal().getName();
+		EmpDTO empDto = service.selectEmployeeInfo(username);
 		System.out.println(username);
 		
 		for(Entry<String, WebSocketSession> entry: sessionMap.entrySet()) {
-			entry.getValue().sendMessage(new TextMessage(username + " 님이 접속하였습니다.\n"));
+			entry.getValue().sendMessage(new TextMessage(empDto.getEmpNm() + " 님이 접속하였습니다.\n"));
 		}
 		
 		if(sessionMap.get(username) != null) {
@@ -52,13 +62,13 @@ public class Chatting extends TextWebSocketHandler{
 		
 		System.out.println(map);
 		String username = session.getPrincipal().getName();
-		
+		EmpDTO empDto = service.selectEmployeeInfo(username);
 		String msg = message.getPayload();
 		
 		for(Entry<String, WebSocketSession> entry: sessionMap.entrySet()) {
 			WebSocketSession ws = entry.getValue();
 			System.out.println(ws);
-			ws.sendMessage(new TextMessage(username + " 님이 보낸 메시지\n" + message.getPayload() + "\n"));
+			ws.sendMessage(new TextMessage(empDto.getEmpNm() + " 님이 보낸 메시지\n" + message.getPayload() + "\n"));
 		}
 	}
 	

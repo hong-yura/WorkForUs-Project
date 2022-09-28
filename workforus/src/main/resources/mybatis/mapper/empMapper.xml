@@ -83,4 +83,11 @@
 		 WHERE emp_id = #{empId}
 	</update>
 	
+	<update id="uploadImage" parameterType="empDto">
+		UPDATE TB_EMPLOYEES
+		   SET emp_photo_nm = #{empPhotoNm}
+		     , emp_photo_url = #{empPhotoUrl}
+		 WHERE emp_id = #{empId}
+	</update>
+	
 </mapper>

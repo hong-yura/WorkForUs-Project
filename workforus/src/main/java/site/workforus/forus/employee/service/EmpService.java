@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.employee.model.LoginVO;
@@ -66,6 +67,14 @@ public class EmpService implements UserDetailsService{
 		EmpMapper mapper = session.getMapper(EmpMapper.class);
 		
 		int result = mapper.updateEmployeeInfo(empDto);
+		
+		return result == 1 ? true : false;
+	}
+
+	public boolean uploadImage(EmpDTO empDto) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		
+		int result = mapper.uploadImage(empDto);
 		
 		return result == 1 ? true : false;
 	}
