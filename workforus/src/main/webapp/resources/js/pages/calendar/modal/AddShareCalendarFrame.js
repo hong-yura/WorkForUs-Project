@@ -9,7 +9,7 @@ const AddShareCalendarFrame = (props) => {
 
   React.useEffect(() => {
     axios
-      .get("http://localhost/calendar/share/emp-list")
+      .get("https://workforus.site/calendar/share/emp-list")
       .then((res) => {
         setUserList(res.data.data);
       })
@@ -40,12 +40,14 @@ const AddShareCalendarFrame = (props) => {
         empName = userList[empNo];
       }
     }
-    axios.get(`http://localhost/calendar/list?empId=${empNo}`).then((res) => {
-      const filteredList = res.data.data.filter(
-        (calendar) => calendar.calAccess !== "0"
-      );
-      setCalendarList(filteredList);
-    });
+    axios
+      .get(`https://workforus.site/calendar/list?empId=${empNo}`)
+      .then((res) => {
+        const filteredList = res.data.data.filter(
+          (calendar) => calendar.calAccess !== "0"
+        );
+        setCalendarList(filteredList);
+      });
     if (!isExist) alert("존재하지 않는 직원입니다.");
   };
 
@@ -53,7 +55,7 @@ const AddShareCalendarFrame = (props) => {
     event.preventDefault();
     console.log(event.target.value);
     axios
-      .post("http://localhost/calendar/share", {
+      .post("https://workforus.site/calendar/share", {
         empId: empId,
         calId: event.target.value,
       })
@@ -78,11 +80,7 @@ const AddShareCalendarFrame = (props) => {
           <div className="modal-content">
             <div className="modal-header">
               <h4 className="modal-title">공유 캘린더 추가</h4>
-              <button
-                type="button"
-                className="close"
-                onClick={props.onClose}
-              >
+              <button type="button" className="close" onClick={props.onClose}>
                 <i data-feather="x" className="bi bi-x fs-5"></i>
               </button>
             </div>

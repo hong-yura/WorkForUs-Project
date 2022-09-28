@@ -35,7 +35,7 @@ const ScheduleInfoFrame = (props) => {
 
   const onClickUpdate = () => {
     axios
-      .put("http://localhost/schedule", inputs)
+      .put("https://workforus.site/schedule", inputs)
       .then((res) => {
         if (res.data.result === "FAIL") {
           alert("일정 수정에 실패하였습니다.");
@@ -50,7 +50,7 @@ const ScheduleInfoFrame = (props) => {
 
   const onClickDelete = () => {
     axios
-      .delete(`http://localhost/schedule/${inputs.scheId}`)
+      .delete(`https://workforus.site/schedule/${inputs.scheId}`)
       .then((res) => {
         if (res.data.result === "FAIL") {
           alert("일정 삭제에 실패하였습니다.");

@@ -23,7 +23,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`http://localhost/calendar/list?empId=${empId}`)
+      .get(`https://workforus.site/calendar/list?empId=${empId}`)
       .then((res) => {
         setMyCal(res.data.data);
       })
@@ -32,7 +32,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`http://localhost/calendar/share?empId=${empId}`)
+      .get(`https://workforus.site/calendar/share?empId=${empId}`)
       .then((res) => {
         setShareCal(res.data.data);
       })
@@ -55,7 +55,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`http://localhost/schedule?empId=${empId}`)
+      .get(`https://workforus.site/schedule?empId=${empId}`)
       .then((res) => {
         const schedules = res.data.data;
         setMySche(schedules);
@@ -76,7 +76,7 @@ const App = () => {
   React.useEffect(() => {
     shareCal.forEach((cal) => {
       axios
-        .get(`http://localhost/schedule?calId=${cal.calId}`)
+        .get(`https://workforus.site/schedule?calId=${cal.calId}`)
         .then((res) => {
           const schedules = res.data.data;
           setShareSche(schedules);
