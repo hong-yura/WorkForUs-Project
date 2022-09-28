@@ -14,7 +14,6 @@
 	<link rel="stylesheet" href="${staticUrl}/css/pages/info.css">
 </head>
 <body>
-
 	<%@ include file="../module/navigation.jsp" %>
 	<div id="app">
         <div id="main">
@@ -24,8 +23,11 @@
             	<c:url var="infoUrl" value="/info"/>
 				    <div class="info-body">
 				    	<div class="profile-icon">
-				        	<i class="bi bi-person-circle"></i>
+				        	<label class="profile-image" for="btnImage">
+				        		<img id="prevImage" class="img-360" alt="여기에는 증명 사진이 배치됩니다." src="${staticUrl}/images/faces/static.png">
+				        	</label>
 				        </div>
+			        	<input type="file" id="btnImage" name="uploadImage" accept="image/*" onchange="imageUpload(this)">
 				        <div class="info">
 				        	<div class="info-detail">
 					        	<label>이름</label>
@@ -157,14 +159,14 @@
 					<div class="modal-dialog  modal-dialog-centered">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="errorModalLabel">회원가입 완료</h5>
+								<h5 class="modal-title" id="errorModalLabel">프로필 수정</h5>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								회원가입이 완료되었습니다.
+								프로필 수정이 완료되었습니다.
 		      				</div>
 							<div class="modal-footer">
-								<button type="submit" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">확인</button>
+								<button type="submit" class="btn btn-secondary btn-sm" data-bs-dismiss="modal" onclick="location.href='/info'">확인</button>
 							</div>
 						</div>
 					</div>
@@ -236,6 +238,29 @@
 					modal.show();
 				}
  			})
+		}
+		
+		function imageUpload(e) {
+			console.log(e);
+			var file = e.files[0];
+			var fData = new FormData();
+			var image = document.getElementById("prevImage");
+			console.log(file);
+			console.log(fData);
+			fData.append("uploadImage", file, file.name);
+			$.ajax({
+				type: "post",
+				url: "${infoUrl}/image",
+				ectype: "multipart/form-data",
+				data: fData,
+				processData: false,
+				contentType: false,
+				success:function(data, status) {
+					console.log("ajax success");
+					console.log(data.loc);
+					image.src = data.loc;
+				}
+			})
 		}
 	</script>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>

@@ -17,9 +17,20 @@ import lombok.RequiredArgsConstructor;
 
 // Websocket을 활성화하기 위한 config
 @Configuration
-@EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+// @EnableWebSocketMessageBroker
+@EnableWebSocket
+//public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+public class WebSocketConfig implements WebSocketConfigurer {
 	
+	@Autowired
+	private Chatting chatting;
+	
+	@Override
+	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+		registry.addHandler(chatting, "stomp/chat").setAllowedOrigins("*");
+		
+	}
+	/*
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		registry.addEndpoint("/stomp/chat") // WebSocket이 웸소켓 핸드셰이크 커넥션을 생셩할 경로
@@ -31,5 +42,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		config.setApplicationDestinationPrefixes("/pub"); // Client 에서 send 요청 처리
 		config.enableSimpleBroker("/sub"); // 해당 경로로 SimpleBroker를 등록. SimpleBroker는 해당하는 경로를 SUBSCRIBE하는 Client에게 메세지를 전달하는 간단한 작업을 수행
 	}
-	
+	*/
 }

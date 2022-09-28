@@ -14,4 +14,6 @@ public interface EmpMapper {
 	public EmpDTO selectEmployeeInfo(String empId);
 
 	public int updateEmployeeInfo(EmpDTO empDto);
+
+	public int uploadImage(EmpDTO empDto);
 }

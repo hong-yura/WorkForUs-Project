@@ -288,7 +288,7 @@
 	console.log('${loginEmp.getUsername()}');
 	
 	console.log(roomName + ", " + roomId ", " + username);
-	*/
+	
 	function chatRoomEnter(data) {
 		console.log(data);
 		var roomId= data;
@@ -342,7 +342,7 @@
 				}
 			}
 		})
-		
+		*/
 		/*
 		var ws = new WebSocket("ws://localhost/stomp/chat");
 		var stomp = Stomp.over(ws);
@@ -391,8 +391,8 @@
 			// 입장글
 			stomp.send("/pub/in", {}, ' is in connection');
 		})
-			*/
 	}
+	*/
 	/*
 	function chatRoomEnter(data) {
 		console.lo(data)
@@ -434,7 +434,7 @@
 		msg.value = '';
 	})
 	*/
-	/*
+	var ws = new WebSocket("ws://localhost/stomp/chat");
 	ws.onopen = function() {
 		console.log("채팅 입장");
 	};
@@ -453,7 +453,6 @@
 		element.focus();
 		return false;
 	};
-	*/
 	
 	function chatRoomAddModal() {
 		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {

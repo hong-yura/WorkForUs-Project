@@ -1,3 +1,4 @@
+/*
 package site.workforus.forus.chat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class StompChatController {
     public void message(ChatMessageDTO message){
         template.convertAndSend("/sub/chat/room/" + message.getChatRoomNo(), message);
     }
-	
+ */
 //	@MessageMapping(value="/chat/message") // /pub/chat/message
 //	@SendTo("/sub/roomId") // 전달하려는 곳
 //	public ChatMessageDTO message(ChatMessageDTO message) throws Exception {
@@ -57,4 +58,4 @@ public class StompChatController {
 //	}
 	
 	
-}
+//}
