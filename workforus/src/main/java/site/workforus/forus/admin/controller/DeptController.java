@@ -18,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import lombok.extern.slf4j.Slf4j;
 import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.admin.service.DeptService;
 
+@Slf4j
 @Controller
 @RequestMapping(value = "/admin")
 public class DeptController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DeptController.class);
 	
 	@Autowired
 	private DeptService deptService;
@@ -37,7 +38,7 @@ public class DeptController {
 		
 		List<DeptDTO> deptDatas = deptService.getDeptAll(); 
 		model.addAttribute("deptDatas", deptDatas);
-		logger.info("data: {}", deptDatas);
+		log.info("data: {}", deptDatas);
 		
 		return "admin/dept_manage";
 	}
@@ -47,7 +48,7 @@ public class DeptController {
 	@ResponseBody
 	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
 	public String getDeptDetail(HttpSession session, @RequestParam int deptNo) {
-		logger.info("getDeptDetail(no): {}", deptNo);
+		log.info("getDeptDetail(no): {}", deptNo);
 		// 로그인 세션 추가하기
 		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
@@ -76,7 +77,7 @@ public class DeptController {
 	@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
 	public String addDept(HttpSession session, @RequestBody DeptDTO deptDto) {
 		// 로그인 세션 추가하기
-		logger.info("addDept(DeptDTO={})", deptDto);
+		log.info("addDept(DeptDTO={})", deptDto);
 		
 		DeptDTO data = new DeptDTO();
 		data.setDeptName(deptDto.getDeptName());
@@ -110,7 +111,7 @@ public class DeptController {
 	@PostMapping(value = "/dept_modify", produces="application/json; charset=utf-8")	
 	public String modifyDept(HttpSession session, @RequestBody DeptDTO deptDto) {
 		// 로그인 세션 추가하기
-		logger.info("modifyDept(deptDto={})", deptDto);
+		log.info("modifyDept(deptDto={})", deptDto);
 		
 		DeptDTO data = deptService.getDeptDetail(deptDto.getDeptNo());
 		data.setDeptName(deptDto.getDeptName());
@@ -138,7 +139,7 @@ public class DeptController {
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
 	public String removeDept(HttpSession session, @RequestParam int deptNo) {
 		// 로그인 세션 추가하기
-		logger.info("removeDept(deptNo): {}", deptNo);
+		log.info("removeDept(deptNo): {}", deptNo);
 		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
 		

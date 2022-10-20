@@ -53,14 +53,15 @@
 							</ul>
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade active show" id="menuLogo" role="tabpanel" aria-labelledby="menuLogo-tab">
-									<form action="" method="post" id="menuLogoForm">
+									<c:url value="/admin/thema" var="adminThemaUrl" />
+									<form action="${adminThemaUrl}" method="post" id="menuLogoForm" enctype="multipart/form-data">
 										<div class="card-body">
 											<div class="row">
 												<div class="card-title-cus">
 													<h4 class="card-title">메뉴 로고 설정</h4>
 												</div>
 												<div class="col-lg-5">
-													<img alt="메뉴 로고 이미지" src="https://via.placeholder.com/145x45.png">
+													<img id="logo-prevImage" alt="메뉴 로고 이미지" src="https://via.placeholder.com/145x45.png">
 												</div>
 												<div class="col-lg-4">
 													<label class="btn btn-lavender" for="upload-menu-logo-img">Upload New Menu Logo

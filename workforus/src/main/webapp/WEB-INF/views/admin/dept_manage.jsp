@@ -261,12 +261,13 @@
 			<%@ include file="../module/footer.jsp" %>
 		</div>
 	</div>
+	<script src="${staticUrl}/js/main.js"></script>
+	
 	<script src="${staticUrl}/js/pages/admin/department/department-detail.js"></script>
-	<script src="${staticUrl}/js/pages/admin/department/index.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-modify.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-delete.js"></script>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-	<script src="${staticUrl}/js/main.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/index.js"></script>
 </body>
 </html>

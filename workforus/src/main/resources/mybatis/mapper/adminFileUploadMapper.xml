@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.workforus.forus.mapper.AdminFileUploadMapper">
-
-
+	<resultMap type="adminFileUploadDto" id="adminFileUploadDtoMap">
+		<result property="adminFileId" column="admin_file_id" />
+		<result property="adminFileNm" column="admin_file_nm" />
+		<result property="adminUuidFileNm" column="admin_uuid_file_nm" />
+		<result property="adminUploadPath" column="admin_upload_path" />
+		<result property="adminFileSize" column="admin_file_size" />
+	</resultMap>
+	
+	<insert id="insertAdminFile">
+		INSERT INTO UPLOADFILES
+			 VALUES (#{adminFileId}
+		     	  , #{adminFileNm}
+		     	  , #{adminUuidFileNm}
+		     	  , #{adminUploadPath}
+		     	  , #{adminFileSize})		
+	</insert>
+	
+	<select id="selectAdminFile" resultType="adminFileUploadDto" >
+		SELECT *
+		  FROM TB_ADMIN_FILE_UPLOAD
+		 WHERE ADMIN_FILE_ID = #{adminFileId}
+	</select>
 </mapper>
