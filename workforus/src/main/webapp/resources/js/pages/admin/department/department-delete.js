@@ -11,12 +11,12 @@ function deptDelete() {
 		},
 		dataType: "json",
 		success: function(data) {
-			var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+			const resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 				keyboard: false
 			});
 			
-			var title = resModal._element.querySelector(".modal-title");
-			var body = resModal._element.querySelector(".modal-body");
+			const title = resModal._element.querySelector(".modal-title");
+			const body = resModal._element.querySelector(".modal-body");
 			title.innerText = data.title;
 			body.innerHTML = "<p>" + data.message + "</p>"
 			

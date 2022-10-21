@@ -14,7 +14,7 @@ function deptDetail(deptNo) {
 			deptNo: deptNo
 		},
 		success: function(data) {
-			var form = document.getElementById("deptForm");
+			const form = document.getElementById("deptForm");
 			
 			form.deptNo.value = data.deptNo;
 			form.deptName.value = data.deptName;
