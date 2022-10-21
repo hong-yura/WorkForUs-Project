@@ -6,7 +6,7 @@
 */
 
 // 부서 정보 상세 조회
-function deptDetail(deptNo) {
+const deptDetail = (deptNo) => {
 	$.ajax({
 		type: "get",
 		url: "/admin/dept_detail",

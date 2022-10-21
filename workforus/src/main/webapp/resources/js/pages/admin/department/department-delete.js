@@ -2,7 +2,7 @@
  * 부서 삭제
  */
 
-function deptDelete() {
+const deptDelete = () => {
 	$.ajax({
 		type: "post",
 		url: "/admin/dept_delete",

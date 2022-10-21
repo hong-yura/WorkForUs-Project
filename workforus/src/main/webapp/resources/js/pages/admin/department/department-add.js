@@ -2,7 +2,7 @@
  * 부서 추가
  */
 
-function deptAdd() {
+const deptAdd = () => {
 	const deptName = $.trim($("#deptAddName").val())
 	const deptMngId = $.trim($("#deptAddMngId").val())
 	

@@ -2,7 +2,7 @@
  * 부서 수정
  */
 
-function deptModify() {
+const deptModify = () => {
 	const deptNo = deptForm.deptNo.value
 	const deptName = $.trim($("#deptModName").val())
 	const deptMngId = $.trim($("#deptModMngId").val())
