@@ -10,13 +10,18 @@
 		<result property="adminFileSize" column="admin_file_size" />
 	</resultMap>
 	
-	<insert id="insertAdminFile">
-		INSERT INTO UPLOADFILES
-			 VALUES (#{adminFileId}
-		     	  , #{adminFileNm}
-		     	  , #{adminUuidFileNm}
-		     	  , #{adminUploadPath}
-		     	  , #{adminFileSize})		
+	<insert id="insertAdminFile" parameterType="adminFileUploadDto">
+		INSERT INTO TB_ADMIN_FILE_UPLOAD
+			   (ADMIN_FILE_ID
+			  , ADMIN_FILE_NM
+			  , ADMIN_UUID_FILE_NM
+			  , ADMIN_UPLOAD_PATH
+			  , ADMIN_FILE_SIZE)
+		 VALUES (admin_file_seq.NEXTVAL
+		   	  , #{adminFileNm}
+		   	  , #{adminUuidFileNm}
+		   	  , #{adminUploadPath}
+		   	  , #{adminFileSize})
 	</insert>
 	
 	<select id="selectAdminFile" resultType="adminFileUploadDto" >
