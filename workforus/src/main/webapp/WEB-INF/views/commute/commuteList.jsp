@@ -3,7 +3,14 @@
 <!DOCTYPE html>
 <html>
 <div style="margin-bottom:4rem;">
-	<table class="table table-striped mb-0">
+	<table id="listBody" class="table table-striped mb-0">
+		<colgroup>
+			<col width="20%"/>
+			<col width="20%"/>
+			<col width="20%"/>
+			<col width="20%"/>
+			<col width="20%"/>
+		</colgroup>
         <thead>
             <tr>
                 <th>근무일자</th>
@@ -14,7 +21,7 @@
             </tr>
         </thead>
         <tbody id="tableBody">
-			<c:forEach items="${listData}" var="commuteData" varStatus="status">
+			<c:forEach items="${listData}" var="commuteData">
 				<tr class="table-light">
 					<td>
 						${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
@@ -62,5 +69,6 @@
 			</c:forEach>
 		 </tbody>
     </table>
+    <div id="here"></div>
 </div>  
 </html>

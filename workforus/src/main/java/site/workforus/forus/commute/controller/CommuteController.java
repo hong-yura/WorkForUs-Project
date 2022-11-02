@@ -159,5 +159,26 @@ public class CommuteController{
 		model.addAttribute("month", month + 1);
 		return "/commute/commuteCalendar";
 	}
+	
+	// 근태기록 조회하기2
+	@ResponseBody
+	@GetMapping(value="/record2", produces="application/json; charset=utf-8")
+	public List<CommuteDTO> commuteRec2(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
+		String empId = principal.getName();
+		
+		// 해당월 기록
+		List<CommuteDTO> listData = service.selectList(empId, year, month);
+		JSONObject json = new JSONObject();
+
+		model.addAttribute("listData", listData);
+		model.addAttribute("year", year);
+		model.addAttribute("month", month + 1);
+		System.out.println(year + "년");
+		System.out.println(month + "월");
+		
+		json.put("listData", listData);
+		// return "/commute/commuteCalendar";
+		 return listData;
+	}
 
 } 	

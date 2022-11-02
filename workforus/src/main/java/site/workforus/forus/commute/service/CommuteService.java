@@ -494,7 +494,7 @@ public class CommuteService{
 	
 	public List<CommuteDTO> selectList(String empId, int year, int month){
 		
-		month += 1;
+		// month += 1;
 		String yearstr = Integer.toString(year);
 		String monthstr = null;
 		if(month < 10) {
@@ -506,7 +506,8 @@ public class CommuteService{
 		String yearmonth1 = yearstr + monthstr;
 		
 		List<CommuteDTO> listData = getList(empId, yearmonth1);
-
+		
+		System.out.println(listData + "Service");
 		return listData;
 		
 	}
