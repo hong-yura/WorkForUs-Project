@@ -267,6 +267,7 @@
 	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-modify.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-delete.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/result-modal.js"></script>
 	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/index.js"></script>
 </body>
