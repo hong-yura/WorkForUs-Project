@@ -202,6 +202,8 @@
         <div class="d-flex justify-content-between">
           <div class="logo">
             <a href="${homeUrl}">
+            	<%-- <c:url var="logoImgUrl" value="${logoImgPath}" /> --%>
+            	<%-- <img id="logoImage" src="${logoImgUrl}" alt="Logo" style="max-width: 70%; height: auto" /> --%>
             	<img src="${staticUrl}/images/logo/logo-main.png" alt="Logo" style="max-width: 70%; height: auto" />
             </a>
           </div>

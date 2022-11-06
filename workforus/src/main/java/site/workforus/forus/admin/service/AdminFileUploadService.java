@@ -22,9 +22,17 @@ public class AdminFileUploadService {
 		return result == 1 ? true : false;
 	}
 	
-	public List<AdminFileUploadDTO> getAdminFile(int adminFileId) {
+	public AdminFileUploadDTO getAdminFile(int adminFileId) {
 		AdminFileUploadMapper mapper = session.getMapper(AdminFileUploadMapper.class);
-		List<AdminFileUploadDTO> data = mapper.selectAdminFile(adminFileId);
+		AdminFileUploadDTO data = mapper.selectAdminFile(adminFileId);
 		return data;
 	}
+	
+	public AdminFileUploadDTO getMaxAdminFileId(int adminFileId) {
+		AdminFileUploadMapper mapper = session.getMapper(AdminFileUploadMapper.class);
+		AdminFileUploadDTO maxId = mapper.selectMaxAdminFileId(adminFileId);
+		return maxId;
+	}
+	
+	
 }

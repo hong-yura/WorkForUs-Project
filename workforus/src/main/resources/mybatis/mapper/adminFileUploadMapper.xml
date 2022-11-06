@@ -24,9 +24,19 @@
 		   	  , #{adminFileSize})
 	</insert>
 	
-	<select id="selectAdminFile" resultType="adminFileUploadDto" >
-		SELECT *
+	<select id="selectAdminFile" parameterType="_int" resultMap="adminFileUploadDtoMap">
+		SELECT ADMIN_FILE_ID
+			 , ADMIN_FILE_NM
+			 , ADMIN_UUID_FILE_NM
+			 , ADMIN_UPLOAD_PATH
+			 , ADMIN_FILE_SIZE
 		  FROM TB_ADMIN_FILE_UPLOAD
 		 WHERE ADMIN_FILE_ID = #{adminFileId}
+	</select>
+	
+	<select id="selectMaxAdminFileId" parameterType="_int" resultMap="adminFileUploadDtoMap">
+		SELECT *
+		  FROM TB_ADMIN_FILE_UPLOAD
+		 WHERE ADMIN_FILE_ID = (SELECT MAX(#{adminFileId}) FROM TB_ADMIN_FILE_UPLOAD)
 	</select>
 </mapper>

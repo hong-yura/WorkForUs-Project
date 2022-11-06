@@ -8,5 +8,7 @@ public interface AdminFileUploadMapper {
 	
 	public int insertAdminFile(AdminFileUploadDTO data);
 	
-	public List<AdminFileUploadDTO> selectAdminFile(int adminFileId);
+	public AdminFileUploadDTO selectAdminFile(int adminFileId);
+	
+	public AdminFileUploadDTO selectMaxAdminFileId(int adminFileId);
 }

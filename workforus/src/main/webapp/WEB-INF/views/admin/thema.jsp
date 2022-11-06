@@ -61,18 +61,20 @@
 													<h4 class="card-title">메뉴 상단 로고 설정</h4>
 												</div>
 												<div class="col-lg-5">
+													<c:url var="logoImgUrl" value="${logoImgPath}" />
 													<img id="logoPrevImage" alt="메뉴 로고 이미지" src="${logoImgUrl}">
 												</div>
 												<div class="col-lg-4">
 													<label class="btn btn-lavender" for="imageFile">Upload New Menu Logo
-														<input hidden id="imageFile" name="imageFile" accept="image/png" type="file">
+														<input hidden id="imageFile" name="imageFile" accept="image/png, image/jpg, image/jpeg" type="file">
 													</label>
 													<button type="button" class="btn btn-outline-danger">Reset</button>
 												</div>
 											</div>
 											<div class="col-12 margin-cus">
 												<p>메뉴 네비게이션 상단의 로고 이미지를 설정 할 수 있습니다.<br>
-												※ PNG 파일 형식 145x45 사이즈로 등록하세요.
+												※ 파일 확장자는 png, jpeg, jpg 파일 형식 145x45 사이즈로 등록하세요.<br>
+												※ 파일 크기는 5MB 이하만 등록 가능합니다.
 												</p>
 											</div>
 										</div>
@@ -92,7 +94,7 @@
 												</div>
 												<div class="col-lg-4">
 													<label class="btn btn-lavender" for="btnLoginImg">Upload New Login Image
-														<input hidden id="btnLoginImg" accept="image/png, image/jpg" type="file" >
+														<input hidden id="btnLoginImg" accept="image/png, image/jpg, image/jpeg" type="file" >
 													</label>
 													<button type="button" class="btn btn-outline-danger">Reset</button>
 												</div>
@@ -100,7 +102,8 @@
 											<div class="col-12 margin-cus">
 												<p>로그인 화면의 배경 이미지를 설정 할 수 있습니다.<br>
 												※ 모바일 웹 디스플레이 비율 16:9 ,  1920x1080 이상의 해상도 이미지를 권장합니다.<br>
-												※ PNG, JPG 파일 형식으로 등록하세요.
+												※ 파일 확장자는 png, jpeg, jpg 파일 형식으로 등록하세요.
+												※ 파일은 5MB 이하만 등록 가능합니다.
 												</p>
 											</div>
 										</div>
@@ -122,6 +125,7 @@
 		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 		<script src="${staticUrl}/js/main.js"></script>
 		
+		<script src="${staticUrl}/js/pages/admin/thema/select-logo.js"></script>
 		<script src="${staticUrl}/js/pages/admin/thema/show-preview.js"></script>
 		<script src="${staticUrl}/js/pages/admin/thema/logo-upload-image.js"></script>
 	</body>
