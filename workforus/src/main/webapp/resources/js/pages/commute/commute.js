@@ -59,7 +59,9 @@
 			},
 			success: function(data){
 				var listData = data;
-				
+				var tableBody = document.getElementById("tableBody");
+				console.log(tableBody);
+				tableBody.innerHTML = "";
 				var html="<table class='table'>";
 		  		
 		  		$.each(data, (index, obj)=>{ 
@@ -67,14 +69,19 @@
 		  	  		html+="<td>"+ (obj.commuteDt+"").substring(4,6) + "월" +  (obj.commuteDt+"").substring(6) + "일" + "</td>";
 		  	  		html+="<td>"+ (obj.commuteTime+"").substring(11) + "</td>";
 		  	  		if(obj.getoffTime === null) {
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="</tr>";
+					} else if((obj.getoffTime+"").substring(11) == "23:59:59"){
 			  	  		html+="<td>"+ "관리자문의" +"</td>";
 			  	  		html+="<td>"+ "관리자문의" +"</td>";
 			  	  		html+="<td>"+ "관리자문의" +"</td>";
 			  	  		html+="</tr>";
 					} else {
 			  	  		html+="<td>"+ (obj.getoffTime+"").substring(11) +"</td>";
-			  	  		html+="<td>"+ (obj.addedTime+"").substring(11, 13) + "h" + (obj.addedTime+"").substring(14, 16) + "h" + (listData.addedTime+"").substring(17) + "s" +"</td>";
-			  	  		html+="<td>"+ (obj.workTime+"").substring(11, 13) + "h" + (obj.workTime+"").substring(14, 16) + "h" + (listData.workTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="<td>"+ (obj.addedTime+"").substring(11, 13) + "h " + (obj.addedTime+"").substring(14, 16) + "m " + (obj.addedTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="<td>"+ (obj.workTime+"").substring(11, 13) + "h " + (obj.workTime+"").substring(14, 16) + "m " + (obj.workTime+"").substring(17) + "s" +"</td>";
 			  	  		html+="</tr>";
 					}
 		  		})

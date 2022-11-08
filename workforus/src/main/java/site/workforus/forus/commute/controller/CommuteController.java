@@ -59,10 +59,10 @@ public class CommuteController{
         // 이번달 출근기록 리스트
 		Calendar cal = Calendar.getInstance();
 		int year1 = cal.get(Calendar.YEAR);
-		int month1 = cal.get(Calendar.MONTH);
+		int month1 = cal.get(Calendar.MONTH) + 1;
         List<CommuteDTO> listData = service.selectList(empId, year1, month1);
-		model.addAttribute("listData", listData);
-		
+		model.addAttribute("thisMonthList", listData);
+		System.out.println(listData + "■");
 		// 금일 출근기록이 있음
 		if(data != null) {
 			service.getData(data);
@@ -176,7 +176,7 @@ public class CommuteController{
 		model.addAttribute("month", month + 1);
 		System.out.println(year + "년");
 		System.out.println(month + "월");
-		
+
 		json.put("listData", listData);
 		// return "/commute/commuteCalendar";
 		 return listData;

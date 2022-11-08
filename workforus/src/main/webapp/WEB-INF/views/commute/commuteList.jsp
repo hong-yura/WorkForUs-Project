@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <div style="margin-bottom:4rem;">
-	<table id="listBody" class="table table-striped mb-0">
+	<table id="listBody" class="table mb-0">
 		<colgroup>
 			<col width="20%"/>
 			<col width="20%"/>
@@ -21,9 +21,9 @@
             </tr>
         </thead>
         <tbody id="tableBody">
-        	<!-- AJAX사용으로 불필요해짐 IF문만 참고하여 지울예정 -->
-			<c:forEach items="${listData}" var="commuteData">
-				<tr class="table-light">
+        	<!-- 페이지 조회했을때 금월의 기록을 보여줌 -->
+			<c:forEach items="${thisMonthList}" var="commuteData">
+				<tr >
 					<td>
 						${commuteData.commuteDt.substring(4,6)}월 ${commuteData.commuteDt.substring(6)}일
 					</td>
