@@ -25,8 +25,8 @@ const deptAdd = () => {
 	const data = {"deptName": deptName, "deptMngId": deptMngId}
 	
 	$.ajax({
-		type: "post",
-		url: "/admin/dept_add",
+		type: "POST",
+		url: "/admin/departments",
 		data: JSON.stringify(data),
 		contentType: "application/json; charset=UTF-8",
 		success: function(data) {
@@ -36,7 +36,7 @@ const deptAdd = () => {
 			
 			const title = resModal._element.querySelector(".modal-title");
 			const body = resModal._element.querySelector(".modal-body");
-			title.innerText = data.title;
+			title.innerText = data.result;
 			body.innerHTML = "<p>" + data.message + "</p>"
 			
 			resModal.show();

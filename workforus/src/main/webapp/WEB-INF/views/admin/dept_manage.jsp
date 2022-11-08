@@ -201,7 +201,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<%@ include file="../admin/dept_add.jsp" %>
+								<%@ include file="../admin/dept-add.jsp" %>
 							</div>
 						</div>
 					</div>
@@ -216,7 +216,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<%@ include file="../admin/dept_modify.jsp" %>
+								<%@ include file="../admin/dept-modify.jsp" %>
 							</div>
 						</div>
 					</div>
@@ -263,7 +263,6 @@
 	</div>
 	<script src="${staticUrl}/js/main.js"></script>
 	
-	<script src="${staticUrl}/js/pages/admin/department/department-detail.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-modify.js"></script>
 	<script src="${staticUrl}/js/pages/admin/department/department-delete.js"></script>
