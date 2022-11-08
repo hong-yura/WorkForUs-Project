@@ -70,6 +70,5 @@
 			</c:forEach>
 		 </tbody>
     </table>
-    <div id="here"></div>
 </div>  
 </html>
