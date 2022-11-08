@@ -53,24 +53,21 @@ public class CommuteService{
 	
 	// 출근시간 기록
 	public boolean insertIntime(String empId) throws Exception {
-		String today = today();
-		Date nowTime = nowTime();
-		
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
-		int result = mapper.insertIntime(empId, today, nowTime);
+		String today = today();		
+		int result = mapper.insertIntime(empId, today);
 		return result == 1 ? true : false;
 	}
 	
 	// 퇴근시간, 근무시간, 추가시간 기록
 	public boolean updateOuttime(String empId) throws Exception {
 		String today = today();
-		Date nowTime = nowTime();
 		
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		// 퇴근시간 update
-		int result = mapper.updateOuttime(empId, today, nowTime);
+		int result = mapper.updateOuttime(empId, today);
 		
 		// 퇴근시간 가져옴
 		String getoffTime = mapper.selectGetoff(empId, today);
@@ -157,14 +154,12 @@ public class CommuteService{
 		// 출근시간
 		inTime = inTime.substring(11, 19);
 		Date incommute = sdf.parse(inTime);
-		
 		// 퇴근시간
 		getoffTime = getoffTime.substring(11, 19);
 		Date time2 = sdf.parse(getoffTime);		// 퇴근시간
 
 		//기본시간
 		Date defaultTime = defaultSdf.parse("1970-01-01 09:00:00");	// 9시
-		Date lastTime = defaultSdf.parse("1970-01-01 23:00:00");	// 만약 23시 이후에 출근한다면 점심시간을 빼지않도록 해야한다.
 		Date lunchTime = sdf.parse("13:00:00");
 		
 		
@@ -181,19 +176,14 @@ public class CommuteService{
 		} 
 		// 9시 이후 출근
 		else {
-//			// 23시 이후에 출근
-//			if(incommute.after(lastTime) || incommute.equals(lastTime)) {
-//				return _beforelunch(time2, inTime);
-//			} else {
-				// a. 1시 이후 퇴근
-				if(time2.after(lunchTime) || time2.equals(lunchTime)) {
-					return _afterlunch(time2, inTime);		
-				}
-				// b. 1시 이전 퇴근
-				else {
-					return _beforelunch(time2, inTime);		
-				}
-//			}
+			// a. 1시 이후 퇴근
+			if(time2.after(lunchTime) || time2.equals(lunchTime)) {
+				return _afterlunch(time2, inTime);	
+			}
+			// b. 1시 이전 퇴근
+			else {
+				return _beforelunch(time2, inTime);		
+			}
 		}
 	}
 	

@@ -70,10 +70,10 @@ public class CommuteController{
 		
 		String remainTime = "00:00:00";
 		long progress = 0;
-		if(data == null || (data.getCommuteTime() != null && data.getGetoffTime() == null)) {
+		if(data == null || (data.getCommuteTime() != null && data.getGetoffTime() == null)) { 	// 금일출근기록 없거나, 출근만하고 퇴근은 안했을때
 			if(service.beforeSelect(empId) != null) {
 				CommuteDTO temp = service.beforeSelect(empId); // 이번주에 마지막 출근기록 DTO
-				if(temp.getGetoffTime()!= null) {
+				if(temp.getGetoffTime()!= null) {	// 금일기록 조회를 막음
 					
 					String tempTime = (service.calculate(temp.getWeekWorktime()));
 					remainTime = service.remainTime(temp.getWeekWorktime());
@@ -146,19 +146,20 @@ public class CommuteController{
 		return json.toJSONString();
 	}
 	
+	// ajax사용으로 불필요해짐 - 지울예정
 	// 근태기록 조회하기
-	@GetMapping(value="/record")
-	public String commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
-		String empId = principal.getName();
-		
-		// 해당월 기록
-		List<CommuteDTO> listData = service.selectList(empId, year, month);
-		
-		model.addAttribute("listData", listData);
-		model.addAttribute("year", year);
-		model.addAttribute("month", month + 1);
-		return "/commute/commuteCalendar";
-	}
+//	@GetMapping(value="/record")
+//	public String commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
+//		String empId = principal.getName();
+//		
+//		// 해당월 기록
+//		List<CommuteDTO> listData = service.selectList(empId, year, month);
+//		
+//		model.addAttribute("listData", listData);
+//		model.addAttribute("year", year);
+//		model.addAttribute("month", month + 1);
+//		return "/commute/commuteCalendar";
+//	}
 	
 	// 근태기록 조회하기2
 	@ResponseBody
