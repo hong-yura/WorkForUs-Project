@@ -184,7 +184,7 @@
             </li>
             
             <li class="sidebar2-item" title="Admin">
-              <a href="${homeUrl}/admin/logo" class="sidebar2-link">
+              <a href="${homeUrl}/admin/thema" class="sidebar2-link">
                 <i class="bi bi-gear-fill"></i>
               </a>
             </li>
@@ -359,10 +359,10 @@
                 <a href="${homeUrl}/admin/thema">테마 설정</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/admin/dept_manage">조직도 관리</a>
+                <a href="${homeUrl}/admin/dept-manage">조직도 관리</a>
               </li>
               <li class="submenu-item" hidden>
-                <a href="${homeUrl}/admin/perm_manage">권한 관리</a>
+                <a href="${homeUrl}/admin/perm-manage">권한 관리</a>
               </li>
             </ul>
           </li>
