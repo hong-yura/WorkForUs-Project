@@ -96,6 +96,9 @@
 	</websocket:handlers>
 -->
 	<!-- Multipart -->
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></beans:bean>
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="52428800" ></beans:property> <!-- 5MB * 10개 -->
+		<beans:property name="maxInMemorySize" value="52428800" ></beans:property>
+	</beans:bean>
 
 </beans:beans>
