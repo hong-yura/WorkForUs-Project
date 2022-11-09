@@ -66,10 +66,17 @@
 		  			html+="<tr>";
 		  	  		html+="<td>"+ (obj.commuteDt+"").substring(4,6) + "월" +  (obj.commuteDt+"").substring(6) + "일" + "</td>";
 		  	  		html+="<td>"+ (obj.commuteTime+"").substring(11) + "</td>";
-		  	  		html+="<td>"+ (obj.getoffTime+"").substring(11) +"</td>";
-		  	  		html+="<td>"+ (obj.addedTime+"").substring(11, 13) + "h" + (obj.addedTime+"").substring(14, 16) + "h" + (listData.addedTime+"").substring(17) + "s" +"</td>";
-		  	  		html+="<td>"+ (obj.workTime+"").substring(11, 13) + "h" + (obj.workTime+"").substring(14, 16) + "h" + (listData.workTime+"").substring(17) + "s" +"</td>";
-		  	  		html+="</tr>";
+		  	  		if(obj.getoffTime === null) {
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="</tr>";
+					} else {
+			  	  		html+="<td>"+ (obj.getoffTime+"").substring(11) +"</td>";
+			  	  		html+="<td>"+ (obj.addedTime+"").substring(11, 13) + "h" + (obj.addedTime+"").substring(14, 16) + "h" + (listData.addedTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="<td>"+ (obj.workTime+"").substring(11, 13) + "h" + (obj.workTime+"").substring(14, 16) + "h" + (listData.workTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="</tr>";
+					}
 		  		})
 		  		html+="</table>";
 		  		

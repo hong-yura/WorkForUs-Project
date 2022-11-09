@@ -21,6 +21,7 @@
             </tr>
         </thead>
         <tbody id="tableBody">
+        	<!-- AJAX사용으로 불필요해짐 IF문만 참고하여 지울예정 -->
 			<c:forEach items="${listData}" var="commuteData">
 				<tr class="table-light">
 					<td>
