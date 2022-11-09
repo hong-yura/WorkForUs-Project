@@ -8,14 +8,13 @@
 // 부서 정보 상세 조회
 const deptDetail = (deptNo) => {
 	$.ajax({
-		type: "get",
-		url: "/admin/dept_detail",
+		type: "GET",
+		url: "/admin/departments/detail",
 		data: {
 			deptNo: deptNo
 		},
 		success: function(data) {
 			const form = document.getElementById("deptForm");
-			
 			form.deptNo.value = data.deptNo;
 			form.deptName.value = data.deptName;
 			form.deptMngId.value = data.deptMngId;

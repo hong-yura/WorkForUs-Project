@@ -3,6 +3,7 @@ package site.workforus.forus.mapper;
 import java.util.List;
 
 import site.workforus.forus.admin.model.DeptDTO;
+import site.workforus.forus.employee.model.EmpDTO;
 
 public interface DeptMapper {
 	// DAO 역할을 한다.
@@ -15,6 +16,8 @@ public interface DeptMapper {
 	
 	public boolean updateDept(DeptDTO deptDto);
 	
-	public boolean deleteDept(int deptNo);
+	public int deleteDept(int deptNo);
+	
+	public EmpDTO selectEmpId();
 	
 }

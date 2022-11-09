@@ -6,8 +6,6 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,7 +34,7 @@ public class DeptController {
 	private DeptService deptService;
 	
 	// 부서 전체 조회
-	@GetMapping(value = "/dept_manage")
+	@GetMapping(value = "/dept-manage")
 	public String getDeptAll(Model model, HttpSession session
 			, DeptDTO deptDto) {
 		
@@ -44,19 +42,20 @@ public class DeptController {
 		model.addAttribute("deptDatas", deptDatas);
 		log.info("data: {}", deptDatas);
 		
-		return "admin/dept_manage";
+		return "admin/dept-manage";
 	}
 	
 	// 부서 상세 조회
+	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@GetMapping(value = "/departments/detail/{deptNo}", produces="application/json; charset=utf-8")
-	public ResponseEntity<Object> getDeptDetail(@PathVariable("deptNo") int deptNo) {
+	@GetMapping(value = "/departments/detail", produces="application/json; charset=utf-8")
+	public String getDeptDetail(@RequestParam("deptNo") int deptNo) {
 		log.info("getDeptDetail(no): {}", deptNo);
 		// 로그인 세션 추가하기
 		
-		ResponseEntity<Object> data = deptService.getDeptDetail(deptNo);
+		//ResponseEntity<Object> data = deptService.getDeptDetail(deptNo);
 		
-		/*
+		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
 		JSONObject json = new JSONObject();
@@ -68,9 +67,9 @@ public class DeptController {
 		json.put("deptModDt", data.getDeptModDt() + "");
 		
 		return json.toJSONString();
-		*/
 		
-		return data;
+		
+		//return data;
 	}
 	
 	
@@ -151,19 +150,18 @@ public class DeptController {
 	}
 	
 	// 부서 삭제
+	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@DeleteMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
-	public ResponseEntity<Object> removeDept(@RequestParam int deptNo) {
+	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
+	public String removeDept(@RequestParam int deptNo) {
 		// 로그인 세션 추가하기
 		log.info("removeDept(deptNo): {}", deptNo);
 		//DeptDTO data = deptService.getDeptDetail(deptNo);
 		
 		
-		var datas = deptService.removeDept(deptNo);
+		//var datas = deptService.removeDept(deptNo);
 		
-		System.out.println(deptNo);
 		
-		/*
 		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
 		JSONObject json = new JSONObject();
@@ -189,8 +187,8 @@ public class DeptController {
 			
 			// 삭제 권한 없음
 		}
-		*/
-		return datas;
+		
+		//return datas;
 	}
 	
 }

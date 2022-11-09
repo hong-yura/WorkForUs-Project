@@ -32,13 +32,13 @@ public class DeptService {
 	
 	
 	@SuppressWarnings("unchecked")
-	public ResponseEntity<Object> getDeptDetail(int deptNo) {
+	public DeptDTO getDeptDetail(int deptNo) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		
 		DeptDTO data = mapper.selectDeptDetail(deptNo);
 		
-		
-		Map<String, Object> map = new HashMap<>();
+		/*
+		Map<String, String> map = new HashMap<>();
 		
 		JSONObject json = new JSONObject(map);
 		
@@ -55,8 +55,8 @@ public class DeptService {
 		ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(result, HttpStatus.OK);
 		
 		return responseEntity;
-		
-		//return data;
+		*/
+		return data;
 	}
 	
 	
@@ -102,11 +102,12 @@ public class DeptService {
 	}
 	
 	
-	public ResponseEntity<Object> removeDept(int deptNo) {
+	public boolean removeDept(int deptNo) {
 		DeptMapper mapper = session.getMapper(DeptMapper.class);
 		
-		boolean removeResult = mapper.deleteDept(deptNo);
+		int removeResult = mapper.deleteDept(deptNo);
 		
+		/*
 		Map<String, Integer> map = new HashMap<>();
 		
 		map.put("deptNo", deptNo);
@@ -126,7 +127,10 @@ public class DeptService {
 			responseEntity = new ResponseEntity<Object>(result, HttpStatus.BAD_REQUEST);
 		}
 		
-		return responseEntity;
+		return removeResult;
+		*/
+		
+		return removeResult == 1 ? true : false;
 	}	
 	
 	

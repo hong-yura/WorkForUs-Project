@@ -7,6 +7,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import site.workforus.forus.employee.model.EmpDTO;
 
 @Getter
 @Setter
@@ -18,6 +19,8 @@ public class DeptDTO {
 	private String deptMngId; // 부서책임자(부장 사번)
 	private Date deptAddDt; // 부서 생성일
 	private Date deptModDt; // 부서 최종 수정일
+	
+	private EmpDTO EmpObj;
 
 	public DeptDTO() {
 	}
