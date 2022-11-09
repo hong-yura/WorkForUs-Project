@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:url var="deptAddUrl" value="/admin/dept_manage" />
+<c:url var="deptAddUrl" value="/admin/dept-manage" />
 <form action="${deptAddUrl}" method="post" id="deptAddForm">
 	<div class="mb-3 font-bold">
 		<label id="deptAddNo" class="col-form-label">부서 코드는 자동으로 생성됩니다.</label>
