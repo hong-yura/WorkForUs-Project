@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<c:url var="deptModUrl" value="/admin/dept_manage" />
+<c:url var="deptModUrl" value="/admin/dept-manage" />
 <form action="${deptModUrl}" method="post" id="deptModForm">
 	<div class="mb-3 font-bold">
 		<label id="deptModNo" class="col-form-label">부서 코드는 수정 할 수 없습니다.</label>

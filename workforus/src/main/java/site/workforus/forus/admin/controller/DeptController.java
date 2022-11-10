@@ -6,49 +6,55 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import lombok.extern.slf4j.Slf4j;
 import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.admin.service.DeptService;
 
+@Slf4j
 @Controller
 @RequestMapping(value = "/admin")
 public class DeptController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DeptController.class);
 	
 	@Autowired
 	private DeptService deptService;
 	
 	// 부서 전체 조회
-	@GetMapping(value = "/dept_manage")
+	@GetMapping(value = "/dept-manage")
 	public String getDeptAll(Model model, HttpSession session
 			, DeptDTO deptDto) {
 		
 		List<DeptDTO> deptDatas = deptService.getDeptAll(); 
 		model.addAttribute("deptDatas", deptDatas);
-		logger.info("data: {}", deptDatas);
+		log.info("data: {}", deptDatas);
 		
-		return "admin/dept_manage";
+		return "admin/dept-manage";
 	}
 	
 	// 부서 상세 조회
 	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@GetMapping(value = "/dept_detail", produces="application/json; charset=utf-8")
-	public String getDeptDetail(HttpSession session, @RequestParam int deptNo) {
-		logger.info("getDeptDetail(no): {}", deptNo);
+	@GetMapping(value = "/departments/detail", produces="application/json; charset=utf-8")
+	public String getDeptDetail(@RequestParam("deptNo") int deptNo) {
+		log.info("getDeptDetail(no): {}", deptNo);
 		// 로그인 세션 추가하기
+		
+		//ResponseEntity<Object> data = deptService.getDeptDetail(deptNo);
+		
 		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
@@ -61,23 +67,29 @@ public class DeptController {
 		json.put("deptModDt", data.getDeptModDt() + "");
 		
 		return json.toJSONString();
+		
+		
+		//return data;
 	}
 	
+	
 	// 부서 추가 폼 요청
-	@GetMapping(value = "/dept_add")
+	@GetMapping(value = "/dept-add")
 	public String addDept() {
 		// 로그인 세션 추가하기
-		return "admin/dept_add";
+		return "admin/dept-add";
 	}
 	
 	// 부서 추가 저장 요청
-	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@PostMapping(value = "/dept_add", produces="application/json; charset=utf-8")
-	public String addDept(HttpSession session, @RequestBody DeptDTO deptDto) {
+	@PostMapping(value = "/departments", produces="application/json; charset=utf-8")
+	public ResponseEntity<Object> addDept(@RequestBody DeptDTO deptDto) {
 		// 로그인 세션 추가하기
-		logger.info("addDept(DeptDTO={})", deptDto);
+		log.info("addDept(DeptDTO={})", deptDto);
 		
+		ResponseEntity<Object> datas = deptService.addDept(deptDto);
+		
+		/*
 		DeptDTO data = new DeptDTO();
 		data.setDeptName(deptDto.getDeptName());
 		data.setDeptMngId(deptDto.getDeptMngId());
@@ -93,25 +105,28 @@ public class DeptController {
 			json.put("message", "부서 추가 작업 중 알 수 없는 문제가 발생하였습니다.");
 			return json.toJSONString();
 		}
+		*/
 		
-		
+		return datas;
 	}
 	
 	// 부서 수정 폼 요청
-	@GetMapping(value = "dept_modify")
+	@GetMapping(value = "dept-modify")
 	public String modifyDept() {
 		// 로그인 세션 추가하기
-		return "admin/dept_modify";
+		return "admin/dept-modify";
 	}
 	
 	// 부서 수정 저장 요청
-	@SuppressWarnings("unchecked")
 	@ResponseBody
-	@PostMapping(value = "/dept_modify", produces="application/json; charset=utf-8")	
-	public String modifyDept(HttpSession session, @RequestBody DeptDTO deptDto) {
+	@PutMapping(value = "/departments", produces="application/json; charset=utf-8")	
+	public ResponseEntity<Object> modifyDept(@RequestBody DeptDTO deptDto) {
 		// 로그인 세션 추가하기
-		logger.info("modifyDept(deptDto={})", deptDto);
+		log.info("modifyDept(deptDto={})", deptDto);
 		
+		ResponseEntity<Object> datas = deptService.modifyDept(deptDto);
+		
+		/*
 		DeptDTO data = deptService.getDeptDetail(deptDto.getDeptNo());
 		data.setDeptName(deptDto.getDeptName());
 		data.setDeptMngId(deptDto.getDeptMngId());
@@ -128,17 +143,24 @@ public class DeptController {
 			json.put("message", "수정 작업 중 알 수 없는 문제가 발생하였습니다.");
 			return json.toJSONString();
 		}
-		// 수정 권한 없음
+		*/
 		
+		// 수정 권한 없음
+		return datas;
 	}
 	
 	// 부서 삭제
 	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
-	public String removeDept(HttpSession session, @RequestParam int deptNo) {
+	public String removeDept(@RequestParam int deptNo) {
 		// 로그인 세션 추가하기
-		logger.info("removeDept(deptNo): {}", deptNo);
+		log.info("removeDept(deptNo): {}", deptNo);
+		//DeptDTO data = deptService.getDeptDetail(deptNo);
+		
+		
+		//var datas = deptService.removeDept(deptNo);
+		
 		
 		DeptDTO data = deptService.getDeptDetail(deptNo);
 		
@@ -162,9 +184,11 @@ public class DeptController {
 				return json.toJSONString();
 			}
 			
+			
 			// 삭제 권한 없음
 		}
 		
+		//return datas;
 	}
 	
 }

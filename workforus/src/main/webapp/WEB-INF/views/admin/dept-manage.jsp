@@ -11,8 +11,7 @@
 	<%@ include file="../module/head.jsp" %>
 	<link rel="stylesheet" href="${staticUrl}/css/pages/jui-ui.min.classic.css" />
 	<link rel="stylesheet" href="${staticUrl}/css/pages/admin.css" />
-	<script src="${staticUrl}/js/pages/admin/department/jui-core.min.js"></script>
-	<script src="${staticUrl}/js/pages/admin/department/jui-ui.min.js"></script>
+
 </head>
 <!-- <script type="text/javascript">
  	function formCheck(form) {
@@ -202,7 +201,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<jsp:include page="../admin/dept_add.jsp" />
+								<%@ include file="../admin/dept-add.jsp" %>
 							</div>
 						</div>
 					</div>
@@ -217,7 +216,7 @@
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">
-								<jsp:include page="../admin/dept_modify.jsp" />
+								<%@ include file="../admin/dept-modify.jsp" %>
 							</div>
 						</div>
 					</div>
@@ -262,157 +261,13 @@
 			<%@ include file="../module/footer.jsp" %>
 		</div>
 	</div>
-	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 	<script src="${staticUrl}/js/main.js"></script>
 	
-	<script type="text/javascript">
-/* 		// 에러 체크
-		var errorCheckModal = new bootstrap.Modal(document.getElementById("errorModal"), {
-			keyboard: false
-		})
-		errorCheckModal.show();
-	 */
-	 
-		// 부서 정보 상세 조회
-		function deptDetail(deptNo) {
-			$.ajax({
-				type: "get",
-				url: "${adminUrl}/dept_detail",
-				data: {
-					deptNo: deptNo
-				},
-				success: function(data) {
-					var form = document.getElementById("deptForm");
-					
-					form.deptNo.value = data.deptNo;
-					form.deptName.value = data.deptName;
-					form.deptMngId.value = data.deptMngId;
-					form.deptAddDt.value = data.deptAddDt;
-					form.deptModDt.value = data.deptModDt;
-				}
-			})
-		}
-		
-		// 부서 추가
-		function deptAdd() {
-			var deptName = $.trim($("#deptAddName").val())
-			var deptMngId = $.trim($("#deptAddMngId").val())
-			
-			if(deptName.trim().length == 0) {
-				alert("부서명을 입력해주세요.");
-				$("#deptAddName").focus();
-				return;
-			}
-
-			if(deptMngId.trim().length == 0) {
-				alert("부서 책임자를 입력해주세요.");
-				$("#deptAddMngId").focus();
-				return;
-			}
-			
-			// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-			// if deptMngId가 부서명 중복인지 확인
-			// 직급이 부장 이상만
-
-			var data = {"deptName": deptName, "deptMngId": deptMngId}
-			
-			$.ajax({
-				type: "post",
-				url: "${adminUrl}/dept_add",
-				data: JSON.stringify(data),
-				contentType: "application/json; charset=UTF-8",
-				success: function(data) {
-					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
-						keyboard: false
-					});
-					
-					var title = resModal._element.querySelector(".modal-title");
-					var body = resModal._element.querySelector(".modal-body");
-					title.innerText = data.title;
-					body.innerHTML = "<p>" + data.message + "</p>"
-					
-					resModal.show();
-				},
-				error: function() {
-					alert("부서 추가 실패");
-				}
-			})
-		}
-		
-		// 부서 수정
-		function deptModify() {
-			var deptNo = deptForm.deptNo.value
-			var deptName = $.trim($("#deptModName").val())
-			var deptMngId = $.trim($("#deptModMngId").val())
-			
-			if(deptName.trim().length == 0) {
-				alert("부서명을 입력해주세요.");
-				$("#deptModName").focus();
-				return;
-			}
-
-			if(deptMngId.trim().length == 0) {
-				alert("부서 책임자를 입력해주세요.");
-				$("#deptModMngId").focus();
-				return;
-			}
-			
-			// if deptMngId가 null이면 참조할 객체가 없으므로 실패
-			// if deptMngId가 부서명 중복인지 확인
-			// 직급이 부장 이상만
-			var data = {"deptNo": deptNo, "deptName": deptName, "deptMngId": deptMngId}
-			
-			$.ajax({
-				type: "post",
-				url: "${adminUrl}/dept_modify",
-				data: JSON.stringify(data),
-				contentType: "application/json; charset=UTF-8",
-				success: function(data) {
-					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
-						keyboard: false
-					});
-					
-					var title = resModal._element.querySelector(".modal-title");
-					var body = resModal._element.querySelector(".modal-body");
-					title.innerText = data.title;
-					body.innerHTML = "<p>" + data.message + "</p>"
-					
-					resModal.show();
-				},
-				error: function() {
-					alert("부서 수정 실패");
-				}
-			})
-		}
-		
-
-		// 부서 삭제
-		function deptDelete() {
-			$.ajax({
-				type: "post",
-				url: "${adminUrl}/dept_delete",
-				data: {
-					deptNo: deptForm.deptNo.value
-				},
-				dataType: "json",
-				success: function(data) {
-					var resModal = new bootstrap.Modal(document.getElementById("resultModal"), {
-						keyboard: false
-					});
-					
-					var title = resModal._element.querySelector(".modal-title");
-					var body = resModal._element.querySelector(".modal-body");
-					title.innerText = data.title;
-					body.innerHTML = "<p>" + data.message + "</p>"
-					
-					resModal.show();
-				},
-				error: function() {
-					alert("부서 삭제 실패");
-				}
-			})
-		}
-		
-	</script>
+	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/department-modify.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/department-delete.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/result-modal.js"></script>
+	<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+	<script src="${staticUrl}/js/pages/admin/department/index.js"></script>
 </body>
 </html>

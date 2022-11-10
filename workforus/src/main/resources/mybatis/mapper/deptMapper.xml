@@ -10,7 +10,25 @@
 		<result property="deptMngId" column="dept_manager_id" />
 		<result property="deptAddDt" column="dept_add_dt" />
 		<result property="deptModDt" column="dept_mod_dt" />
+		<collection property="empObj" javaType="empDto" />
 	</resultMap>
+	
+	<resultMap type="empDto" id="empDtoMap">
+		<result property="empId" column="emp_id" />
+		<result property="deptNo" column="dept_no" />
+	</resultMap>
+	
+	<!-- 
+	<select id="selectEmpId" parameterType="deptDto" resultMap="deptDtoMap">
+		SELECT TD.DEPT_NO
+			 , TD.DEPT_NM
+			 , TE.EMP_ID
+		  FROM TB_DEPARTMENTS TD 
+		  JOIN TB_EMPLOYEES TE 
+		 	ON (TD.DEPT_MANAGER_ID = TE.EMP_ID)
+	</select>	
+	 -->
+	
 	
 	<select id="selectDeptAll" resultMap="deptDtoMap">
 		SELECT * 
@@ -46,5 +64,8 @@
 		DELETE FROM TB_DEPARTMENTS
 		 WHERE DEPT_NO = #{deptNo}
 	</delete>
+	
+	
+	
 	
 </mapper>

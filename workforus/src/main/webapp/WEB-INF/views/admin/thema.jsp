@@ -53,30 +53,35 @@
 							</ul>
 							<div class="tab-content" id="myTabContent">
 								<div class="tab-pane fade active show" id="menuLogo" role="tabpanel" aria-labelledby="menuLogo-tab">
-									<form action="" method="post" id="menuLogoForm">
+									<c:url value="/admin/thema" var="adminThemaUrl" />
+									<form action="${adminThemaUrl}" method="post" id="menuLogoForm" enctype="multipart/form-data">
 										<div class="card-body">
 											<div class="row">
 												<div class="card-title-cus">
-													<h4 class="card-title">메뉴 로고 설정</h4>
+													<h4 class="card-title">메뉴 상단 로고 설정</h4>
 												</div>
 												<div class="col-lg-5">
-													<img alt="메뉴 로고 이미지" src="https://via.placeholder.com/145x45.png">
+													<c:url var="logoImgUrl" value="${logoImgPath}" />
+													<img id="logoPrevImage" alt="메뉴 로고 이미지" src="${logoImgUrl}">
 												</div>
 												<div class="col-lg-4">
-													<label class="btn btn-lavender" for="upload-menu-logo-img">Upload New Menu Logo
-														<input hidden id="upload-menu-logo-img" accept="image/png" type="file" >
+													<label class="btn btn-lavender" for="imageFile">Upload New Menu Logo
+														<input hidden id="imageFile" name="imageFile" accept="image/png, image/jpg, image/jpeg" type="file">
 													</label>
 													<button type="button" class="btn btn-outline-danger">Reset</button>
 												</div>
 											</div>
 											<div class="col-12 margin-cus">
 												<p>메뉴 네비게이션 상단의 로고 이미지를 설정 할 수 있습니다.<br>
-												※ PNG 파일 형식 145x45 사이즈로 등록하세요.
+												※ 파일 확장자는 png, jpeg, jpg 파일 형식 145x45 사이즈로 등록하세요.<br>
+												※ 파일 크기는 5MB 이하만 등록 가능합니다.
 												</p>
 											</div>
 										</div>
 									</form>
 								</div>
+								
+								
 								<div class="tab-pane fade" id="loginImage" role="tabpanel" aria-labelledby="loginImage-tab">
 									<form action="" method="post" id="loginImageForm">
 										<div class="card-body">
@@ -88,8 +93,8 @@
 													<img alt="로그인 이미지" src="https://via.placeholder.com/480x270.png">
 												</div>
 												<div class="col-lg-4">
-													<label class="btn btn-lavender" for="upload-login-img">Upload New Login Image
-														<input hidden id="upload-login-img" accept="image/png, image/jpg" type="file" >
+													<label class="btn btn-lavender" for="btnLoginImg">Upload New Login Image
+														<input hidden id="btnLoginImg" accept="image/png, image/jpg, image/jpeg" type="file" >
 													</label>
 													<button type="button" class="btn btn-outline-danger">Reset</button>
 												</div>
@@ -97,7 +102,8 @@
 											<div class="col-12 margin-cus">
 												<p>로그인 화면의 배경 이미지를 설정 할 수 있습니다.<br>
 												※ 모바일 웹 디스플레이 비율 16:9 ,  1920x1080 이상의 해상도 이미지를 권장합니다.<br>
-												※ PNG, JPG 파일 형식으로 등록하세요.
+												※ 파일 확장자는 png, jpeg, jpg 파일 형식으로 등록하세요.
+												※ 파일은 5MB 이하만 등록 가능합니다.
 												</p>
 											</div>
 										</div>
@@ -106,7 +112,7 @@
 							</div>
 							<hr>
 							<div class="col-12 d-flex justify-content-end">
-								<button type="button" class="btn btn-lg btn-primary" id="saveLogoBtn" onclick="saveLogo();">Save Change</button>
+								<button type="button" class="btn btn-lg btn-primary" id="saveLogoBtn" onclick="logoUpload();">Save Change</button>
 							</div>
 						</div>
 					</div> <!-- card End -->
@@ -118,5 +124,9 @@
 		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 		<script src="${staticUrl}/js/main.js"></script>
+		
+		<script src="${staticUrl}/js/pages/admin/thema/select-logo.js"></script>
+		<script src="${staticUrl}/js/pages/admin/thema/show-preview.js"></script>
+		<script src="${staticUrl}/js/pages/admin/thema/logo-upload-image.js"></script>
 	</body>
 </html>
