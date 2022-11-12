@@ -46,6 +46,7 @@
 		<result property="fileType" column="file_type"/>
 		<result property="summYn" column="file_summ_yn"/>
 	</resultMap>
+
 	<!-- 게시글 리스트 가져오기 (최소한의 정보만 가져오기)-->
 	<select id="selectPostAll" resultMap="boardPostDtoMap">
 		SELECT P.POST_ID
@@ -300,10 +301,45 @@
 	 	 WHERE COMMENT_ID= #{id}
 	 </delete>
 	 
-	 <!-- 좋아요 -->
-	 <update id="updateLikeUp" parameterType="boardPostDto">
-	 	UPDATE TB_BOARD_POSTS SET LIKE_CNT = #{likeCnt} + 1  WHERE POST_ID = #{postId}
-	 </update>
+	 <!-- likeCnt 업데이트-->
+	<update id="updateLikeCnt" parameterType="boardPostDto">
+		update tb_board_posts
+		set like_cnt = #{likeCnt}
+		where post_id = #{postId}
+	</update>
+
+	<!-- like 기록 조회 -->
+	<select id="selectLikeByPostIdAndUserId" resultType="postLikeDto">
+		select like_id as likeId,
+		       post_id as postId,
+		       emp_id as empId
+		from tb_board_posts
+		where post_id = #{postId} and empId = #{empId}
+	</select>
+
+	<!-- like 기록 추가(tb_post_likes) -->
+	<insert id="insertLike">
+		insert into tb_post_likes
+		values(post_likes_seq.NEXTVAL, #{postId}, #{empId})
+	</insert>
+
+	<!-- like 기록 삭제(tb_post_likes) -->
+	<delete id="deleteLike">
+		delete from tb_post_likes
+		where post_id = #{postId}
+		and emp_id = #{empId}
+	</delete>
+
+	<!-- likeCnt 데이터 가져오기(tb_board_posts) -->
+	<select id="selectLikeCntByPostId" parameterType="_int">
+		select post_id as postId,
+		       like_cnt as likeCnt
+		from tb_post_likes
+		where post_id = #{id}
+	</select>
+
+
+
 	 
 	 
 </mapper>

@@ -65,6 +65,7 @@
 							</div>
 						</div>
 						<div class="post-main"  style="color: black; min-height: 200px;">
+							<input type="hidden" id="postId" value="${postData.postId}">
 							<p class="post-content">${postData.content}</p>
 						</div>
 						<!-- 올린 파일이 보이도록 한다. -->
@@ -84,7 +85,7 @@
 						</c:if>
 						<div class="view-like-container">
 							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
-							<button type="button" class="btn black" onclick="incLike(id_like, ${postData.postId}, ${postData.likeCnt });"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
+							<button type="button" class="btn black" onclick="boardLike();"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
 							</button>
 							<hr style="margin-top: 0px;">
 						</div>
@@ -105,6 +106,7 @@
     
     
     <script src="${staticUrl}/js/pages/board/index.js"></script>
+	<script src="${staticUrl}/js/pages/board/board-like.js"></script>
     
     <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
