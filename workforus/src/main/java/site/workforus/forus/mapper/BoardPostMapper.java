@@ -4,15 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostCommentDTO;
 import site.workforus.forus.board.model.PostLikeDTO;
 import site.workforus.forus.board.model.PostUploadFileDTO;
-import site.workforus.forus.employee.model.EmpDTO;
 
 public interface BoardPostMapper { 
 
@@ -90,7 +86,7 @@ public interface BoardPostMapper {
 	public int updateLikeCnt(BoardPostDTO postDto);
 
 	// like 기록 조회(tb_post_likes) @Param : 파라미터명을 그대로 사용하기 위함
-    public PostLikeDTO selectLikeByPostIdAndUserId(@Param("postId")int postId, @Param("empId") String empId);
+    public List<PostLikeDTO> selectLikeByPostIdAndUserId(@Param("postId")int postId, @Param("empId") String empId);
 
 	// like 기록 추가(tb_post_likes)
 	public int insertLike(@Param("postId") int postId, @Param("empId") String empId); // action : up or down

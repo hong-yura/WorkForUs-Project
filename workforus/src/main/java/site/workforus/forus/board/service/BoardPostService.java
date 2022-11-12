@@ -4,15 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -179,19 +176,24 @@ public class BoardPostService {
 
 	// like수 변경
 	@Transactional
-    public ResponseEntity<Object> modifyLike(Integer postId) {
+    public ResponseEntity<Object> modifyLike(int postId) {
+		logger.info("modifyLike(postId={})", postId);
+
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 
 		BoardPostDTO postDto = mapper.selectLikeCntByPostId(postId);
+		logger.info("modifyLike(postDto={})", postDto);
 
 		boolean likedYn = _likedYn(postId);
 
 		if(likedYn){
 			// likeUp
 			postDto.setLikeCnt(postDto.getLikeCnt() + 1);
+			logger.info("modifyLike(likeUp 성공)");
 		}else {
 			// likeDown
 			postDto.setLikeCnt(postDto.getLikeCnt() - 1);
+			logger.info("modifyLike(likeDown 성공)");
 		}
 		mapper.updateLikeCnt(postDto);
 		logger.info("modifyLike(수정 후 postDto={})", postDto);
@@ -200,21 +202,28 @@ public class BoardPostService {
     }
 	// 게시글 좋아요를 누른 기록이 있는지 확인
 	private boolean _likedYn(int postId){
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
 		// spring security 에서 사용자 정보 가져오기
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
 		UserDetails userDetails = (UserDetails)principal;
+
 		String empId = userDetails.getUsername();
+
 		logger.info("_likeYn(postId={}, empId={})", postId, empId);
 
-		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		PostLikeDTO data = mapper.selectLikeByPostIdAndUserId(postId,empId);
-		if(data == null){
+		List<PostLikeDTO> data = mapper.selectLikeByPostIdAndUserId(postId,empId);
+		logger.info("_likeYn(data={})", data);
+
+		if(data.isEmpty()){
 			// 데이터 추가
 			mapper.insertLike(postId, empId);
+			logger.info("_likedYn(insertLike 성공)");
 			return true;
 		}else {
 			// 데이터 삭제
 			mapper.deleteLike(postId, empId);
+			logger.info("_likedYn(deleteLike 성공)");
 			return false;
 		}
 	}

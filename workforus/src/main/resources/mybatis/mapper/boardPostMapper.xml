@@ -310,11 +310,11 @@
 
 	<!-- like 기록 조회 -->
 	<select id="selectLikeByPostIdAndUserId" resultType="postLikeDto">
-		select like_id as likeId,
-		       post_id as postId,
-		       emp_id as empId
-		from tb_board_posts
-		where post_id = #{postId} and empId = #{empId}
+		select like_id,
+		       post_id,
+		       emp_id
+		from tb_post_likes
+		where post_id = #{postId} and emp_id = #{empId}
 	</select>
 
 	<!-- like 기록 추가(tb_post_likes) -->
@@ -331,15 +331,11 @@
 	</delete>
 
 	<!-- likeCnt 데이터 가져오기(tb_board_posts) -->
-	<select id="selectLikeCntByPostId" parameterType="_int">
-		select post_id as postId,
-		       like_cnt as likeCnt
-		from tb_post_likes
+	<select id="selectLikeCntByPostId" parameterType="_int" resultMap="boardPostDtoMap">
+		select post_id,
+		       like_cnt
+		from tb_board_posts
 		where post_id = #{id}
 	</select>
 
-
-
-	 
-	 
 </mapper>
