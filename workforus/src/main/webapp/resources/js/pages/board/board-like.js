@@ -14,7 +14,7 @@ const boardLike = () => {
         success: function(data, message){
             likeCnt.innerText = data.likeCnt;
         },
-        error: function (){
+        error: function () {
             alert("다시 시도해주세요.");
         }
     });
