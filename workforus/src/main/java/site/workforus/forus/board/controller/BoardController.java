@@ -2,7 +2,6 @@ package site.workforus.forus.board.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -171,7 +170,7 @@ public class BoardController {
 		model.addAttribute("commentCnt", commentCnt);
 		model.addAttribute("groupNo", groupNo + 1); // + 1을 한 이유 : 댓글 추가기능에서 groupNo 서버에 전달할 때 null값이 전달되는 걸 방지 
 		model.addAttribute("files", files);
-		return "/board/detail";
+		return "/board/post-detail";
 	}
 	
 	// 본댓글 추가
@@ -245,7 +244,7 @@ public class BoardController {
 		int postId = postService.selectCurrentPostId(boardId); // postId 최대값
 		session.setAttribute("postId", postId);
 		
-		return "/board/add";
+		return "post-add";
 	}
 
 	// 게시글 추가 요청
@@ -333,7 +332,7 @@ public class BoardController {
 		model.addAttribute("postData", postData);
 		model.addAttribute("fileData", fileData);
 		
-		return "/board/modify";
+		return "post-modify";
 	}
 	
 	//게시글 수정

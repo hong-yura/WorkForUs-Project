@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
+import site.workforus.forus.board.model.PostLikeDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
@@ -153,22 +157,74 @@ public class BoardPostService {
 		
 	}
 
-	// 게시글 좋아요
-	public BoardPostDTO likeUp(BoardPostDTO postDto,  HttpSession httpSession) {
+//	// 게시글 좋아요
+//	public BoardPostDTO likeUp(BoardPostDTO postDto,  HttpSession httpSession) {
+//		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+//		int result = mapper.updateLikeUp(postDto);
+//		logger.info("likeUp(db에 like + 1을 한 후 postDto={})", postDto);
+//		if(result == 1) {
+//			// 성공했다면 -> 전달받은 현재 게시글 데이터에서 likeCnt를 + 1 해줘야 한다.
+//			// ajax로 할 거기 때문에 안 그러면 리로딩을 해야지만 좋아요가 올라감 즉, db엔 증가했지만 브라우저엔 반영이 안 됨
+//			postDto.setLikeCnt(postDto.getLikeCnt() + 1);
+//			logger.info("likeUp(+1을 따로 해준 경우 postDto={})", postDto);
+//			return postDto;
+//		}else {
+//			return null;
+//		}
+//	}
+
+
+	// like수 변경
+	@Transactional
+    public ResponseEntity<Object> modifyLike(int postId) {
+		logger.info("modifyLike(postId={})", postId);
+
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		int result = mapper.updateLikeUp(postDto);
-		logger.info("likeUp(db에 like + 1을 한 후 postDto={})", postDto);
-		if(result == 1) {
-			// 성공했다면 -> 전달받은 현재 게시글 데이터에서 likeCnt를 + 1 해줘야 한다.
-			// ajax로 할 거기 때문에 안 그러면 리로딩을 해야지만 좋아요가 올라감 즉, db엔 증가했지만 브라우저엔 반영이 안 됨
+
+		BoardPostDTO postDto = mapper.selectLikeCntByPostId(postId);
+		logger.info("modifyLike(postDto={})", postDto);
+
+		boolean likedYn = _likedYn(postId);
+
+		if(likedYn){
+			// likeUp
 			postDto.setLikeCnt(postDto.getLikeCnt() + 1);
-			logger.info("likeUp(+1을 따로 해준 경우 postDto={})", postDto);
-			return postDto;
+			logger.info("modifyLike(likeUp 성공)");
 		}else {
-			return null;
+			// likeDown
+			postDto.setLikeCnt(postDto.getLikeCnt() - 1);
+			logger.info("modifyLike(likeDown 성공)");
+		}
+		mapper.updateLikeCnt(postDto);
+		logger.info("modifyLike(수정 후 postDto={})", postDto);
+		ResponseEntity<Object> responseEntity = new ResponseEntity<>(postDto, HttpStatus.OK);
+		return responseEntity;
+    }
+	// 게시글 좋아요를 누른 기록이 있는지 확인
+	private boolean _likedYn(int postId){
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		// spring security 에서 사용자 정보 가져오기
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		UserDetails userDetails = (UserDetails)principal;
+
+		String empId = userDetails.getUsername();
+
+		logger.info("_likeYn(postId={}, empId={})", postId, empId);
+
+		List<PostLikeDTO> data = mapper.selectLikeByPostIdAndUserId(postId,empId);
+		logger.info("_likeYn(data={})", data);
+
+		if(data.isEmpty()){
+			// 데이터 추가
+			mapper.insertLike(postId, empId);
+			logger.info("_likedYn(insertLike 성공)");
+			return true;
+		}else {
+			// 데이터 삭제
+			mapper.deleteLike(postId, empId);
+			logger.info("_likedYn(deleteLike 성공)");
+			return false;
 		}
 	}
-	
-
-
 }

@@ -136,30 +136,29 @@ function boardUrlCopy(){
 	console.log('게시판 주소가 복사되었습니다.');
 }
 
- // 추천 눌를 시 -> 실행이 안 됨 ....
- function incLike(element, postId, like_cnt) {
-	var yn = document.getElementById("like-yn");
-	if(yn.value === "n"){
-		$.ajax({
-			url: "/post/like",
-			type: "post",
-			data: {
-				postId: postId
-			},
-			dataType: "json",
-			success: function(data) {
-				
-				if(data.code === "success") {
-						element.innerText = data.likeCnt;
-						yn.value = "y";
-				}else{
-					alert("오류 발생");
-				}
-			}
-		}); // ajax 끝 
-		
-    }else {
-        element.innerText = like_cnt;
-		yn.value = "n";
-	}
-}
+//  function incLike(element, postId, like_cnt) {
+// 	var yn = document.getElementById("like-yn");
+// 	if(yn.value === "n"){
+// 		$.ajax({
+// 			url: "/post/like",
+// 			type: "post",
+// 			data: {
+// 				postId: postId
+// 			},
+// 			dataType: "json",
+// 			success: function(data) {
+//
+// 				if(data.code === "success") {
+// 						element.innerText = data.likeCnt;
+// 						yn.value = "y";
+// 				}else{
+// 					alert("오류 발생");
+// 				}
+// 			}
+// 		}); // ajax 끝
+//
+//     }else {
+//         element.innerText = like_cnt;
+// 		yn.value = "n";
+// 	}
+// }
