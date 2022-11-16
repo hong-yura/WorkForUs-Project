@@ -55,6 +55,20 @@ public class EmpService implements UserDetailsService{
 		return new LoginVO(empDto);
 	}
 
+	// 사원 이름
+	public String getEmpNm(String empId) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		String empNm = mapper.selectEmpNm(empId);
+		return empNm;
+	}
+
+	// 부서 이름
+	public String getDeptNm(String empId) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		String deptNm = mapper.selectDeptNm(empId);
+		return deptNm;
+	}
+
 	public EmpDTO selectEmployeeInfo(String empId) {
 		EmpMapper mapper = session.getMapper(EmpMapper.class);
 		
