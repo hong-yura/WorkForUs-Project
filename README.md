@@ -25,14 +25,14 @@
         <a href="https://github.com/jaeeukim">
           <img src="https://github.com/jaeeukim.png" width="100" style="max-width: 100%;">
           <br>
-          <b>김재은 (Kim Jaeun)</b>
+          <b>김재은 (Kim Jaeeun)</b>
         </a>
       </td>
       <td>
         <a href="https://github.com/modernToujours">
           <img src="https://github.com/modernToujours.png" width="100" style="max-width: 100%;">
           <br>
-          <b>최영원 (Choi Youngwon)</b>
+          <b>최영원 (Choi Young Won)</b>
         </a>
       </td>
       <td>
