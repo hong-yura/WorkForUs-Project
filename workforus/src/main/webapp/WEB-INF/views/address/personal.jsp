@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>workforus - Personal Address</title>
 		<%@ include file="../module/head.jsp" %>
-		<link rel="stylesheet" href="${staticUrl}/vendors/simple-datatables/style.css" />
 		<link rel="stylesheet" href="${staticUrl}/css/pages/address.css" />
 	</head>
 	<body>
@@ -21,7 +21,7 @@
 					<div class="page-title">
 						<div class="row">
 							<div class="col-12 col-md-6 order-md-1 order-last">
-								<h3>Address</h3>
+								<h3>Personal Address</h3>
 							</div>
 							<div class="col-12 col-md-6 order-md-2 order-first">
 								<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
@@ -67,15 +67,7 @@
 									
 								</div>
 								<div class="dataTable-container">
-									<table class="table table-hover dataTable-table" id="table1">
-										
-										<colgroup>
-											<col>
-											<col>
-											<col>
-											<col>
-											<col>
-										</colgroup>
+									<table class="table table-hover" id="addressList">
 										<thead class="table-primary">
 											<tr>
 												<th>이름(표시명)</th>
@@ -88,17 +80,7 @@
 												<th>태 그</th>
 											</tr>
 										</thead>
-										<tbody>
-											<tr>
-												<th>강동원</th>
-												<th>해외사업부</th>
-												<th>팀장</th>
-												<th>dongdong@gmail.com</th>
-												<th>070-0000-0000</th>
-												<th>우리나라 어딘가</th>
-												<th>(주)유라랜드</th>
-												<th>협력업체</th>
-											</tr>
+										<tbody id="personalAddrList">
 										</tbody>
 									</table>
 								</div>
@@ -169,17 +151,17 @@
 		</div>
 		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
 		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+		<script src="${staticUrl}/js/main.js"></script>
+
+		<script src="${staticUrl}/js/pages/address/personal.js"></script>
 		
-		<script src="${staticUrl}/vendors/simple-datatables/simple-datatables.js"></script>
 		<script type="text/javascript">
-			let table1 = document.g('#table1');
-	        let dataTable = new simpleDatatables.DataTable(table1);
-	        
+
 	        function fileImport() {
 				let inputHidden = document.getElementById("inputHidden");
 				inputHidden.click();
 			}
 		</script>
-		<script src="${staticUrl}/js/main.js"></script>
+
 	</body>
 </html>

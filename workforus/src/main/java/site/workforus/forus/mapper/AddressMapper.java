@@ -6,7 +6,9 @@ import site.workforus.forus.address.model.AddressDTO;
 
 public interface AddressMapper {
 
-	public List<AddressDTO> selectAddress(String empId);
+	public List<AddressDTO> selectAddressAll();
+
+	public List<AddressDTO> selectAddressByDept(String deptNm);
 	
 	
 }

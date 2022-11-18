@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <header class='mb-3'>
 	<nav class="navbar navbar-expand navbar-light navbar-top">
 		<div class="container-fluid">
@@ -267,10 +268,10 @@
                 <a href="${homeUrl}/address">공용 주소록</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/address/dept_address">부서 주소록</a>
+                <a href="${homeUrl}/address/department">부서 주소록</a>
               </li>
               <li class="submenu-item">
-                <a href="${homeUrl}/address/personal_address">개인 주소록</a>
+                <a href="${homeUrl}/address/personal">개인 주소록</a>
               </li>
             </ul>
           </li>
