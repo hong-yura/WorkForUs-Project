@@ -37,13 +37,13 @@
 	<!-- 출근시간 insert -->
 	<insert id="insertIntime" parameterType="commuteDto">
 		INSERT INTO tb_commute(commute_no, emp_id, commute_dt, commute_time)
-		VALUES (TB_COMMUTE_SEQ.NEXTVAL, #{empId}, #{today}, #{nowTime})
+		VALUES (TB_COMMUTE_SEQ.NEXTVAL, #{empId}, #{today}, SYSDATE  + (interval '9' hour))
 	</insert>
 	
 	<!-- 퇴근시간 udpate -->
 	<update id="updateOuttime" parameterType="commuteDto">
 		UPDATE tb_commute 
-		   SET getoff_time = #{nowTime}
+		   SET getoff_time = (SYSDATE  + (interval '9' hour))
 		 WHERE emp_id = #{empId}
 		   AND commute_dt = #{today}
 	</update>
@@ -103,11 +103,18 @@
 	</select>
 	
 	<!-- 비어있는 퇴근시간 업데이트 -->
-	<update id="updateGetoffTime" parameterType="String">
+	<update id="updateGetoffTime2" parameterType="String">
 		UPDATE tb_commute
 		   SET getoff_time = '1970-01-01 23:59:59'
 		 WHERE commute_dt = #{beforeDate}
 		   AND emp_id = #{empId}
 	</update>
 	
+	<!-- 비어있는 퇴근시간 업데이트 -->
+	<update id="updateGetoffTime" parameterType="String">
+		UPDATE tb_commute
+		   SET getoff_time = (TO_DATE(#{setTime} , 'yyyy/mm/dd hh24:mi:ss'))
+		 WHERE commute_dt = #{beforeDate}
+		   AND emp_id = #{empId}
+	</update>
 </mapper>

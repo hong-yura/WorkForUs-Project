@@ -53,24 +53,21 @@ public class CommuteService{
 	
 	// 출근시간 기록
 	public boolean insertIntime(String empId) throws Exception {
-		String today = today();
-		Date nowTime = nowTime();
-		
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
-		int result = mapper.insertIntime(empId, today, nowTime);
+		String today = today();		
+		int result = mapper.insertIntime(empId, today);
 		return result == 1 ? true : false;
 	}
 	
 	// 퇴근시간, 근무시간, 추가시간 기록
 	public boolean updateOuttime(String empId) throws Exception {
 		String today = today();
-		Date nowTime = nowTime();
 		
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
 		
 		// 퇴근시간 update
-		int result = mapper.updateOuttime(empId, today, nowTime);
+		int result = mapper.updateOuttime(empId, today);
 		
 		// 퇴근시간 가져옴
 		String getoffTime = mapper.selectGetoff(empId, today);
@@ -157,14 +154,12 @@ public class CommuteService{
 		// 출근시간
 		inTime = inTime.substring(11, 19);
 		Date incommute = sdf.parse(inTime);
-		
 		// 퇴근시간
 		getoffTime = getoffTime.substring(11, 19);
 		Date time2 = sdf.parse(getoffTime);		// 퇴근시간
 
 		//기본시간
 		Date defaultTime = defaultSdf.parse("1970-01-01 09:00:00");	// 9시
-		Date lastTime = defaultSdf.parse("1970-01-01 23:00:00");	// 만약 23시 이후에 출근한다면 점심시간을 빼지않도록 해야한다.
 		Date lunchTime = sdf.parse("13:00:00");
 		
 		
@@ -181,19 +176,14 @@ public class CommuteService{
 		} 
 		// 9시 이후 출근
 		else {
-//			// 23시 이후에 출근
-//			if(incommute.after(lastTime) || incommute.equals(lastTime)) {
-//				return _beforelunch(time2, inTime);
-//			} else {
-				// a. 1시 이후 퇴근
-				if(time2.after(lunchTime) || time2.equals(lunchTime)) {
-					return _afterlunch(time2, inTime);		
-				}
-				// b. 1시 이전 퇴근
-				else {
-					return _beforelunch(time2, inTime);		
-				}
-//			}
+			// a. 1시 이후 퇴근
+			if(time2.after(lunchTime) || time2.equals(lunchTime)) {
+				return _afterlunch(time2, inTime);	
+			}
+			// b. 1시 이전 퇴근
+			else {
+				return _beforelunch(time2, inTime);		
+			}
 		}
 	}
 	
@@ -295,6 +285,8 @@ public class CommuteService{
 	// 출근시간은 있고 퇴근시간이 없다면 23:59:59으로 설정해주기
 	public boolean updateGetoff(String empId) throws Exception {
 		CommuteMapper mapper = session.getMapper(CommuteMapper.class);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
 		int number = 0;
 		Calendar cal = Calendar.getInstance();
 		cal.getTime();
@@ -313,7 +305,9 @@ public class CommuteService{
 				CommuteDTO data = mapper.selectByEmpId(empId, beforeDate);
 				if(data != null) {
 					if(data.getCommuteTime() != null && data.getGetoffTime() == null) {		// 출근시간만 있고 퇴근시간 없을때
-						mapper.updateGetoffTime(empId, beforeDate);							// 퇴근시간 업데이트
+			 			String setTime = year + "-" + month + "-" + date + " " + "23:59:59";
+						System.out.println(setTime + "here ★");
+						mapper.updateGetoffTime(empId, beforeDate, setTime);							// 퇴근시간 업데이트
 						number++;																// 이에따른 추가근무시간이랑 주간근무시간 업데이트해야함  
 						Date workTime = workTime(data.getCommuteTime(), "1970-01-01 23:59:59");
 						Date addedTime = _updateAddedtime(workTime);
@@ -494,7 +488,7 @@ public class CommuteService{
 	
 	public List<CommuteDTO> selectList(String empId, int year, int month){
 		
-		month += 1;
+		// month += 1;
 		String yearstr = Integer.toString(year);
 		String monthstr = null;
 		if(month < 10) {
@@ -506,7 +500,7 @@ public class CommuteService{
 		String yearmonth1 = yearstr + monthstr;
 		
 		List<CommuteDTO> listData = getList(empId, yearmonth1);
-
+		
 		return listData;
 		
 	}

@@ -3,7 +3,7 @@
  */
  
  	// 달(month) 이동 및 정보 가져오기
-	function loadPrevNext(element, value){
+	function loadPrevNext_backup(element, value){
 		var defaultText = document.getElementById("CalendaryearMonth");
 		var year1 = defaultText.innerText.substring(0,4);
 		var month1 = defaultText.innerText.substring(5) - 1;
@@ -26,8 +26,76 @@
 		var month2 = currentDate.getMonth();
 		
 		location.href="/work/record?year=" + year + "&month=" + month2;
+	}
+	
+	function loadPrevNext(element, value){
+		var defaultText = document.getElementById("CalendaryearMonth");
+		var year1 = defaultText.innerText.substring(0,4);
+		var month1 = defaultText.innerText.substring(5) - 1;
+		
+		var currentDate = new Date(year1, month1);
+
+		
+		var table = value.parentElement.parentElement.nextElementSibling;
+		
+		if(element == 0) {
+			 currentDate.setMonth(currentDate.getMonth() - 1);
+		} else {
+			currentDate.setMonth(currentDate.getMonth() + 1);
+		}
+		
+		var year = currentDate.getFullYear();
+		var month = currentDate.getMonth() + 1;
+		var testText = document.getElementById("CalendaryearMonth");
+		testText.innerHTML = year + "." + month;
+		// var month2 = currentDate.getMonth();		 
+			
+		$.ajax({
+			type: "GET",
+			url : "/work/record2",
+			data: {
+				year : year,
+				month : month
+			},
+			success: function(data){
+				var listData = data;
+				var tableBody = document.getElementById("tableBody");
+				console.log(tableBody);
+				tableBody.innerHTML = "";
+				var html="<table class='table'>";
+		  		
+		  		$.each(data, (index, obj)=>{ 
+		  			html+="<tr>";
+		  	  		html+="<td>"+ (obj.commuteDt+"").substring(4,6) + "월" +  (obj.commuteDt+"").substring(6) + "일" + "</td>";
+		  	  		html+="<td>"+ (obj.commuteTime+"").substring(11) + "</td>";
+		  	  		if(obj.getoffTime === null) {
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="<td>"+ "-" +"</td>";
+			  	  		html+="</tr>";
+					} else if((obj.getoffTime+"").substring(11) == "23:59:59"){
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="<td>"+ "관리자문의" +"</td>";
+			  	  		html+="</tr>";
+					} else {
+			  	  		html+="<td>"+ (obj.getoffTime+"").substring(11) +"</td>";
+			  	  		html+="<td>"+ (obj.addedTime+"").substring(11, 13) + "h " + (obj.addedTime+"").substring(14, 16) + "m " + (obj.addedTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="<td>"+ (obj.workTime+"").substring(11, 13) + "h " + (obj.workTime+"").substring(14, 16) + "m " + (obj.workTime+"").substring(17) + "s" +"</td>";
+			  	  		html+="</tr>";
+					}
+		  		})
+		  		html+="</table>";
+		  		
+		  		$("#tableBody").html(html);
+				console.log(listData);	
+			}
+		});
+		
 		
 	}
+	
+
 	
 	// 출근시간 입력
 	function commuteIn() {

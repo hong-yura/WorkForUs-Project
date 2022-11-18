@@ -83,7 +83,7 @@
 						   			</span>
 						   			<span class="col-12 col-md-55 col-lg-5"  style="display:inline-block; text-align:right;">	
 										<c:choose>
-								    		<c:when test="${empty data.getoffTime}">
+								    		<c:when test="${empty data.getoffTime} ">
 								    			-
 								    		</c:when>
 								    		<c:otherwise>

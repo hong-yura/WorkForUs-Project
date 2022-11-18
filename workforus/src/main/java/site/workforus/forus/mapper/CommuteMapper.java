@@ -15,10 +15,9 @@ public interface CommuteMapper {
 	public CommuteDTO selectByCmtNo(int commuteNo);
 	
 	// 출근시간 
-	public int insertIntime(@Param("empId")String	 empId, @Param("today")String today, @Param("nowTime")Date nowTime);
+	public int insertIntime(@Param("empId")String	 empId, @Param("today")String today);
 	// 퇴근시간
-	public int updateOuttime(@Param("empId")String empId, @Param("today")String today
-							, @Param("nowTime")Date nowTime);
+	public int updateOuttime(@Param("empId")String empId, @Param("today")String today);
 	
 	// 퇴근시간 출력문
 	public String selectGetoff(@Param("empId")String empId, @Param("today")String today);
@@ -38,7 +37,10 @@ public interface CommuteMapper {
 			, @Param("weekWork")Date weekWork);
 	
 	// 없는 퇴근기록 업데이트
-	public void updateGetoffTime(@Param("empId")String empId, @Param("beforeDate")String beforeDate);
+	public void updateGetoffTime2(@Param("empId")String empId, @Param("beforeDate")String beforeDate);
+	
+	// 없는 퇴근기록 업데이트
+	public void updateGetoffTime(@Param("empId")String empId, @Param("beforeDate")String beforeDate, @Param("setTime")String setTime);
 	
 	// 근무기록 조회
 	public List<CommuteDTO> selectList(@Param("empId") String empId, @Param("yearmonth1")String yearmonth1);
