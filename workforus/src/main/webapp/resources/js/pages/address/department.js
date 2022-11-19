@@ -11,7 +11,7 @@ function deptAddrList() {
         success: function(json) {
 
             if(json.addrData.length == 0) {
-                $("#deptAddrList").append("<tr><td>주소록 정보가 없습니다.</td></tr>");
+                $("#deptAddrList").append("<tr><td style='text-align: center colspan='7''>주소록 정보가 없습니다.</td></tr>");
             } else {
                 $(json.addrData).each(function(i) {
                     const addressAdd = "<tr>"+

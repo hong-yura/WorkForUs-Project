@@ -9,10 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import site.workforus.forus.address.model.IndividualAddressDTO;
 import site.workforus.forus.address.service.AddressService;
 import site.workforus.forus.employee.service.EmpService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -32,7 +34,6 @@ public class AddressController {
 		log.info("getAddressPage");
 		return "address/address";
 	}
-
 
 	// 공용 주소록 조회
 	@ResponseBody
@@ -77,11 +78,12 @@ public class AddressController {
 
 	// 개인 주소록 조회
 	@ResponseBody
-	@GetMapping(value = "personal", produces="application/json; charset=utf-8")
+	@GetMapping(value = "/personal", produces="application/json; charset=utf-8")
 	public Map<String, Object> getPersonal(@AuthenticationPrincipal Authentication empId) {
 		log.info("getPersonal(empId)={}", empId.getName());
 
 		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("addrData", addrService.getAddrByEmpId(empId.getName()));
 
 		return data;
 	}

@@ -70,17 +70,29 @@
 									<table class="table table-hover" id="addressList">
 										<thead class="table-primary">
 											<tr>
+												<th><input type="checkbox" class="form-check-input" id="addrAllChk"></th>
 												<th>이름(표시명)</th>
-												<th>부 서</th>
-												<th>직급/직책</th>
-												<th>이 메 일</th>
 												<th>전 화 번 호</th>
-												<th>주 소</th>
-												<th>소 속</th>
+												<th>부 서</th>
+												<th>이 메 일</th>
+												<th>상 세 정 보</th>
 												<th>태 그</th>
 											</tr>
 										</thead>
 										<tbody id="personalAddrList">
+										<%--
+											<c:forEach items="${addrData}" var="addrData">
+											<tr>
+												<th><input type='checkbox' name='addrCheck' class='form-check-input'></th>
+												<th>${addrData.addrName}</th>
+												<th>${addrData.addrPhone}</th>
+												<th>${addrData.addrDept}</th>
+												<th>${addrData.addrEmail}</th>
+												<th>${addrData.addrDetail}</th>
+												<th>${addrData.addrTagObj.addrTagName}</th>
+											</tr>
+											</c:forEach>
+											--%>
 										</tbody>
 									</table>
 								</div>

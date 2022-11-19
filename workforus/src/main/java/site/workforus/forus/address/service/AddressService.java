@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.address.model.AddressDTO;
+import site.workforus.forus.address.model.IndividualAddressDTO;
 import site.workforus.forus.mapper.AddressMapper;
 
 @Service
@@ -27,5 +28,13 @@ public class AddressService {
 
 		return data;
 	}
-	
+
+	public List<IndividualAddressDTO> getAddrByEmpId(String empId) {
+		AddressMapper mapper = session.getMapper(AddressMapper.class);
+		List<IndividualAddressDTO> data = mapper.selectAddrByEmpId(empId);
+
+		return data;
+	}
+
+
 }
