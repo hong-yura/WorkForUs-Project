@@ -1,0 +1,771 @@
+Index: src/main/java/site/workforus/forus/admin/controller/DeptController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package site.workforus.forus.admin.controller;\r\n\r\n\r\nimport java.util.List;\r\n\r\nimport javax.servlet.http.HttpSession;\r\n\r\nimport org.json.simple.JSONObject;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.http.ResponseEntity;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.DeleteMapping;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.PathVariable;\r\nimport org.springframework.web.bind.annotation.PostMapping;\r\nimport org.springframework.web.bind.annotation.PutMapping;\r\nimport org.springframework.web.bind.annotation.RequestBody;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.springframework.web.bind.annotation.RequestParam;\r\nimport org.springframework.web.bind.annotation.ResponseBody;\r\n\r\nimport lombok.extern.slf4j.Slf4j;\r\nimport site.workforus.forus.admin.model.DeptDTO;\r\nimport site.workforus.forus.admin.service.DeptService;\r\n\r\n@Slf4j\r\n@Controller\r\n@RequestMapping(value = \"/admin\")\r\npublic class DeptController {\r\n\t\r\n\t\r\n\t@Autowired\r\n\tprivate DeptService deptService;\r\n\t\r\n\t// 부서 전체 조회\r\n\t@GetMapping(value = \"/dept-manage\")\r\n\tpublic String getDeptAll(Model model, HttpSession session\r\n\t\t\t, DeptDTO deptDto) {\r\n\t\t\r\n\t\tList<DeptDTO> deptDatas = deptService.getDeptAll(); \r\n\t\tmodel.addAttribute(\"deptDatas\", deptDatas);\r\n\t\tlog.info(\"data: {}\", deptDatas);\r\n\t\t\r\n\t\treturn \"admin/dept-manage\";\r\n\t}\r\n\t\r\n\t// 부서 상세 조회\r\n\t@SuppressWarnings(\"unchecked\")\r\n\t@ResponseBody\r\n\t@GetMapping(value = \"/departments/detail\", produces=\"application/json; charset=utf-8\")\r\n\tpublic String getDeptDetail(@RequestParam(\"deptNo\") int deptNo) {\r\n\t\tlog.info(\"getDeptDetail(no): {}\", deptNo);\r\n\t\t// 로그인 세션 추가하기\r\n\t\t\r\n\t\t//ResponseEntity<Object> data = deptService.getDeptDetail(deptNo);\r\n\t\t\r\n\t\t\r\n\t\tDeptDTO data = deptService.getDeptDetail(deptNo);\r\n\t\t\r\n\t\tJSONObject json = new JSONObject();\r\n\t\t\r\n\t\tjson.put(\"deptNo\", data.getDeptNo());\r\n\t\tjson.put(\"deptName\", data.getDeptName());\r\n\t\tjson.put(\"deptMngId\", data.getDeptMngId());\r\n\t\tjson.put(\"deptAddDt\", data.getDeptAddDt() + \"\");\r\n\t\tjson.put(\"deptModDt\", data.getDeptModDt() + \"\");\r\n\t\t\r\n\t\treturn json.toJSONString();\r\n\t\t\r\n\t\t\r\n\t\t//return data;\r\n\t}\r\n\t\r\n\t\r\n\t// 부서 추가 폼 요청\r\n\t@GetMapping(value = \"/dept-add\")\r\n\tpublic String addDept() {\r\n\t\t// 로그인 세션 추가하기\r\n\t\treturn \"admin/dept-add\";\r\n\t}\r\n\t\r\n\t// 부서 추가 저장 요청\r\n\t@ResponseBody\r\n\t@PostMapping(value = \"/departments\", produces=\"application/json; charset=utf-8\")\r\n\tpublic ResponseEntity<Object> addDept(@RequestBody DeptDTO deptDto) {\r\n\t\t// 로그인 세션 추가하기\r\n\t\tlog.info(\"addDept(DeptDTO={})\", deptDto);\r\n\t\t\r\n\t\tResponseEntity<Object> datas = deptService.addDept(deptDto);\r\n\t\t\r\n\t\t/*\r\n\t\tDeptDTO data = new DeptDTO();\r\n\t\tdata.setDeptName(deptDto.getDeptName());\r\n\t\tdata.setDeptMngId(deptDto.getDeptMngId());\r\n\t\tboolean result = deptService.addDept(data);\r\n\t\t\r\n\t\tJSONObject json = new JSONObject();\r\n\t\tif(result) {\r\n\t\t\tjson.put(\"title\", \"Success\");\r\n\t\t\tjson.put(\"message\", \"부서 추가 작업이 완료 되었습니다.\");\r\n\t\t\treturn json.toJSONString();\r\n\t\t} else {\r\n\t\t\tjson.put(\"title\", \"Fail\");\r\n\t\t\tjson.put(\"message\", \"부서 추가 작업 중 알 수 없는 문제가 발생하였습니다.\");\r\n\t\t\treturn json.toJSONString();\r\n\t\t}\r\n\t\t*/\r\n\t\t\r\n\t\treturn datas;\r\n\t}\r\n\t\r\n\t// 부서 수정 폼 요청\r\n\t@GetMapping(value = \"dept-modify\")\r\n\tpublic String modifyDept() {\r\n\t\t// 로그인 세션 추가하기\r\n\t\treturn \"admin/dept-modify\";\r\n\t}\r\n\t\r\n\t// 부서 수정 저장 요청\r\n\t@ResponseBody\r\n\t@PutMapping(value = \"/departments\", produces=\"application/json; charset=utf-8\")\t\r\n\tpublic ResponseEntity<Object> modifyDept(@RequestBody DeptDTO deptDto) {\r\n\t\t// 로그인 세션 추가하기\r\n\t\tlog.info(\"modifyDept(deptDto={})\", deptDto);\r\n\t\t\r\n\t\tResponseEntity<Object> datas = deptService.modifyDept(deptDto);\r\n\t\t\r\n\t\t/*\r\n\t\tDeptDTO data = deptService.getDeptDetail(deptDto.getDeptNo());\r\n\t\tdata.setDeptName(deptDto.getDeptName());\r\n\t\tdata.setDeptMngId(deptDto.getDeptMngId());\r\n\t\t\r\n\t\tboolean result = deptService.modifyDept(data);\r\n\t\t\r\n\t\tJSONObject json = new JSONObject();\r\n\t\tif(result) {\r\n\t\t\tjson.put(\"title\", \"Success\");\r\n\t\t\tjson.put(\"message\", \"부서 수정이 완료 되었습니다.\");\r\n\t\t\treturn json.toJSONString();\r\n\t\t} else {\r\n\t\t\tjson.put(\"title\", \"Fail\");\r\n\t\t\tjson.put(\"message\", \"수정 작업 중 알 수 없는 문제가 발생하였습니다.\");\r\n\t\t\treturn json.toJSONString();\r\n\t\t}\r\n\t\t*/\r\n\t\t\r\n\t\t// 수정 권한 없음\r\n\t\treturn datas;\r\n\t}\r\n\t\r\n\t// 부서 삭제\r\n\t@SuppressWarnings(\"unchecked\")\r\n\t@ResponseBody\r\n\t@PostMapping(value =\"/dept_delete\", produces=\"application/json; charset=utf-8\")\r\n\tpublic String removeDept(@RequestParam int deptNo) {\r\n\t\t// 로그인 세션 추가하기\r\n\t\tlog.info(\"removeDept(deptNo): {}\", deptNo);\r\n\t\t//DeptDTO data = deptService.getDeptDetail(deptNo);\r\n\t\t\r\n\t\t\r\n\t\t//var datas = deptService.removeDept(deptNo);\r\n\t\t\r\n\t\t\r\n\t\tDeptDTO data = deptService.getDeptDetail(deptNo);\r\n\t\t\r\n\t\tJSONObject json = new JSONObject();\r\n\t\tif(data == null) {\r\n\t\t\t// 이미 삭제된 상태\r\n\t\t\tjson.put(\"title\", \"Already Deleted\");\r\n\t\t\tjson.put(\"message\", \"해당 부서는 이미 삭제 처리 되었습니다.\");\r\n\t\t\treturn json.toJSONString();\r\n\t\t} else {\r\n\t\t\t// 권한 조건\r\n\t\t\t// 삭제 가능\r\n\t\t\ttry {\r\n\t\t\t\tboolean result = deptService.removeDept(deptNo);\r\n\t\t\t\tjson.put(\"title\", \"Success\");\r\n\t\t\t\tjson.put(\"message\", \"삭제 처리가 완료 되었습니다.\");\r\n\t\t\t\treturn json.toJSONString();\r\n\t\t\t} catch (Exception e) {\r\n\t\t\t\tjson.put(\"title\", \"Fail\");\r\n\t\t\t\tjson.put(\"message\", \"삭제 작업 중 알 수 없는 문제가 발생하였습니다.\");\r\n\t\t\t\treturn json.toJSONString();\r\n\t\t\t}\r\n\t\t\t\r\n\t\t\t\r\n\t\t\t// 삭제 권한 없음\r\n\t\t}\r\n\t\t\r\n\t\t//return datas;\r\n\t}\r\n\t\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/site/workforus/forus/admin/controller/DeptController.java b/src/main/java/site/workforus/forus/admin/controller/DeptController.java
+--- a/src/main/java/site/workforus/forus/admin/controller/DeptController.java	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/java/site/workforus/forus/admin/controller/DeptController.java	(date 1668450214791)
+@@ -35,7 +35,7 @@
+ 	
+ 	// 부서 전체 조회
+ 	@GetMapping(value = "/dept-manage")
+-	public String getDeptAll(Model model, HttpSession session
++	public String getDeptAll(Model model
+ 			, DeptDTO deptDto) {
+ 		
+ 		List<DeptDTO> deptDatas = deptService.getDeptAll(); 
+@@ -51,8 +51,7 @@
+ 	@GetMapping(value = "/departments/detail", produces="application/json; charset=utf-8")
+ 	public String getDeptDetail(@RequestParam("deptNo") int deptNo) {
+ 		log.info("getDeptDetail(no): {}", deptNo);
+-		// 로그인 세션 추가하기
+-		
++
+ 		//ResponseEntity<Object> data = deptService.getDeptDetail(deptNo);
+ 		
+ 		
+@@ -83,8 +82,7 @@
+ 	// 부서 추가 저장 요청
+ 	@ResponseBody
+ 	@PostMapping(value = "/departments", produces="application/json; charset=utf-8")
+-	public ResponseEntity<Object> addDept(@RequestBody DeptDTO deptDto) {
+-		// 로그인 세션 추가하기
++	public ResponseEntity<Object> addDept(HttpSession session,@RequestBody DeptDTO deptDto) {
+ 		log.info("addDept(DeptDTO={})", deptDto);
+ 		
+ 		ResponseEntity<Object> datas = deptService.addDept(deptDto);
+@@ -113,7 +111,6 @@
+ 	// 부서 수정 폼 요청
+ 	@GetMapping(value = "dept-modify")
+ 	public String modifyDept() {
+-		// 로그인 세션 추가하기
+ 		return "admin/dept-modify";
+ 	}
+ 	
+@@ -121,7 +118,6 @@
+ 	@ResponseBody
+ 	@PutMapping(value = "/departments", produces="application/json; charset=utf-8")	
+ 	public ResponseEntity<Object> modifyDept(@RequestBody DeptDTO deptDto) {
+-		// 로그인 세션 추가하기
+ 		log.info("modifyDept(deptDto={})", deptDto);
+ 		
+ 		ResponseEntity<Object> datas = deptService.modifyDept(deptDto);
+@@ -154,7 +150,6 @@
+ 	@ResponseBody
+ 	@PostMapping(value ="/dept_delete", produces="application/json; charset=utf-8")
+ 	public String removeDept(@RequestParam int deptNo) {
+-		// 로그인 세션 추가하기
+ 		log.info("removeDept(deptNo): {}", deptNo);
+ 		//DeptDTO data = deptService.getDeptDetail(deptNo);
+ 		
+Index: src/main/java/site/workforus/forus/address/controller/AddressController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package site.workforus.forus.address.controller;\r\n\r\nimport java.security.Principal;\r\nimport java.util.List;\r\n\r\nimport javax.servlet.http.HttpSession;\r\n\r\nimport org.slf4j.Logger;\r\nimport org.slf4j.LoggerFactory;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\n\r\nimport site.workforus.forus.address.model.AddressDTO;\r\nimport site.workforus.forus.address.service.AddressService;\r\nimport site.workforus.forus.admin.model.DeptDTO;\r\nimport site.workforus.forus.employee.model.EmpDTO;\r\n\r\n@Controller\r\n@RequestMapping(value = \"/address\")\r\npublic class AddressController {\r\n\t\r\n\tprivate static final Logger logger = LoggerFactory.getLogger(AddressController.class);\r\n\t\r\n\t@Autowired\r\n\tprivate AddressService addrService;\r\n\t\r\n\t// 공용 주소록 조회\r\n\t@GetMapping(value = \"\")\r\n\tpublic String getAddress(Model model, HttpSession session, Principal principal) {\r\n\t\t\r\n\t\tString empId = principal.getName();\r\n\t\t\t\t\r\n\t\tList<AddressDTO> data = addrService.getAddress(empId);\r\n\t\tmodel.addAttribute(\"addrData\", data);\r\n\t\treturn \"address/address\";\r\n\t}\r\n\t\r\n\t\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/site/workforus/forus/address/controller/AddressController.java b/src/main/java/site/workforus/forus/address/controller/AddressController.java
+--- a/src/main/java/site/workforus/forus/address/controller/AddressController.java	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/java/site/workforus/forus/address/controller/AddressController.java	(date 1668789320343)
+@@ -1,42 +1,101 @@
+ package site.workforus.forus.address.controller;
+ 
+-import java.security.Principal;
+ import java.util.List;
+ 
+-import javax.servlet.http.HttpSession;
+-
+-import org.slf4j.Logger;
+-import org.slf4j.LoggerFactory;
++import lombok.extern.slf4j.Slf4j;
++import org.json.simple.JSONObject;
+ import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.security.core.Authentication;
++import org.springframework.security.core.annotation.AuthenticationPrincipal;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ 
++import org.springframework.web.bind.annotation.RequestParam;
++import org.springframework.web.bind.annotation.ResponseBody;
+ import site.workforus.forus.address.model.AddressDTO;
+ import site.workforus.forus.address.service.AddressService;
+-import site.workforus.forus.admin.model.DeptDTO;
+-import site.workforus.forus.employee.model.EmpDTO;
++import site.workforus.forus.employee.model.LoginVO;
++import site.workforus.forus.employee.service.EmpService;
+ 
++@Slf4j
+ @Controller
+ @RequestMapping(value = "/address")
+ public class AddressController {
+ 	
+-	private static final Logger logger = LoggerFactory.getLogger(AddressController.class);
+-	
+ 	@Autowired
+ 	private AddressService addrService;
+-	
+-	// 공용 주소록 조회
++
++	@Autowired
++	private EmpService empService;
++
++
++
+ 	@GetMapping(value = "")
+-	public String getAddress(Model model, HttpSession session, Principal principal) {
+-		
+-		String empId = principal.getName();
+-				
+-		List<AddressDTO> data = addrService.getAddress(empId);
++	public String getPage(Model model) {
++		List<AddressDTO> data = addrService.getAddressAll();
+ 		model.addAttribute("addrData", data);
++
+ 		return "address/address";
+ 	}
+-	
+-	
++
++	/*
++	// 공용 주소록 조회
++	@ResponseBody
++	@GetMapping(value = "/list", produces="application/json; charset=utf-8")
++	public List<AddressDTO> getAddressAll() {
++		//log.info("loginData={}",loginVo.getPrincipal());
++		List<AddressDTO> data = addrService.getAddressAll();
++
++		JSONObject json = new JSONObject();
++
++		json.put("", data.get);
++
++		return json.toString();
++	}
++	 */
++
++	@GetMapping(value = "/department")
++	public String getDepartmentPage(Model model, @AuthenticationPrincipal Authentication empId) {
++
++		log.info("getDepartmentPage");
++		// deptNo의 값이 필요함.
++		// 세션에서 가져오면 좋을 것 같은데
++		// 로그인 한 사원의 deptNm를 가져와야 한다.
++		String deptNm = empService.getDeptNm(empId.getName());
++
++		List<AddressDTO> data = addrService.getAddressByDept(deptNm);
++		model.addAttribute("addrData", data);
++
++		return "address/department";
++	}
++
++	//부서 주소록 조회
++	@ResponseBody
++	@GetMapping(value = "/department", produces="application/json; charset=utf-8")
++	public String getDepartmentPage(@AuthenticationPrincipal Authentication empId) {
++
++		log.info("getDepartmentPage(empId)={}", empId.getPrincipal());
++		// deptNm의 값이 필요함.
++		//세션에서 가져오면 좋을 것 같은데
++		// 로그인 한 사원의 deptNm을 가져와야 한다.
++		String deptNm = empService.getDeptNm(empId.getName());
++
++		List<AddressDTO> data = addrService.getAddressByDept(deptNm);
++
++		return "address/department";
++	}
++
++
++
++	// 개인 주소록 조회
++	@GetMapping(value = "personal")
++	public String getPersonalPage() {
++
++
++		return "address/personal";
++	}
++
++
+ }
+Index: src/main/webapp/WEB-INF/views/address/address.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n    pageEncoding=\"UTF-8\"%>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/fmt\" prefix=\"fmt\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n<!DOCTYPE html>\r\n<html>\r\n\t<head>\r\n\t\t<meta charset=\"UTF-8\">\r\n\t\t<title>workforus - Address</title>\r\n\t\t<%@ include file=\"../module/head.jsp\" %>\r\n\t\t<link rel=\"stylesheet\" href=\"${staticUrl}/vendors/simple-datatables/style.css\" />\r\n\t\t<link rel=\"stylesheet\" href=\"${staticUrl}/css/pages/address.css\" />\r\n\t</head>\r\n\t<body>\r\n\t\t<%@ include file=\"../module/navigation.jsp\" %>\r\n\t\t<div id=\"app\">\r\n\t\t\t<div id=\"main\">\r\n\t\t\t\r\n\t\t\t\t<div class=\"page-heading\">\r\n\t\t\t\t\t<div class=\"page-title\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-1 order-last\">\r\n\t\t\t\t\t\t\t\t<h3>Address</h3>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-2 order-first\">\r\n\t\t\t\t\t\t\t\t<nav aria-label=\"breadcrumb\" class=\"breadcrumb-header float-start float-lg-end\">\r\n\t\t\t\t\t\t\t\t\t<ol class=\"breadcrumb\">\r\n\t\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item\">\r\n\t\t\t\t\t\t\t\t\t\t\t<a href=\"${homeUrl}\">Home</a></li>\r\n\t\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item active\" aria-current=\"page\">Address</li>\r\n\t\t\t\t\t\t\t\t\t</ol> \r\n\t\t\t\t\t\t\t\t</nav>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t<section class=\"section\">\r\n\t\t\t\t\t<div class=\"card\">\r\n\t\t\t\t\t<c:url var=\"addressUrl\" value=\"/address\" />\r\n\r\n\t\t\t\t\t\t<div class=\"card-header\">\r\n\t\t\t\t\t\t\t<h4 class=\"card-title\">공용 주소록</h4>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"card-body\">\r\n\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t<div class=\"buttons col-md-6\">\r\n\t\t\t\t\t\t\t\t\t<button class=\"btn btn-outline-primary\">메일</button>\r\n\t\t\t\t\t\t\t\t\t<button class=\"btn btn-outline-primary\">내보내기</button>\r\n\t\t\t\t\t\t\t\t\t<input id=\"inputHidden\" type=\"file\" accept=\".csv\">\r\n\t\t\t\t\t\t\t\t\t<button id=\"inputHiddenBtn\" class=\"btn btn-outline-primary\" onclick=\"fileImport();\">가져오기</button>\r\n\t\t\t\t\t\t\t\t\t<c:url var=\"addressAddUrl\" value=\"/address/add\" />\r\n\t\t\t\t\t\t\t\t\t<button class=\"btn btn-outline-primary\" type=\"button\" data-bs-toggle=\"modal\" data-bs-target=\"#addressAddModal\">추가</button> <!-- 권한이 있는 사람만 -->\r\n\t\t\t\t\t\t\t\t\t<button class=\"btn btn-outline-primary\">삭제</button> <!-- 권한이 있는 사람만 -->\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"col-md-6\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"input-group\">\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" placeholder=\"이름, 부서, 번호 검색\"\r\n\t\t\t\t\t\t\t\t\t\t\taria-label=\"이름, 부서, 번호 검색\" aria-describedby=\"address-search\">\r\n\t\t\t\t\t\t\t\t\t\t<button class=\"btn btn-outline-secondary\" type=\"button\" id=\"address-search\">검 색</button>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns\">\r\n\t\t\t\t\t\t\t\t<div class=\"dataTable-top\">\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"dataTable-container\">\r\n\t\t\t\t\t\t\t\t\t<table class=\"table table-hover dataTable-table\" id=\"table1\">\r\n\t\t\t\t\t\t\t\t\t\t<thead class=\"table-primary\">\r\n\t\t\t\t\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th data-sortable>사 번</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th data-sortable>이 름</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th data-sortable>부 서</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th data-sortable>이 메 일</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th data-sortable>내 선 번 호</th>\r\n\t\t\t\t\t\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t\t\t\t\t</thead>\r\n\t\t\t\t\t\t\t\t\t\t<tbody>\r\n\t\t\t\t\t\t\t\t\t\t\t <c:forEach items=\"${addrData}\" var=\"addrData\">\r\n\t\t\t\t\t\t\t\t\t\t\t<tr>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th>${addrData.empId}</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th>${addrData.empObj.empNm}</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th>${addrData.empObj.deptNo}</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th>${addrData.empObj.empEmail}</th>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<th>${addrData.empObj.empTel}</th>\r\n\t\t\t\t\t\t\t\t\t\t\t</tr>\r\n\t\t\t\t\t\t\t\t\t\t\t</c:forEach>\r\n\t\t\t\t\t\t\t\t\t\t</tbody>\r\n\t\t\t\t\t\t\t\t\t</table>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"dataTable-bottom\">\r\n\t\t\t\t\t\t\t\t\t<!-- 페이징 -->\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t<!-- 주소록 추가 모달 -->\t\r\n\t\t\t\t<div class=\"modal fade\" id=\"addressAddModal\" tabindex=\"-1\" aria-labelledby=\"addrModalLabel1\" aria-hidden=\"true\">\r\n\t\t\t\t\t<div class=\"modal-dialog modal-dialog-centered modal-dialog-scrollable\">\r\n\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t<div class=\"modal-header\">\r\n\t\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"addrModalLabel1\">주소록 추가</h5>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-body\">\r\n\t\t\t\t\t\t\t\t<form action=\"#\" method=\"post\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"mb-3\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"empName\" class=\"col-form-label\">이 름 :</label>\r\n\t\t\t\t\t\t\t\t\t\t<input type=\"text\" class=\"form-control\" id=\"empName\" placeholder=\"이 름\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"mb-3\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"deptName\" class=\"col-form-label\">부 서 :</label>\r\n\t\t\t\t\t\t\t\t\t\t<input class=\"form-control\" id=\"deptName\" placeholder=\"부 서\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"mb-3\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"empPhone\" class=\"col-form-label\">휴대전화 :</label>\r\n\t\t\t\t\t\t\t\t\t\t<input class=\"form-control\" id=\"empPhone\" placeholder=\"휴대전화\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"mb-3\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"empEmail\" class=\"col-form-label\">Email :</label>\r\n\t\t\t\t\t\t\t\t\t\t<input class=\"form-control\" id=\"empEmail\" placeholder=\"Email\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<div class=\"mb-3\">\r\n\t\t\t\t\t\t\t\t\t\t<label for=\"empTel\" class=\"col-form-label\">내선전화 :</label>\r\n\t\t\t\t\t\t\t\t\t\t<input class=\"form-control\" id=\"empTel\" placeholder=\"내선전화\">\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-footer\">\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">취 소</button>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\">추 가</button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\r\n\t\t\t\t</section>\r\n\r\n\t\t\t\t<%@ include file=\"../module/footer.jsp\" %>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<script src=\"${staticUrl}/vendors/simple-datatables/simple-datatables.js\"></script>\r\n\t\t<script src=\"${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js\"></script>\r\n\t\t\r\n\t\t\r\n\t\t<script type=\"text/javascript\">\r\n\t\t\tvar table1 = document.querySelector('#table1');\r\n\t        var dataTable = new simpleDatatables.DataTable(table1);\r\n\t        \r\n\t        $(document).ready(function() {\r\n\t            $('#table1').DataTable( {\r\n\t            } );\r\n\t        } );\r\n\t        \r\n\t        function fileImport() {\r\n\t\t\t\tlet inputHidden = document.getElementById(\"inputHidden\");\r\n\t\t\t\tinputHidden.click();\r\n\t\t\t}\r\n\t\t</script>\r\n\t\t<script src=\"${staticUrl}/js/main.js\"></script>\r\n\t</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/address/address.jsp b/src/main/webapp/WEB-INF/views/address/address.jsp
+--- a/src/main/webapp/WEB-INF/views/address/address.jsp	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/webapp/WEB-INF/views/address/address.jsp	(date 1668788456841)
+@@ -67,12 +67,13 @@
+ 									
+ 								</div>
+ 								<div class="dataTable-container">
+-									<table class="table table-hover dataTable-table" id="table1">
++									<table class="table table-hover dataTable-table" id="addressList">
+ 										<thead class="table-primary">
+ 											<tr>
++												<th data-sortable><input type="checkbox" class="form-check-input" id="addrAllChk"></th>
+ 												<th data-sortable>사 번</th>
+ 												<th data-sortable>이 름</th>
+-												<th data-sortable>부 서</th>
++												<th data-sortable>부 서 코 드</th>
+ 												<th data-sortable>이 메 일</th>
+ 												<th data-sortable>내 선 번 호</th>
+ 											</tr>
+@@ -80,6 +81,7 @@
+ 										<tbody>
+ 											 <c:forEach items="${addrData}" var="addrData">
+ 											<tr>
++												<th><input type="checkbox" class="form-check-input"></th>
+ 												<th>${addrData.empId}</th>
+ 												<th>${addrData.empObj.empNm}</th>
+ 												<th>${addrData.empObj.deptNo}</th>
+@@ -143,24 +145,18 @@
+ 				<%@ include file="../module/footer.jsp" %>
+ 			</div>
+ 		</div>
+-		<script src="${staticUrl}/vendors/simple-datatables/simple-datatables.js"></script>
+ 		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+-		
++		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
++		<script src="${staticUrl}/js/main.js"></script>
++
++		<script src="${staticUrl}/js/pages/address/common.js"></script>
+ 		
+ 		<script type="text/javascript">
+-			var table1 = document.querySelector('#table1');
+-	        var dataTable = new simpleDatatables.DataTable(table1);
+-	        
+-	        $(document).ready(function() {
+-	            $('#table1').DataTable( {
+-	            } );
+-	        } );
+-	        
+ 	        function fileImport() {
+ 				let inputHidden = document.getElementById("inputHidden");
+ 				inputHidden.click();
+ 			}
+ 		</script>
+-		<script src="${staticUrl}/js/main.js"></script>
++
+ 	</body>
+ </html>
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/views/address/personal_address.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/address/personal_address.jsp b/src/main/webapp/WEB-INF/views/address/personal.jsp
+rename from src/main/webapp/WEB-INF/views/address/personal_address.jsp
+rename to src/main/webapp/WEB-INF/views/address/personal.jsp
+--- a/src/main/webapp/WEB-INF/views/address/personal_address.jsp	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/webapp/WEB-INF/views/address/personal.jsp	(date 1668416143947)
+@@ -21,7 +21,7 @@
+ 					<div class="page-title">
+ 						<div class="row">
+ 							<div class="col-12 col-md-6 order-md-1 order-last">
+-								<h3>Address</h3>
++								<h3>Personal Address</h3>
+ 							</div>
+ 							<div class="col-12 col-md-6 order-md-2 order-first">
+ 								<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+@@ -68,14 +68,6 @@
+ 								</div>
+ 								<div class="dataTable-container">
+ 									<table class="table table-hover dataTable-table" id="table1">
+-										
+-										<colgroup>
+-											<col>
+-											<col>
+-											<col>
+-											<col>
+-											<col>
+-										</colgroup>
+ 										<thead class="table-primary">
+ 											<tr>
+ 												<th>이름(표시명)</th>
+Index: src/main/java/site/workforus/forus/address/model/AddressDTO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package site.workforus.forus.address.model;\r\n\r\nimport org.apache.ibatis.type.Alias;\r\n\r\nimport lombok.Getter;\r\nimport lombok.Setter;\r\nimport lombok.ToString;\r\nimport site.workforus.forus.employee.model.EmpDTO;\r\n\r\n@Getter\r\n@Setter\r\n@ToString\r\n@Alias(\"addressDto\")\r\npublic class AddressDTO {\r\n\tprivate int addrId;     // 주소록\r\n\tprivate int addrIndvId; // 개인주소록\r\n\tprivate String empId;   // 사번\r\n\tprivate EmpDTO empObj;\r\n\r\n\tpublic AddressDTO() {\r\n\t}\r\n\r\n\tpublic AddressDTO(int addrId, int addrIndvId, String empId, EmpDTO empObj) {\r\n\t\tsuper();\r\n\t\tthis.addrId = addrId;\r\n\t\tthis.addrIndvId = addrIndvId;\r\n\t\tthis.empId = empId;\r\n\t\tthis.empObj = empObj;\r\n\t}\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/site/workforus/forus/address/model/AddressDTO.java b/src/main/java/site/workforus/forus/address/model/AddressDTO.java
+--- a/src/main/java/site/workforus/forus/address/model/AddressDTO.java	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/java/site/workforus/forus/address/model/AddressDTO.java	(date 1668454562970)
+@@ -13,17 +13,15 @@
+ @Alias("addressDto")
+ public class AddressDTO {
+ 	private int addrId;     // 주소록
+-	private int addrIndvId; // 개인주소록
+ 	private String empId;   // 사번
+ 	private EmpDTO empObj;
+ 
+ 	public AddressDTO() {
+ 	}
+ 
+-	public AddressDTO(int addrId, int addrIndvId, String empId, EmpDTO empObj) {
++	public AddressDTO(int addrId, String empId, EmpDTO empObj) {
+ 		super();
+ 		this.addrId = addrId;
+-		this.addrIndvId = addrIndvId;
+ 		this.empId = empId;
+ 		this.empObj = empObj;
+ 	}
+Index: src/main/webapp/WEB-INF/views/module/navigation.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n    pageEncoding=\"UTF-8\"%>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/fmt\" prefix=\"fmt\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n<header class='mb-3'>\r\n\t<nav class=\"navbar navbar-expand navbar-light navbar-top\">\r\n\t\t<div class=\"container-fluid\">\r\n\r\n\t\t\t<button class=\"navbar-toggler\" type=\"button\"\r\n\t\t\t\tdata-bs-toggle=\"collapse\" data-bs-target=\"#navbarSupportedContent\"\r\n\t\t\t\taria-controls=\"navbarSupportedContent\" aria-expanded=\"false\"\r\n\t\t\t\taria-label=\"Toggle navigation\">\r\n\t\t\t\t<span class=\"navbar-toggler-icon\"></span>\r\n\t\t\t</button>\r\n\t\t\t<div class=\"collapse navbar-collapse\" id=\"navbarSupportedContent\">\r\n\t\t\t\t<ul class=\"navbar-nav ms-auto mb-lg-0\">\r\n\t\t\t\t\t<li class=\"nav-item dropdown me-1\">\r\n\t\t\t\t\t<a class=\"nav-link active dropdown-toggle text-gray-600\" href=\"#\"\r\n\t\t\t\t\t\tdata-bs-toggle=\"dropdown\" aria-expanded=\"false\">\r\n\t\t\t\t\t\t<i class='bi bi-envelope bi-sub fs-4'></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t\t<ul class=\"dropdown-menu dropdown-menu-end\"\r\n\t\t\t\t\t\t\taria-labelledby=\"dropdownMenuButton\">\r\n\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t<h6 class=\"dropdown-header\">Mail</h6>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"${homeUrl}/mail/mailWrite\">new mail</a>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t\t<li class=\"nav-item dropdown me-3\">\r\n\t\t\t\t\t<a class=\"nav-link active dropdown-toggle text-gray-600\" href=\"#\"\r\n\t\t\t\t\t\tdata-bs-toggle=\"dropdown\" data-bs-display=\"static\" aria-expanded=\"false\" >\r\n\t\t\t\t\t\t<i class='bi bi-bell bi-sub fs-4'></i>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t\t<ul class=\"dropdown-menu dropdown-menu-end notification-dropdown\"\r\n\t\t\t\t\t\t\taria-labelledby=\"dropdownMenuButton\" >\r\n\t\t\t\t\t\t\t<li class=\"dropdown-header\">\r\n\t\t\t\t\t\t\t\t<h6>Notifications</h6>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t<li class=\"dropdown-item notification-item\">\r\n\t\t\t\t\t\t\t<a class=\"d-flex align-items-center\" href=\"${homeUrl}/mail\">\r\n\t\t\t\t\t\t\t\t<div class=\"notification-icon bg-danger\">\r\n\t\t\t\t\t\t\t\t\t<c:choose>\r\n\t\t\t\t\t\t\t\t\t\t<c:when test=\"${cntMail > 99}\">\r\n\t\t\t\t\t\t\t\t\t\t\t<p id=\"mailNum\" style=\"margin-top:7px;\">99+</p>\r\n\t\t\t\t\t\t\t\t\t\t</c:when>\r\n\t\t\t\t\t\t\t\t\t\t<c:otherwise>\r\n\t\t\t\t\t\t\t\t\t\t\t<p id=\"mailNum\" style=\"margin-top:7px;\">${cntMail}</p>\r\n\t\t\t\t\t\t\t\t\t\t</c:otherwise>\r\n\t\t\t\t\t\t\t\t\t</c:choose>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"notification-text ms-4\">\r\n\t\t\t\t\t\t\t\t\t<p class=\"notification-title font-bold\">Unread Mail</p>\r\n\t\t\t\t\t\t\t\t\t<p class=\"notification-subtitle font-thin text-sm\">Please Reply as soon as posiible</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</a>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t<li class=\"dropdown-item notification-item\">\r\n\t\t\t\t\t\t\t<a class=\"d-flex align-items-center\" href=\"#\">\r\n\t\t\t\t\t\t\t\t<div class=\"notification-icon bg-success\">\r\n\t\t\t\t\t\t\t\t\t<p style=\"margin-top:7px;\">0</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div class=\"notification-text ms-4\">\r\n\t\t\t\t\t\t\t\t\t<p class=\"notification-title font-bold\">Application for approval</p>\r\n\t\t\t\t\t\t\t\t\t<p class=\"notification-subtitle font-thin text-sm\">application...</p>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</a>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t\t<p class=\"text-center py-2 mb-0\">\r\n\t\t\t\t\t\t\t\t\t<a href=\"#\">See all notification</a>\r\n\t\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t</li>\r\n\t\t\t\t</ul>\r\n\t\t\t\t<div class=\"dropdown\">\r\n\t\t\t\t\t<a href=\"#\" data-bs-toggle=\"dropdown\" aria-expanded=\"false\">\r\n\t\t\t\t\t\t<div class=\"user-menu d-flex\">\r\n\t\t\t\t\t\t\t<div class=\"user-name text-end me-3\">\r\n\t\t\t\t\t\t\t\t<h6 class=\"mb-0 text-gray-600\">${empNm}</h6>\r\n\t\t\t\t\t\t\t\t<p class=\"mb-0 text-sm text-gray-600\">${deptNm}</p>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"user-img d-flex align-items-center\">\r\n\t\t\t\t\t\t\t\t<div class=\"avatar avatar-md\">\r\n\t\t\t\t\t\t\t\t\t<img src=\"${staticUrl}/images/faces/1.jpg\">\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</a>\r\n\t\t\t\t\t<ul class=\"dropdown-menu dropdown-menu-end\" aria-labelledby=\"dropdownMenuButton\" style=\"min-width: 11rem;\">\r\n\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t<h6 class=\"dropdown-header\">Hello, ${empNm}!</h6>\r\n\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"${homrUrl}/info\">\r\n\t\t\t\t\t\t\t\t<i class=\"icon-mid bi bi-person me-2\"></i> My Profile\r\n\t\t\t\t\t\t\t</a>\r\n\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t<hr class=\"dropdown-divider\">\r\n\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t<li>\r\n\t\t\t\t\t\t\t<a class=\"dropdown-item\" href=\"${homeUrl}/logout\">\r\n\t\t\t\t\t\t\t\t<i class=\"icon-mid bi bi-box-arrow-left me-2\"></i> Logout\r\n\t\t\t\t\t\t\t</a>\r\n\t\t\t\t\t\t</li>\r\n\t\t\t\t\t</ul>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</nav>\r\n</header>\r\n<!-- header End -->\r\n\r\n<!-- nav Start -->\r\n<nav>\r\n<!-- 아이콘 메뉴 Start -->\r\n<div class=\"mb-3 d-block d-xl\">\r\n    <div id=\"sidebar2\">\r\n      <div class=\"sidebar2-wrapper\">\r\n        <div class=\"sidebar2-header\">\r\n        <c:url var=\"homeUrl\" value=\"..\" />\r\n          <a href=\"#\" class=\"burger-btn d-block d-xl\">\r\n            <i class=\"bi bi-justify fs-3\"></i>\r\n          </a>\r\n        </div>\r\n        <div class=\"sidebar2-menu\">\r\n          <ul class=\"menu\">\r\n            <li class=\"sidebar2-item\">\r\n              <a href=\"#\">\r\n              \t<img src=\"${staticUrl}/images/logo/logo1.png\" alt=\"Logo\" style=\"width: 2%; height: auto; margin-left: -0.2rem\"/>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"My Page\">\r\n              <a href=\"#\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-person-square\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Mail\">\r\n              <a href=\"${homeUrl}/mail\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-envelope\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Address\">\r\n              <a href=\"${homeUrl}/address\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-journals\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Calendar\">\r\n              <a href=\"${homeUrl}/calendar\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-calendar-check\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Chat\">\r\n              <a href=\"#\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-chat-dots\"></i>\r\n              </a>\r\n            </li>\r\n            <li class=\"sidebar2-item\" title=\"Documents\">\r\n              <a href=\"#\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-file-text\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Community\">\r\n              <a href=\"#\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-chat-left-text\"></i>\r\n              </a>\r\n            </li>\r\n\r\n            <li class=\"sidebar2-item\" title=\"Survey\">\r\n              <a href=\"#\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-clipboard-data\"></i>\r\n              </a>\r\n            </li>\r\n            \r\n            <li class=\"sidebar2-item\" title=\"Admin\">\r\n              <a href=\"${homeUrl}/admin/thema\" class=\"sidebar2-link\">\r\n                <i class=\"bi bi-gear-fill\"></i>\r\n              </a>\r\n            </li>\r\n          </ul>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n<!-- 아이콘 메뉴 End -->\r\n\r\n<!-- 메인 메뉴 Start -->\r\n  <div id=\"sidebar\" class=\"active\">\r\n    <div class=\"sidebar-wrapper active\">\r\n      <div class=\"sidebar-header\">\r\n        <div class=\"d-flex justify-content-between\">\r\n          <div class=\"logo\">\r\n            <a href=\"${homeUrl}\">\r\n            \t<%-- <c:url var=\"logoImgUrl\" value=\"${logoImgPath}\" /> --%>\r\n            \t<%-- <img id=\"logoImage\" src=\"${logoImgUrl}\" alt=\"Logo\" style=\"max-width: 70%; height: auto\" /> --%>\r\n            \t<img src=\"${staticUrl}/images/logo/logo-main.png\" alt=\"Logo\" style=\"max-width: 70%; height: auto\" />\r\n            </a>\r\n          </div>\r\n          <div class=\"toggler\">\r\n            <a href=\"#\" class=\"sidebar-hide\"\r\n              ><i class=\"bi bi-x bi-middle\"></i\r\n            ></a>\r\n          </div>\r\n        </div>\r\n      </div>\r\n      <div class=\"sidebar-menu\">\r\n        <ul class=\"menu\">\r\n          <li class=\"sidebar-title\">Menu</li>\r\n\r\n          <li class=\"sidebar-item active\">\r\n            <a href=\"${homeUrl}\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-grid-fill\"></i>\r\n              <span>Home</span>\r\n            </a>\r\n          </li>\r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"#\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-person-square\"></i>\r\n              <span>My Page</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/info\">개인정보수정</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/work\">근태관리</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/salary\">월급조회</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"#\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-envelope\"></i>\r\n              <span>Mail</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/mail\">받은메일함</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/mail/mailSend\">보낸메일함</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"${homeUrl}\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-journals\"></i>\r\n              <span>Address</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/address\">공용 주소록</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/address/dept_address\">부서 주소록</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/address/personal_address\">개인 주소록</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item\">\r\n            <a href=\"${homeUrl}/calendar\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-calendar-check\"></i>\r\n              <span>Calendar</span>\r\n            </a>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item\">\r\n            <a href=\"${homeUrl}/chat\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-chat-dots\"></i>\r\n              <span>Chat</span>\r\n            </a>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item has-sub\" hidden>\r\n            <a href=\"#\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-file-text\"></i>\r\n              <span>Documents</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"#l\">#1</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"#\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-chat-left-text\"></i>\r\n              <span>Community</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item submenu2\">\r\n                <span style=\"font-size: 14px;\">전사 게시판</span>\r\n                <hr style=\"margin: 0px; border: 1px;\">\r\n                <ul id=\"submenu-item2\" style=\"list-style: none;\">\r\n                \t<c:forEach items=\"${sessionScope.boardList}\" var=\"board\">\r\n                \t\t<c:if test=\"${board.deptNo == 0}\">\r\n\t\t                \t<li>\r\n\t\t                \t\t<a href=\"${homeUrl}/board?bId=${board.boardId}\">${board.boardNm}</a>\r\n\t\t                \t</li>\r\n                \t\t</c:if>\r\n                \t</c:forEach>\r\n                </ul>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <span style=\"font-size: 14px;\">부서 게시판</span>\r\n                <hr style=\"margin: 0px; border: 1px;\">\r\n                <ul id=\"submenu-item2\" style=\"list-style: none;\">\r\n                \t<c:forEach items=\"${sessionScope.boardList}\" var=\"board\">\r\n                \t\t<c:if test=\"${board.deptNo > 0}\">\r\n\t\t                \t<li>\r\n\t\t                \t\t<a href=\"${homeUrl}/board?bId=${board.boardId}\">${board.boardNm}</a>\r\n\t\t                \t</li>\r\n                \t\t</c:if>\r\n                \t</c:forEach>\r\n                </ul>\r\n              </li>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n\r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"#\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-clipboard-data\"></i>\r\n              <span>Survey</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/survey\">설문조사</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n          \r\n          <li class=\"sidebar-item has-sub\">\r\n            <a href=\"${homeUrl}\" class=\"sidebar-link\">\r\n              <i class=\"bi bi-gear-fill\"></i>\r\n              <span>Admin</span>\r\n            </a>\r\n            <ul class=\"submenu\">\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/admin/thema\">테마 설정</a>\r\n              </li>\r\n              <li class=\"submenu-item\">\r\n                <a href=\"${homeUrl}/admin/dept-manage\">조직도 관리</a>\r\n              </li>\r\n              <li class=\"submenu-item\" hidden>\r\n                <a href=\"${homeUrl}/admin/perm-manage\">권한 관리</a>\r\n              </li>\r\n            </ul>\r\n          </li>\r\n          \r\n        </ul>\r\n      </div>\r\n      <button class=\"sidebar-toggler btn x\">\r\n        <i data-feather=\"x\"></i>\r\n      </button>\r\n    </div>\r\n  </div>\r\n<!-- 메인 메뉴 End -->\r\n  <!-- sidebar2 -->\r\n</nav>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/module/navigation.jsp b/src/main/webapp/WEB-INF/views/module/navigation.jsp
+--- a/src/main/webapp/WEB-INF/views/module/navigation.jsp	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/webapp/WEB-INF/views/module/navigation.jsp	(date 1668414658985)
+@@ -3,6 +3,7 @@
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
++<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+ <header class='mb-3'>
+ 	<nav class="navbar navbar-expand navbar-light navbar-top">
+ 		<div class="container-fluid">
+@@ -267,10 +268,10 @@
+                 <a href="${homeUrl}/address">공용 주소록</a>
+               </li>
+               <li class="submenu-item">
+-                <a href="${homeUrl}/address/dept_address">부서 주소록</a>
++                <a href="${homeUrl}/address/department">부서 주소록</a>
+               </li>
+               <li class="submenu-item">
+-                <a href="${homeUrl}/address/personal_address">개인 주소록</a>
++                <a href="${homeUrl}/address/personal">개인 주소록</a>
+               </li>
+             </ul>
+           </li>
+Index: src/main/java/site/workforus/forus/address/service/AddressService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package site.workforus.forus.address.service;\r\n\r\nimport java.util.List;\r\n\r\nimport org.apache.ibatis.session.SqlSession;\r\nimport org.springframework.beans.factory.annotation.Autowired;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport site.workforus.forus.address.model.AddressDTO;\r\nimport site.workforus.forus.mapper.AddressMapper;\r\n\r\n@Service\r\npublic class AddressService {\r\n\t\r\n\t@Autowired SqlSession session;\r\n\t\r\n\tpublic List<AddressDTO> getAddress(String empId) {\r\n\t\tAddressMapper mapper = session.getMapper(AddressMapper.class);\r\n\t\t\r\n\t\tList<AddressDTO> datas = mapper.selectAddress(empId);\r\n\t\treturn datas;\r\n\t}\r\n\t\r\n\t\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/site/workforus/forus/address/service/AddressService.java b/src/main/java/site/workforus/forus/address/service/AddressService.java
+--- a/src/main/java/site/workforus/forus/address/service/AddressService.java	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/java/site/workforus/forus/address/service/AddressService.java	(date 1668789304135)
+@@ -13,13 +13,24 @@
+ public class AddressService {
+ 	
+ 	@Autowired SqlSession session;
+-	
+-	public List<AddressDTO> getAddress(String empId) {
++
++	public List<AddressDTO> getAddressAll() {
+ 		AddressMapper mapper = session.getMapper(AddressMapper.class);
+-		
+-		List<AddressDTO> datas = mapper.selectAddress(empId);
++
++		List<AddressDTO> datas = mapper.selectAddressAll();
++
++		//var result = new ResponseDTO<List<AddressDTO>>("Success", 200, datas);
++
++		//ResponseEntity<Object> responseEntity = new ResponseEntity<>(result, HttpStatus.OK);
++
+ 		return datas;
+ 	}
+-	
++
++	public List<AddressDTO> getAddressByDept(String deptNm) {
++		AddressMapper mapper = session.getMapper(AddressMapper.class);
++		List<AddressDTO> data = mapper.selectAddressByDept(deptNm);
++
++		return data;
++	}
+ 	
+ }
+Index: src/main/webapp/resources/js/pages/address/common.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/resources/js/pages/address/common.js b/src/main/webapp/resources/js/pages/address/common.js
+new file mode 100644
+--- /dev/null	(date 1668449919495)
++++ b/src/main/webapp/resources/js/pages/address/common.js	(date 1668449919495)
+@@ -0,0 +1,20 @@
++/*
++ * 공용 주소록 조회
++ */
++
++$(function() {
++    const data = {"empId": empId, "empNm": empNm, "deptNo": deptNo, "empEmail": empEmail, "empTel": empTel};
++
++    $.ajax({
++        type: "GET",
++        url: "/address/list",
++        data: JSON.stringify(data),
++
++        success: function(data) {
++
++        },
++        error: function(xhr) {
++            alert("에러코드 : " + xhr.status);
++        }
++    });
++});
+\ No newline at end of file
+Index: src/main/webapp/resources/js/pages/address/department.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/resources/js/pages/address/department.js b/src/main/webapp/resources/js/pages/address/department.js
+new file mode 100644
+--- /dev/null	(date 1668788928394)
++++ b/src/main/webapp/resources/js/pages/address/department.js	(date 1668788928394)
+@@ -0,0 +1,20 @@
++/*
++ * 부서 주소록 조회
++ */
++
++$(function() {
++    const data = {"empId": empId, "empNm": empNm, "deptNo": deptNo, "empEmail": empEmail, "empTel": empTel};
++
++    $.ajax({
++        type: "GET",
++        url: "/address/department",
++        data: JSON.stringify(data),
++
++        success: function(data) {
++
++        },
++        error: function(xhr) {
++            alert("에러코드 : " + xhr.status);
++        }
++    });
++});
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/views/address/department.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/address/department.jsp b/src/main/webapp/WEB-INF/views/address/department.jsp
+new file mode 100644
+--- /dev/null	(date 1668620850651)
++++ b/src/main/webapp/WEB-INF/views/address/department.jsp	(date 1668620850651)
+@@ -0,0 +1,171 @@
++<%--
++  Created by IntelliJ IDEA.
++  User: user1
++  Date: 2022-11-14
++  Time: 오후 5:29
++  To change this template use File | Settings | File Templates.
++--%>
++<%@ page language="java" contentType="text/html; charset=UTF-8"
++         pageEncoding="UTF-8"%>
++<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
++<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
++<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
++<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
++<!DOCTYPE html>
++<html>
++<head>
++    <meta charset="UTF-8">
++    <title>workforus - Department Address</title>
++    <%@ include file="../module/head.jsp" %>
++    <link rel="stylesheet" href="${staticUrl}/vendors/simple-datatables/style.css" />
++    <link rel="stylesheet" href="${staticUrl}/css/pages/address.css" />
++</head>
++<body>
++    <%@ include file="../module/navigation.jsp" %>
++    <div id="app">
++        <div id="main">
++
++            <div class="page-heading">
++                <div class="page-title">
++                    <div class="row">
++                        <div class="col-12 col-md-6 order-md-1 order-last">
++                            <h3>Department Address</h3>
++                        </div>
++                        <div class="col-12 col-md-6 order-md-2 order-first">
++                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
++                                <ol class="breadcrumb">
++                                    <li class="breadcrumb-item">
++                                        <a href="${homeUrl}">Home</a></li>
++                                    <li class="breadcrumb-item active" aria-current="page">Department Address</li>
++                                </ol>
++                            </nav>
++                        </div>
++                    </div>
++                </div>
++            </div>
++
++            <section class="section">
++                <div class="card">
++                    <c:url var="addressUrl" value="/address" />
++
++                    <div class="card-header">
++                        <h4 class="card-title">부서 주소록</h4>
++                    </div>
++                    <div class="card-body">
++                        <div class="row">
++                            <div class="buttons col-md-6">
++                                <button class="btn btn-outline-primary">메일</button>
++                                <button class="btn btn-outline-primary">내보내기</button>
++                                <input id="inputHidden" type="file" accept=".csv">
++                                <button id="inputHiddenBtn" class="btn btn-outline-primary" onclick="fileImport();">가져오기</button>
++                                <c:url var="addressAddUrl" value="/address/add" />
++                                <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#addressAddModal">추가</button> <!-- 권한이 있는 사람만 -->
++                                <button class="btn btn-outline-primary">삭제</button> <!-- 권한이 있는 사람만 -->
++                            </div>
++                            <div class="col-md-6">
++                                <div class="input-group">
++                                    <input type="text" class="form-control" placeholder="이름, 부서, 번호 검색"
++                                           aria-label="이름, 부서, 번호 검색" aria-describedby="address-search">
++                                    <button class="btn btn-outline-secondary" type="button" id="address-search">검 색</button>
++                                </div>
++                            </div>
++                        </div>
++                        <div class="dataTable-wrapper dataTable-loading no-footer sortable searchable fixed-columns">
++                            <div class="dataTable-top">
++
++                            </div>
++                            <div class="dataTable-container">
++                                <table class="table table-hover dataTable-table" id="table1">
++                                    <thead class="table-primary">
++                                    <tr>
++                                        <th><input type="checkbox" class="form-check-input" id="addrAllChk"></th>
++                                        <th>사 번</th>
++                                        <th>이 름</th>
++                                        <th>부 서 코 드</th>
++                                        <th>부 서 명</th>
++                                        <th>이 메 일</th>
++                                        <th>내 선 번 호</th>
++                                    </tr>
++                                    </thead>
++                                    <tbody>
++                                    <c:forEach items="${addrData}" var="addrData">
++                                        <tr>
++                                            <th><input type="checkbox" class="form-check-input"></th>
++                                            <th>${addrData.empId}</th>
++                                            <th>${addrData.empObj.empNm}</th>
++                                            <th>${addrData.empObj.deptNo}</th>
++                                            <th>${deptNm}</th>
++                                            <th>${addrData.empObj.empEmail}</th>
++                                            <th>${addrData.empObj.empTel}</th>
++                                        </tr>
++                                    </c:forEach>
++                                    </tbody>
++                                </table>
++                            </div>
++                            <div class="dataTable-bottom">
++                                <!-- 페이징 -->
++                            </div>
++                        </div>
++                    </div>
++                </div>
++
++                <!-- 주소록 추가 모달 -->
++                <div class="modal fade" id="addressAddModal" tabindex="-1" aria-labelledby="addrModalLabel1" aria-hidden="true">
++                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
++                        <div class="modal-content">
++                            <div class="modal-header">
++                                <h5 class="modal-title" id="addrModalLabel1">주소록 추가</h5>
++                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
++                            </div>
++                            <div class="modal-body">
++                                <form action="#" method="post">
++                                    <div class="mb-3">
++                                        <label for="empName" class="col-form-label">이 름 :</label>
++                                        <input type="text" class="form-control" id="empName" placeholder="이 름">
++                                    </div>
++                                    <div class="mb-3">
++                                        <label for="deptName" class="col-form-label">부 서 :</label>
++                                        <input class="form-control" id="deptName" placeholder="부 서">
++                                    </div>
++                                    <div class="mb-3">
++                                        <label for="empPhone" class="col-form-label">휴대전화 :</label>
++                                        <input class="form-control" id="empPhone" placeholder="휴대전화">
++                                    </div>
++                                    <div class="mb-3">
++                                        <label for="empEmail" class="col-form-label">Email :</label>
++                                        <input class="form-control" id="empEmail" placeholder="Email">
++                                    </div>
++                                    <div class="mb-3">
++                                        <label for="empTel" class="col-form-label">내선전화 :</label>
++                                        <input class="form-control" id="empTel" placeholder="내선전화">
++                                    </div>
++                                </form>
++                            </div>
++                            <div class="modal-footer">
++                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취 소</button>
++                                <button type="button" class="btn btn-primary">추 가</button>
++                            </div>
++                        </div>
++                    </div>
++                </div>
++
++
++            </section>
++
++            <%@ include file="../module/footer.jsp" %>
++        </div>
++    </div>
++    <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
++    <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
++    <script src="${staticUrl}/js/main.js"></script>
++
++    <script type="text/javascript">
++
++        function fileImport() {
++            let inputHidden = document.getElementById("inputHidden");
++            inputHidden.click();
++        }
++    </script>
++
++</body>
++</html>
+Index: src/main/resources/mybatis/mapper/addressMapper.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\"\r\n  \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\r\n<mapper namespace=\"site.workforus.forus.mapper.AddressMapper\">\r\n\r\n\t<resultMap type=\"addressDto\" id=\"addressDtoMap\">\r\n\t\t<result property=\"addrId\" column=\"ADDR_ID\" />\r\n\t\t<result property=\"addrIndvId\" column=\"ADDR_INDV_ID\" />\r\n\t\t<result property=\"empId\" column=\"EMP_ID\" />\r\n \t\t<collection property=\"empObj\" javaType=\"empDto\">\r\n\t\t\t<id \tproperty=\"empId\" column=\"EMP_ID\" />\r\n\t\t\t<result property=\"empNm\" column=\"EMP_NM\" />\r\n\t\t\t<result property=\"empEmail\" column=\"EMP_EMAIL\" />\r\n\t\t\t<result property=\"deptNo\" column=\"DEPT_NO\" />\r\n\t\t\t<result property=\"empTel\" column=\"EMP_TEL\" />\r\n\t\t</collection>\r\n\t</resultMap>\r\n\t\r\n\t<!-- 공용 주소록 조회 -->\r\n\t<select id=\"selectAddress\" resultMap=\"addressDtoMap\" parameterType=\"String\">\r\n\t\tSELECT A.EMP_ID\r\n\t\t\t , E.EMP_NM\r\n\t\t\t , E.DEPT_NO\r\n\t\t\t , E.EMP_EMAIL\r\n\t\t\t , E.EMP_TEL\r\n\t\t  FROM TB_ADDRESS A\r\n\t\t  JOIN TB_EMPLOYEES E\r\n\t\t    ON A.EMP_ID = #{empId}\r\n\t</select>\r\n\t\r\n</mapper>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/mybatis/mapper/addressMapper.xml b/src/main/resources/mybatis/mapper/addressMapper.xml
+--- a/src/main/resources/mybatis/mapper/addressMapper.xml	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/resources/mybatis/mapper/addressMapper.xml	(date 1668621428049)
+@@ -5,7 +5,6 @@
+ 
+ 	<resultMap type="addressDto" id="addressDtoMap">
+ 		<result property="addrId" column="ADDR_ID" />
+-		<result property="addrIndvId" column="ADDR_INDV_ID" />
+ 		<result property="empId" column="EMP_ID" />
+  		<collection property="empObj" javaType="empDto">
+ 			<id 	property="empId" column="EMP_ID" />
+@@ -15,17 +14,32 @@
+ 			<result property="empTel" column="EMP_TEL" />
+ 		</collection>
+ 	</resultMap>
+-	
++
+ 	<!-- 공용 주소록 조회 -->
+-	<select id="selectAddress" resultMap="addressDtoMap" parameterType="String">
+-		SELECT A.EMP_ID
++	<select id="selectAddressAll" resultMap="addressDtoMap" parameterType="String">
++		SELECT E.EMP_ID
+ 			 , E.EMP_NM
+ 			 , E.DEPT_NO
+ 			 , E.EMP_EMAIL
+ 			 , E.EMP_TEL
+ 		  FROM TB_ADDRESS A
+-		  JOIN TB_EMPLOYEES E
+-		    ON A.EMP_ID = #{empId}
++		  RIGHT JOIN TB_EMPLOYEES E
++		    ON E.EMP_ID = A.EMP_ID
++		 ORDER BY E.DEPT_NO
++	</select>
++
++	<!-- 부서 주소록 조회 -->
++	<select id="selectAddressByDept" resultMap="addressDtoMap" parameterType="String">
++		SELECT E.EMP_ID
++			 , E.EMP_NM
++			 , E.DEPT_NO
++			 , D.DEPT_NM
++			 , E.EMP_EMAIL
++			 , E.EMP_TEL
++		FROM TB_EMPLOYEES E
++	    JOIN TB_DEPARTMENTS D
++		  ON E.DEPT_NO = D.DEPT_NO
++		WHERE D.DEPT_NM = #{deptNm}
++		ORDER BY E.EMP_ID
+ 	</select>
+-	
+ </mapper>
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/views/admin/dept-manage.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n    pageEncoding=\"UTF-8\"%>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/fmt\" prefix=\"fmt\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n\t<meta charset=\"UTF-8\">\r\n\t<title>workforus - Department Manage</title>\r\n\t<%@ include file=\"../module/head.jsp\" %>\r\n\t<link rel=\"stylesheet\" href=\"${staticUrl}/css/pages/jui-ui.min.classic.css\" />\r\n\t<link rel=\"stylesheet\" href=\"${staticUrl}/css/pages/admin.css\" />\r\n\r\n</head>\r\n<!-- <script type=\"text/javascript\">\r\n \tfunction formCheck(form) {\r\n\t\tvar modal = new bootstrap.Modal(document.getElementById(\"errorModal\"), {\r\n\t\t\tkeyboard: false\r\n\t\t});\r\n\t\tvar title = modal._element.querySelector(\".modal-title\");\r\n\t\tvar body = modal._element.querySelector(\".modal-body\");\r\n\t\tif(form.deptName.value === undefined || form.deptName.value.trim() === \"\") {\r\n\t\t\ttitle.innerText = \"필수 입력;\r\n\t\t\tbody.innerText = \"부서명을 입력하세요.\";\r\n\t\t\tmodal.show();\r\n\t\t\treturn;\r\n\t\t}\r\n\t\t\r\n\t\tform.submit();\r\n\t}\r\n\t\r\n</script> -->\r\n\r\n<body>\r\n\t<%@ include file=\"../module/navigation.jsp\" %>\r\n\t<div id=\"app\">\r\n\t\t<div id=\"main\">\r\n\t\t\r\n\t\t\t<div class=\"page-heading\">\r\n\t\t\t\t<div class=\"page-title\">\r\n\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-1 order-last\">\r\n\t\t\t\t\t\t\t<h3>Admin - Department Manage</h3>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-2 order-first\">\r\n\t\t\t\t\t\t\t<nav aria-label=\"breadcrumb\" class=\"breadcrumb-header float-start float-lg-end\">\r\n\t\t\t\t\t\t\t\t<ol class=\"breadcrumb\">\r\n\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item\">\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"${homeUrl}\">Home</a></li>\r\n\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item\">\r\n\t\t\t\t\t\t\t\t\t\t<a href=\"#\">Admin</a></li>\r\n\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item active\" aria-current=\"page\">Department Manage</li>\r\n\t\t\t\t\t\t\t\t</ol> \r\n\t\t\t\t\t\t\t</nav>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t\t<section class=\"section\">\r\n\t\t\t\t<c:url var=\"adminUrl\" value=\"/admin\" />\r\n\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t<div class=\"col-xl-4\">\r\n\t\t\t\t\t\t<div class=\"card\">\r\n\t\t\t\t\t\t\t<div class=\"card-content\">\r\n\t\t\t\t\t\t\t\t<div class=\"card-body\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"card-title col-md-9\">\r\n\t\t\t\t\t\t\t\t\t\t\t<h4>조직도 설계</h4>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-3\">\r\n\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-primary\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tdata-bs-toggle=\"modal\" data-bs-target=\"#deptAddModal\">추 가</button>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<!-- tree Start -->\r\n\t\t\t\t\t\t\t\t\t<div class=\"jui\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"row row-tree\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"col col-3\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<ul id=\"tree_3\" class=\"tree line\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<li class=\"open root\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i></i><a class=\"font-bold\">workforus</a>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<c:forEach items=\"${deptDatas}\" var=\"deptData\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li class=\"open\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i></i><a onclick=\"deptDetail(${deptData.deptNo});\" id=\"font-bold\" class=\"font-bold\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t[${deptData.deptNo}] ${deptData.deptName}</a>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<li class=\"last leaf\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<i></i><a>부서 책임자: ${deptData.deptMngId}</a>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<ul></ul>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</c:forEach>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<!-- tree End -->\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t\t<div class=\"col-66p\">\r\n\t\t\t\t\t\t<div class=\"card\">\r\n\t\t\t\t\t\t\t<div class=\"card-content\">\r\n\t\t\t\t\t\t\t\t<div id=\"deptDetailCard\" class=\"card-body\">\r\n\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"card-title\">부서 정보</h4>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-3\">\r\n\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-info dept-btn-mg\"\r\n\t\t\t\t\t\t\t\t\t\t\t\tdata-bs-toggle=\"modal\" data-bs-target=\"#deptModModal\">수 정</button>\r\n\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-danger\" \r\n\t\t\t\t\t\t\t\t\t\t\t\tdata-bs-toggle=\"modal\" data-bs-target=\"#deptDelModal\">삭 제</button>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\t<form action=\"get\" class=\"form\" id=\"deptForm\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"form-body\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-20p dept-label\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label>부서 코드</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"position-relative\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input class=\"form-control dept-form-control\" type=\"text\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname=\"deptNo\" readonly >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-20p dept-label\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label>부서명</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"position-relative\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input class=\"form-control dept-form-control\" type=\"text\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname=\"deptName\" readonly >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-20p dept-label\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label>부서 책임자</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"position-relative\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input class=\"form-control dept-form-control\" type=\"text\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname=\"deptMngId\" readonly >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-20p dept-label\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label>부서 생성일</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"position-relative\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input class=\"form-control dept-form-control\" type=\"text\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname=\"deptAddDt\" readonly >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-20p dept-label\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label>최종 수정일</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-md-8\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"position-relative\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input class=\"form-control dept-form-control\" type=\"text\"\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname=\"deptModDt\" readonly >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t<!-- 부서 추가 모달 -->\r\n\t\t\t\t<div class=\"modal fade\" id=\"deptAddModal\" tabindex=\"-1\" aria-labelledby=\"deptModalLabel1\" aria-hidden=\"true\">\r\n\t\t\t\t\t<div class=\"modal-dialog modal-dialog-centered modal-dialog-scrollable\">\r\n\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t<div class=\"modal-header\">\r\n\t\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"deptModalLabel1\">부서 추가</h5>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-body\">\r\n\t\t\t\t\t\t\t\t<%@ include file=\"../admin/dept-add.jsp\" %>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t<!-- 부서 수정 모달 -->\r\n\t\t\t\t<div class=\"modal fade\" id=\"deptModModal\" tabindex=\"-1\" aria-labelledby=\"deptModalLabel2\" aria-hidden=\"true\">\r\n\t\t\t\t\t<div class=\"modal-dialog modal-dialog-centered modal-dialog-scrollable\">\r\n\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t<div class=\"modal-header\">\r\n\t\t\t\t\t\t\t\t<h5 class=\"modal-title\" id=\"deptModalLabel2\">부서 정보 수정</h5>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-body\">\r\n\t\t\t\t\t\t\t\t<%@ include file=\"../admin/dept-modify.jsp\" %>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\r\n\t\t\t\t<!-- 부서 삭제 모달 -->\r\n\t\t\t\t<div class=\"modal fade\" tabindex=\"-1\" id=\"deptDelModal\">\r\n\t\t\t\t\t<div class=\"modal-dialog modal-dialog-centered\">\r\n\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t<div class=\"modal-header\">\r\n\t\t\t\t\t\t\t\t<h5 class=\"modal-title\">부서 삭제</h5>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-body\">\r\n\t\t\t\t\t\t\t\t<p>해당 부서를 삭제하시겠습니까?</p>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-footer\">\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">취소</button>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-danger\" data-bs-dismiss=\"modal\" onclick=\"deptDelete();\">삭제</button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<!-- 결과 확인 -->\r\n\t\t\t\t<div class=\"modal fade\" tabindex=\"-1\" id=\"resultModal\">\r\n\t\t\t\t\t<div class=\"modal-dialog modal-dialog-centered\">\r\n\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t<div class=\"modal-header\">\r\n\t\t\t\t\t\t\t\t<h5 class=\"modal-title\"></h5>\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-body\">\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"modal-footer\">\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\" onclick=\"location.href='${adminUrl}/dept_manage'\">확인</button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t</section>\r\n\t\t\t<%@ include file=\"../module/footer.jsp\" %>\r\n\t\t</div>\r\n\t</div>\r\n\t<script src=\"${staticUrl}/js/main.js\"></script>\r\n\t\r\n\t<script src=\"${staticUrl}/js/pages/admin/department/department-add.js\"></script>\r\n\t<script src=\"${staticUrl}/js/pages/admin/department/department-modify.js\"></script>\r\n\t<script src=\"${staticUrl}/js/pages/admin/department/department-delete.js\"></script>\r\n\t<script src=\"${staticUrl}/js/pages/admin/department/result-modal.js\"></script>\r\n\t<script src=\"${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js\"></script>\r\n\t<script src=\"${staticUrl}/js/pages/admin/department/index.js\"></script>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/admin/dept-manage.jsp b/src/main/webapp/WEB-INF/views/admin/dept-manage.jsp
+--- a/src/main/webapp/WEB-INF/views/admin/dept-manage.jsp	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/webapp/WEB-INF/views/admin/dept-manage.jsp	(date 1668616307203)
+@@ -251,7 +251,7 @@
+ 							<div class="modal-body">
+ 							</div>
+ 							<div class="modal-footer">
+-								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept_manage'">확인</button>
++								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept-manage'">확인</button>
+ 							</div>
+ 						</div>
+ 					</div>
+@@ -261,6 +261,7 @@
+ 			<%@ include file="../module/footer.jsp" %>
+ 		</div>
+ 	</div>
++	<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+ 	<script src="${staticUrl}/js/main.js"></script>
+ 	
+ 	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>
+Index: src/main/webapp/WEB-INF/views/admin/thema.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\"\r\n    pageEncoding=\"UTF-8\"%>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/fmt\" prefix=\"fmt\" %>\r\n<%@ taglib uri=\"http://java.sun.com/jsp/jstl/functions\" prefix=\"fn\" %>\r\n<!DOCTYPE html>\r\n<html>\r\n\t<head>\r\n\t\t<meta charset=\"UTF-8\">\r\n\t\t<title>workforus - Admin</title>\r\n\t\t<%@ include file=\"../module/head.jsp\" %>\r\n\t\t<link rel=\"stylesheet\" href=\"${staticUrl}/css/pages/admin.css\"/>\r\n\t</head>\r\n\t<body>\r\n\t\t<%@ include file=\"../module/navigation.jsp\" %>\r\n\t\t<div id=\"app\">\r\n\t\t\t<div id=\"main\">\r\n\t\t\t\r\n\t\t\t\t<div class=\"page-heading\">\r\n\t\t\t\t\t<div class=\"page-title\">\r\n\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-1 order-last\">\r\n\t\t\t\t\t\t\t\t<h3>Admin - Thema Setting</h3>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<div class=\"col-12 col-md-6 order-md-2 order-first\">\r\n\t\t\t\t\t\t\t\t<nav aria-label=\"breadcrumb\" class=\"breadcrumb-header float-start float-lg-end\">\r\n\t\t\t\t\t\t\t\t\t<ol class=\"breadcrumb\">\r\n\t\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item\">\r\n\t\t\t\t\t\t\t\t\t\t\t<a href=\"${homeUrl}\">Home</a></li>\r\n\t\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item\">\r\n\t\t\t\t\t\t\t\t\t\t\t<a href=\"#\">Admin</a></li>\r\n\t\t\t\t\t\t\t\t\t\t<li class=\"breadcrumb-item active\" aria-current=\"page\">Thema Setting</li>\r\n\t\t\t\t\t\t\t\t\t</ol> \r\n\t\t\t\t\t\t\t\t</nav>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t<section class=\"section\">\r\n\t\t\t\t\t<div class=\"card\">\r\n\t\t\t\t\t\t<div class=\"card-header\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<ul class=\"nav nav-tabs\" id=\"myTab\" role=\"tablist\">\r\n\t\t\t\t\t\t\t\t<li class=\"nav-item\" role=\"presentation\">\r\n\t\t\t\t\t\t\t\t\t<a class=\"nav-link active\" id=\"menuLogo-tab\" href=\"#menuLogo\" data-bs-toggle=\"tab\"\r\n\t\t\t\t\t\t\t\t\t\trole=\"tab\" aria-controls=\"menuLogo\" aria-selected=\"true\">Menu Logo</a>\r\n\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t\t<li class=\"nav-item\" role=\"presentation\">\r\n\t\t\t\t\t\t\t\t\t<a class=\"nav-link\" id=\"loginImage-tab\" href=\"#loginImage\" data-bs-toggle=\"tab\"\r\n\t\t\t\t\t\t\t\t\t\trole=\"tab\" aria-controls=\"loginImage\" aria-selected=\"false\">Login Image</a>\r\n\t\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\t\t<div class=\"tab-content\" id=\"myTabContent\">\r\n\t\t\t\t\t\t\t\t<div class=\"tab-pane fade active show\" id=\"menuLogo\" role=\"tabpanel\" aria-labelledby=\"menuLogo-tab\">\r\n\t\t\t\t\t\t\t\t\t<c:url value=\"/admin/thema\" var=\"adminThemaUrl\" />\r\n\t\t\t\t\t\t\t\t\t<form action=\"${adminThemaUrl}\" method=\"post\" id=\"menuLogoForm\" enctype=\"multipart/form-data\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"card-body\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"card-title-cus\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"card-title\">메뉴 상단 로고 설정</h4>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-lg-5\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<c:url var=\"logoImgUrl\" value=\"${logoImgPath}\" />\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<img id=\"logoPrevImage\" alt=\"메뉴 로고 이미지\" src=\"${logoImgUrl}\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-lg-4\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"btn btn-lavender\" for=\"imageFile\">Upload New Menu Logo\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input hidden id=\"imageFile\" name=\"imageFile\" accept=\"image/png, image/jpg, image/jpeg\" type=\"file\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-danger\">Reset</button>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-12 margin-cus\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<p>메뉴 네비게이션 상단의 로고 이미지를 설정 할 수 있습니다.<br>\r\n\t\t\t\t\t\t\t\t\t\t\t\t※ 파일 확장자는 png, jpeg, jpg 파일 형식 145x45 사이즈로 등록하세요.<br>\r\n\t\t\t\t\t\t\t\t\t\t\t\t※ 파일 크기는 5MB 이하만 등록 가능합니다.\r\n\t\t\t\t\t\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t<div class=\"tab-pane fade\" id=\"loginImage\" role=\"tabpanel\" aria-labelledby=\"loginImage-tab\">\r\n\t\t\t\t\t\t\t\t\t<form action=\"\" method=\"post\" id=\"loginImageForm\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"card-body\">\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"row\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"card-title-cus\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<h4 class=\"card-title\">로그인 배경 이미지 설정</h4>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-lg-5\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<img alt=\"로그인 이미지\" src=\"https://via.placeholder.com/480x270.png\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-lg-4\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<label class=\"btn btn-lavender\" for=\"btnLoginImg\">Upload New Login Image\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t<input hidden id=\"btnLoginImg\" accept=\"image/png, image/jpg, image/jpeg\" type=\"file\" >\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-outline-danger\">Reset</button>\r\n\t\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t\t<div class=\"col-12 margin-cus\">\r\n\t\t\t\t\t\t\t\t\t\t\t\t<p>로그인 화면의 배경 이미지를 설정 할 수 있습니다.<br>\r\n\t\t\t\t\t\t\t\t\t\t\t\t※ 모바일 웹 디스플레이 비율 16:9 ,  1920x1080 이상의 해상도 이미지를 권장합니다.<br>\r\n\t\t\t\t\t\t\t\t\t\t\t\t※ 파일 확장자는 png, jpeg, jpg 파일 형식으로 등록하세요.\r\n\t\t\t\t\t\t\t\t\t\t\t\t※ 파일은 5MB 이하만 등록 가능합니다.\r\n\t\t\t\t\t\t\t\t\t\t\t\t</p>\r\n\t\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t<hr>\r\n\t\t\t\t\t\t\t<div class=\"col-12 d-flex justify-content-end\">\r\n\t\t\t\t\t\t\t\t<button type=\"button\" class=\"btn btn-lg btn-primary\" id=\"saveLogoBtn\" onclick=\"logoUpload();\">Save Change</button>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div> <!-- card End -->\r\n\t\t\t\t</section>\r\n\r\n\t\t\t\t<%@ include file=\"../module/footer.jsp\" %>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t\t<script src=\"${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js\"></script>\r\n\t\t<script src=\"${staticUrl}/js/bootstrap.bundle.min.js\"></script>\r\n\t\t<script src=\"${staticUrl}/js/main.js\"></script>\r\n\t\t\r\n\t\t<script src=\"${staticUrl}/js/pages/admin/thema/select-logo.js\"></script>\r\n\t\t<script src=\"${staticUrl}/js/pages/admin/thema/show-preview.js\"></script>\r\n\t\t<script src=\"${staticUrl}/js/pages/admin/thema/logo-upload-image.js\"></script>\r\n\t</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/webapp/WEB-INF/views/admin/thema.jsp b/src/main/webapp/WEB-INF/views/admin/thema.jsp
+--- a/src/main/webapp/WEB-INF/views/admin/thema.jsp	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/webapp/WEB-INF/views/admin/thema.jsp	(date 1668109088127)
+@@ -53,7 +53,7 @@
+ 							</ul>
+ 							<div class="tab-content" id="myTabContent">
+ 								<div class="tab-pane fade active show" id="menuLogo" role="tabpanel" aria-labelledby="menuLogo-tab">
+-									<c:url value="/admin/thema" var="adminThemaUrl" />
++									<c:url value="/admin/thema" var="adminThemaUrl"></c:url>
+ 									<form action="${adminThemaUrl}" method="post" id="menuLogoForm" enctype="multipart/form-data">
+ 										<div class="card-body">
+ 											<div class="row">
+@@ -125,8 +125,6 @@
+ 		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+ 		<script src="${staticUrl}/js/main.js"></script>
+ 		
+-		<script src="${staticUrl}/js/pages/admin/thema/select-logo.js"></script>
+-		<script src="${staticUrl}/js/pages/admin/thema/show-preview.js"></script>
+-		<script src="${staticUrl}/js/pages/admin/thema/logo-upload-image.js"></script>
++		<script src="${staticUrl}/js/pages/admin/thema/logo-upload.js"></script>
+ 	</body>
+ </html>
+\ No newline at end of file
+Index: src/main/java/site/workforus/forus/mapper/AddressMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package site.workforus.forus.mapper;\r\n\r\nimport java.util.List;\r\n\r\nimport site.workforus.forus.address.model.AddressDTO;\r\n\r\npublic interface AddressMapper {\r\n\r\n\tpublic List<AddressDTO> selectAddress(String empId);\r\n\t\r\n\t\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/site/workforus/forus/mapper/AddressMapper.java b/src/main/java/site/workforus/forus/mapper/AddressMapper.java
+--- a/src/main/java/site/workforus/forus/mapper/AddressMapper.java	(revision f4bd5a1ec8027d9686a012ce9347c4812e8e9249)
++++ b/src/main/java/site/workforus/forus/mapper/AddressMapper.java	(date 1668789296357)
+@@ -6,7 +6,9 @@
+ 
+ public interface AddressMapper {
+ 
+-	public List<AddressDTO> selectAddress(String empId);
++	public List<AddressDTO> selectAddressAll();
++
++	public List<AddressDTO> selectAddressByDept(String deptNm);
+ 	
+ 	
+ }
