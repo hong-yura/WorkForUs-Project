@@ -95,30 +95,7 @@
 		
 	}
 	
-	
-	/*
-		var tr = '<thead>'+
-		    	  '<tr>' +
-	              '<th>근무일자</th>'+
-	              '<th>출근시간 </th>'+
-	              '<th>퇴근시간 </th>'+
-	              '<th>추가근무시간 </th>'+
-	              '<th>근무시간 </th>'+
-	       	      '</tr>'+
-	              '</thead>'; 
-			$.each(listData , function(i) {
-	          td +='<tr>' + '<td>' +  (listData.commuteDt+"").substring(4,6) + "월" +  (listData.commuteDt+"").substring(6) + "일" + 
-		          '</td><td>' + (listData.commuteTime+"").substring(11) + 
-		          '</td><td>' + (listData.getoffTime+"").substring(11) + 
-		          '</td><td>' + (listData.addedTime+"").substring(11, 13) + "h" + (listData.addedTime+"").substring(14, 16) + "h" + (listData.addedTime+"").substring(17) + "s"  + 
-		          '</td><td>' + (listData.workTime+"").substring(11, 13) + "h" + (listData.workTime+"").substring(14, 16) + "h" + (listData.workTime+"").substring(17) + "s" + 
-		          '</td></tr>';
-	        });
-	        $("#tableBody").append(td);
-			console.log("로드완료");
-			console.log(listData.commuteDt);
-	*/
-	
+
 	
 	// 출근시간 입력
 	function commuteIn() {

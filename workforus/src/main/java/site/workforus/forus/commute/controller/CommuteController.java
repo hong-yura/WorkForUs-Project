@@ -62,7 +62,6 @@ public class CommuteController{
 		int month1 = cal.get(Calendar.MONTH) + 1;
         List<CommuteDTO> listData = service.selectList(empId, year1, month1);
 		model.addAttribute("thisMonthList", listData);
-		System.out.println(listData + "■");
 		// 금일 출근기록이 있음
 		if(data != null) {
 			service.getData(data);
@@ -146,20 +145,7 @@ public class CommuteController{
 		return json.toJSONString();
 	}
 	
-	// ajax사용으로 불필요해짐 - 지울예정
-	// 근태기록 조회하기
-//	@GetMapping(value="/record")
-//	public String commuteRec(Model model, Principal principal, @RequestParam int year, @RequestParam int month) {
-//		String empId = principal.getName();
-//		
-//		// 해당월 기록
-//		List<CommuteDTO> listData = service.selectList(empId, year, month);
-//		
-//		model.addAttribute("listData", listData);
-//		model.addAttribute("year", year);
-//		model.addAttribute("month", month + 1);
-//		return "/commute/commuteCalendar";
-//	}
+
 	
 	// 근태기록 조회하기2
 	@ResponseBody
@@ -178,7 +164,6 @@ public class CommuteController{
 		System.out.println(month + "월");
 
 		json.put("listData", listData);
-		// return "/commute/commuteCalendar";
 		 return listData;
 	}
 
