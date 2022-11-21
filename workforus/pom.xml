@@ -290,6 +290,12 @@
 		    <artifactId>react-dom</artifactId>
 		    <version>18.2.0</version>
 		</dependency>
+		<!-- React-Query -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>react-query</artifactId>
+			<version>3.39.2</version>
+		</dependency>
 		<!-- babel-standalone -->
 		<dependency>
 		    <groupId>org.webjars.npm</groupId>
