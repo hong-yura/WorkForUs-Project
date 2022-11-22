@@ -1,4 +1,7 @@
 const App = () => {
+  const {QueryClient, QueryClientProvider} = ReactQuery;
+  const {ReactQueryDevtools: Devtools} = ReactQueryDevtools;
+  const client = new QueryClient();
   const calendarRef = React.useRef();
 
   const [onModal, setOnModal] = React.useState(false);
@@ -23,7 +26,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`https://workforus.site/calendar/list?empId=${empId}`)
+      .get(`/calendar/list?empId=${empId}`)
       .then((res) => {
         setMyCal(res.data.data);
       })
@@ -32,7 +35,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`https://workforus.site/calendar/share?empId=${empId}`)
+      .get(`/calendar/share?empId=${empId}`)
       .then((res) => {
         setShareCal(res.data.data);
       })
@@ -55,7 +58,7 @@ const App = () => {
 
   React.useEffect(() => {
     axios
-      .get(`https://workforus.site/schedule?empId=${empId}`)
+      .get(`/schedule?empId=${empId}`)
       .then((res) => {
         const schedules = res.data.data;
         setMySche(schedules);
@@ -76,7 +79,7 @@ const App = () => {
   React.useEffect(() => {
     shareCal.forEach((cal) => {
       axios
-        .get(`https://workforus.site/schedule?calId=${cal.calId}`)
+        .get(`/schedule?calId=${cal.calId}`)
         .then((res) => {
           const schedules = res.data.data;
           setShareSche(schedules);
@@ -117,7 +120,7 @@ const App = () => {
 
   const addCalendar = () => {
     axios
-      .get(`http://localhost/calendar/list?empId=${empId}`)
+      .get(`/calendar/list?empId=${empId}`)
       .then((res) => {
         setMyCal(res.data.data);
       })
@@ -126,7 +129,7 @@ const App = () => {
 
   const addShareCalendar = () => {
     axios
-      .get(`http://localhost/calendar/share?empId=${empId}`)
+      .get(`/calendar/share?empId=${empId}`)
       .then((res) => {
         setShareCal(res.data.data.calendarDTO);
       })
@@ -190,47 +193,50 @@ const App = () => {
   };
 
   return (
-    <div id="calendar-wrapper" className="row match-height container">
-      <CalendarMenu
-        myCal={myCal}
-        shareCal={shareCal}
-        addCalendar={addCalendar}
-        addShareCalendar={addShareCalendar}
-        checkCalendarVisibilitiy={checkCalendarVisibilitiy}
-        setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
-        setCalendarInfo={(cal) => setCalendarInfo(cal)}
-      />
-      <CalendarMain
-        forwardRef={calendarRef}
-        onClickNavi={onClickNavi}
-        onClickViewOption={onClickViewOption}
-        headerMonth={headerMonth}
-        myCal={myCal}
-        shareCal={shareCal}
-      />
-      {onModal && (
-        <AddScheduleModal
-          addSchedule={(sche) => addSchedule(sche)}
-          setOnModal={(bool) => setOnModal(bool)}
-          myCal={myCal}
-        />
-      )}
-      {onInfoModal && (
-        <ScheduleInfoModal
-          eventInfo={eventInfo}
-          setOnInfoModal={(bool) => setOnInfoModal(bool)}
-          onUpdateEvent={(event) => onUpdateEvent(event)}
-          onDeleteEvent={(event) => onDeleteEvent(event)}
-          myCal={myCal}
-        />
-      )}
-      {calendarInfoModal && (
-        <CalendarInfoModal
-          calendarInfo={calendarInfo}
-          setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
-          addCalendar={(cal) => addCalendar(cal)}
-        />
-      )}
-    </div>
+      <QueryClientProvider client={client}>
+        <div id="calendar-wrapper" className="row match-height container">
+          <CalendarMenu
+              myCal={myCal}
+              shareCal={shareCal}
+              addCalendar={addCalendar}
+              addShareCalendar={addShareCalendar}
+              checkCalendarVisibilitiy={checkCalendarVisibilitiy}
+              setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
+              setCalendarInfo={(cal) => setCalendarInfo(cal)}
+          />
+          <CalendarMain
+              forwardRef={calendarRef}
+              onClickNavi={onClickNavi}
+              onClickViewOption={onClickViewOption}
+              headerMonth={headerMonth}
+              myCal={myCal}
+              shareCal={shareCal}
+          />
+          {onModal && (
+              <AddScheduleModal
+                  addSchedule={(sche) => addSchedule(sche)}
+                  setOnModal={(bool) => setOnModal(bool)}
+                  myCal={myCal}
+              />
+          )}
+          {onInfoModal && (
+              <ScheduleInfoModal
+                  eventInfo={eventInfo}
+                  setOnInfoModal={(bool) => setOnInfoModal(bool)}
+                  onUpdateEvent={(event) => onUpdateEvent(event)}
+                  onDeleteEvent={(event) => onDeleteEvent(event)}
+                  myCal={myCal}
+              />
+          )}
+          {calendarInfoModal && (
+              <CalendarInfoModal
+                  calendarInfo={calendarInfo}
+                  setCalendarInfoModal={(bool) => setCalendarInfoModal(bool)}
+                  addCalendar={(cal) => addCalendar(cal)}
+              />
+          )}
+        </div>
+        <Devtools initialIsOpen={false} />
+      </QueryClientProvider>
   );
 };

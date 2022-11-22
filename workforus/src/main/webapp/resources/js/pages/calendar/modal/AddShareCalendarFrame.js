@@ -9,7 +9,7 @@ const AddShareCalendarFrame = (props) => {
 
   React.useEffect(() => {
     axios
-      .get("https://workforus.site/calendar/share/emp-list")
+      .get("/calendar/share/emp-list")
       .then((res) => {
         setUserList(res.data.data);
       })
@@ -41,7 +41,7 @@ const AddShareCalendarFrame = (props) => {
       }
     }
     axios
-      .get(`https://workforus.site/calendar/list?empId=${empNo}`)
+      .get(`/calendar/list?empId=${empNo}`)
       .then((res) => {
         const filteredList = res.data.data.filter(
           (calendar) => calendar.calAccess !== "0"
@@ -55,7 +55,7 @@ const AddShareCalendarFrame = (props) => {
     event.preventDefault();
     console.log(event.target.value);
     axios
-      .post("https://workforus.site/calendar/share", {
+      .post("/calendar/share", {
         empId: empId,
         calId: event.target.value,
       })

@@ -6,19 +6,26 @@ pageEncoding="UTF-8"%>
     <meta charset="UTF-8" />
     <title>workforus - calendar</title>
     <link rel="stylesheet" href="static/css/pages/calendar.css" />
-    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css"/>    
+    <link rel="stylesheet" href="https://uicdn.toast.com/calendar/latest/toastui-calendar.min.css"/>
     <%@ include file="../module/head.jsp" %>
     <c:url var="axiosUrl" value="/webjars/axios/0.27.2" />
     <c:url var="babelUrl" value="/webjars/babel-standalone/6.26.0" />
     <c:url var="reactUrl" value="/webjars/react/18.2.0" />
     <c:url var="reactDomUrl" value="/webjars/react-dom/18.2.0" />
+    <c:url var="reactQueryUrl" value="/webjars/react-query/3.39.2" />
 	<script src="${axiosUrl}/dist/axios.min.js"></script>
 	<script src="${babelUrl}/babel.min.js"></script>
-	<script src="${reactUrl}/umd/react.development.js"></script>
-	<script src="${reactDomUrl}/umd/react-dom.development.js"></script>
+    <script src="${reactUrl}/umd/react.development.js"></script>
+    <script src="${reactDomUrl}/umd/react-dom.development.js"></script>
+    <script src="${reactQueryUrl}/dist/react-query.development.js"></script>
+    <script src="${reactQueryUrl}/dist/react-query-core.development.js"></script>
+    <script src="${reactQueryUrl}/dist/react-query-devtools.development.js"></script>
 	<!-- for deployment -->
-	<%-- <script src="${reactUrl}/umd/react.production.minjs"></script> --%>
-	<%-- <script src="${reactDomUrl}/umd/react-dom.production.min.js"></script> --%>
+    <%--<script src="${reactUrl}/umd/react.production.min.js"></script>--%>
+    <%--<script src="${reactDomUrl}/umd/react-dom.production.min.js"></script>--%>
+    <%--<script src="${reactQueryUrl}/dist/react-query.production.js"></script>--%>
+    <%--<script src="${reactQueryUrl}/dist/react-query-core.production.js"></script>--%>
+    <%--<script src="${reactQueryUrl}/dist/react-query-devtools.production.js"></script>--%>
   </head>
 
   <body>
@@ -33,6 +40,7 @@ pageEncoding="UTF-8"%>
 
     <script src="static/js/main.js"></script>
 
+    <!-- Add ReactQuery -->
     <!-- Add toast ui react calendar -->
     <script src="https://cdn.jsdelivr.net/npm/@toast-ui/react-calendar@2.1.3/dist/toastui-react-calendar.min.js"></script>
     <!-- js files -->

@@ -15,7 +15,7 @@ const AddCalendarFrame = (props) => {
 
   React.useEffect(() => {
     axios
-      .get("https://workforus.site/calendar/share/emp-list")
+      .get("/calendar/share/emp-list")
       .then((res) => {
         setUserList(res.data.data);
       })
@@ -38,7 +38,7 @@ const AddCalendarFrame = (props) => {
     event.preventDefault();
     const { empId, calName, calAccess } = inputs;
     axios
-      .post("http://localhost/calendar/list", {
+      .post("/calendar/list", {
         empId,
         calName,
         calAccess,
@@ -50,13 +50,13 @@ const AddCalendarFrame = (props) => {
           alert("캘린더 생성에 성공하였습니다.");
         }
         axios
-          .get(`https://workforus.site/calendar/recent?empId=${inputs.empId}`)
+          .get(`/calendar/recent?empId=${inputs.empId}`)
           .then((res) => {
             return res.data.data[0].calId;
           })
           .then((res) => {
             Array.from(shareList.keys()).forEach((user) => {
-              axios.post("https://workforus.site/calendar/share", {
+              axios.post("/calendar/share", {
                 empId: user,
                 calId: res,
               });
