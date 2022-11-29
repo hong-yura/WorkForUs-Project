@@ -2,6 +2,7 @@ package site.workforus.forus.employee.model;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import org.apache.ibatis.type.Alias;
 
@@ -83,5 +84,17 @@ public class EmpDTO {
 		this.empSalary = empSalary;
 		this.empStamp = empStamp;
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		EmpDTO empDTO = (EmpDTO) o;
+		return Objects.equals(empId, empDTO.empId);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(empId);
+	}
 }

@@ -251,7 +251,7 @@
 							<div class="modal-body">
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept_manage'">확인</button>
+								<button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="location.href='${adminUrl}/dept-manage'">확인</button>
 							</div>
 						</div>
 					</div>
@@ -261,6 +261,7 @@
 			<%@ include file="../module/footer.jsp" %>
 		</div>
 	</div>
+	<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 	<script src="${staticUrl}/js/main.js"></script>
 	
 	<script src="${staticUrl}/js/pages/admin/department/department-add.js"></script>

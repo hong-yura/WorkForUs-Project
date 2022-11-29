@@ -125,8 +125,6 @@
 		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 		<script src="${staticUrl}/js/main.js"></script>
 		
-		<script src="${staticUrl}/js/pages/admin/thema/select-logo.js"></script>
-		<script src="${staticUrl}/js/pages/admin/thema/show-preview.js"></script>
-		<script src="${staticUrl}/js/pages/admin/thema/logo-upload-image.js"></script>
+		<script src="${staticUrl}/js/pages/admin/thema/logo-upload.js"></script>
 	</body>
 </html>

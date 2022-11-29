@@ -7,19 +7,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import site.workforus.forus.address.model.AddressDTO;
+import site.workforus.forus.address.model.IndividualAddressDTO;
 import site.workforus.forus.mapper.AddressMapper;
 
 @Service
 public class AddressService {
 	
 	@Autowired SqlSession session;
-	
-	public List<AddressDTO> getAddress(String empId) {
+
+	public List<AddressDTO> getAddressAll() {
 		AddressMapper mapper = session.getMapper(AddressMapper.class);
-		
-		List<AddressDTO> datas = mapper.selectAddress(empId);
+		List<AddressDTO> datas = mapper.selectAddressAll();
+
 		return datas;
 	}
-	
-	
+
+	public List<AddressDTO> getAddressByDept(String deptNm) {
+		AddressMapper mapper = session.getMapper(AddressMapper.class);
+		List<AddressDTO> data = mapper.selectAddressByDept(deptNm);
+
+		return data;
+	}
+
+	public List<IndividualAddressDTO> getAddrByEmpId(String empId) {
+		AddressMapper mapper = session.getMapper(AddressMapper.class);
+		List<IndividualAddressDTO> data = mapper.selectAddrByEmpId(empId);
+
+		return data;
+	}
+
+
 }

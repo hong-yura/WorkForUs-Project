@@ -33,6 +33,21 @@
 		<result property="empSalary" column="emp_salary"/>
 		<result property="empStamp" column="emp_stamp"/>
 	</resultMap>
+
+	<!-- 사원 이름 조회 -->
+	<select id="selectEmpNm" parameterType="String" resultType="String">
+		SELECT EMP_NM FROM TB_EMPLOYEES WHERE EMP_ID = #{empId}
+	</select>
+
+	<!-- 부서 이름 조회 -->
+	<select id="selectDeptNm" parameterType="String" resultType="String">
+		SELECT DEPT_NM
+		FROM TB_EMPLOYEES
+		JOIN TB_DEPARTMENTS D
+	   USING (DEPT_NO)
+		WHERE EMP_ID = #{empId}
+	</select>
+
 	<insert id="insertEmployee" parameterType="empDto">
 		INSERT INTO 
 			TB_EMPLOYEES(emp_id

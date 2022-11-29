@@ -3,13 +3,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>workforus - Address</title>
 		<%@ include file="../module/head.jsp" %>
-		<link rel="stylesheet" href="${staticUrl}/vendors/simple-datatables/style.css" />
 		<link rel="stylesheet" href="${staticUrl}/css/pages/address.css" />
 	</head>
 	<body>
@@ -67,26 +67,19 @@
 									
 								</div>
 								<div class="dataTable-container">
-									<table class="table table-hover dataTable-table" id="table1">
+									<table class="table table-hover" id="addressList">
 										<thead class="table-primary">
 											<tr>
+												<th data-sortable><input type="checkbox" class="form-check-input" id="addrAllChk"></th>
 												<th data-sortable>사 번</th>
 												<th data-sortable>이 름</th>
-												<th data-sortable>부 서</th>
+												<th data-sortable>부 서 코 드</th>
+												<th data-sortable>부 서 명</th>
 												<th data-sortable>이 메 일</th>
 												<th data-sortable>내 선 번 호</th>
 											</tr>
 										</thead>
-										<tbody>
-											 <c:forEach items="${addrData}" var="addrData">
-											<tr>
-												<th>${addrData.empId}</th>
-												<th>${addrData.empObj.empNm}</th>
-												<th>${addrData.empObj.deptNo}</th>
-												<th>${addrData.empObj.empEmail}</th>
-												<th>${addrData.empObj.empTel}</th>
-											</tr>
-											</c:forEach>
+										<tbody id="addressListAll">
 										</tbody>
 									</table>
 								</div>
@@ -143,24 +136,18 @@
 				<%@ include file="../module/footer.jsp" %>
 			</div>
 		</div>
-		<script src="${staticUrl}/vendors/simple-datatables/simple-datatables.js"></script>
 		<script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-		
+		<script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
+		<script src="${staticUrl}/js/main.js"></script>
+
+		<script src="${staticUrl}/js/pages/address/common.js"></script>
 		
 		<script type="text/javascript">
-			var table1 = document.querySelector('#table1');
-	        var dataTable = new simpleDatatables.DataTable(table1);
-	        
-	        $(document).ready(function() {
-	            $('#table1').DataTable( {
-	            } );
-	        } );
-	        
 	        function fileImport() {
 				let inputHidden = document.getElementById("inputHidden");
 				inputHidden.click();
 			}
 		</script>
-		<script src="${staticUrl}/js/main.js"></script>
+
 	</body>
 </html>

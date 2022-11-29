@@ -15,7 +15,6 @@ public class LoginVO implements Principal, UserDetails{
 	private String empId;
 	private String empPw;
 	private List<GrantedAuthority> authorities;
-	
 	public LoginVO() {}
 	
 	public LoginVO(EmpDTO empDto) {
@@ -32,7 +31,7 @@ public class LoginVO implements Principal, UserDetails{
 	}
 	
 	public void setAuthorities(List<String> authList) {
-		List<GrantedAuthority> autorities = new ArrayList<GrantedAuthority>();
+		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		
 		for(int i = 0; i < authList.size(); i++) {
 			authorities.add(new SimpleGrantedAuthority(authList.get(i)));
@@ -42,7 +41,7 @@ public class LoginVO implements Principal, UserDetails{
 	}
 
 	@Override
-	// 권힌
+	// 권한
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
 	}
