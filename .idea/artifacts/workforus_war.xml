@@ -1,6 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="workforus-war">
-    <output-path>$PROJECT_DIR$/out/artifacts/workforus_war</output-path>
-    <root id="archive" name="workforus-war.war" />
-  </artifact>
-</component>
