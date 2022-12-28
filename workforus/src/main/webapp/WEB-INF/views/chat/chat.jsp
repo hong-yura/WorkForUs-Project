@@ -4,12 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
-<html lang="kor">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mazer Admin Dashboard</title>
-    <%@ include file="../module/head.jsp" %>
+    <title>채팅</title>
+	<%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/chat.css">
 	<link rel="stylesheet" href="${staticUrl}/css/widgets/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
@@ -111,7 +110,7 @@
 									</div>
 								</div>
 								<div>
-									<label for="id_empMember" id="add-member">추가한 멤버</label>
+									<labelid="add-member">추가한 멤버</label>
 									<div class="table-responsive" style="height: 200px">
 										<table class="table mb-0 table-lg">
 										</table>
@@ -163,7 +162,7 @@
 		                        </div>
 		                    </div>
 		                    <div class="card-body pt-4 bg-grey" id="id_chat">
-		                        <div class="chat-content">
+		                        <div id="chat-content">
 		                        	<!-- 
 		                            <div class="chat">
 		                                <div class="chat-body">
@@ -181,15 +180,13 @@
 		                        </div>
 		                    </div>
 		                    <div class="card-footer">
-		                    	<form onsubmit="return sendMessage(this.context);">
 		                        <div class="message-form d-flex flex-direction-column align-items-center">
 		                            <a href="http://" class="black"><i data-feather="smile"></i></a>
 		                            <div class="d-flex flex-grow-1 ml-4">
-		                                <input type="text" class="form-control" id="id_context" name="context" placeholder="Type your message..">
+		                                <input type="text" class="form-control" id="msg" name="context" placeholder="Type your message..">
 		                                <button type="submit" class="submit-btn" id="button-send">전송</button>
 		                            </div>
 		                        </div>
-		                        </form>
 		                    </div>
 		                </div>
 	          		</section>
@@ -278,4 +275,123 @@
 <script src="${staticUrl}/js/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="text/javascript">
+	$("#button-send").on("click", function(e) {
+		sendMessage();
+		$('#msg').val('');
+	});
+
+	var ws = new WebSocket("ws://localhost:8080/ws/chat");
+
+	ws.onmessage = onMessage;
+	ws.onopen = onOpen;
+	ws.onclose = onClose;
+
+	function sendMessage() {
+		ws.send($("#msg").val());
+	}
+
+	function onMessage(msg) {
+		var data = msg.data;
+		console.log(data);
+		var sessionId = null;
+		var message = null;
+
+		var arr = data.split(":");
+
+		for(var i = 0; i < arr.length; i++) {
+			console.log('arr[' + i + ']: ' + arr[i]);
+		}
+
+		var cur_session = '${userid}';
+		console.log("cur_session : " + cur_session);
+
+		sessionId = arr[0];
+		message = arr[1];
+
+		console.log("sessionID : " + sessionId);
+		console.log("cur_session : " + cur_session);
+
+		if(sessionId == cur_session) {
+			var str = "<div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
+			str += sessionId + " : " + message;
+			str += "</div></div></div>";
+			$("#chat-content").append(str);
+		} else {
+			var str = "<div class='chat chat-left'><div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
+			str += sessionId + " : " + message;
+			str += "</div></div></div></div>";
+			$("#chat-content").append(str);
+		}
+	}
+
+	function onClose(evt) {
+		var str = '${userid}' + " 님이 방을 나가셨습니다.";
+		$("#chat-content").append(str);
+	}
+
+	function onOpen(evt) {
+		var str = '${userid}' + " 님이 입장하셨습니다.";
+		$("#chat-content").append(str);
+	}
+
+	function chatRoomAddModal() {
+		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
+			keyboard: false
+		});
+
+		modal.show();
+	}
+
+	function filter() {
+		let search = document.getElementById("id_empName").value.toLowerCase();
+		let listInner = document.getElementsByClassName("empNm_list");
+
+		for(let i = 0; i < listInner.length; i++) {
+			let empNm = listInner[i].getElementsByClassName("empNm_data");
+			if(empNm[0].innerHTML.toLowerCase().includes(search)) {
+				listInner[i].style.display = "flex";
+				empNm[0].addEventListener("click", function() {
+					addChatMember(empNm[0]);
+				})
+			} else {
+				listInner[i].style.display = "none";
+			}
+		}
+	}
+
+	function addChatMember(data) {
+		var text = data.innerText;
+		text = text.replace(/\n/g, "");
+		text = text.replace(/\r/g, "");
+		text = text.replace(/\t/g, "");
+		var chatMember = document.getElementsByClassName("table")[2];
+
+		for(i=0; i < document.getElementsByClassName("table")[2].childElementCount; i++) {
+			var chatMemberList = document.getElementsByClassName("table")[2].children[i];
+			if(chatMemberList.innerText.includes(text)) {
+				return false;
+			}
+		}
+		chatMember.innerHTML += "<tr><td>" + text + "<td><tr>";
+	}
+	function chatRoomInsert(loginEmpId) {
+		console.log(loginEmpId);
+		$.ajax ({
+			url: "${chatUrl}/room/add",
+			type: "post",
+			data: {
+				id: loginEmpId
+			},
+			dataType: "json",
+			success: function(data) {
+				var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
+					keyboard: false
+				});
+
+				myModal.show();
+			}
+		})
+	}
+</script>
 </html>
