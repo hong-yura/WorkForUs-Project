@@ -4,12 +4,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
-<html lang="kor">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Mazer Admin Dashboard</title>
-    <%@ include file="../module/head.jsp" %>
+    <title>채팅</title>
+	<%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/chat.css">
 	<link rel="stylesheet" href="${staticUrl}/css/widgets/chat.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
@@ -111,7 +110,7 @@
 									</div>
 								</div>
 								<div>
-									<label for="id_empMember" id="add-member">추가한 멤버</label>
+									<labelid="add-member">추가한 멤버</label>
 									<div class="table-responsive" style="height: 200px">
 										<table class="table mb-0 table-lg">
 										</table>
@@ -163,7 +162,7 @@
 		                        </div>
 		                    </div>
 		                    <div class="card-body pt-4 bg-grey" id="id_chat">
-		                        <div class="chat-content">
+		                        <div id="chat-content">
 		                        	<!-- 
 		                            <div class="chat">
 		                                <div class="chat-body">
@@ -181,15 +180,13 @@
 		                        </div>
 		                    </div>
 		                    <div class="card-footer">
-		                    	<form onsubmit="return sendMessage(this.context);">
 		                        <div class="message-form d-flex flex-direction-column align-items-center">
 		                            <a href="http://" class="black"><i data-feather="smile"></i></a>
 		                            <div class="d-flex flex-grow-1 ml-4">
-		                                <input type="text" class="form-control" id="id_context" name="context" placeholder="Type your message..">
+		                                <input type="text" class="form-control" id="msg" name="context" placeholder="Type your message..">
 		                                <button type="submit" class="submit-btn" id="button-send">전송</button>
 		                            </div>
 		                        </div>
-		                        </form>
 		                    </div>
 		                </div>
 	          		</section>
@@ -279,193 +276,77 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
-	/*
-	var roomName = [[${chatRoomDto.chatTitle}]];
-	console.log('${chatRoomDto.chatTitle}');
-	var roomId = [[${chatRoomDto.chatRoomNo}]];
-	console.log('${chatRoomDto.chatRoomNo}');
-	var username = [[${loginEmp.getUsername()}]];
-	console.log('${loginEmp.getUsername()}');
-	
-	console.log(roomName + ", " + roomId ", " + username);
-	
-	function chatRoomEnter(data) {
-		console.log(data);
-		var roomId= data;
-		console.log(roomId);
-		var username = '${loginEmp.getUsername()}';
-		console.log(username);
-		
-		$.ajax ({
-			url: "${chatUrl}/room/"+roomId,
-			type: "get",
-			dataType: "json",
-			success: function(data) {
-				console.log("ajax success");
-				var ws = new WebSocket("ws://localhost/stomp/chat");
-				var stomp = Stomp.over(ws);
-				stomp.connect({}, function(){
-					console.log("stomp connection");
-					
-					stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
-						console.log(chat);
-						var content = JSON.parse(chat.body);
-						console.log(content);
-						var writer = content.empId;
-						console.log(writer);
-						
-						var str = '';
-						if(writer === username) {
-							str = "<div class='chat-content'>";
-							str += "<div class='chat'>";
-							str += "<div class='chat-body'>";
-							str += "<div class='chat-message'>";
-							str += "<b>" + writer + " : " + message + "</b>";
-							str += "</div></div></div></div>"
-							$("#id_chat").append(str);
-						} else {
-							str = "<div class='chat-content'>";
-							str += "<div class='chat chat-left'>";
-							str += "<div class='chat-body'>";
-							str += "<div class='chat-message'>";
-							str += "<b>" + writer + " : " + message + "</b>";
-							str += "</div></div></div></div>"
-							$("#id_chat").append(str);
-						}
-					})
-					stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}));
-				})
-				function sendMessage(text) {
-					var msg = text.value;
-					stomp.send("/pub/chat/message", {}, JSON.stringify({'sendMessage':msg}))
-					msg.value = '';
-				}
-			}
-		})
-		*/
-		/*
-		var ws = new WebSocket("ws://localhost/stomp/chat");
-		var stomp = Stomp.over(ws);
-		stomp.connect({}, function(){
-			console.log("stomp connection");
-			
-			stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
-				console.log(chat);
-				var content = JSON.parse(chat.body);
-				console.log(content);
-				var writer = content.empId;
-				console.log(writer);
-				
-				var str = '';
-				if(writer === username) {
-					str = "<div class='chat-content'>";
-					str += "<div class='chat'>";
-					str += "<div class='chat-body'>";
-					str += "<div class='chat-message'>";
-					str += "<b>" + writer " : " + message "</b>";
-					str += "</div></div></div></div>"
-					$("#id_chat").append(str);
-				} else {
-					str = "<div class='chat-content'>";
-					str += "<div class='chat chat-left'>";
-					str += "<div class='chat-body'>";
-					str += "<div class='chat-message'>";
-					str += "<b>" + writer " : " + message "</b>";
-					str += "</div></div></div></div>"
-					$("#id_chat").append(str);
-				}
-			})
-			stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}));
-			*/
-			/*
-			stomp.subscribe('/sub/roomId', function(msg){
-				console.log(msg);
-				printMessage(JSON.parse(msg.body).sendMessage + "/" + JSON.parse(msg.body).senderName);
-			});
-			stomp.subscribe('/sub/out', function(msg){
-				printMessage(msg.body);
-			});
-			stomp.subscribe('/sub/in', function(msg){
-				printMessage(msg.body);
-			});
-			// 입장글
-			stomp.send("/pub/in", {}, ' is in connection');
-		})
+	$("#button-send").on("click", function(e) {
+		sendMessage();
+		$('#msg').val('');
+	});
+
+	var ws = new WebSocket("ws://localhost:8080/ws/chat");
+
+	ws.onmessage = onMessage;
+	ws.onopen = onOpen;
+	ws.onclose = onClose;
+
+	function sendMessage() {
+		ws.send($("#msg").val());
 	}
-	*/
-	/*
-	function chatRoomEnter(data) {
-		console.lo(data)
-		stomp.connect({}, function (){
-			console.log("STOMP Connection");
-			
-			stomp.subscribe("/sub/chat/room" + roomId, function(chat) {
-				var content = JSON.parse(chat.body);
-				var writer = content.writer;
-				var str = '';
-				
-				if(writer === username) {
-					str = "<div class='chat-content'>";
-					str += "<div class='chat'>";
-					str += "<div class='chat-body'>";
-					str += "<div class='chat-message'>";
-					str += "<b>" + writer " : " + message "</b>";
-					str += "</div></div></div></div>"
-					$("#id_chat").append(str);
-				} else {
-					str = "<div class='chat-content'>";
-					str += "<div class='chat chat-left'>";
-					str += "<div class='chat-body'>";
-					str += "<div class='chat-message'>";
-					str += "<b>" + writer " : " + message "</b>";
-					str += "</div></div></div></div>"
-					$("#id_chat").append(str);
-				}
-				$("#id_chat").append(str);
-			});
-			stomp.send('/pub/chat/enter', {}, JSON.stringify({roomId: roomId, writer: username}))
-		});
-	}
-	
-	$("#button-send").on("click", function(e){
-		var msg = document.getElementById("id_context");
-		console.log(username + " : " + msg.value);
-		stomp.send('/pub/chat/message', {}, JSON.stringify({roomId: roomId, message: msg, wrtier: username}));
-		msg.value = '';
-	})
-	*/
-	var ws = new WebSocket("ws://localhost/stomp/chat");
-	ws.onopen = function() {
-		console.log("채팅 입장");
-	};
-	ws.onmessage = function(data) {
+
+	function onMessage(msg) {
+		var data = msg.data;
 		console.log(data);
-		id_chat.innerText += data.data;
-		id_chat.scrollTo(0, id_chat.scrollHeight);
-	};
-	ws.onclose = function() {
-		console.log("채팅 퇴장");
-	};
-	function sendMessage(element) {
-		value = element.value;
-		element.value = "";
-		ws.send(value);
-		element.focus();
-		return false;
-	};
-	
+		var sessionId = null;
+		var message = null;
+
+		var arr = data.split(":");
+
+		for(var i = 0; i < arr.length; i++) {
+			console.log('arr[' + i + ']: ' + arr[i]);
+		}
+
+		var cur_session = '${userid}';
+		console.log("cur_session : " + cur_session);
+
+		sessionId = arr[0];
+		message = arr[1];
+
+		console.log("sessionID : " + sessionId);
+		console.log("cur_session : " + cur_session);
+
+		if(sessionId == cur_session) {
+			var str = "<div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
+			str += sessionId + " : " + message;
+			str += "</div></div></div>";
+			$("#chat-content").append(str);
+		} else {
+			var str = "<div class='chat chat-left'><div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
+			str += sessionId + " : " + message;
+			str += "</div></div></div></div>";
+			$("#chat-content").append(str);
+		}
+	}
+
+	function onClose(evt) {
+		var str = '${userid}' + " 님이 방을 나가셨습니다.";
+		$("#chat-content").append(str);
+	}
+
+	function onOpen(evt) {
+		var str = '${userid}' + " 님이 입장하셨습니다.";
+		$("#chat-content").append(str);
+	}
+
 	function chatRoomAddModal() {
 		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
 			keyboard: false
 		});
-		
+
 		modal.show();
 	}
-	
+
 	function filter() {
 		let search = document.getElementById("id_empName").value.toLowerCase();
 		let listInner = document.getElementsByClassName("empNm_list");
-		
+
 		for(let i = 0; i < listInner.length; i++) {
 			let empNm = listInner[i].getElementsByClassName("empNm_data");
 			if(empNm[0].innerHTML.toLowerCase().includes(search)) {
@@ -478,14 +359,14 @@
 			}
 		}
 	}
-	
+
 	function addChatMember(data) {
 		var text = data.innerText;
 		text = text.replace(/\n/g, "");
 		text = text.replace(/\r/g, "");
 		text = text.replace(/\t/g, "");
 		var chatMember = document.getElementsByClassName("table")[2];
-		
+
 		for(i=0; i < document.getElementsByClassName("table")[2].childElementCount; i++) {
 			var chatMemberList = document.getElementsByClassName("table")[2].children[i];
 			if(chatMemberList.innerText.includes(text)) {
@@ -507,26 +388,10 @@
 				var myModal = new bootstrap.Modal(document.getElementById("resultModal"), {
 					keyboard: false
 				});
-					
+
 				myModal.show();
 			}
 		})
 	}
-	/*
-	function chatRoomEnter(data) {
-		console.log(data);
-		$.ajax ({
-			url: "${chatUrl}/room/roomId",
-			type: "post",
-			data: {
-				id: data
-			},
-			dataType: "json",
-			success: function(data) {
-				console.log("ajax success");
-			}
-		})
-	}
-	*/
 </script>
 </html>
