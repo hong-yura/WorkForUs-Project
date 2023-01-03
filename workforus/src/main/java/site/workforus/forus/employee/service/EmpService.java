@@ -1,20 +1,21 @@
 package site.workforus.forus.employee.service;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import site.workforus.forus.employee.model.EmpDTO;
 import site.workforus.forus.employee.model.LoginVO;
 import site.workforus.forus.mapper.EmpMapper;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @EnableAspectJAutoProxy(proxyTargetClass=true)
@@ -52,8 +53,22 @@ public class EmpService implements UserDetailsService{
 		}
 		loginVo.setUsername(empDto.getEmpId());
 		loginVo.setPassword(empDto.getEmpPw());
+
+		/*
+		List<String> roles = (List<String>)loginVo.getAuthorities();
+		loginVo.setAuthorities(roles);
+		*/
+
 		return new LoginVO(empDto);
 	}
+
+	/*
+	public List<String> getAuthorities(String empId) {
+		EmpMapper mapper = session.getMapper(EmpMapper.class);
+		List<String> authorities = mapper.selectEmployeeAuthority(empId);
+		return authorities;
+	}
+	*/
 
 	// 사원 이름
 	public String getEmpNm(String empId) {

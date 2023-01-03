@@ -2,6 +2,7 @@ package site.workforus.forus.mapper;
 
 import java.util.List;
 
+import org.springframework.security.core.GrantedAuthority;
 import site.workforus.forus.employee.model.EmpDTO;
 
 public interface EmpMapper {
@@ -14,6 +15,8 @@ public interface EmpMapper {
 
 	public EmpDTO selectEmployee(EmpDTO empDto);
 
+	public List<GrantedAuthority> selectEmployeeAuthority(String empId);
+
 	public int insertEmployee(EmpDTO empDto);
 	
 	public List<EmpDTO> selectEmployeeAll();
@@ -23,4 +26,5 @@ public interface EmpMapper {
 	public int updateEmployeeInfo(EmpDTO empDto);
 
 	public int uploadImage(EmpDTO empDto);
+
 }

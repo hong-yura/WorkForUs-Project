@@ -44,6 +44,8 @@ public class EmpDTO {
 	private String jobId;
 	private int empSalary;
 	private String empStamp;
+
+	private AuthDTO authObj;
 	
 	public EmpDTO() {}
 
@@ -52,7 +54,7 @@ public class EmpDTO {
 			String empAddr, String empAddrDetail, String empAddrExtra, Date empHireDt, Date empResignDt,
 			String empTenure, String empResignFl, String empPhotoUrl, String empPhotoNm, String empStatus,
 			int empLoginFail, String empLoginLock, String empFirstLogin, int deptNo, String jobId, int empSalary,
-			String empStamp) {
+			String empStamp, AuthDTO authObj) {
 		super();
 		this.empId = empId;
 		this.empNm = empNm;
@@ -83,6 +85,7 @@ public class EmpDTO {
 		this.jobId = jobId;
 		this.empSalary = empSalary;
 		this.empStamp = empStamp;
+		this.authObj = authObj;
 	}
 
 	@Override

@@ -32,6 +32,10 @@
 		<result property="jobId" column="job_id"/>
 		<result property="empSalary" column="emp_salary"/>
 		<result property="empStamp" column="emp_stamp"/>
+		<collection property="authObj" javaType="authDto">
+			<id 	property="empId" column="emp_id" />
+			<result property="authority" column="authority" />
+		</collection>
 	</resultMap>
 
 	<!-- 사원 이름 조회 -->
@@ -73,6 +77,14 @@
 			 , emp_assist_email
 		  FROM TB_EMPLOYEES
 		 WHERE emp_id = #{empId}
+	</select>
+
+	<select id="selectEmployeeAuthority " parameterType="String" resultMap="empDtoMap">
+		SELECT A.AUTHORITY
+		  FROM TB_EMPLOYEES E
+		  JOIN TB_AUTHORITIES A
+		 USING (EMP_ID)
+		 WHERE EMP_ID = #{empId}
 	</select>
 	
 	<select id="selectEmployeeInfo" parameterType="empDto" resultMap="empDtoMap">
