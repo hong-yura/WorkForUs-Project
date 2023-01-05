@@ -362,8 +362,8 @@
               <li class="submenu-item">
                 <a href="${homeUrl}/admin/dept-manage">조직도 관리</a>
               </li>
-              <li class="submenu-item" hidden>
-                <a href="${homeUrl}/admin/perm-manage">권한 관리</a>
+              <li class="submenu-item">
+                <a href="${homeUrl}/admin/job-list">직급 관리</a>
               </li>
             </ul>
           </li>
