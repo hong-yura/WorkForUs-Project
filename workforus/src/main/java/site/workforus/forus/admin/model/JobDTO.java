@@ -5,6 +5,7 @@ import org.apache.ibatis.type.Alias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import site.workforus.forus.employee.model.EmpDTO;
 
 @Getter
 @Setter
@@ -13,6 +14,8 @@ import lombok.ToString;
 public class JobDTO {
 	private String jobId; // 직급코드
 	private String jobName; // 직급명
+
+	private EmpDTO empObj;
 
 	public JobDTO() {
 	}
