@@ -19,7 +19,7 @@ function deptAddrList() {
                     "<td>"+json.addrData[i].empId+"</td>"+
                     "<td>"+json.addrData[i].empObj.empNm+"</td>"+
                     "<td>"+json.addrData[i].empObj.deptNo+"</td>"+
-                    "<td>"+json.deptNm+"</td>"+
+                   /*"<td>"+json.deptNm+"</td>"+*/
                     "<td>"+json.addrData[i].empObj.empEmail+"</td>"+
                     "<td>"+json.addrData[i].empObj.empTel+"</td>"+
                     "</tr>";

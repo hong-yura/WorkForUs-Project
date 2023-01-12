@@ -74,7 +74,7 @@
 												<th data-sortable>사 번</th>
 												<th data-sortable>이 름</th>
 												<th data-sortable>부 서 코 드</th>
-												<th data-sortable>부 서 명</th>
+												<%--<th data-sortable>부 서 명</th>--%>
 												<th data-sortable>이 메 일</th>
 												<th data-sortable>내 선 번 호</th>
 											</tr>
@@ -101,24 +101,24 @@
 							<div class="modal-body">
 								<form action="#" method="post">
 									<div class="mb-3">
+										<label for="empId" class="col-form-label">사 번 :</label>
+										<input type="text" class="form-control" id="empId" placeholder="사 번">
+									</div>
+									<div class="mb-3">
 										<label for="empName" class="col-form-label">이 름 :</label>
 										<input type="text" class="form-control" id="empName" placeholder="이 름">
 									</div>
 									<div class="mb-3">
-										<label for="deptName" class="col-form-label">부 서 :</label>
-										<input class="form-control" id="deptName" placeholder="부 서">
-									</div>
-									<div class="mb-3">
-										<label for="empPhone" class="col-form-label">휴대전화 :</label>
-										<input class="form-control" id="empPhone" placeholder="휴대전화">
+										<label for="deptId" class="col-form-label">부서 코드 :</label>
+										<input class="form-control" id="deptId" placeholder="부서코드">
 									</div>
 									<div class="mb-3">
 										<label for="empEmail" class="col-form-label">Email :</label>
 										<input class="form-control" id="empEmail" placeholder="Email">
 									</div>
 									<div class="mb-3">
-										<label for="empTel" class="col-form-label">내선전화 :</label>
-										<input class="form-control" id="empTel" placeholder="내선전화">
+										<label for="empTel" class="col-form-label">내선번호 :</label>
+										<input class="form-control" id="empTel" placeholder="내선번호">
 									</div>
 								</form>
 							</div>

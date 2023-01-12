@@ -81,7 +81,7 @@
                                         <th>사 번</th>
                                         <th>이 름</th>
                                         <th>부 서 코 드</th>
-                                        <th>부 서 명</th>
+                                        <%--<th>부 서 명</th>--%>
                                         <th>이 메 일</th>
                                         <th>내 선 번 호</th>
                                     </tr>
@@ -108,6 +108,10 @@
                             <div class="modal-body">
                                 <form action="#" method="post">
                                     <div class="mb-3">
+                                        <label for="empId" class="col-form-label">사 번 :</label>
+                                        <input type="text" class="form-control" id="empId" placeholder="사 번">
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="empName" class="col-form-label">이 름 :</label>
                                         <input type="text" class="form-control" id="empName" placeholder="이 름">
                                     </div>
@@ -124,8 +128,8 @@
                                         <input class="form-control" id="empEmail" placeholder="Email">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="empTel" class="col-form-label">내선전화 :</label>
-                                        <input class="form-control" id="empTel" placeholder="내선전화">
+                                        <label for="empTel" class="col-form-label">내선번호 :</label>
+                                        <input class="form-control" id="empTel" placeholder="내선번호">
                                     </div>
                                 </form>
                             </div>

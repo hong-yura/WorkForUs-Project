@@ -118,28 +118,21 @@
 										<input type="text" class="form-control" id="customName" placeholder="이름(표시명)">
 									</div>
 									<div class="mb-3">
-										<label for="customDept" class="col-form-label">부 서 :</label>
-										<input class="form-control" id="customDept" placeholder="부 서">
+										<label for="customPhone" class="col-form-label">전화번호 :</label>
+										<input class="form-control" id="customPhone" placeholder="전화번호">
 									</div>
 									<div class="mb-3">
-										<label for="customJob" class="col-form-label">직급/직책 :</label>
-										<input class="form-control" id="customJob" placeholder="직급/직책">
+										<label for="customDept" class="col-form-label">부 서 :</label>
+										<input class="form-control" id="customDept" placeholder="부 서">
 									</div>
 									<div class="mb-3">
 										<label for="customEmail" class="col-form-label">Email :</label>
 										<input class="form-control" id="customEmail" placeholder="Email">
 									</div>
+
 									<div class="mb-3">
-										<label for="customPhone" class="col-form-label">전화번호 :</label>
-										<input class="form-control" id="customPhone" placeholder="전화번호">
-									</div>
-									<div class="mb-3">
-										<label for="customAddr" class="col-form-label">주 소 :</label>
-										<input class="form-control" id="customAddr" placeholder="주 소">
-									</div>
-									<div class="mb-3">
-										<label for="customCompany" class="col-form-label">소 속 :</label>
-										<input class="form-control" id="customCompany" placeholder="소 속">
+										<label for="customAddr" class="col-form-label">상세정보 :</label>
+										<input class="form-control" id="customAddr" placeholder="주소 등 상세정보">
 									</div>
 									<div class="mb-3">
 										<label for="customTag" class="col-form-label">태 그 :</label>
