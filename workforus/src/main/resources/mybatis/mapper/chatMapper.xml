@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="site.workforus.forus.mapper.ChatMapper">
+	<resultMap type="chatRoomDto" id="chatRoomDtoMap">
+		<result property="chatRoomNo" column="chat_room_no" />
+		<result property="chatTitle" column="chat_title" />
+	</resultMap>
+	<resultMap type="chatMessageDto" id="chatMessageDtoMap">
+		<result property="chatNo" column="chat_no"/>
+		<result property="chatRoomNo" column="chat_room_no"/>
+		<result property="chatWriter" column="chat_writer"/>
+		<result property="chatMessage" column="chat_message"/>
+	</resultMap>
+	<resultMap type="chatParticipantDto" id="chatParticipantDtoMap">
+		<result property="empId" column="emp_id" />
+		<result property="chatRoomNo" column="chat_room_no" />
+	</resultMap>
+
+	<!-- ChatRoomDTO -->
+	<insert id="insertChatRoom" parameterType="chatRoomDto">
+		INSERT INTO TB_CHAT_ROOMS(chat_room_no
+						, chat_title)
+			 VALUES(#{chatRoomNo}
+						 , #{chatTitle})
+	</insert>
+	<select id="findRoomAll" resultMap="chatRoomDtoMap">
+		SELECT * FROM TB_CHAT_ROOMS
+	</select>
+	<select id="findByRoomId" parameterType="String" resultMap="chatRoomDtoMap">
+		SELECT * FROM TB_CHAT_ROOMS
+				WHERE chat_room_no = #{chatRoomNo}
+	</select>
+	<select id="findByRoomNo" parameterType="String" resultMap="chatRoomDtoMap">
+		SELECT * FROM TB_CHAT_ROOMS
+				WHERE chat_title = #{chatTitle}
+	</select>
+
+	<!-- ChatMessageDTO -->
+	<insert id="insertRoomDatas" parameterType="chatMessageDto">
+		INSERT INTO TB_CHAT_MESSAGES (chat_no
+							, chat_room_no
+							, chat_writer
+							, chat_message)
+			 VALUES(CHAT_MESSAGE_SEQ.NEXTVAL
+					 , #{chatRoomNo}
+					 , #{chatWriter}
+					 , #{chatMessage})
+	</insert>
+	<select id="findMessageById" parameterType="String" resultMap="chatMessageDtoMap">
+		SELECT * FROM TB_CHAT_MESSAGES
+				WHERE chat_room_no = #{chatRoomNo}
+			 ORDER BY chat_no ASC
+	</select>
+
+	<!-- ChatParticipantsDTO -->
+	<insert id="insertChatParticipants" parameterType="chatParticipantDto">
+		INSERT INTO TB_CHAT_PARTICIPANTS (emp_id
+		    					, chat_room_no)
+		     VALUES (#{empId}
+		     	   , #{chatRoomNo})
+	</insert>
+</mapper>

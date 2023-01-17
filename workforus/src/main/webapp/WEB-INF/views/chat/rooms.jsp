@@ -57,7 +57,6 @@
 	            		<table class="table table-lg">
 		            		<c:if test="${not empty chatRoomDatas}">
 			            		<c:forEach items="${chatRoomDatas}" var="data">
-									<a>
 			            			<tr id="chat-room-area" class="chat-room" onclick="enterRoom('${data.chatRoomNo}');">
 			            				<td class="chat-room-profile">
 			            					<div class="avatar bg-warning me-3">
@@ -73,7 +72,6 @@
 			            					</div>
 			            				</td>
 			            			</tr>
-									</a>
 			            		</c:forEach>
 		            		</c:if>
 	            		</table>
@@ -101,19 +99,14 @@
 												<c:if test="${not empty empDtoDatas}"> 
 													<c:forEach items="${empDtoDatas}" var="data">
 														<tr class="empNm_list">
-															<td class="empNm_data" id="dataEmpNm" onclick="addChatMember(this);">${data.empNm}</td>
+															<td>
+																<input type="checkbox" name="chk_box" class="empNm_data" id="dataEmpNm" value="${data.empNm}"/>${data.empNm}
+															</td>
 														</tr>
 													</c:forEach>
 												</c:if>
 											</table>
 										</div>
-									</div>
-								</div>
-								<div>
-									<label id="add-member">추가한 멤버</label>
-									<div class="table-responsive" style="height: 200px">
-										<table id="chat-members" class="table mb-0 table-lg">
-										</table>
 									</div>
 								</div>
 		      				</div>
@@ -181,24 +174,6 @@
 		                    </div>
 		                    <div class="card-body pt-4 bg-grey" id="id_chat">
 		                        <div id="chat-content">
-									<c:forEach items="${message}" var="data">
-										<c:choose>
-											<c:when test="${empDto.empNm == data.chatWriter}">
-												<div class="chat">
-													<div class="chat-body">
-														<div class="chat-message">${data.chatWriter} : ${data.chatMessage}</div>
-													</div>
-												</div>
-											</c:when>
-											<c:otherwise>
-												<div class="chat chat-left">
-													<div class="chat-body">
-														<div class="chat-message">${data.chatWriter} : ${data.chatMessage}</div>
-													</div>
-												</div>
-											</c:otherwise>
-										</c:choose>
-									</c:forEach>
 		                        	<!-- 
 		                            <div class="chat">
 		                                <div class="chat-body">
@@ -227,7 +202,6 @@
 		                </div>
 	          		</section>
             	</div>
-
 				<!--
             	<div class="chat-right-layout">
             		<div class="div-search">
@@ -315,54 +289,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script type="text/javascript">
-	var roomName = '${room.chatTitle}'
-	var roomId = '${room.chatRoomNo}'
-	var username = '${empDto.empNm}';
-
-	console.log(roomName + ", " + roomId + ", " + username);
-
-	var sockJS = new SockJS("/stomp/chat");
-	var stomp = Stomp.over(sockJS);
-
-	stomp.connect({}, function (){
-		console.log("Stomp Connection")
-
-		stomp.subscribe("/sub/chat/room/" + roomId, function (chat) {
-			var content = JSON.parse(chat.body);
-
-			var writer = content.chatWriter;
-			var message = content.chatMessage;
-			var str = '';
-
-			console.log(writer + ", " + message);
-
-			if(writer === username) {
-				var str = "<div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
-				str += writer + " : " + message;
-				str += "</div></div></div>";
-				$("#chat-content").append(str);
-			} else {
-				var str = "<div class='chat chat-left'><div class='chat'><div class='chat-body'><div class='chat-message' id='id_chat'>";
-				str += writer + " : " + message;
-				str += "</div></div></div></div>";
-				$("#chat-content").append(str);
-			}
-		});
-
-		stomp.send('/pub/chat/enter', {}, JSON.stringify({chatRoomNo: roomId, chatWriter: username}))
-	});
-
-	$("#button-send").on("click", function(e){
-		var msg = document.getElementById("msg");
-
-		console.log(username + ":" + msg.value);
-		stomp.send('/pub/chat/message', {}, JSON.stringify({chatRoomNo: roomId, chatMessage: msg.value, chatWriter: username}));
-		msg.value = '';
-	});
 
 	function enterRoom(roomId) {
 		location.href = "${chatUrl}/room?roomId="+roomId
 	}
+
 	function chatRoomAddModal() {
 		var modal = new bootstrap.Modal(document.getElementById("chatRoomAddModal"), {
 			keyboard: false
@@ -374,6 +305,7 @@
 	function filter() {
 		let search = document.getElementById("id_empName").value.toLowerCase();
 		let listInner = document.getElementsByClassName("empNm_list");
+		var members = [];
 
 		for(let i = 0; i < listInner.length; i++) {
 			let empNm = listInner[i].getElementsByClassName("empNm_data");
@@ -393,6 +325,7 @@
 		text = text.replace(/\n/g, "");
 		text = text.replace(/\r/g, "");
 		text = text.replace(/\t/g, "");
+
 		var chatMember = document.getElementsByClassName("table")[2];
 
 		for(i=0; i < document.getElementsByClassName("table")[2].childElementCount; i++) {
@@ -402,16 +335,26 @@
 			}
 		}
 		chatMember.innerHTML += "<tr><td>" + text + "<td><tr>";
+
 	}
 
 	function chatRoomInsert() {
+		var chk_members = [];
+
+		$('input[name=chk_box]:checked').each(function () {
+			chk_members.push(this.value)
+		})
+
+		console.log(chk_members);
+
 		const chatTitle = document.getElementById("chatTitle");
 		console.log(chatTitle.value);
 		$.ajax ({
 			url: "${chatUrl}/room/add",
 			type: "post",
 			data: {
-				title : chatTitle.value
+				title : chatTitle.value,
+				members : chk_members
 			},
 			dataType: "json",
 			success: function() {

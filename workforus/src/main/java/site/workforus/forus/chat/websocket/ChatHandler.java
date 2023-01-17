@@ -40,6 +40,7 @@ public class ChatHandler extends TextWebSocketHandler {
         }
     }
 
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         log.info("#ChattingHandler, afterConnectionClosed");
