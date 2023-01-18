@@ -4,6 +4,7 @@
 	margin-bottom: 20px;
 	width:auto;
 	height:800px;
+	justify-content: center;
 }
 .chat-left-layout {
 	background-color: #fff;
