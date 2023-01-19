@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+	<meta charset="UTF-8" http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <title>채팅</title>
 	<%@ include file="../module/head.jsp" %>
     <link rel="stylesheet" href="${staticUrl}/css/pages/chat.css">
