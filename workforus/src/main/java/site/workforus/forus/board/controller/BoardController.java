@@ -244,7 +244,7 @@ public class BoardController {
 		int postId = postService.selectCurrentPostId(boardId); // postId 최대값
 		session.setAttribute("postId", postId);
 		
-		return "post-add";
+		return "/board/post-add";
 	}
 
 	// 게시글 추가 요청
