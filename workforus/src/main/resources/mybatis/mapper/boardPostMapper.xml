@@ -338,4 +338,14 @@
 		where post_id = #{id}
 	</select>
 
+	<!-- visit 기록 확인 (tb_post_visits) -->
+	<select id="selectVisitByPostIdAndEmpId" resultType="postVisitDto">
+		select visit_id,
+		       post_id,
+		       emp_id,
+		       last_visit
+		from tb_post_visits
+		where post_id = #{postId} and emp_id = #{empId}
+	</select>
+
 </mapper>

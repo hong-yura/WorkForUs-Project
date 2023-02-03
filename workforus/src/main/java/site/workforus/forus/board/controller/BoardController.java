@@ -138,12 +138,11 @@ public class BoardController {
 	public String getDetailData(Model model, HttpSession session, Authentication auth
 									, @RequestParam String postId) { // 어떤 post id인지 알아야 한다.
 
-		logger.info("postId={}", postId);
 		// 얘는 나중에 session 으로 변경해주기
 		LoginVO loginVo = (LoginVO)auth.getPrincipal();
 		logger.info("getData(loginVo={})", loginVo);
-		
-		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함 
+
+		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함
 		// 게시글 데이터를 가지고 와야 한다.
 		BoardPostDTO postData = postService.getPostData(pId);// postId -> 해당 게시글 데이터를 가져온다.
 		logger.info("getDetailData(postId={})", postId);
@@ -159,7 +158,7 @@ public class BoardController {
 		logger.info("getDetailData=(files={})", files);
 		
 		// 게시글 댓글 마지막 groupNo을 가지고 온다.
-		int groupNo = postService.selectGroupNo(pId); 
+		int groupNo = postService.selectGroupNo(pId);
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData); 
@@ -317,7 +316,7 @@ public class BoardController {
 		if(postId > 0) { // 저장 성공시
 			return "redirect:/board/detail?postId=" + postId; // 해당 게시글로 이동해야 한다. 
 		}else {			 // 저장 실패시
-			return "/board/post/add";
+			return "/board/post-add";
 		}
 	}
 	
@@ -332,7 +331,7 @@ public class BoardController {
 		model.addAttribute("postData", postData);
 		model.addAttribute("fileData", fileData);
 		
-		return "post-modify";
+		return "/board/post-modify";
 	}
 	
 	//게시글 수정

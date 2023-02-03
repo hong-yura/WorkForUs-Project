@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostLikeDTO;
+import site.workforus.forus.board.model.PostVisitDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
@@ -227,4 +228,32 @@ public class BoardPostService {
 			return false;
 		}
 	}
+
+	// 방문기록이 있는지 확인
+	public boolean modifyVisit(int postId, String empId){
+
+		// 게시글을 방문한 사원이 접속 기록을 확인
+		// 1. 접속 기록 없음
+		// 		-> 접속 기록을 저장해주고, 방문자수 cnt + 1 을 해준다.
+		// 2. 접속 기록 있음
+		// 		2.1. 접속 기록이 있지만 방문한 지 3일이 지났다면
+		//			-> 접속 기록을 수정해주고, 방문자수 cnt + 1 을 해준다.
+		// 		2.2. 접속 기록이 있지만 방문한 지 3일이 지나지 않았다면
+		//			-> 그대로 유지
+		// postId, empId, last-visit
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		PostVisitDTO visitDto = mapper.selectVisitByPostIdAndEmpId(postId, empId);
+
+		if(visitDto == null){	// 만약 방문기록이 없다면
+
+
+		}
+
+
+
+		return true;
+	}
+
+
+
 }

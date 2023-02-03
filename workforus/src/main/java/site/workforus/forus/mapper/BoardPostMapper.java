@@ -5,10 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import site.workforus.forus.board.model.BoardPostDTO;
-import site.workforus.forus.board.model.PostCommentDTO;
-import site.workforus.forus.board.model.PostLikeDTO;
-import site.workforus.forus.board.model.PostUploadFileDTO;
+import site.workforus.forus.board.model.*;
 
 public interface BoardPostMapper { 
 
@@ -97,5 +94,8 @@ public interface BoardPostMapper {
 
 	// likeCnt 데이터 가져오기(tb_board_posts)
 	public BoardPostDTO selectLikeCntByPostId(int postId);
+
+	// visit 데이터 가져오기(tb_post_visits)
+	public PostVisitDTO selectVisitByPostIdAndEmpId(@Param("postId") int postId, @Param("empId") String empId);
 
 }
