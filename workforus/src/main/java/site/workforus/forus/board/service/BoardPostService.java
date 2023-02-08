@@ -1,5 +1,6 @@
 package site.workforus.forus.board.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostLikeDTO;
 import site.workforus.forus.board.model.PostVisitDTO;
+import site.workforus.forus.board.model.ViewCntDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
@@ -230,28 +232,40 @@ public class BoardPostService {
 	}
 
 	// 방문기록이 있는지 확인
-	public boolean modifyVisit(int postId, String empId){
+	public ResponseEntity<Object> modifyVisit(ViewCntDTO viewCntDto, String empId){
 
 		// 게시글을 방문한 사원이 접속 기록을 확인
 		// 1. 접속 기록 없음
 		// 		-> 접속 기록을 저장해주고, 방문자수 cnt + 1 을 해준다.
 		// 2. 접속 기록 있음
-		// 		2.1. 접속 기록이 있지만 방문한 지 3일이 지났다면
+		// 		2.1. 접속 기록이 있지만 방문한 지 1일이 지났다면
 		//			-> 접속 기록을 수정해주고, 방문자수 cnt + 1 을 해준다.
 		// 		2.2. 접속 기록이 있지만 방문한 지 3일이 지나지 않았다면
 		//			-> 그대로 유지
 		// postId, empId, last-visit
+
 		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
-		PostVisitDTO visitDto = mapper.selectVisitByPostIdAndEmpId(postId, empId);
+		PostVisitDTO visitDto = mapper.selectVisitByPostIdAndEmpId(viewCntDto.getPostId(), empId);	// 방문기록이 담김
+		ResponseEntity<Object> data;
 
 		if(visitDto == null){	// 만약 방문기록이 없다면
+			mapper.insertVisit(viewCntDto.getPostId(), empId, LocalDateTime.now());		// 방문기록을 저장해준다.
+			BoardPostDTO postDto = mapper.selectBoardDetail(viewCntDto.getPostId());	// 이전 viewCnt 가져옴
+			mapper.updateBoardPost(new BoardPostDTO(viewCntDto.getPostId(), postDto.getViewCnt() + 1));	// 이전 viewCnt + 1로 저장
+			// 저장된 viewCnt를 ViewCntDTO에 저장해서 전달해준다.
+			viewCntDto.setViewCnt(postDto.getViewCnt() + 1);		// + 1 된 값을 전달
+			data = new ResponseEntity<>(viewCntDto, HttpStatus.OK);
+		}else {	// 방문 기록이 있으면 ->
+			logger.info("BoardPostService 방문기록 (이전 기록 정보 시간 {})", visitDto.getLastVisit());
+			visitDto.getLastVisit();
 
-
+			int result = mapper.insertVisit(viewCntDto.getPostId(), empId, LocalDateTime.now());	// 방문기록을 저장해준다.
+			data = new ResponseEntity<>(viewCntDto, HttpStatus.OK);
 		}
 
 
 
-		return true;
+		return data;
 	}
 
 

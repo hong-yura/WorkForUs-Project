@@ -13,24 +13,16 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.admin.service.DeptService;
-import site.workforus.forus.board.model.BoardDTO;
-import site.workforus.forus.board.model.BoardParticipDTO;
-import site.workforus.forus.board.model.BoardPostDTO;
-import site.workforus.forus.board.model.PostCommentDTO;
-import site.workforus.forus.board.model.PostUploadFileDTO;
+import site.workforus.forus.board.model.*;
 import site.workforus.forus.board.service.BoardParticipService;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
@@ -434,6 +426,6 @@ public class BoardController {
 			json.put("code", "error");
 			return json.toJSONString();
 		}
-		
 	}
+
 }

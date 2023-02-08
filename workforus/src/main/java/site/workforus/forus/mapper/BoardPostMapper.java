@@ -1,5 +1,6 @@
 package site.workforus.forus.mapper;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,4 +99,5 @@ public interface BoardPostMapper {
 	// visit 데이터 가져오기(tb_post_visits)
 	public PostVisitDTO selectVisitByPostIdAndEmpId(@Param("postId") int postId, @Param("empId") String empId);
 
+	public int insertVisit(@Param("postId")int postId, @Param("empId")String empId, @Param("lastVisit")LocalDateTime lastVisit);
 }

@@ -84,7 +84,7 @@
 							</div>
 						</c:if>
 						<div class="view-like-container">
-							<i class="bi bi-eye black"> ${postData.viewCnt}</i>
+							<i class="bi bi-eye black" id="view-cnt"> ${postData.viewCnt}</i>
 							<button type="button" class="btn black" onclick="boardLike();"><i class="bi bi-hand-thumbs-up" id="id_like">${postData.likeCnt}</i>
 							</button>
 							<hr style="margin-top: 0px;">
@@ -105,8 +105,7 @@
     </div>
     
     
-    <script src="${staticUrl}/js/pages/board/index.js"></script>
-	<script src="${staticUrl}/js/pages/board/board-like.js"></script>
+
     
     <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
@@ -115,5 +114,9 @@
     <script src="${staticUrl}/js/pages/dashboard.js"></script>
 
     <script src="${staticUrl}/js/main.js"></script>
+
+	<script src="${staticUrl}/js/pages/board/view-cnt.js"></script>
+	<script src="${staticUrl}/js/pages/board/index.js"></script>
+	<script src="${staticUrl}/js/pages/board/board-like.js"></script>
 </body>
 </html>

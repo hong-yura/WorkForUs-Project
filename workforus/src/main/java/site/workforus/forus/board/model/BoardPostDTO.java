@@ -67,4 +67,10 @@ public class BoardPostDTO {
 		this.likeCnt = likeCnt;
 		this.empObj = empObj;
 	}
+
+	// 조회수 변경할 때 사용
+	public BoardPostDTO(int postId, int viewCnt){
+		this.postId = postId;
+		this.viewCnt = viewCnt;
+	}
 }
