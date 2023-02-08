@@ -12,4 +12,10 @@ import org.apache.ibatis.type.Alias;
 public class ViewCntDTO {
     private int postId;
     private int viewCnt;
+
+    public ViewCntDTO(){}
+    public ViewCntDTO (int postId, int viewCnt) {
+        this.postId = postId;
+        this.viewCnt = viewCnt;
+    }
 }

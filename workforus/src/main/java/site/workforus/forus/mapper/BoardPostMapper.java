@@ -99,5 +99,12 @@ public interface BoardPostMapper {
 	// visit 데이터 가져오기(tb_post_visits)
 	public PostVisitDTO selectVisitByPostIdAndEmpId(@Param("postId") int postId, @Param("empId") String empId);
 
+	// visit 데이터 추가
 	public int insertVisit(@Param("postId")int postId, @Param("empId")String empId, @Param("lastVisit")LocalDateTime lastVisit);
+
+	// visit 시각 업데이트
+	public int updateVisit(PostVisitDTO visitDto);
+
+	// tb_board_posts 테이블의 view_cnt 수정
+	public int updatePostViewCnt(BoardPostDTO boardPostDTO);
 }

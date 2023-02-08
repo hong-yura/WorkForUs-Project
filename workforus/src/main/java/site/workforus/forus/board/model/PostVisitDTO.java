@@ -19,6 +19,13 @@ public class PostVisitDTO {
     private String empId;               // 회원ID
     private LocalDateTime lastVisit;    // 방문날짜
 
+    public PostVisitDTO(){}
+    public PostVisitDTO(int visitId, int postId, String empId, LocalDateTime lastVisit){
+        this.visitId = visitId;
+        this.postId = postId;
+        this.empId = empId;
+        this.lastVisit = lastVisit;
+    }
     public PostVisitDTO(int postId, String empId, LocalDateTime lastVisit){
         this.postId = postId;
         this.empId = empId;

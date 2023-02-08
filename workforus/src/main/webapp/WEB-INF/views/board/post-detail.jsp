@@ -104,9 +104,6 @@
       </div>
     </div>
     
-    
-
-    
     <script src="${staticUrl}/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="${staticUrl}/js/bootstrap.bundle.min.js"></script>
 
