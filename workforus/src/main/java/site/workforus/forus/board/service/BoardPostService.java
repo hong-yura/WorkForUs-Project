@@ -257,7 +257,7 @@ public class BoardPostService {
 			LocalDateTime nowDate = LocalDateTime.now();
 			LocalDateTime savedDate = visitDto.getLastVisit();
 
-			long diffMillis = nowDate.until(savedDate, ChronoUnit.SECONDS);
+			long diffMillis = savedDate.until(nowDate, ChronoUnit.SECONDS);
 			logger.info("시간 차이 (diffMillis : {})", diffMillis);
 
 			if(diffMillis >= 86400){
@@ -276,8 +276,5 @@ public class BoardPostService {
 		ResponseEntity<Object> responseEntity = new ResponseEntity<>(viewCntDto, HttpStatus.OK);
 		return responseEntity;
 	}
-
-
-
 
 }
