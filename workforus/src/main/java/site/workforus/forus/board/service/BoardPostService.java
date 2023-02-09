@@ -1,8 +1,8 @@
 package site.workforus.forus.board.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 import site.workforus.forus.board.controller.BoardController;
 import site.workforus.forus.board.model.BoardPostDTO;
 import site.workforus.forus.board.model.PostLikeDTO;
+import site.workforus.forus.board.model.PostVisitDTO;
+import site.workforus.forus.board.model.ViewCntDTO;
 import site.workforus.forus.mapper.BoardPostMapper;
 
 @Service
@@ -227,4 +229,52 @@ public class BoardPostService {
 			return false;
 		}
 	}
+
+	// 방문기록이 있는지 확인
+	// 게시글을 방문한 사원이 접속 기록을 확인
+	// 1. 접속 기록 없음
+	// 		-> 접속 기록을 저장해주고, 방문자수 cnt + 1 을 해준다.
+	// 2. 접속 기록 있음
+	// 		2.1. 접속 기록이 있지만 방문한 지 1일이 지났다면
+	//			-> 접속 기록을 수정해주고, 방문자수 cnt + 1 을 해준다.
+	// 		2.2. 접속 기록이 있지만 방문한 지 1일이 지나지 않았다면
+	//			-> 그대로 유지
+	// postId, empId, last-visit
+	public ResponseEntity<Object> modifyVisit(ViewCntDTO viewCntDto, String empId){
+		logger.info("BoardPostService(modifyVisit viewCntDto = {}, empId = {})", viewCntDto, empId);
+		BoardPostMapper mapper = session.getMapper(BoardPostMapper.class);
+		logger.info("mapper 연결 후");
+
+		PostVisitDTO visitDto = mapper.selectVisitByPostIdAndEmpId(viewCntDto.getPostId(), empId);	// 방문기록이 담김
+		logger.info("방문기록이 있는지 확인 visitDto = {}", visitDto);
+		boolean viewCntUp = true;	// viewCnt + 1을 해야 하는지
+
+		if(visitDto == null){	// 만약 방문기록이 없다면
+			int insertVisit = mapper.insertVisit(viewCntDto.getPostId(), empId, LocalDateTime.now());		// 방문기록을 저장해준다.
+			logger.info("방문기록이 없다면 insertVisit = {}" , insertVisit);
+		}else {	// 방문 기록이 있으면
+			logger.info("BoardPostService 방문기록 (이전 기록 정보 시간 {})", visitDto.getLastVisit());
+			LocalDateTime nowDate = LocalDateTime.now();
+			LocalDateTime savedDate = visitDto.getLastVisit();
+
+			long diffMillis = savedDate.until(nowDate, ChronoUnit.SECONDS);
+			logger.info("시간 차이 (diffMillis : {})", diffMillis);
+
+			if(diffMillis >= 86400){
+				// 24시간이 지났다면 (24시간 = 86400초)
+				visitDto.setLastVisit(nowDate);
+				mapper.updateVisit(visitDto);	// 현재 시간으로 업데이트해준다.
+			}else {
+				// 아직 24시간이 지나지 않았다면 그대로 냅둔다.
+				viewCntUp = false;
+			}
+		}
+		if(viewCntUp){
+			mapper.updatePostViewCnt(new BoardPostDTO(viewCntDto.getPostId(), viewCntDto.getViewCnt() + 1));	// 이전 viewCnt + 1로 저장
+			viewCntDto.setViewCnt(viewCntDto.getViewCnt() + 1);		// + 1 된 값을 전달
+		}
+		ResponseEntity<Object> responseEntity = new ResponseEntity<>(viewCntDto, HttpStatus.OK);
+		return responseEntity;
+	}
+
 }

@@ -1,14 +1,12 @@
 package site.workforus.forus.mapper;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import site.workforus.forus.board.model.BoardPostDTO;
-import site.workforus.forus.board.model.PostCommentDTO;
-import site.workforus.forus.board.model.PostLikeDTO;
-import site.workforus.forus.board.model.PostUploadFileDTO;
+import site.workforus.forus.board.model.*;
 
 public interface BoardPostMapper { 
 
@@ -98,4 +96,15 @@ public interface BoardPostMapper {
 	// likeCnt 데이터 가져오기(tb_board_posts)
 	public BoardPostDTO selectLikeCntByPostId(int postId);
 
+	// visit 데이터 가져오기(tb_post_visits)
+	public PostVisitDTO selectVisitByPostIdAndEmpId(@Param("postId") int postId, @Param("empId") String empId);
+
+	// visit 데이터 추가
+	public int insertVisit(@Param("postId")int postId, @Param("empId")String empId, @Param("lastVisit")LocalDateTime lastVisit);
+
+	// visit 시각 업데이트
+	public int updateVisit(PostVisitDTO visitDto);
+
+	// tb_board_posts 테이블의 view_cnt 수정
+	public int updatePostViewCnt(BoardPostDTO boardPostDTO);
 }

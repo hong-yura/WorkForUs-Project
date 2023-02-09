@@ -13,24 +13,16 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import site.workforus.forus.admin.model.DeptDTO;
 import site.workforus.forus.admin.service.DeptService;
-import site.workforus.forus.board.model.BoardDTO;
-import site.workforus.forus.board.model.BoardParticipDTO;
-import site.workforus.forus.board.model.BoardPostDTO;
-import site.workforus.forus.board.model.PostCommentDTO;
-import site.workforus.forus.board.model.PostUploadFileDTO;
+import site.workforus.forus.board.model.*;
 import site.workforus.forus.board.service.BoardParticipService;
 import site.workforus.forus.board.service.BoardPostService;
 import site.workforus.forus.board.service.BoardService;
@@ -138,12 +130,11 @@ public class BoardController {
 	public String getDetailData(Model model, HttpSession session, Authentication auth
 									, @RequestParam String postId) { // 어떤 post id인지 알아야 한다.
 
-		logger.info("postId={}", postId);
 		// 얘는 나중에 session 으로 변경해주기
 		LoginVO loginVo = (LoginVO)auth.getPrincipal();
 		logger.info("getData(loginVo={})", loginVo);
-		
-		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함 
+
+		int pId = Integer.parseInt(postId); // String 으로 받아져서 다시 int형으로 변환해야함
 		// 게시글 데이터를 가지고 와야 한다.
 		BoardPostDTO postData = postService.getPostData(pId);// postId -> 해당 게시글 데이터를 가져온다.
 		logger.info("getDetailData(postId={})", postId);
@@ -159,7 +150,7 @@ public class BoardController {
 		logger.info("getDetailData=(files={})", files);
 		
 		// 게시글 댓글 마지막 groupNo을 가지고 온다.
-		int groupNo = postService.selectGroupNo(pId); 
+		int groupNo = postService.selectGroupNo(pId);
 		
 		// 게시글 댓글 구현 -> 해당 게시글에 대한 댓글을 찾아서 가져온다.
 		model.addAttribute("postData", postData); 
@@ -244,7 +235,7 @@ public class BoardController {
 		int postId = postService.selectCurrentPostId(boardId); // postId 최대값
 		session.setAttribute("postId", postId);
 		
-		return "post-add";
+		return "/board/post-add";
 	}
 
 	// 게시글 추가 요청
@@ -317,7 +308,7 @@ public class BoardController {
 		if(postId > 0) { // 저장 성공시
 			return "redirect:/board/detail?postId=" + postId; // 해당 게시글로 이동해야 한다. 
 		}else {			 // 저장 실패시
-			return "/board/post/add";
+			return "/board/post-add";
 		}
 	}
 	
@@ -332,7 +323,7 @@ public class BoardController {
 		model.addAttribute("postData", postData);
 		model.addAttribute("fileData", fileData);
 		
-		return "post-modify";
+		return "/board/post-modify";
 	}
 	
 	//게시글 수정
@@ -435,6 +426,6 @@ public class BoardController {
 			json.put("code", "error");
 			return json.toJSONString();
 		}
-		
 	}
+
 }

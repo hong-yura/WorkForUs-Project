@@ -338,4 +338,36 @@
 		where post_id = #{id}
 	</select>
 
+	<!-- visit 기록 확인 (tb_post_visits) -->
+	<select id="selectVisitByPostIdAndEmpId" resultType="postVisitDto">
+		select visit_id as visitId,
+		       post_id as postId,
+		       emp_id as empId,
+		       last_visit as lastVisit
+		from tb_post_visits
+		where post_id = #{postId}
+		  and emp_id = #{empId}
+	</select>
+
+	<!-- 방문기록 추가 -->
+	<insert id="insertVisit">
+		insert into tb_post_visits
+		values(post_visit_seq.NEXTVAL, #{postId}, #{empId}, #{lastVisit})
+	</insert>
+
+	<!-- 방문기록 업데이트 -->
+	<update id="updateVisit" parameterType="postVisitDto">
+		update tb_post_visits
+		set last_visit = #{lastVisit}
+		where visit_id = #{visitId}
+	</update>
+
+	<update id="updatePostViewCnt" parameterType="boardPostDto">
+		update tb_board_posts
+		set view_cnt = #{viewCnt}
+		where post_id = #{postId}
+	</update>
+
+
+
 </mapper>
