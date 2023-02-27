@@ -5,8 +5,7 @@ RUN rm -Rf /usr/local/tomcat/webapps/ROOT
 COPY ./workforus/target/ROOT.war /usr/local/tomcat/webapps
 # 현재 디렉토리에서 forus.war 옮기기
 
-COPY ./wallet /usr/local/Wallet_forus
+COPY ./wallet /usr/local/wallet
 
 EXPOSE 8080
 EXPOSE 1521
-
