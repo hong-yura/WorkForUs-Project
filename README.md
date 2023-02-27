@@ -22,7 +22,7 @@
   - [Java](https://www.java.com/) [Spring](https://spring.io/) 기반으로 제작 되었습니다.
   - 비대면 근무를 위한 협업툴(그룹웨어) 입니다.
   - 업무의 효율성 및 생산성 향상을 기대할 수 있습니다.
-  - Spring Security를 활용하여 보안성을 경비하였습니다.
+  - Spring Security를 활용하여 보안성을 겸비하였습니다.
     <br>
     <br>
 - Team Ground Rule
@@ -151,6 +151,9 @@
   ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?logo=nginx&logoColor=white)
   ![Apache Tomcat](https://img.shields.io/badge/apache%20tomcat-%23F8DC75.svg?logo=apache-tomcat&logoColor=black)
   ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)
+  ![Jenkins](https://img.shields.io/badge/jenkins-%232C5263.svg?logo=jenkins&logoColor=white)
+  ![Oracle](https://img.shields.io/badge/OCI-F80000?logo=oracle&logoColor=white)
+  ![Raspberry Pi](https://img.shields.io/badge/-RaspberryPi-C51A4A?logo=Raspberry-Pi)
 
 - **VCS**
 
@@ -169,8 +172,10 @@
 ---
 
 ## **배포**
-
+![CICD](https://forus-s3.s3.ap-northeast-2.amazonaws.com/workforuscicd.png)
 - [배포 주소](https://workforus.site/)
 - 도메인은 [가비아](https://domain.gabia.com/)에서 구입 후 [AWS Route53](https://aws.amazon.com/route53/)에서 호스팅 중 입니다.
-- 웹 서버는 [Oracle CLoud](https://www.oracle.com/cloud/compute/)에 [Docker](https://www.docker.com/)를 통해 호스팅 중 입니다.
-- SSL 인증서는 [Let's Encrypt](https://letsencrypt.org/)와 [Certbot](https://certbot.eff.org/)을 사용하여 발급받아 [AWS EC2](https://aws.amazon.com/ec2/)에 호스팅 중인 [NginX](https://www.nginx.com/)로 구성된 리버스 프록시 서버에 적용하였습니다.
+- 웹 서버는 [Oracle Cloud](https://www.oracle.com/cloud/compute/)에 [Docker](https://www.docker.com/)를 통해 호스팅 중 입니다.
+- SSL 인증서는 [Let's Encrypt](https://letsencrypt.org/)와 [Certbot](https://certbot.eff.org/)을 사용하여 발급받아 ~~AWS EC2(프리티어 만료로 인해 변경)~~[Oracle CLoud](https://www.oracle.com/cloud/compute/)에 호스팅 중인 [NginX](https://www.nginx.com/)로 구성된 리버스 프록시 서버에 적용하였습니다.
+- main branch에 push시 github action을 통해 테스트와 빌드를 거친후 docker image로 build되어 [Dockerhub](https://hub.docker.com/)로 push됩니다.
+- dockerhub repository update시 jenkins에 webhook을 통해 build를 유발하고, docker container를 실행할 2개의 oracle cloud compute instance와 nignx를 통해 blue green 배포를 합니다.
