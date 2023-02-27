@@ -1,0 +1,56 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: schmiddim-wget-unzip
+      uses: schmiddim/action-wget-unzip@v2
+      with:
+        url: ${{ secrets.WALLET_URL }}
+        destination: ./wallet
+    - name: Set Wallet Path
+      run: |
+        ls wallet
+        DATABASE_WALLET_PATH=$PWD/wallet
+        echo "DATABASE_WALLET_PATH=$DATABASE_WALLET_PATH" >> $GITHUB_ENV
+    - name: Set up environment variables
+      run: |
+        DATABASE_JDBC=${{ secrets.DATABASE_JDBC }}
+        DB_USERNAME=${{ secrets.DB_USERNAME }}
+        DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+        EMAIL_ACCOUNT=${{ secrets.EMAIL_ACCOUNT }}
+        EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+        
+        echo "DATABASE_JDBC=$DATABASE_JDBC" >> $GITHUB_ENV
+        echo "DB_USERNAME=$DB_USERNAME" >> $DB_USERNAME
+        echo "DB_PASSWORD=$DB_PASSWORD" >> $GITHUB_ENV
+        echo "EMAIL_ACCOUNT=$EMAIL_ACCOUNT" >> $GITHUB_ENV
+        echo "EMAIL_PASSWORD=$EMAIL_PASSWORD" >> $GITHUB_ENV
+        
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: Build with Maven
+      run: mvn -B package --file workforus/pom.xml
+        
+    - name: Docker Hub Sign-in
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: change permission
+      run: |
+        sudo chmod 777 wallet/._Wallet_forus
+    - name: Building Docker Image
+      run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
+    - name: Publish Docker Image
+      run: docker push ${{ secrets.DOCKER_REPO }}
