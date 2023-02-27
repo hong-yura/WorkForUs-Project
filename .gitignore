@@ -329,7 +329,3 @@ modules.xml
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij
-
-database.properties
-
-# End of https://www.toptal.com/developers/gitignore/api/maven,linux,windows,macos,eclipse,dbeaver,java,visualstudiocode
