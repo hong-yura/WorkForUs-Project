@@ -47,9 +47,6 @@ jobs:
         
     - name: Docker Hub Sign-in
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-    - name: change permission
-      run: |
-        sudo chmod 777 wallet/._Wallet_forus
     - name: Building Docker Image
       run: docker build -t ${{ secrets.DOCKER_REPO }}:latest .
     - name: Publish Docker Image
